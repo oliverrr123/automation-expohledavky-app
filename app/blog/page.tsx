@@ -31,7 +31,7 @@ interface BlogPost {
   excerpt: string;
 }
 
-const blogPosts: BlogPost[
+const blogPosts: BlogPost[] = [
   {
     slug: "ai-a-digitalizace-ve-sprave-pohledavek",
     title: "AI a digitalizace ve správě pohledávek",
@@ -45,8 +45,7 @@ const blogPosts: BlogPost[
     tags: ["AI","digitalizace","správa pohledávek","české podniky","MSP","automatizace"],
     image: "https://images.unsplash.com/photo-1573496267478-37727ee5b694?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjM3ODl8&ixlib=rb-4.0.3&q=80&w=1080",
     excerpt: "Zjistěte, jak AI a digitální technologie mění správu pohledávek v českých MSP.",
-  }
-] = [
+  },
   {
     slug: "digitalizace-meni-spravu-pohledavek-v-ceskych-msp",
     title: "Digitalizace mění správu pohledávek v českých MSP",

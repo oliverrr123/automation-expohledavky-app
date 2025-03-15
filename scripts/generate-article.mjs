@@ -501,23 +501,7 @@ async function updateBlogPostsArray(slug, metaData, category, author, imagePath)
       ? metaData.tags.split(',').map(tag => tag.trim()) 
       : metaData.tags;
     
-    const newBlogPostWithComma = `  {
-    slug: "${slug}",
-    title: "${metaData.title.replace(/"/g, '\\"')}",
-    subtitle: "${metaData.subtitle.replace(/"/g, '\\"')}",
-    date: "${formattedDate}",
-    author: "${author.name}",
-    authorPosition: "${author.position}",
-    authorImage: "${author.image}",
-    readTime: "${metaData.readTime}",
-    category: "${category}",
-    tags: ${JSON.stringify(tagsArray)},
-    image: "${imagePath}",
-    excerpt: "${metaData.description.replace(/"/g, '\\"')}",
-  },`;
-    
-    // Verze bez čárky pro použití, když je to jediný prvek v poli
-    const newBlogPostWithoutComma = `  {
+    const newBlogPost = `  {
     slug: "${slug}",
     title: "${metaData.title.replace(/"/g, '\\"')}",
     subtitle: "${metaData.subtitle.replace(/"/g, '\\"')}",
@@ -532,53 +516,25 @@ async function updateBlogPostsArray(slug, metaData, category, author, imagePath)
     excerpt: "${metaData.description.replace(/"/g, '\\"')}",
   }`;
     
-    // Najdeme pozici, kam vložit nový článek
-    const blogPostsArrayStart = content.indexOf('const blogPosts: BlogPost[] = [');
+    // Najdeme pozici definice blogPosts
+    const blogPostsStart = content.indexOf('const blogPosts: BlogPost[] = [');
     
-    if (blogPostsArrayStart !== -1) {
-      // Pokud je pole prázdné, přidáme první článek bez čárky
-      if (content.includes('const blogPosts: BlogPost[] = []')) {
-        content = content.replace(
-          'const blogPosts: BlogPost[] = []',
-          `const blogPosts: BlogPost[] = [
-${newBlogPostWithoutComma}
-]`
-        );
-      } else {
-        // Kontrolujeme, zda v poli již nějaké články jsou
-        const existingArrayContent = content.substring(
-          content.indexOf('[', blogPostsArrayStart) + 1,
-          content.indexOf(']', blogPostsArrayStart)
-        ).trim();
-        
-        const arrayStart = content.indexOf('[', blogPostsArrayStart);
-        
-        if (arrayStart !== -1) {
-          // Pokud je pole prázdné nebo obsahuje pouze bílé znaky, přidáme článek bez čárky
-          if (!existingArrayContent) {
-            content = content.slice(0, arrayStart + 1) + 
-                     '\n' + newBlogPostWithoutComma + 
-                     '\n' + content.slice(content.indexOf(']', arrayStart));
-          } else {
-            // Jinak přidáme článek s čárkou a zajistíme, že ostatní články mají správnou syntaxi
-            content = content.slice(0, arrayStart + 1) + 
-                     '\n' + newBlogPostWithComma + 
-                     content.slice(arrayStart + 1);
-            
-            // Ujistíme se, že poslední článek nemá čárku
-            const lastCommaPos = content.lastIndexOf(',', content.indexOf(']', arrayStart));
-            const closingBracketPos = content.indexOf(']', arrayStart);
-            
-            if (lastCommaPos > arrayStart && lastCommaPos > content.lastIndexOf('}', closingBracketPos)) {
-              content = content.slice(0, lastCommaPos) + content.slice(lastCommaPos + 1);
-            }
-          }
-        }
-      }
+    if (blogPostsStart !== -1) {
+      // Najdeme začátek pole
+      const arrayStart = content.indexOf('[', blogPostsStart);
       
-      // Uložíme aktualizovaný soubor
-      fs.writeFileSync(pageFilePath, content, 'utf8');
-      console.log("Seznam článků úspěšně aktualizován.");
+      if (arrayStart !== -1) {
+        // Přidáme nový článek na začátek pole (aby byl jako první)
+        const updatedContent = 
+          content.slice(0, arrayStart + 1) + 
+          '\n' + newBlogPost + 
+          (content.slice(arrayStart + 1).trim().startsWith(']') ? '\n' : ',\n') + 
+          content.slice(arrayStart + 1);
+        
+        // Uložíme aktualizovaný soubor
+        fs.writeFileSync(pageFilePath, updatedContent, 'utf8');
+        console.log("Seznam článků úspěšně aktualizován - nový článek přidán na začátek seznamu.");
+      }
     } else {
       console.log("Nepodařilo se najít pole blogPosts v souboru, přeskakuji aktualizaci.");
     }

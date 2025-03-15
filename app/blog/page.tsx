@@ -45,7 +45,7 @@ const blogPosts: BlogPost[] = [
     tags: ["insolvenční zákon","startupy","technologické firmy","pohledávky","právní změny"],
     image: "/images/blog/article-1742057915664.jpg",
     excerpt: "Novelizace insolvenčního zákona přináší výzvy i příležitosti pro startupy v ČR.",
-  },
+  }
 ]
 
 // Kategorie pro filtry na hlavní stránce

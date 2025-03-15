@@ -33,6 +33,21 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "optimalizace-dluhu-role-insolvencniho-spravce",
+    title: "Optimalizace dluhů: Role insolvenčního správce",
+    subtitle: "Efektivní strategie a moderní technologie v insolvenci",
+    date: "15. 3. 2025",
+    author: "Ing. Petra Svobodová",
+    authorPosition: "Finanční analytik",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "8 minut čtení",
+    category: "Insolvence",
+    tags: ["insolvence","restrukturalizace","firemní dluhy","automatizace","digitalizace","umělá inteligence","vymáhání pohledávek"],
+    image: "https://images.unsplash.com/photo-1482440308425-276ad0f28b19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjk5Mzl8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte klíčové strategie a technologie pro optimalizaci vymáhání firemních dluhů s pomocí insolvenčního správce.",
+  },
+
+  {
     slug: "moratoria-na-insolvence-vyzvy-pro-veritele",
     title: "Moratoria na insolvence: Výzvy pro věřitele",
     subtitle: "Jak moderní technologie mění vymáhání pohledávek",

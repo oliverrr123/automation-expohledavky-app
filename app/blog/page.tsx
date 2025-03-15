@@ -33,6 +33,21 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "moratoria-na-insolvence-vyzvy-pro-veritele",
+    title: "Moratoria na insolvence: Výzvy pro věřitele",
+    subtitle: "Jak moderní technologie mění vymáhání pohledávek",
+    date: "15. 3. 2025",
+    author: "Ing. Petra Svobodová",
+    authorPosition: "Finanční analytik",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "6 minut čtení",
+    category: "Insolvence",
+    tags: ["insolvence","moratorium","vymáhání pohledávek","technologie","digitalizace","automatizace","věřitelé"],
+    image: "https://images.unsplash.com/photo-1573483537868-423d82530f54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjg5MDh8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte, jak moratoria ovlivňují věřitele a jak moderní technologie pomáhají vymáhat pohledávky efektivněji.",
+  },
+
+  {
     slug: "novelizace-insolvencniho-zakona-vyzvy-a-sance",
     title: "Novelizace insolvenčního zákona: Výzvy a šance",
     subtitle: "Jak změny ovlivní vymáhání pohledávek českých firem",

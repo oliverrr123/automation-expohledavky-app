@@ -265,13 +265,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                   </div>
                 )}
 
-                {/* Share Section - funkční sdílení */}
-                <div className="mt-10 rounded-lg bg-orange-50 border border-orange-100 p-6 shadow-md">
-                  <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-zinc-800">
-                    <Share2 className="h-5 w-5 text-orange-500" />
-                    Sdílet článek
-                  </h3>
-                  <div className="flex flex-wrap gap-3">
+                {/* Share buttons */}
+                <div className="mt-8 pb-4 border-b border-orange-100">
+                  <p className="mb-4 text-zinc-600 font-medium">Sdílet článek</p>
+                  <div className="flex flex-wrap gap-2">
                     <a 
                       href={getShareUrl('facebook')} 
                       target="_blank" 
@@ -311,40 +308,6 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                   </div>
                 </div>
 
-                {/* Related Articles - dynamické načítání souvisejících článků */}
-                <div className="mt-10">
-                  <h3 className="mb-6 text-xl font-bold text-zinc-800">Články, které by vás mohly zajímat</h3>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    {relatedPosts.length > 0 ? (
-                      relatedPosts.map(relatedPost => (
-                        <Link 
-                          key={relatedPost.slug} 
-                          href={`/blog/${relatedPost.slug}`} 
-                          className="group block rounded-lg bg-white border border-orange-100 p-4 hover:border-orange-300 transition-all duration-300 shadow-md hover:shadow-orange-200/30"
-                        >
-                          <h4 className="mb-2 font-medium text-zinc-800 group-hover:text-orange-600 transition-colors">
-                            {relatedPost.frontMatter.title}
-                          </h4>
-                          <p className="text-sm text-zinc-600">
-                            {relatedPost.frontMatter.excerpt || relatedPost.frontMatter.subtitle}
-                          </p>
-                        </Link>
-                      ))
-                    ) : (
-                      // Fallback pokud nejsou žádné související články
-                      <>
-                        <Link href="/blog" className="group block rounded-lg bg-white border border-orange-100 p-4 hover:border-orange-300 transition-all duration-300 shadow-md hover:shadow-orange-200/30">
-                          <h4 className="mb-2 font-medium text-zinc-800 group-hover:text-orange-600 transition-colors">Vymáhání pohledávek v roce 2025</h4>
-                          <p className="text-sm text-zinc-600">Zjistěte, jaké jsou nejnovější trendy a postupy v oblasti vymáhání pohledávek.</p>
-                        </Link>
-                        <Link href="/blog" className="group block rounded-lg bg-white border border-orange-100 p-4 hover:border-orange-300 transition-all duration-300 shadow-md hover:shadow-orange-200/30">
-                          <h4 className="mb-2 font-medium text-zinc-800 group-hover:text-orange-600 transition-colors">Prevence vzniku pohledávek</h4>
-                          <p className="text-sm text-zinc-600">Jak nastavit obchodní podmínky a procesy, abyste minimalizovali riziko vzniku nedobytných pohledávek.</p>
-                        </Link>
-                      </>
-                    )}
-                  </div>
-                </div>
               </div>
             </div>
 

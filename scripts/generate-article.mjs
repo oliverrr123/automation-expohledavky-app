@@ -63,10 +63,16 @@ async function generateRandomTopic(category) {
     
 Téma by mělo být:
 1. Relevantní pro český trh a právní systém
-2. Specifické (ne obecné jako "Vymáhání pohledávek", ale spíše "Strategie vymáhání pohledávek u malých a středních podniků v době ekonomické recese")
-3. Aktuální a reflektující současné trendy
-4. Zajímavé pro podnikatele a firmy
-5. Vhodné pro odborný článek o délce 800-1200 slov
+2. Zaměřené na praktické aspekty správy a vymáhání pohledávek pro firmy
+3. Specifické (ne obecné jako "Vymáhání pohledávek", ale spíše "Strategie vymáhání pohledávek u malých a středních podniků v době ekonomické recese")
+4. Aktuální a reflektující současné byznysové trendy a ekonomickou situaci
+5. Zajímavé pro podnikatele a firmy
+6. Vhodné pro odborný článek o délce 800-1200 slov
+
+DŮLEŽITÉ:
+- Vyhýbej se přílišnému zaměření na AI a technologie
+- Zaměř se na praktické byznysové, finanční a právní aspekty
+- Téma by mělo být relevantní pro běžné podnikatele, ne technologické experty
 
 Vrať pouze název tématu bez dalších komentářů nebo vysvětlení. Téma musí být v českém jazyce.`;
 
@@ -75,7 +81,7 @@ Vrať pouze název tématu bez dalších komentářů nebo vysvětlení. Téma m
       messages: [
         { 
           role: "system", 
-          content: "Jsi specialista na pohledávky, právní aspekty jejich správy a vymáhání. Tvým úkolem je generovat originální a specifická témata pro odborné články." 
+          content: "Jsi specialista na pohledávky, právní aspekty jejich správy a vymáhání. Tvým úkolem je generovat originální a specifická témata pro odborné články zaměřené na byznys, finance a právo. Vyhýbáš se technologickým tématům a zaměřuješ se na praktické aspekty vymáhání pohledávek." 
         },
         { role: "user", content: prompt }
       ],

@@ -31,7 +31,7 @@ interface BlogPost {
   excerpt: string;
 }
 
-const blogPosts: BlogPost[
+const blogPosts: BlogPost[] = [
   {
     slug: "ai-revoluce-v-predikci-platebni-moralky",
     title: "AI revoluce v predikci platební morálky",
@@ -45,8 +45,7 @@ const blogPosts: BlogPost[
     tags: ["AI","platební morálka","správa pohledávek","české firmy","právní výzvy","MSP","automatizace"],
     image: "https://images.unsplash.com/photo-1551845728-6820a30c64e2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjUzMTh8&ixlib=rb-4.0.3&q=80&w=1080",
     excerpt: "Využití AI v predikci platební morálky zlepšuje správu pohledávek a přináší právní výzvy.",
-  }
-] = [
+  },
   {
     slug: "ai-a-digitalizace-ve-sprave-pohledavek",
     title: "AI a digitalizace ve správě pohledávek",
@@ -102,6 +101,34 @@ const blogPosts: BlogPost[
     tags: ["insolvenční zákon","startupy","technologické firmy","pohledávky","právní změny"],
     image: "/images/blog/article-1742057915664.jpg",
     excerpt: "Novelizace insolvenčního zákona přináší výzvy i příležitosti pro startupy v ČR.",
+  },
+  {
+    slug: "digitalizace-soudniho-vymahani-sance-pro-ceske-firmy",
+    title: "Digitalizace soudního vymáhání: Šance pro české firmy",
+    subtitle: "Rychlost a transparentnost vymáhání pohledávek díky digitalizaci",
+    date: "15. 3. 2025", 
+    author: "Mgr. Martin Dvořák",
+    authorPosition: "Právní specialista",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "4 minuty čtení",
+    category: "Vymáhání pohledávek",
+    tags: ["digitalizace", "soudní vymáhání", "pohledávky", "legislativa", "konkurenceschopnost"],
+    image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjkzNDl8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Jak digitalizace mění soudní vymáhání pohledávek a jaké to přináší výhody českým firmám."
+  },
+  {
+    slug: "kvalita-versus-rychlost-vymahani",
+    title: "Kvalita versus rychlost vymáhání: Co upřednostnit?",
+    subtitle: "Jak najít rovnováhu mezi efektivitou a etikou při vymáhání pohledávek",
+    date: "15. 3. 2025",
+    author: "Jan Novák",
+    authorPosition: "Specialista na pohledávky",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "5 minut čtení",
+    category: "Etika vymáhání",
+    tags: ["etika", "vymáhání pohledávek", "efektivita", "obchodní vztahy", "praxe"],
+    image: "https://images.unsplash.com/photo-1589578228447-e1a4e481c6c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjk1NDl8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Prozkoumejte, jak najít rovnováhu mezi efektivním vymáháním pohledávek a etickými přístupy k dlužníkům."
   }
 ]
 
@@ -138,17 +165,17 @@ export default function BlogPage() {
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
       result = result.filter(
-        post =>
+        (post: BlogPost) =>
           post.title.toLowerCase().includes(query) ||
           post.excerpt.toLowerCase().includes(query) ||
           post.subtitle.toLowerCase().includes(query) ||
-          post.tags.some(tag => tag.toLowerCase().includes(query))
+          post.tags.some((tag: string) => tag.toLowerCase().includes(query))
       )
     }
 
     // Filtrování podle kategorie
     if (selectedCategory) {
-      result = result.filter(post => post.category === selectedCategory)
+      result = result.filter((post: BlogPost) => post.category === selectedCategory)
     }
 
     setFilteredPosts(result)
@@ -275,7 +302,7 @@ export default function BlogPage() {
         ) : (
           // Seznam článků
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {filteredPosts.map((post) => (
+            {filteredPosts.map((post: BlogPost) => (
               <Link 
                 key={post.slug} 
                 href={`/blog/${post.slug}`}

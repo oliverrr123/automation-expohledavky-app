@@ -33,6 +33,21 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "novelizace-insolvencniho-zakona-vyzvy-a-sance",
+    title: "Novelizace insolvenčního zákona: Výzvy a šance",
+    subtitle: "Jak změny ovlivní vymáhání pohledávek českých firem",
+    date: "15. 3. 2025",
+    author: "Mgr. Martin Dvořák",
+    authorPosition: "Právní specialista",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "6 minut čtení",
+    category: "Insolvence",
+    tags: ["insolvence","vymáhání pohledávek","české firmy","právní změny","věřitelé","automatizace","digitalizace"],
+    image: "https://images.unsplash.com/photo-1508873699372-7aeab60b44ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjg3Nzl8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte vliv změn insolvenčního zákona na vymáhání pohledávek a příležitosti pro věřitele.",
+  },
+
+  {
     slug: "eticke-vymahani-jak-chranit-reputaci-firmy",
     title: "Etické vymáhání: Jak chránit reputaci firmy",
     subtitle: "Minimalizujte rizika s etickými přístupy ve vymáhání pohledávek",

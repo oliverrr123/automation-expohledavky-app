@@ -34,7 +34,23 @@ try {
 
 export async function getPostBySlug(slug: string): Promise<PostData | null> {
   try {
-    const filePath = path.join(postsDirectory, `${slug}.mdx`);
+    // Nejprve zkusíme najít soubor s datem v názvu
+    const files = fs.readdirSync(postsDirectory);
+    const datePattern = /^\d{4}-\d{2}-\d{2}-/;
+    const matchingFile = files.find(file => {
+      // Odstraníme datum z názvu souboru a porovnáme se slugem
+      const fileWithoutDate = file.replace(datePattern, '').replace(/\.mdx$/, '');
+      return fileWithoutDate === slug;
+    });
+
+    let filePath;
+    if (matchingFile) {
+      filePath = path.join(postsDirectory, matchingFile);
+    } else {
+      // Pokud nenajdeme soubor s datem, zkusíme najít soubor bez data
+      filePath = path.join(postsDirectory, `${slug}.mdx`);
+    }
+
     const source = fs.readFileSync(filePath, 'utf8');
     const { content, data } = matter(source);
     const mdxSource = await serialize(content, {
@@ -69,9 +85,13 @@ export function getAllPostSlugs(): string[] {
       return [];
     }
     
+    const datePattern = /^\d{4}-\d{2}-\d{2}-/;
     return fs.readdirSync(postsDirectory)
       .filter((file) => file.endsWith('.mdx'))
-      .map((file) => file.replace(/\.mdx$/, ''));
+      .map((file) => {
+        // Odstraníme datum z názvu souboru, pokud existuje
+        return file.replace(datePattern, '').replace(/\.mdx$/, '');
+      });
   } catch (error) {
     console.error("Chyba při načítání slugů článků:", error);
     return [];
@@ -80,16 +100,28 @@ export function getAllPostSlugs(): string[] {
 
 export async function getAllPosts(): Promise<PostData[]> {
   try {
-    const slugs = getAllPostSlugs();
-    
-    if (slugs.length === 0) {
+    if (!fs.existsSync(postsDirectory)) {
       return [];
     }
     
-    const postsPromises = slugs.map(async (slug) => {
-      const filePath = path.join(postsDirectory, `${slug}.mdx`);
+    const files = fs.readdirSync(postsDirectory).filter(file => file.endsWith('.mdx'));
+    const datePattern = /^(\d{4}-\d{2}-\d{2})-(.+)\.mdx$/;
+    
+    const postsPromises = files.map(async (file) => {
+      const filePath = path.join(postsDirectory, file);
       const source = fs.readFileSync(filePath, 'utf8');
       const { data } = matter(source);
+      
+      // Extrahujeme slug z názvu souboru (odstraníme datum, pokud existuje)
+      let slug;
+      const match = file.match(datePattern);
+      if (match) {
+        // Pokud soubor obsahuje datum, použijeme část za datem jako slug
+        slug = match[2];
+      } else {
+        // Jinak použijeme celý název souboru bez přípony
+        slug = file.replace(/\.mdx$/, '');
+      }
       
       // Zajistíme, že frontMatter obsahuje povinné vlastnosti
       const frontMatter = {

@@ -31,7 +31,22 @@ interface BlogPost {
   excerpt: string;
 }
 
-const blogPosts: BlogPost[] = [
+const blogPosts: BlogPost[
+  {
+    slug: "digitalizace-meni-spravu-pohledavek-v-ceskych-msp",
+    title: "Digitalizace mění správu pohledávek v českých MSP",
+    subtitle: "Jak automatizace zvyšuje efektivitu a konkurenceschopnost podniků",
+    date: "15. 3. 2025",
+    author: "Jan Novák",
+    authorPosition: "Specialista na pohledávky",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "5 minut čtení",
+    category: "Finanční analýza",
+    tags: ["digitalizace","automatizace","správa pohledávek","české MSP","efektivita"],
+    image: "https://images.unsplash.com/photo-1471347334704-25603ca7d537?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjE5NDd8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Digitalizace a automatizace zlepšují správu pohledávek v českých MSP.",
+  }
+] = [
   {
     slug: "prediktivni-analyza-klic-ke-zdravym-pohledavkam-msp",
     title: "Prediktivní analýza: Klíč ke zdravým pohledávkám MSP",

@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MDXRemote } from 'next-mdx-remote';
 import { ArrowLeft, Clock, Calendar, Share2, BookOpen } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getPostBySlug, getAllPostSlugs } from '@/lib/posts';
+import MDXContent from '@/components/mdx-content';
 
 // Generování statických parametrů pro všechny články
 export async function generateStaticParams() {
@@ -197,7 +197,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
           {/* Article Content */}
           <div className="prose prose-lg max-w-none prose-headings:text-zinc-800 prose-a:text-orange-600 hover:prose-a:text-orange-700 prose-strong:text-orange-700 prose-code:bg-orange-50 prose-code:text-orange-700 prose-blockquote:border-orange-300 prose-blockquote:bg-orange-50/50 prose-blockquote:py-1 prose-img:rounded-lg prose-p:text-zinc-700">
-            <MDXRemote {...post.mdxSource} />
+            <MDXContent source={post.mdxSource} />
           </div>
 
           {/* Tags */}

@@ -33,6 +33,21 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "uspesne-vymahani-klicove-strategie",
+    title: "Úspěšné Vymáhání: Klíčové Strategie",
+    subtitle: "Jak vyjednávat s dlužníky a minimalizovat náklady",
+    date: "15. 3. 2025",
+    author: "Ing. Petra Svobodová",
+    authorPosition: "Finanční analytik",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "8 minut čtení",
+    category: "Vymáhání pohledávek",
+    tags: ["vymáhání pohledávek","právo","finance","obchodní vztahy","vyjednávání","důvěra","podnikání"],
+    image: "https://images.unsplash.com/photo-1641197861542-83e511654ac0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNzU1MjB8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte strategie mimosoudního vymáhání pohledávek v ČR a zlepšete komunikaci s dlužníky.",
+  },
+
+  {
     slug: "smirci-rizeni-klic-k-prevenci-soudnich-sporu",
     title: "Smírčí řízení: Klíč k prevenci soudních sporů",
     subtitle: "Optimalizace procesu s AI v oblasti správy pohledávek",

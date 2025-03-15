@@ -31,7 +31,7 @@ interface BlogPost {
   excerpt: string;
 }
 
-const blogPosts: BlogPost[
+const blogPosts: BlogPost[] = [
   {
     slug: "eticke-vymahani-jak-chranit-reputaci-firmy",
     title: "Etické vymáhání: Jak chránit reputaci firmy",
@@ -45,8 +45,7 @@ const blogPosts: BlogPost[
     tags: ["etika vymáhání","pohledávky","reputační rizika","podnikání","technologie","automatizace","Česká republika"],
     image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjg0MTh8&ixlib=rb-4.0.3&q=80&w=1080",
     excerpt: "Objevte etické strategie vymáhání pohledávek a chraňte reputaci své firmy v ČR.",
-  }
-] = [
+  },
   {
     slug: "eticke-vymahani-pravo-vs-vztahy",
     title: "Etické vymáhání: Právo vs. vztahy",

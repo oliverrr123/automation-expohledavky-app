@@ -31,7 +31,7 @@ interface BlogPost {
   excerpt: string;
 }
 
-const blogPosts: BlogPost[
+const blogPosts: BlogPost[] = [
   {
     slug: "inkasovani-pohledavek-v-case-inflace",
     title: "Inkasování pohledávek v čase inflace",
@@ -45,8 +45,7 @@ const blogPosts: BlogPost[
     tags: ["pohledávky","inflace","MSP","automatizace","správa financí","technologie"],
     image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjY0NjV8&ixlib=rb-4.0.3&q=80&w=1080",
     excerpt: "Objevte strategie pro správu pohledávek během inflace a chraňte své jmění.",
-  }
-] = [
+  },
   {
     slug: "ai-revoluce-v-predikci-platebni-moralky",
     title: "AI revoluce v predikci platební morálky",

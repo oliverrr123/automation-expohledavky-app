@@ -1,0 +1,53 @@
+name: Generate Daily Article
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # každý den v 9:00 CET (7:00 UTC)
+  workflow_dispatch:  # možnost ručního spuštění
+
+# Pro běh tohoto workflow je nutné nastavit následující tajné proměnné (secrets) v repozitáři:
+# - OPENAI_API_KEY: API klíč pro OpenAI pro generování článků
+# - UNSPLASH_ACCESS_KEY: API klíč pro Unsplash pro získání obrázků
+# Tyto klíče lze nastavit v nastavení repozitáře: Settings -> Secrets and variables -> Actions
+
+permissions:
+  contents: write  # Povolení pro zápis do repozitáře (pro commit a push)
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+      
+      - name: Install Dependencies
+        run: npm ci
+      
+      - name: Ensure directories exist
+        run: |
+          mkdir -p content/posts
+          mkdir -p public/images/blog
+      
+      - name: Run Content Generator
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+        run: node scripts/generate-article.mjs
+      
+      - name: Commit changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add content/posts public/images/blog
+          git commit -m "chore: auto-generated article [skip ci]" || echo "No changes to commit"
+      
+      - name: Push changes
+        run: git push 

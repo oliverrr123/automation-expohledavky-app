@@ -185,9 +185,17 @@ Unikátní perspektiva: ${approach.uniquePerspective}
 - Obsahovat aktuální informace relevantní pro český právní systém
 - Kategorie: ${category}
 
-Na konci článku přidej krátké shrnutí hlavních bodů.
+Formátování a struktura:
+- Používej markdown formátování (## pro nadpisy, ### pro podnadpisy, **tučné** pro důležité pojmy, *kurzíva* pro zdůraznění)
+- Vynech úvodní nadpis H1, ten bude automaticky vytvořen z názvu
+- Rozděl text do krátkých odstavců (max. 3-4 věty)
+- Používej odrážkové seznamy pro výčty a kroky
+- Používej číslované seznamy pro postupy a procesy
+- Přidej 1-2 citace nebo příklady z praxe formátované jako blockquote (> text)
+- Používej podnadpisy pro rozdělení textu do logických sekcí
+- Na konci článku přidej krátké shrnutí hlavních bodů
 
-Formátuj text v Markdown (## pro nadpisy, *kurzíva*, **tučné**, atd.). Vynech úvodní nadpis H1, ten bude automaticky vytvořen z názvu.`;
+Článek by měl být dobře strukturovaný, přehledný a snadno čitelný.`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
@@ -281,9 +289,6 @@ ${articleContent.substring(0, 1500)}...`;
     // Přidání data k názvu souboru pro lepší organizaci
     const fileName = `${formattedDate}-${slug}.mdx`;
     
-    // Převod tagů na pole
-    const tagsArray = metaData.tags.split(',').map(tag => tag.trim());
-    
     // Vytvoření frontmatter
     const frontMatter = {
       title: metaData.title,
@@ -292,7 +297,7 @@ ${articleContent.substring(0, 1500)}...`;
       description: metaData.description,
       image: `/images/blog/${imageFileName}`,
       category: category,
-      tags: tagsArray,
+      tags: metaData.tags.split(',').map(tag => tag.trim()),
       author: author.name,
       authorPosition: author.position,
       authorImage: author.image,
@@ -362,6 +367,11 @@ async function updateBlogPostsArray(slug, metaData, category, author, imagePath)
     const currentDate = new Date();
     const formattedDate = `${currentDate.getDate()}. ${currentDate.getMonth() + 1}. ${currentDate.getFullYear()}`;
     
+    // Převod tagů na pole, pokud je to string
+    const tagsArray = typeof metaData.tags === 'string' 
+      ? metaData.tags.split(',').map(tag => tag.trim()) 
+      : metaData.tags;
+    
     const newBlogPost = `  {
     slug: "${slug}",
     title: "${metaData.title.replace(/"/g, '\\"')}",
@@ -372,7 +382,7 @@ async function updateBlogPostsArray(slug, metaData, category, author, imagePath)
     authorImage: "${author.image}",
     readTime: "${metaData.readTime}",
     category: "${category}",
-    tags: ${JSON.stringify(metaData.tags.split(',').map(tag => tag.trim()))},
+    tags: ${JSON.stringify(tagsArray)},
     image: "${imagePath}",
     excerpt: "${metaData.description.replace(/"/g, '\\"')}",
   },`;

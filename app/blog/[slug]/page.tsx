@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Clock, Calendar, Share2, BookOpen } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, Share2, BookOpen, Facebook, Linkedin, Mail, Twitter } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { getPostBySlug, getAllPostSlugs } from '@/lib/posts';
+import { getPostBySlug, getAllPostSlugs, getAllPosts } from '@/lib/posts';
 import MDXContent from '@/components/mdx-content';
 
 // Generování statických parametrů pro všechny články
@@ -23,10 +23,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   
   return {
     title: `${post.frontMatter.title} | EXPOHLEDÁVKY`,
-    description: post.frontMatter.description || 'Odborný článek na téma pohledávek',
+    description: post.frontMatter.description || post.frontMatter.excerpt || 'Odborný článek na téma pohledávek',
     openGraph: {
       title: post.frontMatter.title,
-      description: post.frontMatter.description,
+      description: post.frontMatter.description || post.frontMatter.excerpt,
       images: [post.frontMatter.image],
     },
   };
@@ -39,6 +39,22 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   if (!post) {
     return notFound();
   }
+
+  // Získání všech článků pro sekci Související články
+  const allPosts = await getAllPosts();
+  
+  // Filtrování souvisejících článků (stejná kategorie nebo sdílené tagy, ale ne aktuální článek)
+  const relatedPosts = allPosts
+    .filter(relatedPost => 
+      relatedPost.slug !== params.slug && (
+        relatedPost.frontMatter.category === post.frontMatter.category ||
+        (post.frontMatter.tags && relatedPost.frontMatter.tags && 
+          post.frontMatter.tags.some(tag => 
+            relatedPost.frontMatter.tags && relatedPost.frontMatter.tags.includes(tag)
+          ))
+      )
+    )
+    .slice(0, 2); // Omezení na 2 související články
 
   // Rozdělení obsahu pro vytvoření obsahu článku
   const headingsRegex = /<h([2-3])\s+id="([^"]+)">([^<]+)<\/h\1>/g;
@@ -54,6 +70,30 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       title: match[3],
     });
   }
+
+  // Vytvoření URL pro sdílení
+  const shareUrl = typeof window !== 'undefined' 
+    ? `${window.location.origin}/blog/${params.slug}`
+    : `https://expohledavky.cz/blog/${params.slug}`;
+  
+  const shareTitle = encodeURIComponent(post.frontMatter.title);
+  const shareText = encodeURIComponent(post.frontMatter.excerpt || '');
+
+  // Funkce pro generování URL pro sdílení
+  const getShareUrl = (platform: string) => {
+    switch (platform) {
+      case 'facebook':
+        return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+      case 'twitter':
+        return `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${shareTitle}`;
+      case 'linkedin':
+        return `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+      case 'email':
+        return `mailto:?subject=${shareTitle}&body=${shareText}%0A%0A${encodeURIComponent(shareUrl)}`;
+      default:
+        return '#';
+    }
+  };
 
   return (
     <article className="min-h-screen bg-white">
@@ -99,27 +139,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 <p className="mb-8 text-xl text-zinc-300">{post.frontMatter.subtitle}</p>
               )}
 
-              <div className="mb-8 flex flex-wrap items-center gap-4 text-sm text-zinc-400 bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-zinc-700/20 shadow-sm">
-                {post.frontMatter.author && post.frontMatter.authorImage && (
-                  <div className="flex items-center gap-2">
-                    <div className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-orange-500/20">
-                      <Image 
-                        src={post.frontMatter.authorImage} 
-                        alt={post.frontMatter.author} 
-                        fill 
-                        className="object-cover" 
-                      />
-                    </div>
-                    <div>
-                      <div className="font-medium text-white">{post.frontMatter.author}</div>
-                      {post.frontMatter.authorPosition && (
-                        <div className="text-xs text-zinc-500">{post.frontMatter.authorPosition}</div>
-                      )}
-                    </div>
-                  </div>
-                )}
-                
-                <div className="ml-auto flex flex-wrap items-center gap-4">
+              {/* Informace o autorovi a datu publikace - pouze v hlavičce */}
+              <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-zinc-400 bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-zinc-700/20 shadow-sm">
+                <div className="flex items-center gap-3">
                   {post.frontMatter.date && (
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4 text-orange-500" />
@@ -195,8 +217,22 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             </div>
           )}
 
-          {/* Article Content */}
-          <div className="prose prose-lg max-w-none prose-headings:text-zinc-800 prose-a:text-orange-600 hover:prose-a:text-orange-700 prose-strong:text-orange-700 prose-code:bg-orange-50 prose-code:text-orange-700 prose-blockquote:border-orange-300 prose-blockquote:bg-orange-50/50 prose-blockquote:py-1 prose-img:rounded-lg prose-p:text-zinc-700">
+          {/* Article Content - vylepšené formátování */}
+          <div className="prose prose-lg max-w-none 
+            prose-headings:text-zinc-800 prose-headings:font-bold prose-headings:mt-8 prose-headings:mb-4
+            prose-h1:text-3xl prose-h1:mt-10 prose-h1:mb-6
+            prose-h2:text-2xl prose-h2:border-b prose-h2:border-orange-100 prose-h2:pb-2
+            prose-h3:text-xl
+            prose-p:text-zinc-700 prose-p:leading-relaxed prose-p:my-4
+            prose-a:text-orange-600 hover:prose-a:text-orange-700 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+            prose-strong:text-orange-700 prose-strong:font-semibold
+            prose-code:bg-orange-50 prose-code:text-orange-700 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+            prose-blockquote:border-l-4 prose-blockquote:border-orange-300 prose-blockquote:bg-orange-50/50 prose-blockquote:py-1 prose-blockquote:pl-4 prose-blockquote:italic
+            prose-img:rounded-lg prose-img:shadow-md
+            prose-ul:my-4 prose-ul:list-disc prose-ul:pl-6
+            prose-ol:my-4 prose-ol:list-decimal prose-ol:pl-6
+            prose-li:my-2
+          ">
             <MDXContent source={post.mdxSource} />
           </div>
 
@@ -216,66 +252,84 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             </div>
           )}
 
-          {/* Share Section */}
+          {/* Share Section - funkční sdílení */}
           <div className="mt-10 rounded-lg bg-orange-50 border border-orange-100 p-6 shadow-md">
             <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-zinc-800">
               <Share2 className="h-5 w-5 text-orange-500" />
               Sdílet článek
             </h3>
             <div className="flex flex-wrap gap-3">
-              {["Facebook", "LinkedIn", "Twitter", "Email"].map((platform) => (
-                <Button
-                  key={platform}
-                  variant="outline"
-                  size="sm"
-                  className="border-orange-200 text-zinc-700 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300"
-                >
-                  {platform}
-                </Button>
-              ))}
+              <a 
+                href={getShareUrl('facebook')} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-orange-200 text-zinc-700 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300"
+              >
+                <Facebook className="h-4 w-4 text-blue-600" />
+                <span>Facebook</span>
+              </a>
+              <a 
+                href={getShareUrl('linkedin')} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-orange-200 text-zinc-700 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300"
+              >
+                <Linkedin className="h-4 w-4 text-blue-700" />
+                <span>LinkedIn</span>
+              </a>
+              <a 
+                href={getShareUrl('twitter')} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-orange-200 text-zinc-700 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300"
+              >
+                <Twitter className="h-4 w-4 text-blue-400" />
+                <span>Twitter</span>
+              </a>
+              <a 
+                href={getShareUrl('email')} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-orange-200 text-zinc-700 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300"
+              >
+                <Mail className="h-4 w-4 text-zinc-600" />
+                <span>Email</span>
+              </a>
             </div>
           </div>
 
-          {/* Author Information */}
-          {post.frontMatter.author && (
-            <div className="mt-10 rounded-lg bg-orange-50 border border-orange-100 p-6 shadow-md">
-              <h3 className="mb-4 text-xl font-bold text-zinc-800">O autorovi</h3>
-              <div className="flex items-start gap-4">
-                {post.frontMatter.authorImage && (
-                  <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-orange-300">
-                    <Image 
-                      src={post.frontMatter.authorImage} 
-                      alt={post.frontMatter.author} 
-                      fill 
-                      className="object-cover" 
-                    />
-                  </div>
-                )}
-                <div>
-                  <h4 className="font-medium text-zinc-800">{post.frontMatter.author}</h4>
-                  {post.frontMatter.authorPosition && (
-                    <p className="text-sm text-zinc-600">{post.frontMatter.authorPosition}</p>
-                  )}
-                  {post.frontMatter.authorBio && (
-                    <p className="mt-2 text-zinc-600 text-sm">{post.frontMatter.authorBio}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Related Articles - placeholder */}
+          {/* Related Articles - dynamické načítání souvisejících článků */}
           <div className="mt-10">
             <h3 className="mb-6 text-xl font-bold text-zinc-800">Související články</h3>
             <div className="grid gap-4 md:grid-cols-2">
-              <Link href="/blog" className="group block rounded-lg bg-white border border-orange-100 p-4 hover:border-orange-300 transition-all duration-300 shadow-md hover:shadow-orange-200/30">
-                <h4 className="mb-2 font-medium text-zinc-800 group-hover:text-orange-600 transition-colors">Vymáhání pohledávek v roce 2025</h4>
-                <p className="text-sm text-zinc-600">Zjistěte, jaké jsou nejnovější trendy a postupy v oblasti vymáhání pohledávek.</p>
-              </Link>
-              <Link href="/blog" className="group block rounded-lg bg-white border border-orange-100 p-4 hover:border-orange-300 transition-all duration-300 shadow-md hover:shadow-orange-200/30">
-                <h4 className="mb-2 font-medium text-zinc-800 group-hover:text-orange-600 transition-colors">Prevence vzniku pohledávek</h4>
-                <p className="text-sm text-zinc-600">Jak nastavit obchodní podmínky a procesy, abyste minimalizovali riziko vzniku nedobytných pohledávek.</p>
-              </Link>
+              {relatedPosts.length > 0 ? (
+                relatedPosts.map(relatedPost => (
+                  <Link 
+                    key={relatedPost.slug} 
+                    href={`/blog/${relatedPost.slug}`} 
+                    className="group block rounded-lg bg-white border border-orange-100 p-4 hover:border-orange-300 transition-all duration-300 shadow-md hover:shadow-orange-200/30"
+                  >
+                    <h4 className="mb-2 font-medium text-zinc-800 group-hover:text-orange-600 transition-colors">
+                      {relatedPost.frontMatter.title}
+                    </h4>
+                    <p className="text-sm text-zinc-600">
+                      {relatedPost.frontMatter.excerpt || relatedPost.frontMatter.subtitle}
+                    </p>
+                  </Link>
+                ))
+              ) : (
+                // Fallback pokud nejsou žádné související články
+                <>
+                  <Link href="/blog" className="group block rounded-lg bg-white border border-orange-100 p-4 hover:border-orange-300 transition-all duration-300 shadow-md hover:shadow-orange-200/30">
+                    <h4 className="mb-2 font-medium text-zinc-800 group-hover:text-orange-600 transition-colors">Vymáhání pohledávek v roce 2025</h4>
+                    <p className="text-sm text-zinc-600">Zjistěte, jaké jsou nejnovější trendy a postupy v oblasti vymáhání pohledávek.</p>
+                  </Link>
+                  <Link href="/blog" className="group block rounded-lg bg-white border border-orange-100 p-4 hover:border-orange-300 transition-all duration-300 shadow-md hover:shadow-orange-200/30">
+                    <h4 className="mb-2 font-medium text-zinc-800 group-hover:text-orange-600 transition-colors">Prevence vzniku pohledávek</h4>
+                    <p className="text-sm text-zinc-600">Jak nastavit obchodní podmínky a procesy, abyste minimalizovali riziko vzniku nedobytných pohledávek.</p>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
 

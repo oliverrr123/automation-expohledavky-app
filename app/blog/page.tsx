@@ -31,7 +31,22 @@ interface BlogPost {
   excerpt: string;
 }
 
-const blogPosts: BlogPost[] = [
+const blogPosts: BlogPost[
+  {
+    slug: "ai-revoluce-v-predikci-platebni-moralky",
+    title: "AI revoluce v predikci platební morálky",
+    subtitle: "Objevte efektivitu a právní výzvy AI v českých firmách",
+    date: "15. 3. 2025",
+    author: "Ing. Petra Svobodová",
+    authorPosition: "Finanční analytik",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "6 minut čtení",
+    category: "Správa pohledávek",
+    tags: ["AI","platební morálka","správa pohledávek","české firmy","právní výzvy","MSP","automatizace"],
+    image: "https://images.unsplash.com/photo-1551845728-6820a30c64e2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjUzMTh8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Využití AI v predikci platební morálky zlepšuje správu pohledávek a přináší právní výzvy.",
+  }
+] = [
   {
     slug: "ai-a-digitalizace-ve-sprave-pohledavek",
     title: "AI a digitalizace ve správě pohledávek",

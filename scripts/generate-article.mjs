@@ -69,10 +69,12 @@ Téma by mělo být:
 5. Zajímavé pro podnikatele a firmy
 6. Vhodné pro odborný článek o délce 800-1200 slov
 
-DŮLEŽITÉ:
-- Vyhýbej se přílišnému zaměření na AI a technologie
-- Zaměř se na praktické byznysové, finanční a právní aspekty
-- Téma by mělo být relevantní pro běžné podnikatele, ne technologické experty
+DŮLEŽITÉ OMEZENÍ:
+- ZCELA SE VYHÝBEJ tématům týkajícím se AI, umělé inteligence, strojového učení nebo automatizace
+- NIKDY nezmiňuj AI nebo automatizaci v názvu nebo jako hlavní téma
+- Zaměř se VÝHRADNĚ na tradiční finanční, právní, procesní a vztahové aspekty pohledávek 
+- Téma musí být relevantní pro běžné podnikatele bez znalostí pokročilých technologií
+- Preferuj témata o konkrétních postupech, právních aspektech, vyjednávání a finančních strategiích
 
 Vrať pouze název tématu bez dalších komentářů nebo vysvětlení. Téma musí být v českém jazyce.`;
 
@@ -81,7 +83,7 @@ Vrať pouze název tématu bez dalších komentářů nebo vysvětlení. Téma m
       messages: [
         { 
           role: "system", 
-          content: "Jsi specialista na pohledávky, právní aspekty jejich správy a vymáhání. Tvým úkolem je generovat originální a specifická témata pro odborné články zaměřené na byznys, finance a právo. Vyhýbáš se technologickým tématům a zaměřuješ se na praktické aspekty vymáhání pohledávek." 
+          content: "Jsi specialista na pohledávky, právní aspekty jejich správy a vymáhání. Tvým úkolem je generovat originální a specifická témata pro odborné články zaměřené na byznys, finance a právo. Vyhýbáš se VEŠKERÝM tématům souvisejícím s technologiemi a AI. Zaměřuješ se na praktické aspekty vymáhání pohledávek z hlediska právního, finančního a mezilidského." 
         },
         { role: "user", content: prompt }
       ],
@@ -91,6 +93,12 @@ Vrať pouze název tématu bez dalších komentářů nebo vysvětlení. Téma m
     
     const topic = completion.choices[0].message.content.trim();
     console.log(`Vygenerované téma: ${topic}`);
+    
+    // Kontrola, zda téma neobsahuje zmínky o AI nebo automatizaci
+    if (containsAIReference(topic)) {
+      console.log("Téma obsahuje zmínku o AI nebo automatizaci, generuji nové téma...");
+      return generateRandomTopic(category); // Rekurzivně generujeme nové téma
+    }
     
     // Získání unikátního přístupu k tématu
     const approach = await generateUniqueApproach(topic, category);
@@ -103,13 +111,16 @@ Vrať pouze název tématu bez dalších komentářů nebo vysvětlení. Téma m
     };
   } catch (error) {
     console.error("Chyba při generování tématu:", error);
-    // Fallback témata pro případ selhání API
+    // Fallback témata pro případ selhání API - upraveno bez zmínek o technologiích
     const fallbackTopic = getRandomElement([
       `Aktuální trendy v ${category.toLowerCase()}`,
       `Praktický průvodce: ${category}`,
       `Jak optimalizovat ${category.toLowerCase()} v roce ${new Date().getFullYear()}`,
       `Nejčastější chyby při ${category.toLowerCase()}`,
-      `Budoucnost ${category.toLowerCase()} v digitální éře`
+      `Budoucnost ${category.toLowerCase()} v měnícím se ekonomickém prostředí`,
+      `Právní aspekty ${category.toLowerCase()} po novelizaci zákonů`,
+      `Finanční dopady správného řízení ${category.toLowerCase()}`,
+      `Strategický přístup k ${category.toLowerCase()} pro malé podniky`
     ]);
     
     return {
@@ -118,11 +129,24 @@ Vrať pouze název tématu bez dalších komentářů nebo vysvětlení. Téma m
       keyPoints: [
         "Legislativní rámec a aktuální změny",
         "Praktické postupy a doporučení",
-        "Případové studie a příklady z praxe"
+        "Případové studie a příklady z praxe",
+        "Finanční a právní aspekty tématu"
       ],
       uniquePerspective: `Pohled z perspektivy efektivity a optimalizace procesů v oblasti ${category.toLowerCase()}.`
     };
   }
+}
+
+// Funkce pro kontrolu, zda téma neobsahuje zmínky o AI nebo technologiích
+function containsAIReference(text) {
+  const lowerText = text.toLowerCase();
+  const forbiddenTerms = [
+    'ai', 'umělá inteligence', 'strojové učení', 'automatizace', 
+    'robot', 'algoritmus', 'digitalizace', 'software', 'automatický', 
+    'automatizovaný', 'big data', 'machine learning', 'chatbot'
+  ];
+  
+  return forbiddenTerms.some(term => lowerText.includes(term));
 }
 
 // Funkce pro generování unikátního přístupu k tématu
@@ -135,7 +159,13 @@ async function generateUniqueApproach(topic, category) {
 Navrhni:
 1. Hlavní tezi nebo argument článku
 2. 3-4 klíčové body, které by měl článek pokrýt
-3. Unikátní perspektivu nebo přístup k tématu (např. z pohledu malých firem, z pohledu mezinárodního srovnání, z pohledu nových technologií, atd.)
+3. Unikátní perspektivu nebo přístup k tématu 
+
+DŮLEŽITÉ OMEZENÍ:
+- Vyhni se JAKÝMKOLIV zmínkám o technologiích, AI, automatizaci nebo digitalizaci
+- Zaměř se na lidský faktor, právní aspekty, finanční strategie, mezilidské vztahy a komunikaci
+- Zdůrazni praktické aspekty, které nevyžadují pokročilé technologie
+- Preferuj tradičně byznysové, právní a finanční úhly pohledu
 
 Odpověz ve formátu JSON s klíči "mainThesis", "keyPoints" a "uniquePerspective".`;
 
@@ -144,7 +174,7 @@ Odpověz ve formátu JSON s klíči "mainThesis", "keyPoints" a "uniquePerspecti
       messages: [
         { 
           role: "system", 
-          content: "Jsi kreativní stratég obsahu specializující se na finanční a právní témata." 
+          content: "Jsi kreativní stratég obsahu specializující se na finanční a právní témata. Vyhýbáš se tématům souvisejícím s technologiemi a AI." 
         },
         { role: "user", content: prompt }
       ],
@@ -154,19 +184,28 @@ Odpověz ve formátu JSON s klíči "mainThesis", "keyPoints" a "uniquePerspecti
     });
     
     const approach = JSON.parse(completion.choices[0].message.content);
+    
+    // Kontrola, zda přístup neobsahuje zmínky o AI nebo automatizaci
+    if (containsAIReference(approach.mainThesis) || 
+        approach.keyPoints.some(point => containsAIReference(point)) || 
+        containsAIReference(approach.uniquePerspective)) {
+      console.log("Vygenerovaný přístup obsahuje zmínky o AI nebo technologiích, generuji nový přístup...");
+      return generateUniqueApproach(topic, category); // Rekurzivně generujeme nový přístup
+    }
+    
     return approach;
   } catch (error) {
     console.error("Chyba při generování přístupu k tématu:", error);
-    // Fallback přístup
+    // Fallback přístup bez zmínek o technologiích
     return {
-      mainThesis: `Je důležité porozumět všem aspektům tématu ${topic}.`,
+      mainThesis: `Je důležité porozumět praktickým a právním aspektům tématu ${topic}.`,
       keyPoints: [
         "Legislativní rámec a aktuální změny",
-        "Praktické postupy a doporučení",
-        "Případové studie a příklady z praxe",
-        "Budoucí trendy a vývoj"
+        "Finanční dopady a rizika",
+        "Efektivní komunikační postupy",
+        "Strategické a preventivní opatření"
       ],
-      uniquePerspective: `Pohled z perspektivy efektivity a optimalizace procesů v oblasti ${category.toLowerCase()}.`
+      uniquePerspective: `Pohled z perspektivy vyváženosti mezi právními nároky a zachováním obchodních vztahů v oblasti ${category.toLowerCase()}.`
     };
   }
 }
@@ -174,18 +213,23 @@ Odpověz ve formátu JSON s klíči "mainThesis", "keyPoints" a "uniquePerspecti
 // Získání obrázku z Unsplash
 const getUnsplashImage = async (category) => {
   try {
-    // Profesionální byznisové prompty
+    // Profesionální byznisové prompty bez technologického zaměření
     const businessPrompts = [
       "professional business meeting",
-      "corporate office skyscraper",
+      "corporate office",
       "business people handshake",
-      "modern office building",
-      "business professionals conference room",
+      "modern office",
+      "business professionals",
       "corporate team meeting",
-      "business district skyscrapers",
-      "executive office desk",
+      "financial documents",
+      "executive desk",
       "business contract signing",
-      "professional corporate environment"
+      "professional corporate environment",
+      "business negotiation",
+      "legal documents",
+      "handshake agreement",
+      "business consultation",
+      "office meeting room"
     ];
     
     // Náhodně vybereme jeden z profesionálních promptů
@@ -261,6 +305,12 @@ Dodržuj tyto specifikace:
 10. Délka článku by měla být 800-1200 slov
 11. Na konci uveď shrnutí klíčových bodů
 
+DŮLEŽITÉ OMEZENÍ:
+- ZCELA SE VYHÝBEJ tématům týkajícím se AI, umělé inteligence, strojového učení nebo automatizace
+- Článek NESMÍ propagovat technologická řešení nebo digitalizaci jako hlavní řešení problémů
+- Zaměř se na tradiční byznysové přístupy, lidský faktor, právní aspekty, vyjednávání a strategii
+- Zdůrazni praktické aspekty nevyžadující pokročilé technologie
+
 Článek by měl obsahovat:
 - Úvod vysvětlující důležitost tématu
 - 3-4 hlavní sekce rozebírající různé aspekty tématu
@@ -274,7 +324,7 @@ Obsah musí být aktuální, fakticky správný a relevantní pro české podnik
       messages: [
         { 
           role: "system", 
-          content: "Jsi odborník na pohledávky, finanční řízení a české obchodní právo. Píšeš profesionální, fakticky přesné a prakticky zaměřené články pro podnikatele. Vždy používáš kvalitní strukturování textu, nadpisy, odrážky a další prvky pro lepší čitelnost." 
+          content: "Jsi odborník na pohledávky, finanční řízení a české obchodní právo. Píšeš profesionální, fakticky přesné a prakticky zaměřené články pro podnikatele bez důrazu na technologie. Vždy používáš kvalitní strukturování textu, nadpisy, odrážky a další prvky pro lepší čitelnost." 
         },
         { role: "user", content: prompt }
       ],
@@ -282,10 +332,18 @@ Obsah musí být aktuální, fakticky správný a relevantní pro české podnik
       max_tokens: 2500,
     });
     
-    return completion.choices[0].message.content.trim();
+    const content = completion.choices[0].message.content.trim();
+    
+    // Kontrola, zda obsah neobsahuje příliš mnoho zmínek o AI nebo technologiích
+    if (countAIReferences(content) > 2) { // Povolíme max 2 zmínky, aby byl obsah přirozený
+      console.log("Obsah článku obsahuje příliš mnoho zmínek o AI nebo technologiích, generuji nový obsah...");
+      return generateArticleContent(topic, category, uniquePerspective); // Rekurzivně generujeme nový obsah
+    }
+    
+    return content;
   } catch (error) {
     console.error("Chyba při generování obsahu článku:", error);
-    // Fallback obsah
+    // Fallback obsah bez zmínek o technologiích
     return `
 ## Úvod k tématu ${topic}
 
@@ -305,13 +363,35 @@ Pro efektivní řešení této problematiky doporučujeme následovat tyto kroky
 
 ## Případové studie
 
-> "V naší společnosti jsme implementovali nový systém, který zlepšil efektivitu o 35%." - Zkušený podnikatel
+> "V naší společnosti jsme zavedli nový systém komunikace s dlužníky, který zlepšil úspěšnost vymáhání o 35%." - Zkušený podnikatel
 
 ## Závěrečné shrnutí
 
 Téma "${topic}" vyžaduje strategický přístup a znalost aktuální legislativy. Implementací doporučených postupů můžete výrazně zlepšit své výsledky.
 `;
   }
+}
+
+// Funkce pro počítání zmínek o AI nebo technologiích v textu
+function countAIReferences(text) {
+  const lowerText = text.toLowerCase();
+  const forbiddenTerms = [
+    'ai', 'umělá inteligence', 'strojové učení', 'automatizace', 
+    'robot', 'algoritmus', 'digitalizace', 'software', 'automatický', 
+    'automatizovaný', 'big data', 'machine learning', 'chatbot'
+  ];
+  
+  let count = 0;
+  forbiddenTerms.forEach(term => {
+    // Počítáme výskyty každého zakázaného termínu
+    const regex = new RegExp(term, 'gi');
+    const matches = lowerText.match(regex);
+    if (matches) {
+      count += matches.length;
+    }
+  });
+  
+  return count;
 }
 
 // Funkce pro generování metadat článku
@@ -327,6 +407,10 @@ async function generateMetadata(topic, category, articleContent) {
 4. 5-7 relevantních tagů oddělených čárkou
 5. Odhadovaný čas čtení ve formátu "X minut čtení"
 
+DŮLEŽITÉ OMEZENÍ:
+- Vyhni se JAKÝMKOLIV zmínkám o AI, technologiích nebo automatizaci v titulku a podtitulku
+- Preferuj tagy zaměřené na finance, právo, obchodní vztahy a praktické aspekty
+
 Odpověz ve formátu JSON s klíči "title", "subtitle", "description", "tags" a "readTime".
 
 Obsah článku:
@@ -337,7 +421,7 @@ ${articleContent.substring(0, 1500)}...`;
       messages: [
         { 
           role: "system", 
-          content: "Jsi specialista na SEO a tvorbu metadat pro odborné články. Tvým úkolem je vytvářet chytlavé, ale profesionální titulky a popisy."
+          content: "Jsi specialista na SEO a tvorbu metadat pro odborné články. Tvým úkolem je vytvářet chytlavé, ale profesionální titulky a popisy bez důrazu na technologie."
         },
         { role: "user", content: prompt }
       ],
@@ -346,7 +430,17 @@ ${articleContent.substring(0, 1500)}...`;
       response_format: { type: "json_object" }
     });
     
-    return JSON.parse(completion.choices[0].message.content);
+    const metadata = JSON.parse(completion.choices[0].message.content);
+    
+    // Kontrola, zda metadata neobsahují zmínky o AI nebo technologiích
+    if (containsAIReference(metadata.title) || 
+        containsAIReference(metadata.subtitle) || 
+        (metadata.tags && containsAIReference(metadata.tags))) {
+      console.log("Metadata obsahují zmínky o AI nebo technologiích, generuji nová metadata...");
+      return generateMetadata(topic, category, articleContent); // Rekurzivně generujeme nová metadata
+    }
+    
+    return metadata;
   } catch (error) {
     console.error("Chyba při generování metadat:", error);
     
@@ -354,12 +448,12 @@ ${articleContent.substring(0, 1500)}...`;
     const wordCount = articleContent.split(/\s+/).length;
     const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
     
-    // Fallback metadata
+    // Fallback metadata bez zmínek o technologiích
     return {
       title: topic,
-      subtitle: `Důležité informace o ${topic} pro české podnikatele`,
+      subtitle: `Praktické informace o ${topic} pro české podnikatele`,
       description: `Odborný článek na téma ${topic} v kategorii ${category}. Praktické rady a tipy pro podnikatele.`,
-      tags: `${category.toLowerCase()}, pohledávky, správa pohledávek, české firmy, podnikání`,
+      tags: `${category.toLowerCase()}, pohledávky, správa pohledávek, české firmy, podnikání, právní aspekty`,
       readTime: `${readTimeMinutes} minut čtení`
     };
   }

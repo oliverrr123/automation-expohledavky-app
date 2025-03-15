@@ -85,18 +85,37 @@ Vrať pouze název tématu bez dalších komentářů nebo vysvětlení. Téma m
     
     const topic = completion.choices[0].message.content.trim();
     console.log(`Vygenerované téma: ${topic}`);
-    return topic;
+    
+    // Získání unikátního přístupu k tématu
+    const approach = await generateUniqueApproach(topic, category);
+    
+    return {
+      topic: topic,
+      mainThesis: approach.mainThesis,
+      keyPoints: approach.keyPoints,
+      uniquePerspective: approach.uniquePerspective
+    };
   } catch (error) {
     console.error("Chyba při generování tématu:", error);
     // Fallback témata pro případ selhání API
-    const fallbackTopics = [
+    const fallbackTopic = getRandomElement([
       `Aktuální trendy v ${category.toLowerCase()}`,
       `Praktický průvodce: ${category}`,
       `Jak optimalizovat ${category.toLowerCase()} v roce ${new Date().getFullYear()}`,
       `Nejčastější chyby při ${category.toLowerCase()}`,
       `Budoucnost ${category.toLowerCase()} v digitální éře`
-    ];
-    return getRandomElement(fallbackTopics);
+    ]);
+    
+    return {
+      topic: fallbackTopic,
+      mainThesis: `Je důležité porozumět aspektům tématu ${fallbackTopic}.`,
+      keyPoints: [
+        "Legislativní rámec a aktuální změny",
+        "Praktické postupy a doporučení",
+        "Případové studie a příklady z praxe"
+      ],
+      uniquePerspective: `Pohled z perspektivy efektivity a optimalizace procesů v oblasti ${category.toLowerCase()}.`
+    };
   }
 }
 
@@ -214,6 +233,132 @@ const getUnsplashImage = async (category) => {
   }
 };
 
+// Funkce pro generování obsahu článku
+async function generateArticleContent(topic, category, uniquePerspective) {
+  try {
+    console.log(`Generuji obsah článku pro téma: ${topic}...`);
+    
+    const prompt = `Vytvoř profesionální a informativní článek na téma "${topic}" v kategorii "${category}". 
+    
+Článek by měl mít tento unikátní úhel pohledu: "${uniquePerspective}"
+
+Dodržuj tyto specifikace:
+1. Článek piš v češtině, v profesionálním, ale srozumitelném jazyce pro majitele firem a podnikatele
+2. Zaměř se na praktické informace relevantní pro české právní prostředí
+3. Používej Markdown pro formátování
+4. Nepoužívej hlavní nadpis H1 (ten bude automaticky generován z titulku)
+5. Používej nadpisy úrovně H2 (##) pro hlavní sekce a H3 (###) pro podsekce
+6. Formátuj důležité termíny tučně (**termín**) a klíčové fráze kurzívou (*fráze*)
+7. Rozděl text do krátkých odstavců (3-4 věty)
+8. Používej odrážky pro seznamy a číslované seznamy pro procesy
+9. Zahrň 1-2 praktické příklady nebo citace, formátované jako bloková citace (> citace)
+10. Délka článku by měla být 800-1200 slov
+11. Na konci uveď shrnutí klíčových bodů
+
+Článek by měl obsahovat:
+- Úvod vysvětlující důležitost tématu
+- 3-4 hlavní sekce rozebírající různé aspekty tématu
+- Praktické tipy nebo doporučení
+- Závěrečné shrnutí
+
+Obsah musí být aktuální, fakticky správný a relevantní pro české podniky a podnikatele.`;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { 
+          role: "system", 
+          content: "Jsi odborník na pohledávky, finanční řízení a české obchodní právo. Píšeš profesionální, fakticky přesné a prakticky zaměřené články pro podnikatele. Vždy používáš kvalitní strukturování textu, nadpisy, odrážky a další prvky pro lepší čitelnost." 
+        },
+        { role: "user", content: prompt }
+      ],
+      temperature: 0.7,
+      max_tokens: 2500,
+    });
+    
+    return completion.choices[0].message.content.trim();
+  } catch (error) {
+    console.error("Chyba při generování obsahu článku:", error);
+    // Fallback obsah
+    return `
+## Úvod k tématu ${topic}
+
+V dnešním podnikatelském prostředí je téma "${topic}" stále důležitější. Tento článek se zaměřuje na klíčové aspekty z perspektivy "${uniquePerspective}".
+
+## Legislativní rámec
+
+České zákony v této oblasti definují několik důležitých pravidel, která musí podniky dodržovat.
+
+## Praktické postupy
+
+Pro efektivní řešení této problematiky doporučujeme následovat tyto kroky:
+
+1. Analyzujte současnou situaci
+2. Konzultujte s odborníkem
+3. Implementujte preventivní opatření
+
+## Případové studie
+
+> "V naší společnosti jsme implementovali nový systém, který zlepšil efektivitu o 35%." - Zkušený podnikatel
+
+## Závěrečné shrnutí
+
+Téma "${topic}" vyžaduje strategický přístup a znalost aktuální legislativy. Implementací doporučených postupů můžete výrazně zlepšit své výsledky.
+`;
+  }
+}
+
+// Funkce pro generování metadat článku
+async function generateMetadata(topic, category, articleContent) {
+  try {
+    console.log("Generuji metadata článku...");
+    
+    const prompt = `Na základě tohoto článku na téma "${topic}" v kategorii "${category}" vygeneruj následující metadata:
+
+1. Chytlavý titulek (max 60 znaků)
+2. Poutavý podtitulek (max 100 znaků)
+3. Krátký popis pro SEO (max 160 znaků)
+4. 5-7 relevantních tagů oddělených čárkou
+5. Odhadovaný čas čtení ve formátu "X minut čtení"
+
+Odpověz ve formátu JSON s klíči "title", "subtitle", "description", "tags" a "readTime".
+
+Obsah článku:
+${articleContent.substring(0, 1500)}...`;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { 
+          role: "system", 
+          content: "Jsi specialista na SEO a tvorbu metadat pro odborné články. Tvým úkolem je vytvářet chytlavé, ale profesionální titulky a popisy."
+        },
+        { role: "user", content: prompt }
+      ],
+      temperature: 0.7,
+      max_tokens: 500,
+      response_format: { type: "json_object" }
+    });
+    
+    return JSON.parse(completion.choices[0].message.content);
+  } catch (error) {
+    console.error("Chyba při generování metadat:", error);
+    
+    // Vytvoření odhadovaného času čtení (předpokládáme průměrnou rychlost čtení 200 slov za minutu)
+    const wordCount = articleContent.split(/\s+/).length;
+    const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
+    
+    // Fallback metadata
+    return {
+      title: topic,
+      subtitle: `Důležité informace o ${topic} pro české podnikatele`,
+      description: `Odborný článek na téma ${topic} v kategorii ${category}. Praktické rady a tipy pro podnikatele.`,
+      tags: `${category.toLowerCase()}, pohledávky, správa pohledávek, české firmy, podnikání`,
+      readTime: `${readTimeMinutes} minut čtení`
+    };
+  }
+}
+
 // Funkce main, která řídí celý proces generování článků
 async function main() {
   try {
@@ -226,7 +371,6 @@ async function main() {
     console.log("Generuji téma pomocí OpenAI...");
     const topicResult = await generateRandomTopic(category);
     const topic = topicResult.topic;
-    const approach = topicResult; // Obsahuje celý objekt včetně uniquePerspective
     console.log(`Vygenerované téma: ${topic}`);
     
     // 3. Náhodně vybíráme autora
@@ -236,7 +380,7 @@ async function main() {
     
     // 4. Generujeme obsah článku
     console.log("Generuji obsah článku pomocí OpenAI...");
-    const articleContent = await generateArticleContent(topic, category, approach.uniquePerspective);
+    const articleContent = await generateArticleContent(topic, category, topicResult.uniquePerspective);
     
     // 5. Generujeme metadata (titulek, podtitulek, description, tagy, čas čtení)
     console.log("Generuji metadata článku...");
@@ -272,7 +416,7 @@ async function main() {
       readTime: metaData.readTime,
       imageCredit: imageData.credit,
       generatedTopic: topic,
-      uniqueApproach: approach.uniquePerspective
+      uniqueApproach: topicResult.uniquePerspective
     };
     
     const mdxContent = `---

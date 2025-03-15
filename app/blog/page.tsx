@@ -33,6 +33,21 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "insolvence-sprava-pohledavek-v-krizi",
+    title: "Insolvence: Správa pohledávek v krizi",
+    subtitle: "Strategie a přístupy pro české podniky v nestabilní době",
+    date: "15. 3. 2025",
+    author: "Jan Novák",
+    authorPosition: "Specialista na pohledávky",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "8 minut čtení",
+    category: "Insolvence",
+    tags: ["insolvence","správa pohledávek","české podniky","finance","obchodní právo","komunikace","důvěra"],
+    image: "https://images.unsplash.com/photo-1463620910506-d0458143143e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNzY4NjN8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte, jak insolvenční řízení může pomoci českým podnikům efektivně spravovat pohledávky.",
+  },
+
+  {
     slug: "uspesne-vymahani-klicove-strategie",
     title: "Úspěšné Vymáhání: Klíčové Strategie",
     subtitle: "Jak vyjednávat s dlužníky a minimalizovat náklady",

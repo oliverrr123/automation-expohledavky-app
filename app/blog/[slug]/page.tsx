@@ -313,7 +313,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
                 {/* Related Articles - dynamické načítání souvisejících článků */}
                 <div className="mt-10">
-                  <h3 className="mb-6 text-xl font-bold text-zinc-800">Související články</h3>
+                  <h3 className="mb-6 text-xl font-bold text-zinc-800">Články, které by vás mohly zajímat</h3>
                   <div className="grid gap-4 md:grid-cols-2">
                     {relatedPosts.length > 0 ? (
                       relatedPosts.map(relatedPost => (

@@ -214,120 +214,49 @@ const getUnsplashImage = async (category) => {
   }
 };
 
-// Hlavní funkce pro generování článku
-async function generateArticle() {
+// Funkce main, která řídí celý proces generování článků
+async function main() {
   try {
-    console.log("Začínám generování nového článku...");
-    
-    // 1. Náhodně vybereme kategorii a autora
+    // 1. Náhodně vybíráme kategorii z předem definovaného seznamu
+    console.log("Vybírám kategorii...");
     const category = getRandomElement(categories);
-    const author = getRandomElement(authors);
-    
     console.log(`Vybraná kategorie: ${category}`);
-    console.log(`Vybraný autor: ${author.name}`);
     
-    // 2. Vygenerujeme náhodné téma na základě kategorie
-    const topic = await generateRandomTopic(category);
+    // 2. Generujeme náhodné téma v rámci vybrané kategorie
+    console.log("Generuji téma pomocí OpenAI...");
+    const topicResult = await generateRandomTopic(category);
+    const topic = topicResult.topic;
+    const approach = topicResult; // Obsahuje celý objekt včetně uniquePerspective
+    console.log(`Vygenerované téma: ${topic}`);
     
-    // 3. Vygenerujeme unikátní přístup k tématu
-    const approach = await generateUniqueApproach(topic, category);
+    // 3. Náhodně vybíráme autora
+    console.log("Vybírám autora...");
+    const author = getRandomElement(authors);
+    console.log(`Vybraný autor: ${author.name}, ${author.position}`);
     
-    // 4. Vygenerujeme článek pomocí GPT-4O s unikátním přístupem
+    // 4. Generujeme obsah článku
     console.log("Generuji obsah článku pomocí OpenAI...");
+    const articleContent = await generateArticleContent(topic, category, approach.uniquePerspective);
     
-    const prompt = `Napiš odborný článek na téma "${topic}" pro web expohledavky.cz, který se zabývá správou a vymáháním pohledávek.
-
-Hlavní teze článku: ${approach.mainThesis}
-
-Klíčové body k pokrytí:
-${approach.keyPoints.map(point => `- ${point}`).join('\n')}
-
-Unikátní perspektiva: ${approach.uniquePerspective}
-
-Článek musí být:
-- Plně v českém jazyce
-- Odborný, ale srozumitelný pro běžného podnikatele
-- Strukturovaný s nadpisy a podnadpisy (použij markdown formátování)
-- Obsahovat praktické rady a tipy
-- Délka mezi 800-1200 slov
-- Obsahovat aktuální informace relevantní pro český právní systém
-- Kategorie: ${category}
-
-Formátování a struktura:
-- Používej markdown formátování (## pro nadpisy, ### pro podnadpisy, **tučné** pro důležité pojmy, *kurzíva* pro zdůraznění)
-- Vynech úvodní nadpis H1, ten bude automaticky vytvořen z názvu
-- Rozděl text do krátkých odstavců (max. 3-4 věty)
-- Používej odrážkové seznamy pro výčty a kroky
-- Používej číslované seznamy pro postupy a procesy
-- Přidej 1-2 citace nebo příklady z praxe formátované jako blockquote (> text)
-- Používej podnadpisy pro rozdělení textu do logických sekcí
-- Na konci článku přidej krátké shrnutí hlavních bodů
-
-Článek by měl být dobře strukturovaný, přehledný a snadno čitelný.`;
-
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        { 
-          role: "system", 
-          content: "Jsi specialista na pohledávky, právní aspekty jejich správy a vymáhání. Tvým úkolem je generovat kvalitní odborné články pro blog expohledavky.cz. Každý tvůj článek musí být unikátní, informativní a prakticky užitečný." 
-        },
-        { role: "user", content: prompt }
-      ],
-      temperature: 0.7,
-      max_tokens: 2500,
-    });
-    
-    const articleContent = completion.choices[0].message.content;
-    console.log("Obsah článku vygenerován.");
-    
-    // 5. Získání titulku a další parametry
+    // 5. Generujeme metadata (titulek, podtitulek, description, tagy, čas čtení)
     console.log("Generuji metadata článku...");
-    const titlePrompt = `Na základě následujícího článku vytvoř:
-1. Chytlavý, profesionální titulek (max. 70 znaků)
-2. Poutavý podtitulek (max. 120 znaků)
-3. Stručný popis pro meta description a excerpt (max. 160 znaků)
-4. Seznam 4-6 relevantních tagů (klíčových slov) oddělených čárkou
-5. Odhadovanou dobu čtení (ve formátu "X minut čtení")
-
-Vrať výsledek jako JSON objekt s položkami title, subtitle, description, tags a readTime.
-
-Článek:
-${articleContent.substring(0, 1500)}...`;
-
-    const titleCompletion = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [{ role: "user", content: titlePrompt }],
-      temperature: 0.7,
-      max_tokens: 500,
-      response_format: { type: "json_object" }
-    });
+    const metaData = await generateMetadata(topic, category, articleContent);
     
-    const metaData = JSON.parse(titleCompletion.choices[0].message.content);
-    console.log(`Titulek: ${metaData.title}`);
-    console.log(`Podtitulek: ${metaData.subtitle}`);
+    // Vytvoření SEO-friendly slugu z titulku
+    const slug = metaData.title
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Odstranění diakritiky
+      .replace(/[^\w\s-]/g, '') // Odstranění speciálních znaků
+      .replace(/\s+/g, '-') // Nahrazení mezer pomlčkami
+      .replace(/-+/g, '-') // Odstranění vícenásobných pomlček
+      .trim();
     
     // 6. Získání obrázku z Unsplash
     console.log("Získávám obrázek z Unsplash...");
-    
     const imageData = await getUnsplashImage(category);
     
     // 7. Vytvoření MDX souboru
-    const date = new Date();
-    const formattedDate = date.toISOString().split('T')[0];
-    
-    // Vytvoření slug z titulku
-    let slug = metaData.title
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // odstranění diakritiky
-      .replace(/[^a-z0-9]+/g, '-')     // nahrazení speciálních znaků pomlčkou
-      .replace(/^-+|-+$/g, '');        // odstranění pomlček na začátku a konci
-    
-    // Přidání data k názvu souboru pro lepší organizaci
-    const fileName = `${formattedDate}-${slug}.mdx`;
-    
-    // Vytvoření frontmatter
+    console.log("Vytvářím MDX soubor...");
     const frontMatter = {
       title: metaData.title,
       subtitle: metaData.subtitle,
@@ -346,33 +275,54 @@ ${articleContent.substring(0, 1500)}...`;
       uniqueApproach: approach.uniquePerspective
     };
     
-    // Spojení frontmatter a obsahu
-    const fileContent = matter.stringify(articleContent, frontMatter);
+    const mdxContent = `---
+${Object.entries(frontMatter).map(([key, value]) => {
+  if (Array.isArray(value)) {
+    return `${key}:\n  ${value.map(item => `- "${item}"`).join('\n  ')}`;
+  } else if (typeof value === 'object') {
+    return `${key}:\n  ${Object.entries(value).map(([k, v]) => `${k}: '${v}'`).join('\n  ')}`;
+  } else {
+    return `${key}: "${String(value).replace(/"/g, '\\"')}"`;
+  }
+}).join('\n')}
+---
+
+${articleContent}`;
     
-    // Uložení MDX souboru
-    const postsDir = path.join(process.cwd(), 'content', 'posts');
-    if (!fs.existsSync(postsDir)) {
-      fs.mkdirSync(postsDir, { recursive: true });
+    // Vytvoření adresáře, pokud neexistuje
+    const contentDir = path.join(process.cwd(), 'content', 'posts');
+    if (!fs.existsSync(contentDir)) {
+      fs.mkdirSync(contentDir, { recursive: true });
     }
     
-    const filePath = path.join(postsDir, fileName);
-    fs.writeFileSync(filePath, fileContent);
+    // Formátování aktuálního data pro název souboru (YYYY-MM-DD)
+    const today = new Date();
+    const datePrefix = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     
-    console.log(`Článek úspěšně vygenerován a uložen jako: ${fileName}`);
+    // Uložení MDX souboru
+    const mdxFilePath = path.join(contentDir, `${datePrefix}-${slug}.mdx`);
+    fs.writeFileSync(mdxFilePath, mdxContent);
+    console.log(`MDX soubor vytvořen: ${mdxFilePath}`);
     
     // 8. Aktualizace blogPosts array v app/blog/page.tsx
     await updateBlogPostsArray(slug, metaData, category, author, imageData.url);
     
+    console.log("----------------------------------------");
+    console.log("🎉 Generování článku úspěšně dokončeno!");
+    console.log("----------------------------------------");
+    console.log(`Titulek: ${metaData.title}`);
+    console.log(`Slug: ${slug}`);
+    console.log(`Kategorie: ${category}`);
+    console.log("----------------------------------------");
+    
     return {
       success: true,
-      fileName,
       title: metaData.title,
       slug: slug,
       imagePath: imageData.url,
       topic: topic,
       category: category
     };
-    
   } catch (error) {
     console.error("Chyba při generování článku:", error);
     return {
@@ -495,7 +445,7 @@ ${newBlogPostWithoutComma}
 
 // Spuštění generátoru
 console.log("Spouštím generátor článků...");
-generateArticle().then((result) => {
+main().then((result) => {
   console.log("Výsledek generování:", result);
   process.exit(result.success ? 0 : 1);
 }); 

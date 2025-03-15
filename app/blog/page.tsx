@@ -33,6 +33,21 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "smirci-rizeni-klic-k-prevenci-soudnich-sporu",
+    title: "Smírčí řízení: Klíč k prevenci soudních sporů",
+    subtitle: "Optimalizace procesu s AI v oblasti správy pohledávek",
+    date: "15. 3. 2025",
+    author: "Ing. Petra Svobodová",
+    authorPosition: "Finanční analytik",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "7 minut čtení",
+    category: "Správa pohledávek",
+    tags: ["správa pohledávek","smírčí řízení","prevence sporů","AI","automatizace","MSP","právní proces"],
+    image: "https://images.unsplash.com/photo-1575886876783-ea3cbbc8204d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNzM0NTB8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte, jak smírčí řízení a AI pomáhají předcházet soudním sporům ve správě pohledávek.",
+  },
+
+  {
     slug: "insolvence-po-pandemii-nove-strategie-v-cr",
     title: "Insolvence po pandemii: Nové strategie v ČR",
     subtitle: "Jak legislativní změny a AI formují vymáhání pohledávek",

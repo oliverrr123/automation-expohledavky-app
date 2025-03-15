@@ -17,26 +17,7 @@ const openai = new OpenAI({
 // Konfigurace Unsplash
 const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY;
 
-// Témata pro generování článků
-const topics = [
-  'Vymáhání pohledávek v České republice',
-  'Insolvence a její dopady na věřitele',
-  'Preventivní opatření proti neplatičům',
-  'Exekuční řízení - na co si dát pozor',
-  'Vyrovnání pohledávek mimo soud',
-  'Postoupení pohledávky - praktické rady',
-  'Promlčení pohledávek v obchodních vztazích',
-  'Jak správně vystavit fakturu, aby byla vymahatelná',
-  'Předžalobní upomínka a její náležitosti',
-  'Zástavní právo jako zajištění pohledávky',
-  'Jak postupovat při vymáhání pohledávek od zahraničních subjektů',
-  'Mediace jako způsob řešení sporů o pohledávky',
-  'Elektronická fakturace a její právní aspekty',
-  'Jak nastavit obchodní podmínky pro minimalizaci rizika neplatičů',
-  'Rozhodčí řízení v oblasti pohledávek'
-];
-
-// Kategorie pro články
+// Kategorie pro články - tyto zůstávají fixní pro konzistenci
 const categories = [
   'Správa pohledávek',
   'Finanční analýza',
@@ -73,22 +54,127 @@ function getRandomElement(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
+// Funkce pro generování náhodného tématu na základě kategorie
+async function generateRandomTopic(category) {
+  try {
+    console.log(`Generuji náhodné téma pro kategorii: ${category}...`);
+    
+    const prompt = `Vygeneruj originální, specifické a zajímavé téma pro odborný článek o pohledávkách v kategorii "${category}".
+    
+Téma by mělo být:
+1. Relevantní pro český trh a právní systém
+2. Specifické (ne obecné jako "Vymáhání pohledávek", ale spíše "Strategie vymáhání pohledávek u malých a středních podniků v době ekonomické recese")
+3. Aktuální a reflektující současné trendy
+4. Zajímavé pro podnikatele a firmy
+5. Vhodné pro odborný článek o délce 800-1200 slov
+
+Vrať pouze název tématu bez dalších komentářů nebo vysvětlení. Téma musí být v českém jazyce.`;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { 
+          role: "system", 
+          content: "Jsi specialista na pohledávky, právní aspekty jejich správy a vymáhání. Tvým úkolem je generovat originální a specifická témata pro odborné články." 
+        },
+        { role: "user", content: prompt }
+      ],
+      temperature: 0.9, // Vyšší teplota pro větší kreativitu
+      max_tokens: 100,
+    });
+    
+    const topic = completion.choices[0].message.content.trim();
+    console.log(`Vygenerované téma: ${topic}`);
+    return topic;
+  } catch (error) {
+    console.error("Chyba při generování tématu:", error);
+    // Fallback témata pro případ selhání API
+    const fallbackTopics = [
+      `Aktuální trendy v ${category.toLowerCase()}`,
+      `Praktický průvodce: ${category}`,
+      `Jak optimalizovat ${category.toLowerCase()} v roce ${new Date().getFullYear()}`,
+      `Nejčastější chyby při ${category.toLowerCase()}`,
+      `Budoucnost ${category.toLowerCase()} v digitální éře`
+    ];
+    return getRandomElement(fallbackTopics);
+  }
+}
+
+// Funkce pro generování unikátního přístupu k tématu
+async function generateUniqueApproach(topic, category) {
+  try {
+    console.log("Generuji unikátní přístup k tématu...");
+    
+    const prompt = `Pro téma "${topic}" v kategorii "${category}" navrhni unikátní úhel pohledu nebo přístup, který by odlišil článek od běžných textů na toto téma.
+
+Navrhni:
+1. Hlavní tezi nebo argument článku
+2. 3-4 klíčové body, které by měl článek pokrýt
+3. Unikátní perspektivu nebo přístup k tématu (např. z pohledu malých firem, z pohledu mezinárodního srovnání, z pohledu nových technologií, atd.)
+
+Odpověz ve formátu JSON s klíči "mainThesis", "keyPoints" a "uniquePerspective".`;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { 
+          role: "system", 
+          content: "Jsi kreativní stratég obsahu specializující se na finanční a právní témata." 
+        },
+        { role: "user", content: prompt }
+      ],
+      temperature: 0.8,
+      max_tokens: 500,
+      response_format: { type: "json_object" }
+    });
+    
+    const approach = JSON.parse(completion.choices[0].message.content);
+    return approach;
+  } catch (error) {
+    console.error("Chyba při generování přístupu k tématu:", error);
+    // Fallback přístup
+    return {
+      mainThesis: `Je důležité porozumět všem aspektům tématu ${topic}.`,
+      keyPoints: [
+        "Legislativní rámec a aktuální změny",
+        "Praktické postupy a doporučení",
+        "Případové studie a příklady z praxe",
+        "Budoucí trendy a vývoj"
+      ],
+      uniquePerspective: `Pohled z perspektivy efektivity a optimalizace procesů v oblasti ${category.toLowerCase()}.`
+    };
+  }
+}
+
 // Hlavní funkce pro generování článku
 async function generateArticle() {
   try {
     console.log("Začínám generování nového článku...");
     
-    // 1. Vybereme náhodné téma a další metadata
-    const topic = getRandomElement(topics);
+    // 1. Náhodně vybereme kategorii a autora
     const category = getRandomElement(categories);
     const author = getRandomElement(authors);
     
-    console.log(`Generuji článek na téma: ${topic}`);
-    console.log(`Kategorie: ${category}`);
-    console.log(`Autor: ${author.name}`);
+    console.log(`Vybraná kategorie: ${category}`);
+    console.log(`Vybraný autor: ${author.name}`);
     
-    // 2. Vygenerujeme článek pomocí GPT-4O
+    // 2. Vygenerujeme náhodné téma na základě kategorie
+    const topic = await generateRandomTopic(category);
+    
+    // 3. Vygenerujeme unikátní přístup k tématu
+    const approach = await generateUniqueApproach(topic, category);
+    
+    // 4. Vygenerujeme článek pomocí GPT-4O s unikátním přístupem
+    console.log("Generuji obsah článku pomocí OpenAI...");
+    
     const prompt = `Napiš odborný článek na téma "${topic}" pro web expohledavky.cz, který se zabývá správou a vymáháním pohledávek.
+
+Hlavní teze článku: ${approach.mainThesis}
+
+Klíčové body k pokrytí:
+${approach.keyPoints.map(point => `- ${point}`).join('\n')}
+
+Unikátní perspektiva: ${approach.uniquePerspective}
 
 Článek musí být:
 - Plně v českém jazyce
@@ -103,13 +189,12 @@ Na konci článku přidej krátké shrnutí hlavních bodů.
 
 Formátuj text v Markdown (## pro nadpisy, *kurzíva*, **tučné**, atd.). Vynech úvodní nadpis H1, ten bude automaticky vytvořen z názvu.`;
 
-    console.log("Generuji obsah článku pomocí OpenAI...");
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { 
           role: "system", 
-          content: "Jsi specialista na pohledávky, právní aspekty jejich správy a vymáhání. Tvým úkolem je generovat kvalitní odborné články pro blog expohledavky.cz." 
+          content: "Jsi specialista na pohledávky, právní aspekty jejich správy a vymáhání. Tvým úkolem je generovat kvalitní odborné články pro blog expohledavky.cz. Každý tvůj článek musí být unikátní, informativní a prakticky užitečný." 
         },
         { role: "user", content: prompt }
       ],
@@ -120,7 +205,7 @@ Formátuj text v Markdown (## pro nadpisy, *kurzíva*, **tučné**, atd.). Vynec
     const articleContent = completion.choices[0].message.content;
     console.log("Obsah článku vygenerován.");
     
-    // 3. Získání titulku a další parametry
+    // 5. Získání titulku a další parametry
     console.log("Generuji metadata článku...");
     const titlePrompt = `Na základě následujícího článku vytvoř:
 1. Chytlavý, profesionální titulek (max. 70 znaků)
@@ -146,10 +231,14 @@ ${articleContent.substring(0, 1500)}...`;
     console.log(`Titulek: ${metaData.title}`);
     console.log(`Podtitulek: ${metaData.subtitle}`);
     
-    // 4. Získání obrázku z Unsplash
+    // 6. Získání obrázku z Unsplash
     console.log("Získávám obrázek z Unsplash...");
     
-    const imageKeywords = `business document ${category.toLowerCase()} contract legal paper`;
+    // Kombinujeme kategorii a tagy pro lepší výsledky vyhledávání
+    const tags = metaData.tags.split(',').map(tag => tag.trim());
+    const randomTag = getRandomElement(tags);
+    const imageKeywords = `business document ${category.toLowerCase()} ${randomTag} contract legal paper`;
+    
     const unsplashResponse = await axios.get(
       `https://api.unsplash.com/photos/random?query=${encodeURIComponent(imageKeywords)}&orientation=landscape`,
       {
@@ -177,7 +266,7 @@ ${articleContent.substring(0, 1500)}...`;
     fs.writeFileSync(imagePath, imageResponse.data);
     console.log(`Obrázek uložen: ${imagePath}`);
     
-    // 5. Vytvoření MDX souboru
+    // 7. Vytvoření MDX souboru
     const date = new Date();
     const formattedDate = date.toISOString().split('T')[0];
     
@@ -193,7 +282,7 @@ ${articleContent.substring(0, 1500)}...`;
     const fileName = `${formattedDate}-${slug}.mdx`;
     
     // Převod tagů na pole
-    const tags = metaData.tags.split(',').map(tag => tag.trim());
+    const tagsArray = metaData.tags.split(',').map(tag => tag.trim());
     
     // Vytvoření frontmatter
     const frontMatter = {
@@ -203,7 +292,7 @@ ${articleContent.substring(0, 1500)}...`;
       description: metaData.description,
       image: `/images/blog/${imageFileName}`,
       category: category,
-      tags: tags,
+      tags: tagsArray,
       author: author.name,
       authorPosition: author.position,
       authorImage: author.image,
@@ -212,7 +301,9 @@ ${articleContent.substring(0, 1500)}...`;
       imageCredit: {
         photographer: photographer,
         url: photographerUrl
-      }
+      },
+      generatedTopic: topic,
+      uniqueApproach: approach.uniquePerspective
     };
     
     // Spojení frontmatter a obsahu
@@ -229,7 +320,7 @@ ${articleContent.substring(0, 1500)}...`;
     
     console.log(`Článek úspěšně vygenerován a uložen jako: ${fileName}`);
     
-    // Aktualizace blogPosts array v app/blog/page.tsx
+    // 8. Aktualizace blogPosts array v app/blog/page.tsx
     await updateBlogPostsArray(slug, metaData, category, author, `/images/blog/${imageFileName}`);
     
     return {
@@ -237,7 +328,9 @@ ${articleContent.substring(0, 1500)}...`;
       fileName,
       title: metaData.title,
       slug: slug,
-      imagePath: `/images/blog/${imageFileName}`
+      imagePath: `/images/blog/${imageFileName}`,
+      topic: topic,
+      category: category
     };
     
   } catch (error) {

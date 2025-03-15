@@ -9,6 +9,17 @@ on:
 # - OPENAI_API_KEY: API klíč pro OpenAI pro generování článků
 # - UNSPLASH_ACCESS_KEY: API klíč pro Unsplash pro získání obrázků
 # Tyto klíče lze nastavit v nastavení repozitáře: Settings -> Secrets and variables -> Actions
+#
+# Jak funguje generování článků:
+# 1. Náhodně se vybere kategorie z předem definovaného seznamu kategorií
+# 2. Pro vybranou kategorii se pomocí OpenAI vygeneruje náhodné téma článku
+# 3. Pro téma se vygeneruje unikátní přístup a struktura článku
+# 4. Na základě tématu, kategorie a přístupu se vygeneruje kompletní obsah článku
+# 5. Vygenerují se metadata článku (titulek, podtitulek, tagy, atd.)
+# 6. Z Unsplash se stáhne relevantní obrázek
+# 7. Vytvoří se MDX soubor s článkem a aktualizuje se seznam článků na webu
+#
+# Tento proces zajišťuje, že každý vygenerovaný článek je unikátní a může být generován neomezený počet článků.
 
 permissions:
   contents: write  # Povolení pro zápis do repozitáře (pro commit a push)
@@ -46,7 +57,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add content/posts public/images/blog
+          git add content/posts public/images/blog app/blog/page.tsx
           git commit -m "chore: auto-generated article [skip ci]" || echo "No changes to commit"
       
       - name: Push changes

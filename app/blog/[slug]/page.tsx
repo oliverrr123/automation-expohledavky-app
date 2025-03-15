@@ -71,10 +71,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     });
   }
 
-  // Vytvoření URL pro sdílení
+  // Vytvoření URL pro sdílení - použijeme slug z parametrů, které již byly awaited
+  const slug = params.slug; // Získáme hodnotu po await
   const shareUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/blog/${params.slug}`
-    : `https://expohledavky.cz/blog/${params.slug}`;
+    ? `${window.location.origin}/blog/${slug}`
+    : `https://expohledavky.cz/blog/${slug}`;
   
   const shareTitle = encodeURIComponent(post.frontMatter.title);
   const shareText = encodeURIComponent(post.frontMatter.excerpt || '');

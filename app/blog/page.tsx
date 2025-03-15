@@ -31,7 +31,7 @@ interface BlogPost {
   excerpt: string;
 }
 
-const blogPosts: BlogPost[
+const blogPosts: BlogPost[] = [
   {
     slug: "prediktivni-analyza-klic-ke-zdravym-pohledavkam-msp",
     title: "Prediktivní analýza: Klíč ke zdravým pohledávkám MSP",
@@ -45,7 +45,7 @@ const blogPosts: BlogPost[
     tags: ["správa pohledávek","prediktivní analýza","MSP","cash flow","technologie"],
     image: "https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIwNjE1MTB8&ixlib=rb-4.0.3&q=80&w=1080",
     excerpt: "Objevte, jak prediktivní analýza zlepší řízení pohledávek v MSP.",
-  },] = [
+  },
   {
     slug: "novela-insolvencniho-zakona-sance-pro-startupy",
     title: "Novela insolvenčního zákona: Šance pro startupy?",

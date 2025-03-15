@@ -523,14 +523,19 @@ async function updateBlogPostsArray(slug, metaData, category, author, imagePath)
   }`;
     
     // Najdeme pozici definice blogPosts
-    const blogPostsStart = content.indexOf('const blogPosts: BlogPost[] = [');
+    const blogPostsRegex = /const\s+blogPosts\s*:\s*BlogPost\s*(\[\s*\]|\[|\])\s*=\s*\[/;
+    const incorrectBlogPostsRegex = /const\s+blogPosts\s*:\s*BlogPost\s*\[/;
     
-    if (blogPostsStart !== -1) {
-      // Najdeme začátek pole
-      const arrayStart = content.indexOf('[', blogPostsStart);
+    // Kontrola, zda pole existuje a v jaké formě
+    const blogPostsMatch = content.match(blogPostsRegex);
+    const incorrectBlogPostsMatch = content.match(incorrectBlogPostsRegex);
+    
+    if (blogPostsMatch) {
+      // Standardní případ - pole je správně definováno
+      const arrayStart = content.indexOf('[', blogPostsMatch.index + blogPostsMatch[0].length - 1);
       
       if (arrayStart !== -1) {
-        // Přidáme nový článek na začátek pole (aby byl jako první)
+        // Přidáme nový článek na začátek pole
         const updatedContent = 
           content.slice(0, arrayStart + 1) + 
           '\n' + newBlogPost + 
@@ -540,6 +545,33 @@ async function updateBlogPostsArray(slug, metaData, category, author, imagePath)
         // Uložíme aktualizovaný soubor
         fs.writeFileSync(pageFilePath, updatedContent, 'utf8');
         console.log("Seznam článků úspěšně aktualizován - nový článek přidán na začátek seznamu.");
+      }
+    } else if (incorrectBlogPostsMatch) {
+      // Pole je definováno nesprávně - opravíme ho
+      console.log("Detekována nesprávná syntaxe definice pole blogPosts. Provádím korekci...");
+      
+      // Nahradíme nesprávnou definici správnou
+      const newDefinition = 'const blogPosts: BlogPost[] = [';
+      
+      // Vyhledáme konec prvního objektu pole a přidáme za něj čárku
+      const firstObjectEndIndex = content.indexOf('}', incorrectBlogPostsMatch.index);
+      if (firstObjectEndIndex !== -1) {
+        // Zkontrolujeme, zda za objektem následuje "//..." nebo "]", pokud ano, přidáme čárku
+        const textAfterObject = content.substring(firstObjectEndIndex + 1, firstObjectEndIndex + 10).trim();
+        const needsComma = !(textAfterObject.startsWith(','));
+        
+        // Vytvoříme aktualizovaný obsah
+        const updatedContent = 
+          content.substring(0, incorrectBlogPostsMatch.index) + 
+          newDefinition + 
+          content.substring(incorrectBlogPostsMatch.index + incorrectBlogPostsMatch[0].length, firstObjectEndIndex + 1) + 
+          (needsComma ? ',' : '') + 
+          '\n' + newBlogPost + ',' +
+          content.substring(firstObjectEndIndex + 1 + (needsComma ? 0 : 1));
+        
+        // Uložíme aktualizovaný soubor
+        fs.writeFileSync(pageFilePath, updatedContent, 'utf8');
+        console.log("Syntaxe opravena a nový článek přidán na začátek seznamu.");
       }
     } else {
       console.log("Nepodařilo se najít pole blogPosts v souboru, přeskakuji aktualizaci.");

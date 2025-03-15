@@ -31,7 +31,22 @@ interface BlogPost {
   excerpt: string;
 }
 
-const blogPosts: BlogPost[] = []
+const blogPosts: BlogPost[] = [
+  {
+    slug: "novela-insolvencniho-zakona-sance-pro-startupy",
+    title: "Novela insolvenčního zákona: Šance pro startupy?",
+    subtitle: "Jak změny ovlivňují zajišťování pohledávek u technologických firem",
+    date: "15. 3. 2025",
+    author: "Jan Novák",
+    authorPosition: "Specialista na pohledávky",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "3 minuty čtení",
+    category: "Insolvence",
+    tags: ["insolvenční zákon","startupy","technologické firmy","pohledávky","právní změny"],
+    image: "/images/blog/article-1742057915664.jpg",
+    excerpt: "Novelizace insolvenčního zákona přináší výzvy i příležitosti pro startupy v ČR.",
+  },
+]
 
 // Kategorie pro filtry na hlavní stránce
 const categories = [

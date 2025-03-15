@@ -16,98 +16,22 @@ import {
 } from "@/components/ui/card"
 
 // Sample blog posts data - v reálné aplikaci by toto přicházelo z API nebo MDX souborů
-const blogPosts = [
-  {
-    slug: "best-practices-sprava-pohledavek",
-    title: "Best practices pro správu pohledávek",
-    subtitle: "Jak efektivně řídit a monitorovat pohledávky v rámci českého právního prostředí",
-    date: "11. března 2025",
-    author: "Jan Novák",
-    authorPosition: "Specialista na pohledávky",
-    authorImage: "/placeholder.svg?height=120&width=120",
-    readTime: "6 minut čtení",
-    category: "Správa pohledávek",
-    tags: ["správa", "monitoring", "best practices"],
-    image: "/placeholder.svg?height=800&width=1600",
-    excerpt:
-      "Přehledný článek o tématu Best practices pro správu pohledávek: Jak efektivně řídit a monitorovat pohledávky v rámci českého právního prostředí.",
-  },
-  {
-    slug: "dopad-neplacenych-pohledavek",
-    title: "Dopad neplacených pohledávek na cash flow",
-    subtitle: "Jak neuhrazené faktury ovlivňují finanční zdraví firmy",
-    date: "5. března 2025",
-    author: "Petra Svobodová",
-    authorPosition: "Finanční analytik",
-    authorImage: "/placeholder.svg?height=120&width=120",
-    readTime: "5 minut čtení",
-    category: "Finanční analýza",
-    tags: ["cash flow", "finance", "platební morálka"],
-    image: "/placeholder.svg?height=800&width=1600",
-    excerpt:
-      "Analýza dopadu neplacených pohledávek na finanční zdraví firem a jejich cash flow. Zjistěte, jak se bránit proti negativním dopadům neplačů.",
-  },
-  {
-    slug: "efektivni-strategie-vymahani",
-    title: "Efektivní strategie vymáhání pohledávek",
-    subtitle: "Přehled soudních i mimosoudních metod vymáhání, včetně role exekucí",
-    date: "28. února 2025",
-    author: "Martin Dvořák",
-    authorPosition: "Právní expert",
-    authorImage: "/placeholder.svg?height=120&width=120",
-    readTime: "7 minut čtení",
-    category: "Vymáhání pohledávek",
-    tags: ["vymáhání", "exekuce", "soudní řízení"],
-    image: "/placeholder.svg?height=800&width=1600",
-    excerpt:
-      "Komplexní přehled strategií pro vymáhání pohledávek včetně soudních a mimosoudních metod. Poradíme vám, jak postupovat krok za krokem.",
-  },
-  {
-    slug: "eticke-spotrebitelske-aspekty",
-    title: "Etické a spotřebitelské aspekty vymáhání pohledávek",
-    subtitle: "Jak zajistit férové a transparentní postupy při vymáhání pohledávek",
-    date: "20. února 2025",
-    author: "Lucie Nováková",
-    authorPosition: "Specialista na spotřebitelské právo",
-    authorImage: "/placeholder.svg?height=120&width=120",
-    readTime: "5 minut čtení",
-    category: "Etika vymáhání",
-    tags: ["etika", "spotřebitelé", "transparentnost"],
-    image: "/placeholder.svg?height=800&width=1600",
-    excerpt:
-      "Etické a spotřebitelské aspekty vymáhání pohledávek: Průvodce férovými a transparentními postupy pro spravedlivé řešení dluhů.",
-  },
-  {
-    slug: "insolvencni-rizeni-prubeh",
-    title: "Insolvenční řízení krok za krokem",
-    subtitle: "Průvodce procesem insolvenčního řízení z pohledu věřitele",
-    date: "15. února 2025",
-    author: "Pavel Černý",
-    authorPosition: "Insolvenční správce",
-    authorImage: "/placeholder.svg?height=120&width=120",
-    readTime: "8 minut čtení",
-    category: "Insolvence",
-    tags: ["insolvence", "bankrot", "věřitel"],
-    image: "/placeholder.svg?height=800&width=1600",
-    excerpt:
-      "Podrobný průvodce insolvenčním řízením pro věřitele. Jak přihlásit pohledávku, jaké jsou lhůty a co můžete očekávat od celého procesu.",
-  },
-  {
-    slug: "prevence-vzniku-pohledavek",
-    title: "Prevence vzniku problematických pohledávek",
-    subtitle: "Jak nastavit obchodní podmínky a smlouvy k minimalizaci rizik",
-    date: "10. února 2025",
-    author: "Jan Novák",
-    authorPosition: "Specialista na pohledávky",
-    authorImage: "/placeholder.svg?height=120&width=120",
-    readTime: "6 minut čtení",
-    category: "Prevence",
-    tags: ["prevence", "smlouvy", "rizika"],
-    image: "/placeholder.svg?height=800&width=1600",
-    excerpt:
-      "Zjistěte, jak pomocí správně nastavených obchodních podmínek a smluv předejít vzniku problematických pohledávek a ochránit svůj business.",
-  },
-]
+interface BlogPost {
+  slug: string;
+  title: string;
+  subtitle: string;
+  date: string;
+  author: string;
+  authorPosition: string;
+  authorImage: string;
+  readTime: string;
+  category: string;
+  tags: string[];
+  image: string;
+  excerpt: string;
+}
+
+const blogPosts: BlogPost[] = []
 
 // Kategorie pro filtry na hlavní stránce
 const categories = [

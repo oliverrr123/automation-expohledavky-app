@@ -407,7 +407,7 @@ async function updateBlogPostsArray(slug, metaData, category, author, imagePath)
       ? metaData.tags.split(',').map(tag => tag.trim()) 
       : metaData.tags;
     
-    const newBlogPost = `  {
+    const newBlogPostWithComma = `  {
     slug: "${slug}",
     title: "${metaData.title.replace(/"/g, '\\"')}",
     subtitle: "${metaData.subtitle.replace(/"/g, '\\"')}",
@@ -422,25 +422,63 @@ async function updateBlogPostsArray(slug, metaData, category, author, imagePath)
     excerpt: "${metaData.description.replace(/"/g, '\\"')}",
   },`;
     
+    // Verze bez čárky pro použití, když je to jediný prvek v poli
+    const newBlogPostWithoutComma = `  {
+    slug: "${slug}",
+    title: "${metaData.title.replace(/"/g, '\\"')}",
+    subtitle: "${metaData.subtitle.replace(/"/g, '\\"')}",
+    date: "${formattedDate}",
+    author: "${author.name}",
+    authorPosition: "${author.position}",
+    authorImage: "${author.image}",
+    readTime: "${metaData.readTime}",
+    category: "${category}",
+    tags: ${JSON.stringify(tagsArray)},
+    image: "${imagePath}",
+    excerpt: "${metaData.description.replace(/"/g, '\\"')}",
+  }`;
+    
     // Najdeme pozici, kam vložit nový článek
     const blogPostsArrayStart = content.indexOf('const blogPosts: BlogPost[] = [');
     
     if (blogPostsArrayStart !== -1) {
-      // Pokud je pole prázdné, přidáme první článek
+      // Pokud je pole prázdné, přidáme první článek bez čárky
       if (content.includes('const blogPosts: BlogPost[] = []')) {
         content = content.replace(
           'const blogPosts: BlogPost[] = []',
           `const blogPosts: BlogPost[] = [
-${newBlogPost}
+${newBlogPostWithoutComma}
 ]`
         );
       } else {
-        // Jinak přidáme na začátek pole
+        // Kontrolujeme, zda v poli již nějaké články jsou
+        const existingArrayContent = content.substring(
+          content.indexOf('[', blogPostsArrayStart) + 1,
+          content.indexOf(']', blogPostsArrayStart)
+        ).trim();
+        
         const arrayStart = content.indexOf('[', blogPostsArrayStart);
+        
         if (arrayStart !== -1) {
-          content = content.slice(0, arrayStart + 1) + 
-                   '\n' + newBlogPost + 
-                   content.slice(arrayStart + 1);
+          // Pokud je pole prázdné nebo obsahuje pouze bílé znaky, přidáme článek bez čárky
+          if (!existingArrayContent) {
+            content = content.slice(0, arrayStart + 1) + 
+                     '\n' + newBlogPostWithoutComma + 
+                     '\n' + content.slice(content.indexOf(']', arrayStart));
+          } else {
+            // Jinak přidáme článek s čárkou a zajistíme, že ostatní články mají správnou syntaxi
+            content = content.slice(0, arrayStart + 1) + 
+                     '\n' + newBlogPostWithComma + 
+                     content.slice(arrayStart + 1);
+            
+            // Ujistíme se, že poslední článek nemá čárku
+            const lastCommaPos = content.lastIndexOf(',', content.indexOf(']', arrayStart));
+            const closingBracketPos = content.indexOf(']', arrayStart);
+            
+            if (lastCommaPos > arrayStart && lastCommaPos > content.lastIndexOf('}', closingBracketPos)) {
+              content = content.slice(0, lastCommaPos) + content.slice(lastCommaPos + 1);
+            }
+          }
         }
       }
       

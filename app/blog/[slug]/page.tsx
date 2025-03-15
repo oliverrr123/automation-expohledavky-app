@@ -98,10 +98,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   return (
     <article className="min-h-screen bg-white">
       {/* Tmavý header */}
-      <div className="bg-gradient-to-b from-black to-zinc-900 text-white pb-20 pt-28">
+      <div className="bg-gradient-to-b from-black to-zinc-900 text-white pb-20 pt-40">
         <div className="container mx-auto px-4">
           {/* Breadcrumbs */}
-          <div className="border-b border-zinc-700/30 pb-4">
+          <div className="border-b border-zinc-700/30 pb-4 mt-8">
             <div className="flex items-center text-sm text-zinc-400">
               <Link href="/" className="hover:text-orange-400 transition-colors duration-300">
                 ExPohledávky
@@ -118,7 +118,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           </div>
 
           {/* Header Content */}
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-4xl">
             <Button variant="ghost" className="mt-6 mb-8 text-zinc-400 hover:text-orange-400 hover:bg-zinc-800/40" asChild>
               <Link href="/blog" className="flex items-center gap-2">
                 <ArrowLeft className="h-4 w-4" />
@@ -176,7 +176,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       {/* Světlý obsah článku */}
       <div className="bg-orange-50 pt-8 pb-16">
         <div className="container mx-auto px-4 relative z-20">  
-          <div className="mx-auto max-w-3xl bg-white p-8 rounded-lg shadow-md">
+          <div className="mx-auto max-w-4xl bg-white p-8 rounded-lg shadow-md">
             {/* Featured Image */}
             {post.frontMatter.image && (
               <div className="mb-10 -mt-16 overflow-hidden rounded-lg shadow-xl">

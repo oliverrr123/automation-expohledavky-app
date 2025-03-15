@@ -146,6 +146,74 @@ Odpověz ve formátu JSON s klíči "mainThesis", "keyPoints" a "uniquePerspecti
   }
 }
 
+// Získání obrázku z Unsplash
+const getUnsplashImage = async (category) => {
+  try {
+    // Profesionální byznisové prompty
+    const businessPrompts = [
+      "professional business meeting",
+      "corporate office skyscraper",
+      "business people handshake",
+      "modern office building",
+      "business professionals conference room",
+      "corporate team meeting",
+      "business district skyscrapers",
+      "executive office desk",
+      "business contract signing",
+      "professional corporate environment"
+    ];
+    
+    // Náhodně vybereme jeden z profesionálních promptů
+    const randomPrompt = businessPrompts[Math.floor(Math.random() * businessPrompts.length)];
+    
+    // Přidáme kategorii, ale jen jako doplněk k hlavnímu profesionálnímu promtu
+    const searchQuery = `${randomPrompt} ${category}`;
+    
+    const response = await fetch(
+      `https://api.unsplash.com/photos/random?query=${encodeURIComponent(searchQuery)}&orientation=landscape&content_filter=high&client_id=${process.env.UNSPLASH_ACCESS_KEY}`
+    );
+    
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        url: data.urls.regular,
+        credit: {
+          name: data.user.name,
+          link: data.user.links.html
+        }
+      };
+    } else {
+      // Pokud první pokus selže, zkusíme čistě profesionální prompt bez kategorie
+      const fallbackResponse = await fetch(
+        `https://api.unsplash.com/photos/random?query=${encodeURIComponent(randomPrompt)}&orientation=landscape&content_filter=high&client_id=${process.env.UNSPLASH_ACCESS_KEY}`
+      );
+      
+      if (fallbackResponse.ok) {
+        const fallbackData = await fallbackResponse.json();
+        return {
+          url: fallbackData.urls.regular,
+          credit: {
+            name: fallbackData.user.name,
+            link: fallbackData.user.links.html
+          }
+        };
+      }
+    }
+    
+    throw new Error('Nepodařilo se získat obrázek z Unsplash');
+  } catch (error) {
+    console.error('Chyba při získávání obrázku z Unsplash:', error);
+    // Fallback na výchozí obrázek
+    return {
+      url: '/images/default-business.jpg',
+      credit: {
+        name: 'Default Image',
+        link: 'https://expohledavky.cz'
+      }
+    };
+  }
+};
+
 // Hlavní funkce pro generování článku
 async function generateArticle() {
   try {
@@ -242,37 +310,7 @@ ${articleContent.substring(0, 1500)}...`;
     // 6. Získání obrázku z Unsplash
     console.log("Získávám obrázek z Unsplash...");
     
-    // Kombinujeme kategorii a tagy pro lepší výsledky vyhledávání
-    const tags = metaData.tags.split(',').map(tag => tag.trim());
-    const randomTag = getRandomElement(tags);
-    const imageKeywords = `business document ${category.toLowerCase()} ${randomTag} contract legal paper`;
-    
-    const unsplashResponse = await axios.get(
-      `https://api.unsplash.com/photos/random?query=${encodeURIComponent(imageKeywords)}&orientation=landscape`,
-      {
-        headers: {
-          Authorization: `Client-ID ${unsplashAccessKey}`,
-        },
-      }
-    );
-    
-    const imageUrl = unsplashResponse.data.urls.regular;
-    const imageDownloadUrl = unsplashResponse.data.links.download;
-    const photographer = unsplashResponse.data.user.name;
-    const photographerUrl = unsplashResponse.data.user.links.html;
-    
-    // Stažení a uložení obrázku
-    const imageDir = path.join(process.cwd(), 'public', 'images', 'blog');
-    if (!fs.existsSync(imageDir)) {
-      fs.mkdirSync(imageDir, { recursive: true });
-    }
-    
-    const imageFileName = `article-${Date.now()}.jpg`;
-    const imagePath = path.join(imageDir, imageFileName);
-    
-    const imageResponse = await axios.get(imageDownloadUrl, { responseType: 'arraybuffer' });
-    fs.writeFileSync(imagePath, imageResponse.data);
-    console.log(`Obrázek uložen: ${imagePath}`);
+    const imageData = await getUnsplashImage(category);
     
     // 7. Vytvoření MDX souboru
     const date = new Date();
@@ -295,7 +333,7 @@ ${articleContent.substring(0, 1500)}...`;
       subtitle: metaData.subtitle,
       date: new Date().toISOString(),
       description: metaData.description,
-      image: `/images/blog/${imageFileName}`,
+      image: imageData.url,
       category: category,
       tags: metaData.tags.split(',').map(tag => tag.trim()),
       author: author.name,
@@ -303,10 +341,7 @@ ${articleContent.substring(0, 1500)}...`;
       authorImage: author.image,
       authorBio: author.bio,
       readTime: metaData.readTime,
-      imageCredit: {
-        photographer: photographer,
-        url: photographerUrl
-      },
+      imageCredit: imageData.credit,
       generatedTopic: topic,
       uniqueApproach: approach.uniquePerspective
     };
@@ -326,14 +361,14 @@ ${articleContent.substring(0, 1500)}...`;
     console.log(`Článek úspěšně vygenerován a uložen jako: ${fileName}`);
     
     // 8. Aktualizace blogPosts array v app/blog/page.tsx
-    await updateBlogPostsArray(slug, metaData, category, author, `/images/blog/${imageFileName}`);
+    await updateBlogPostsArray(slug, metaData, category, author, imageData.url);
     
     return {
       success: true,
       fileName,
       title: metaData.title,
       slug: slug,
-      imagePath: `/images/blog/${imageFileName}`,
+      imagePath: imageData.url,
       topic: topic,
       category: category
     };

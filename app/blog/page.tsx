@@ -219,51 +219,54 @@ export default function BlogPage() {
           // Seznam článků
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
-              <Card 
+              <Link 
                 key={post.slug} 
-                className="group overflow-hidden bg-white border-orange-100 hover:border-orange-300 transition-all duration-300 shadow-md hover:shadow-orange-200/50"
+                href={`/blog/${post.slug}`}
+                className="block group"
               >
-                <div className="relative h-48 w-full overflow-hidden">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  <Badge className="absolute left-3 top-3 bg-orange-500 text-white hover:bg-orange-600">
-                    {post.category}
-                  </Badge>
-                </div>
-
-                <CardHeader className="pt-5 pb-2">
-                  <CardTitle className="text-zinc-800 line-clamp-2 transition-colors group-hover:text-orange-600">
-                    {post.title}
-                  </CardTitle>
-                </CardHeader>
-
-                <CardContent className="pb-2">
-                  <p className="line-clamp-2 text-zinc-600">{post.subtitle}</p>
-                </CardContent>
-
-                <CardFooter className="flex items-center justify-between border-t border-orange-100 pt-4">
-                  <div className="flex items-center gap-2 text-sm text-zinc-500">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3 text-orange-500" />
-                      <span>{post.date}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3 text-orange-500" />
-                      <span>{post.readTime}</span>
-                    </div>
+                <Card 
+                  className="group overflow-hidden bg-white border-orange-100 hover:border-orange-300 transition-all duration-300 shadow-md hover:shadow-orange-200/50 h-full cursor-pointer"
+                >
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                    <Badge className="absolute left-3 top-3 bg-orange-500 text-white hover:bg-orange-600">
+                      {post.category}
+                    </Badge>
                   </div>
-                  <Button variant="ghost" size="sm" className="text-orange-500 hover:text-orange-700 hover:bg-orange-50 p-0" asChild>
-                    <Link href={`/blog/${post.slug}`}>
+
+                  <CardHeader className="pt-5 pb-2">
+                    <CardTitle className="text-zinc-800 line-clamp-2 transition-colors group-hover:text-orange-600">
+                      {post.title}
+                    </CardTitle>
+                  </CardHeader>
+
+                  <CardContent className="pb-2">
+                    <p className="line-clamp-2 text-zinc-600">{post.subtitle}</p>
+                  </CardContent>
+
+                  <CardFooter className="flex items-center justify-between border-t border-orange-100 pt-4 mt-auto">
+                    <div className="flex items-center gap-2 text-sm text-zinc-500">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3 text-orange-500" />
+                        <span>{post.date}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3 text-orange-500" />
+                        <span>{post.readTime}</span>
+                      </div>
+                    </div>
+                    <div className="text-orange-500 hover:text-orange-700 text-sm flex items-center">
                       Číst článek <ArrowRight className="h-4 w-4 ml-1" />
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </Link>
             ))}
           </div>
         )}

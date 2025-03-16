@@ -376,40 +376,51 @@ export default function BlogPage() {
     <div className="min-h-screen bg-white">
       <Header isLandingPage={false} />
       
-      {/* Hero section - upraveno pro lepší responsivitu */}
-      <section className="pt-28 bg-zinc-900 text-white">
-        <div className="container mx-auto px-4 pb-12">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-center">
-            Náš blog
-          </h1>
-          <p className="text-lg md:text-xl text-center max-w-3xl mx-auto mb-8">
-            Aktualizovaný blog o správě, odkupu a vymáhání pohledávek. Najdete zde
-            odborné články s praktickými radami pro firmy
-            a podnikatele v českém právním prostředí.
-          </p>
-          
-          {/* Vyhledávací formulář - upraveno pro lepší responsivitu */}
-          <div className="relative max-w-xl mx-auto">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-zinc-400" />
-            <Input
-              type="search"
-              placeholder="Hledat články..."
-              className="bg-white/10 border-white/20 pl-10 text-white placeholder:text-zinc-400 w-full"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-              >
-                <X className="h-5 w-5 text-zinc-400" />
-              </button>
-            )}
+      {/* Hero section - vylepšená s gradientem a více oranžovými prvky */}
+      <section className="pt-28 bg-gradient-to-b from-zinc-900 via-zinc-800 to-zinc-900 text-white relative">
+        {/* Dekorativní oranžový gradient v pozadí */}
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-orange-500/20 to-transparent"></div>
+        <div className="absolute top-0 left-0 w-1/4 h-full bg-gradient-to-r from-orange-500/10 to-transparent"></div>
+        
+        <div className="container mx-auto px-4 pb-16 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8 text-center">
+              <span className="text-white">Náš</span>
+              <span className="text-orange-500"> blog</span>
+            </h1>
+            <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-orange-600 mx-auto mb-8 rounded-full"></div>
+            <p className="text-lg md:text-xl text-center max-w-3xl mx-auto mb-10 text-zinc-200 leading-relaxed">
+              Aktualizovaný blog o správě, odkupu a vymáhání pohledávek. Najdete zde
+              odborné články s praktickými radami pro firmy
+              a podnikatele v českém právním prostředí.
+            </p>
+            
+            {/* Vylepšený vyhledávací formulář */}
+            <div className="relative max-w-xl mx-auto group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-orange-400 rounded-full opacity-70 blur-sm group-hover:opacity-100 transition duration-300"></div>
+              <div className="relative bg-zinc-800 rounded-full">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-orange-400" />
+                <Input
+                  type="search"
+                  placeholder="Hledat články..."
+                  className="bg-zinc-800 border-zinc-700 pl-12 pr-12 py-6 text-white placeholder:text-zinc-400 w-full rounded-full focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
         
-        {/* Vlnitá čára - upraveno pro lepší responsivitu */}
+        {/* Vylepšená vlnitá čára */}
         <div className="w-full overflow-hidden">
           <svg
             className="w-full"
@@ -425,13 +436,21 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Procházet podle kategorií - upraveno pro lepší responzivitu */}
-      <section className="bg-orange-50 py-12">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 mb-8 text-center">
-            Procházet podle kategorií
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Procházet podle kategorií - vylepšený design */}
+      <section className="bg-gradient-to-b from-orange-50 to-white py-16 relative">
+        {/* Dekorativní prvky */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-orange-200 rounded-full opacity-20 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-orange-300 rounded-full opacity-10 blur-3xl"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-4xl font-bold text-zinc-900 mb-4">
+              Procházet podle <span className="text-orange-600">kategorií</span>
+            </h2>
+            <div className="w-20 h-1 bg-orange-500 mx-auto"></div>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
             {categories.map((category) => (
               <a
                 key={category}
@@ -440,44 +459,54 @@ export default function BlogPage() {
                   e.preventDefault()
                   handleCategorySelect(category)
                 }}
-                className={`flex items-center justify-center px-6 py-4 rounded-full border-2 transition-colors ${
+                className={`group flex items-center justify-center px-6 py-5 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md ${
                   selectedCategory === category
-                    ? "bg-orange-500 text-white border-orange-500"
-                    : "bg-white text-zinc-800 border-orange-200 hover:border-orange-500"
+                    ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white border-none"
+                    : "bg-white text-zinc-800 border border-orange-200 hover:border-orange-500 hover:text-orange-600"
                 }`}
               >
-                {category}
+                <span className="font-medium">{category}</span>
+                {selectedCategory !== category && (
+                  <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+                )}
               </a>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Seznam článků - upraveno pro lepší responzivitu */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          {/* Filtry a řazení */}
-          <div className="flex flex-col md:flex-row justify-between mb-8 gap-4">
+      {/* Seznam článků - vylepšený design */}
+      <section className="py-20 bg-white relative">
+        {/* Dekorativní prvky */}
+        <div className="absolute top-40 right-10 w-72 h-72 bg-orange-100 rounded-full opacity-30 blur-3xl"></div>
+        <div className="absolute bottom-20 left-10 w-64 h-64 bg-orange-200 rounded-full opacity-20 blur-3xl"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Filtry a řazení - vylepšený design */}
+          <div className="flex flex-col md:flex-row justify-between mb-12 gap-4 bg-zinc-50 p-4 rounded-xl shadow-sm border border-zinc-100">
             <div className="flex items-center gap-4 flex-wrap">
               {selectedCategory && (
                 <Badge
                   variant="outline"
-                  className="flex items-center gap-1 px-3 py-1.5 bg-orange-50 text-orange-900 border-orange-200"
+                  className="flex items-center gap-1 px-4 py-2 bg-orange-100 text-orange-800 border-orange-200 rounded-full"
                 >
                   {selectedCategory}
-                  <button onClick={() => setSelectedCategory("")} className="ml-1">
-                    <X className="h-3 w-3" />
+                  <button onClick={() => setSelectedCategory("")} className="ml-2 bg-orange-200 hover:bg-orange-300 rounded-full p-1 transition-colors">
+                    <X className="h-3 w-3 text-orange-800" />
                   </button>
                 </Badge>
               )}
+              {!selectedCategory && (
+                <span className="text-zinc-500">Všechny kategorie</span>
+              )}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-lg shadow-sm border border-zinc-100">
               <span className="text-sm text-zinc-500">Řadit podle:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as "newest" | "oldest")}
-                className="border rounded px-2 py-1 text-sm text-zinc-800"
+                className="border-none text-sm text-zinc-800 focus:ring-0 bg-transparent"
               >
                 <option value="newest">Nejnovější</option>
                 <option value="oldest">Nejstarší</option>
@@ -485,77 +514,97 @@ export default function BlogPage() {
             </div>
           </div>
 
-          {/* Seznam článků - upravená grid struktura pro lepší responzivitu */}
+          {/* Seznam článků - vylepšená grid struktura */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.length > 0 ? (
               filteredPosts.map((post) => (
-                <Card key={post.slug} className="overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow">
-                  <div className="relative h-48 overflow-hidden">
+                <Card key={post.slug} className="group overflow-hidden flex flex-col h-full border-none rounded-xl shadow-md hover:shadow-xl transition-all duration-300">
+                  <div className="relative h-52 overflow-hidden">
                     <img
                       src={post.image}
                       alt={post.title}
-                      className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className="absolute top-4 left-4">
-                      <Badge className="bg-orange-500 hover:bg-orange-600">{post.category}</Badge>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute top-4 left-4 z-10">
+                      <Badge className="bg-orange-500 hover:bg-orange-600 text-white border-none shadow-lg px-3 py-1 rounded-full">{post.category}</Badge>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-10">
+                      <Button variant="outline" asChild className="bg-white/20 backdrop-blur-sm border-white/40 text-white hover:bg-white/30 hover:text-white w-full rounded-full">
+                        <Link href={`/blog/${post.slug}`}>
+                          Přečíst článek
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
                     </div>
                   </div>
-                  <CardHeader className="flex-grow">
-                    <div className="flex items-center gap-4 text-sm text-zinc-500 mb-2">
+                  <CardHeader className="flex-grow pb-2">
+                    <div className="flex items-center gap-4 text-sm text-zinc-500 mb-3">
                       <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
+                        <Calendar className="h-4 w-4 text-orange-500" />
                         <span>{post.date}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
+                        <Clock className="h-4 w-4 text-orange-500" />
                         <span>{post.readTime}</span>
                       </div>
                     </div>
-                    <CardTitle className="text-xl leading-tight mb-2 font-bold transition-colors hover:text-orange-600">
+                    <CardTitle className="text-xl leading-tight mb-3 font-bold text-zinc-800 group-hover:text-orange-600 transition-colors">
                       <Link href={`/blog/${post.slug}`}>{post.title}</Link>
                     </CardTitle>
                     <p className="text-sm text-zinc-600 line-clamp-3">{post.excerpt}</p>
                   </CardHeader>
-                  <CardFooter className="flex flex-wrap gap-2 border-t pt-4">
+                  <CardFooter className="flex flex-wrap gap-2 border-t border-zinc-100 pt-4">
                     {post.tags.slice(0, 3).map((tag) => (
-                      <Badge key={tag} variant="outline" className="bg-orange-50 hover:bg-orange-100" onClick={() => filterByTag(tag)}>
+                      <Badge 
+                        key={tag} 
+                        variant="outline" 
+                        className="bg-orange-50 hover:bg-orange-100 text-orange-800 border-orange-200 rounded-full px-3 py-1 text-xs cursor-pointer transition-colors"
+                        onClick={() => filterByTag(tag)}
+                      >
                         {tag}
                       </Badge>
                     ))}
                     {post.tags.length > 3 && (
-                      <Badge variant="outline" className="bg-gray-50">
+                      <Badge variant="outline" className="bg-zinc-50 text-zinc-600 border-zinc-200 rounded-full px-3 py-1 text-xs">
                         +{post.tags.length - 3}
                       </Badge>
                     )}
                   </CardFooter>
-                  <CardFooter className="pt-0 flex justify-end">
-                    <Button variant="link" asChild className="p-0 text-orange-600 font-semibold">
-                      <Link href={`/blog/${post.slug}`}>
-                        Číst více
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </CardFooter>
                 </Card>
               ))
             ) : (
-              <div className="col-span-1 md:col-span-3 text-center py-12">
-                <p className="text-lg text-zinc-500">
+              <div className="col-span-1 md:col-span-3 text-center py-20 bg-orange-50 rounded-xl border border-orange-100">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-orange-100 flex items-center justify-center">
+                  <Search className="h-10 w-10 text-orange-500" />
+                </div>
+                <h3 className="text-xl font-semibold text-zinc-800 mb-2">Žádné články nenalezeny</h3>
+                <p className="text-zinc-600 mb-8 max-w-md mx-auto">
                   Žádné články neodpovídají vašemu vyhledávání. Zkuste jiné klíčové slovo nebo kategorii.
                 </p>
+                <Button 
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSelectedCategory("");
+                  }}
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full px-6"
+                >
+                  Zobrazit všechny články
+                </Button>
               </div>
             )}
           </div>
 
-          {/* Stránkování - upraveno pro lepší responsivitu */}
+          {/* Stránkování - vylepšený design */}
           {filteredPosts.length > 0 && (
-            <div className="mt-12 flex justify-center">
-              <nav aria-label="Pagination" className="inline-flex items-center gap-2">
+            <div className="mt-16 flex justify-center">
+              <nav aria-label="Pagination" className="inline-flex items-center gap-1 p-1 bg-white rounded-full shadow-md">
                 <Button
                   variant="outline"
                   size="sm"
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage(currentPage - 1)}
+                  className="rounded-full border-zinc-200 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200"
                 >
                   Předchozí
                 </Button>
@@ -565,7 +614,11 @@ export default function BlogPage() {
                     variant={currentPage === page ? "default" : "outline"}
                     size="sm"
                     onClick={() => setCurrentPage(page)}
-                    className={currentPage === page ? "bg-orange-500 hover:bg-orange-600" : ""}
+                    className={`rounded-full w-10 h-10 ${
+                      currentPage === page 
+                        ? "bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white border-none" 
+                        : "border-zinc-200 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200"
+                    }`}
                   >
                     {page}
                   </Button>
@@ -575,6 +628,7 @@ export default function BlogPage() {
                   size="sm"
                   disabled={currentPage === totalPages}
                   onClick={() => setCurrentPage(currentPage + 1)}
+                  className="rounded-full border-zinc-200 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200"
                 >
                   Další
                 </Button>

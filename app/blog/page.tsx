@@ -33,6 +33,21 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "novy-insolvencni-zakon-sance-a-vyzvy-2024",
+    title: "Nový Insolvenční Zákon: Šance a Výzvy 2024",
+    subtitle: "Jak změny ovlivní vymáhání pohledávek v Česku?",
+    date: "16. 3. 2025",
+    author: "Jan Novák",
+    authorPosition: "Specialista na pohledávky",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "6 minut čtení",
+    category: "Insolvence",
+    tags: ["insolvence","pohledávky","právní změny","obchodní vztahy","restrukturalizace","podnikání"],
+    image: "https://images.unsplash.com/photo-1573164574397-dd250bc8a598?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIxMDkyMzN8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte dopady nového insolvenčního zákona na vymáhání pohledávek. Klíčové změny a jejich vliv na české podniky.",
+  },
+
+  {
     slug: "insolvence-sprava-pohledavek-v-krizi",
     title: "Insolvence: Správa pohledávek v krizi",
     subtitle: "Strategie a přístupy pro české podniky v nestabilní době",

@@ -3,7 +3,8 @@ import "@/styles/globals.css"
 import { Montserrat } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
+import { Toaster } from "sonner"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -11,12 +12,17 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 })
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+}
+
 export const metadata: Metadata = {
   title: "EX Pohledávky - komplexní řešení vašich pohledávek",
   description: "Jsme experti na řešení pohledávek. Pohledávky řešíme mimosoudně, soudně a exekučně.",
   keywords: "faktura, směnka, pohledávka, dluhy, odkup firem, dluží mi, exekuce",
   generator: 'v0.dev',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
   icons: {
     icon: [
       { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -55,6 +61,7 @@ export default function RootLayout({
         {children}
         <Analytics />
         <SpeedInsights />
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   )

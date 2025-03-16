@@ -11,6 +11,7 @@ import { Phone, Mail, MapPin, Clock, Send, CheckCircle, ArrowRight, HelpCircle, 
 import Image from "next/image"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -21,6 +22,34 @@ export default function ContactPage() {
   })
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [activeInfoBox, setActiveInfoBox] = useState<number | null>(null)
+  const [copyStatus, setCopyStatus] = useState<{ [key: number]: boolean }>({})
+
+  const handleCopy = async (text: string, index: number) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopyStatus({ ...copyStatus, [index]: true })
+      
+      // Determine the type of content being copied
+      if (text.startsWith("+420")) {
+        toast.success("Telefonní číslo zkopírováno")
+      } else if (text.includes("@")) {
+        toast.success("Email zkopírován")
+      } else if (text.includes("Praha")) {
+        toast.success("Adresa zkopírována")
+      } else if (text.includes("Pondělí")) {
+        toast.success("Otevírací doba zkopírována")
+      } else {
+        toast.success("Zkopírováno do schránky")
+      }
+      
+      // Reset the copy status after 2 seconds
+      setTimeout(() => {
+        setCopyStatus((prev) => ({ ...prev, [index]: false }))
+      }, 2000)
+    } catch (err) {
+      toast.error("Kopírování se nezdařilo")
+    }
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -179,18 +208,33 @@ export default function ContactPage() {
                   content: (
                     <div className="space-y-2">
                       <p>
-                        <a href="tel:+420735500003" className="text-white hover:text-orange-300 transition-colors">
+                        <a 
+                          href="tel:+420735500003" 
+                          className="text-white hover:text-orange-300 transition-colors cursor-pointer"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handleCopy("+420735500003", 0)
+                          }}
+                        >
                           +420 735 500 003
                         </a>
                       </p>
                       <p>
-                        <a href="tel:+420266710318" className="text-white hover:text-orange-300 transition-colors">
+                        <a 
+                          href="tel:+420266710318" 
+                          className="text-white hover:text-orange-300 transition-colors cursor-pointer"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handleCopy("+420266710318", 1)
+                          }}
+                        >
                           +420 266 710 318
                         </a>
                       </p>
                     </div>
                   ),
                   dark: true,
+                  copyText: ["+420735500003", "+420266710318"],
                 },
                 {
                   icon: Mail,
@@ -199,45 +243,64 @@ export default function ContactPage() {
                     <p>
                       <a
                         href="mailto:info@expohledavky.cz"
-                        className="text-white hover:text-zinc-200 transition-colors"
+                        className="text-white hover:text-zinc-200 transition-colors cursor-pointer"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          handleCopy("info@expohledavky.cz", 2)
+                        }}
                       >
                         info@expohledavky.cz
                       </a>
                     </p>
                   ),
                   dark: false,
+                  copyText: ["info@expohledavky.cz"],
                 },
                 {
                   icon: MapPin,
                   title: "City Empiria",
                   content: (
                     <p>
-                      Na strži 1702/65, 140 00 <br /> Praha 4-Nusle
+                      <span 
+                        className="cursor-pointer"
+                        onClick={() => handleCopy("Na strži 1702/65, 140 00 Praha 4-Nusle", 3)}
+                      >
+                        Na strži 1702/65, 140 00 <br /> Praha 4-Nusle
+                      </span>
                     </p>
                   ),
                   dark: true,
+                  copyText: ["Na strži 1702/65, 140 00 Praha 4-Nusle"],
                 },
                 {
                   icon: Clock,
                   title: "Pracovní hodiny",
                   content: (
                     <p>
-                      Pondělí až pátek <br />
-                      od 9:00 do 18:00
+                      <span 
+                        className="cursor-pointer"
+                        onClick={() => handleCopy("Pondělí až pátek od 9:00 do 18:00", 4)}
+                      >
+                        Pondělí až pátek <br />
+                        od 9:00 do 18:00
+                      </span>
                     </p>
                   ),
                   dark: false,
+                  copyText: ["Pondělí až pátek od 9:00 do 18:00"],
                 },
               ].map((item, index) => (
                 <SectionWrapper key={index} animation="fade-up" delay={100 * (index + 1)}>
                   <div
                     className={cn(
-                      "h-full flex flex-col items-center text-center p-8 rounded-xl transition-all duration-500 group",
+                      "h-full flex flex-col items-center text-center p-8 rounded-xl transition-all duration-500 group cursor-pointer",
                       item.dark ? "bg-zinc-900 text-white" : "bg-orange-600 text-white",
                       activeInfoBox === index
                         ? "transform scale-105 z-10 shadow-xl"
                         : "hover:transform hover:scale-[1.03] hover:z-10 hover:shadow-lg",
+                      copyStatus[index] && "ring-2 ring-green-400",
                     )}
+                    onClick={() => handleCopy(Array.isArray(item.copyText) ? item.copyText[0] : item.copyText, index)}
                     onMouseEnter={() => setActiveInfoBox(index)}
                     onMouseLeave={() => setActiveInfoBox(null)}
                   >
@@ -301,7 +364,7 @@ export default function ContactPage() {
                   icon: CheckCircle,
                 },
               ].map((item, index) => (
-                <SectionWrapper key={index} animation="zoom" delay={200 * (index + 1)}>
+                <SectionWrapper key={index} animation="fade-up" delay={200 * (index + 1)}>
                   <div className="bg-white rounded-xl p-8 shadow-md border border-gray-100 h-full relative overflow-hidden group hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
                     <div className="absolute -right-2 -top-6 text-8xl font-bold text-gray-100 opacity-80 group-hover:text-orange-100 transition-colors duration-500 text-right">
                       {item.step}
@@ -482,7 +545,14 @@ export default function ContactPage() {
                       <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
                         <Phone className="h-5 w-5 text-orange-500" />
                       </div>
-                      <a href="tel:+420735500003" className="text-white hover:text-orange-300 transition-colors">
+                      <a 
+                        href="tel:+420735500003" 
+                        className="text-white hover:text-orange-300 transition-colors cursor-pointer"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          handleCopy("+420735500003", 10)
+                        }}
+                      >
                         +420 735 500 003
                       </a>
                     </div>
@@ -493,7 +563,11 @@ export default function ContactPage() {
                       </div>
                       <a
                         href="mailto:info@expohledavky.cz"
-                        className="text-white hover:text-orange-300 transition-colors"
+                        className="text-white hover:text-orange-300 transition-colors cursor-pointer"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          handleCopy("info@expohledavky.cz", 11)
+                        }}
                       >
                         info@expohledavky.cz
                       </a>
@@ -564,17 +638,6 @@ export default function ContactPage() {
                   </div>
                 </SectionWrapper>
               ))}
-
-              <SectionWrapper animation="fade-up" delay={400}>
-                <div className="mt-8 text-center">
-                  <Link
-                    href="/cenik"
-                    className="inline-flex items-center text-orange-600 font-medium hover:text-orange-700 transition-colors"
-                  >
-                    Zobrazit více otázek a odpovědí <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </div>
-              </SectionWrapper>
             </div>
           </div>
         </section>

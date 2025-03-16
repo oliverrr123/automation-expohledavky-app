@@ -462,14 +462,28 @@ export default function SlovnikAVzoryPage() {
                     </p>
                   </CardContent>
                   <CardFooter className="flex flex-col items-stretch gap-2">
-                    <Button variant="outline" className="w-full flex items-center gap-2 justify-center">
-                      <Download size={16} />
-                      <span>Stáhnout DOC</span>
-                    </Button>
-                    <Button variant="outline" className="w-full flex items-center gap-2 justify-center">
-                      <Download size={16} />
-                      <span>Stáhnout PDF</span>
-                    </Button>
+                    <a 
+                      href="https://www.expohledavky.cz/uploads/vzory/smenka-bez-protestu-k-vyplneni.doc" 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full"
+                    >
+                      <Button variant="outline" className="w-full flex items-center gap-2 justify-center">
+                        <Download size={16} />
+                        <span>Stáhnout DOC</span>
+                      </Button>
+                    </a>
+                    <a 
+                      href="https://www.expohledavky.cz/uploads/vzory/smenka-bez-protestu-k-vyplneni.pdf" 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full"
+                    >
+                      <Button variant="outline" className="w-full flex items-center gap-2 justify-center">
+                        <Download size={16} />
+                        <span>Stáhnout PDF</span>
+                      </Button>
+                    </a>
                   </CardFooter>
                 </Card>
 
@@ -493,10 +507,17 @@ export default function SlovnikAVzoryPage() {
                     </p>
                   </CardContent>
                   <CardFooter className="flex flex-col items-stretch gap-2">
-                    <Button variant="outline" className="w-full flex items-center gap-2 justify-center">
-                      <Download size={16} />
-                      <span>Stáhnout DOC</span>
-                    </Button>
+                    <a 
+                      href="https://www.expohledavky.cz/uploads/vzory/smlouva-o-zapujcce-k-vyplneni.doc" 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full"
+                    >
+                      <Button variant="outline" className="w-full flex items-center gap-2 justify-center">
+                        <Download size={16} />
+                        <span>Stáhnout DOC</span>
+                      </Button>
+                    </a>
                   </CardFooter>
                 </Card>
 
@@ -520,14 +541,28 @@ export default function SlovnikAVzoryPage() {
                     </p>
                   </CardContent>
                   <CardFooter className="flex flex-col items-stretch gap-2">
-                    <Button variant="outline" className="w-full flex items-center gap-2 justify-center">
-                      <Download size={16} />
-                      <span>Stáhnout DOC</span>
-                    </Button>
-                    <Button variant="outline" className="w-full flex items-center gap-2 justify-center">
-                      <Download size={16} />
-                      <span>Stáhnout PDF</span>
-                    </Button>
+                    <a 
+                      href="https://www.expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.doc" 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full"
+                    >
+                      <Button variant="outline" className="w-full flex items-center gap-2 justify-center">
+                        <Download size={16} />
+                        <span>Stáhnout DOC</span>
+                      </Button>
+                    </a>
+                    <a 
+                      href="https://www.expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.pdf" 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full"
+                    >
+                      <Button variant="outline" className="w-full flex items-center gap-2 justify-center">
+                        <Download size={16} />
+                        <span>Stáhnout PDF</span>
+                      </Button>
+                    </a>
                   </CardFooter>
                 </Card>
               </div>
@@ -709,14 +744,6 @@ export default function SlovnikAVzoryPage() {
                     </li>
                   </ul>
                 </div>
-
-                <Button
-                  variant="ghost"
-                  className="mt-4 text-orange-600 hover:text-orange-800 hover:bg-orange-50 flex items-center gap-1"
-                >
-                  <span>Zobrazit celý článek</span>
-                  <ChevronRight size={16} />
-                </Button>
               </div>
 
               <div id="detail-smenka" className="bg-white rounded-lg shadow-md p-8 mb-8">
@@ -744,14 +771,6 @@ export default function SlovnikAVzoryPage() {
                     nebo jméno je směnka vydána). Obsahuje bezpodmínečný platební slib („Zaplatím").
                   </p>
                 </div>
-
-                <Button
-                  variant="ghost"
-                  className="mt-4 text-blue-600 hover:text-blue-800 hover:bg-blue-50 flex items-center gap-1"
-                >
-                  <span>Zobrazit celý článek</span>
-                  <ChevronRight size={16} />
-                </Button>
               </div>
 
               <div id="detail-prevzeti-dluhu" className="bg-white rounded-lg shadow-md p-8">
@@ -773,14 +792,6 @@ export default function SlovnikAVzoryPage() {
                     dluhu.
                   </p>
                 </div>
-
-                <Button
-                  variant="ghost"
-                  className="mt-4 text-green-600 hover:text-green-800 hover:bg-green-50 flex items-center gap-1"
-                >
-                  <span>Zobrazit celý článek</span>
-                  <ChevronRight size={16} />
-                </Button>
               </div>
             </div>
           </SectionWrapper>

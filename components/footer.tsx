@@ -1,7 +1,28 @@
+"use client"
+
 import Link from "next/link"
 import { Phone, Mail, MapPin, FileText, Facebook, Linkedin, Instagram } from "lucide-react"
+import { toast } from "sonner"
+import type { LucideIcon } from "lucide-react"
 
 export function Footer() {
+  const handleCopy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      if (text.includes("@")) {
+        toast.success("Email zkopírován")
+      } else if (text.includes("Praha")) {
+        toast.success("Adresa zkopírována")
+      } else if (text.includes("/")) {
+        toast.success("Číslo účtu zkopírováno")
+      } else {
+        toast.success("Telefonní číslo zkopírováno")
+      }
+    } catch (err) {
+      toast.error("Kopírování se nezdařilo")
+    }
+  }
+
   return (
     <footer className="bg-zinc-900 text-white">
       <div className="container py-12 lg:py-16">
@@ -22,21 +43,47 @@ export function Footer() {
             <div className="mt-6 space-y-4 text-gray-400">
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 flex-none" />
-                <span>Na strži 1702/65, 140 00, Praha 4-Nusle</span>
+                <span 
+                  className="cursor-pointer hover:text-white"
+                  onClick={() => handleCopy("Na strži 1702/65, 140 00, Praha 4-Nusle")}
+                >
+                  Na strži 1702/65, 140 00, Praha 4-Nusle
+                </span>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 flex-none" />
-                <a href="mailto:info@expohledavky.cz" className="hover:text-white">
+                <a 
+                  href="mailto:info@expohledavky.cz" 
+                  className="hover:text-white cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleCopy("info@expohledavky.cz")
+                  }}
+                >
                   info@expohledavky.cz
                 </a>
               </div>
               <div className="flex items-start gap-3">
                 <Phone className="h-5 w-5 flex-none" />
                 <div>
-                  <a href="tel:+420266710318" className="block hover:text-white">
+                  <a 
+                    href="tel:+420266710318" 
+                    className="block hover:text-white cursor-pointer"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleCopy("+420266710318")
+                    }}
+                  >
                     +420 266 710 318
                   </a>
-                  <a href="tel:+420735500003" className="block hover:text-white">
+                  <a 
+                    href="tel:+420735500003" 
+                    className="block hover:text-white cursor-pointer"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleCopy("+420735500003")
+                    }}
+                  >
                     +420 735 500 003
                   </a>
                 </div>
@@ -91,22 +138,32 @@ export function Footer() {
               <p>
                 Číslo účtu vedený u Raiffeisenbank, a.s.
                 <br />
-                <span className="font-medium text-white">777 7777 355 / 5500</span>
+                <span 
+                  className="font-medium text-white cursor-pointer hover:text-orange-500 transition-colors"
+                  onClick={() => handleCopy("777 7777 355 / 5500")}
+                >
+                  777 7777 355 / 5500
+                </span>
               </p>
               <p>
                 Číslo účtu vedený u Fio banka, a.s.
                 <br />
-                <span className="font-medium text-white">250 2040 263 / 2010</span>
+                <span 
+                  className="font-medium text-white cursor-pointer hover:text-orange-500 transition-colors"
+                  onClick={() => handleCopy("250 2040 263 / 2010")}
+                >
+                  250 2040 263 / 2010
+                </span>
               </p>
             </div>
 
             <h3 className="mt-8 text-lg font-semibold">Sledujte nás</h3>
             <div className="mt-4 flex gap-4">
-              {[
+              {([ 
                 [Facebook, "https://www.facebook.com/expohledavkypraha/"],
                 [Linkedin, "https://www.linkedin.com/company/expohledávky-s-r-o/"],
                 [Instagram, "https://www.instagram.com/expohledavky/"],
-              ].map(([Icon, href], idx) => (
+              ] as [LucideIcon, string][]).map(([Icon, href], idx) => (
                 <a
                   key={idx}
                   href={href}

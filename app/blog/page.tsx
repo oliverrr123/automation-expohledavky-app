@@ -376,34 +376,69 @@ export default function BlogPage() {
     <div className="min-h-screen bg-white">
       <Header isLandingPage={false} />
       
-      {/* Hero section - vylepšená s gradientem a více oranžovými prvky */}
-      <section className="pt-28 bg-gradient-to-b from-zinc-900 via-zinc-800 to-zinc-900 text-white relative">
-        {/* Dekorativní oranžový gradient v pozadí */}
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-orange-500/20 to-transparent"></div>
-        <div className="absolute top-0 left-0 w-1/4 h-full bg-gradient-to-r from-orange-500/10 to-transparent"></div>
+      {/* Hero section - moderní design s výraznějšími oranžovými prvky */}
+      <section className="relative pt-36 pb-24 overflow-hidden">
+        {/* Pozadí s gradientem a texturou */}
+        <div className="absolute inset-0 bg-zinc-900 z-0">
+          {/* Textury a gradienty */}
+          <div className="absolute inset-0 opacity-40"
+               style={{
+                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+               }}
+          ></div>
+          
+          {/* Gradienty */}
+          <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-zinc-900 to-transparent"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-orange-600/20 via-transparent to-orange-600/20"></div>
+        </div>
         
-        <div className="container mx-auto px-4 pb-16 relative z-10">
+        {/* Dekorativní prvky */}
+        <div className="absolute top-1/2 right-5 w-96 h-96 rounded-full bg-orange-500/10 blur-3xl"></div>
+        <div className="absolute top-1/3 left-10 w-72 h-72 rounded-full bg-orange-600/10 blur-3xl"></div>
+        <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 w-1/2 h-48 bg-orange-500/20 blur-3xl"></div>
+        
+        {/* Animované plovoucí kruhy */}
+        <div className="absolute top-20 left-20 w-6 h-6 rounded-full bg-orange-400/40 animate-float"></div>
+        <div className="absolute top-40 right-1/4 w-8 h-8 rounded-full bg-orange-500/40 animate-float" style={{ animationDelay: "1s" }}></div>
+        <div className="absolute bottom-20 left-1/3 w-10 h-10 rounded-full bg-orange-600/30 animate-float" style={{ animationDelay: "2s" }}></div>
+        
+        {/* Content container */}
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8 text-center">
-              <span className="text-white">Náš</span>
-              <span className="text-orange-500"> blog</span>
+            {/* Oranžový badge nad nadpisem */}
+            <div className="inline-flex items-center bg-orange-600/20 backdrop-blur-sm px-4 py-2 rounded-full border border-orange-500/30 mb-6 text-orange-300 animate-fade-in-up">
+              <span className="block w-2 h-2 rounded-full bg-orange-400 mr-2"></span>
+              <span className="text-sm font-medium">Odborné články pro firmy a podnikatele</span>
+            </div>
+            
+            {/* Hlavní nadpis */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-center text-white leading-tight tracking-tight animate-fade-in-up" style={{animationDelay: "0.1s"}}>
+              <span className="relative inline-block">
+                Náš
+                <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-transparent"></span>
+              </span>
+              <span className="relative ml-4 inline-block text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-500">
+                blog
+                <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-orange-600"></span>
+              </span>
             </h1>
-            <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-orange-600 mx-auto mb-8 rounded-full"></div>
-            <p className="text-lg md:text-xl text-center max-w-3xl mx-auto mb-10 text-zinc-200 leading-relaxed">
-              Aktualizovaný blog o správě, odkupu a vymáhání pohledávek. Najdete zde
-              odborné články s praktickými radami pro firmy
+            
+            {/* Podnadpis s lepším formátováním */}
+            <p className="text-lg md:text-xl text-center max-w-3xl mx-auto mb-12 text-zinc-300 leading-relaxed animate-fade-in-up" style={{animationDelay: "0.2s"}}>
+              Aktualizovaný blog o správě, odkupu a vymáhání pohledávek. <br className="hidden md:block" />
+              Najdete zde <span className="text-orange-300">odborné články s praktickými radami</span> pro firmy
               a podnikatele v českém právním prostředí.
             </p>
             
             {/* Vylepšený vyhledávací formulář */}
-            <div className="relative max-w-xl mx-auto group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-orange-400 rounded-full opacity-70 blur-sm group-hover:opacity-100 transition duration-300"></div>
-              <div className="relative bg-zinc-800 rounded-full">
+            <div className="relative max-w-xl mx-auto group animate-fade-in-up" style={{animationDelay: "0.3s"}}>
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-orange-400 rounded-full opacity-80 blur-md group-hover:opacity-100 transition duration-300 animate-pulse"></div>
+              <div className="relative bg-zinc-800/80 backdrop-blur-sm rounded-full border border-orange-600/30 shadow-lg">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-orange-400" />
                 <Input
                   type="search"
                   placeholder="Hledat články..."
-                  className="bg-zinc-800 border-zinc-700 pl-12 pr-12 py-6 text-white placeholder:text-zinc-400 w-full rounded-full focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="bg-transparent border-transparent pl-12 pr-12 py-6 text-white placeholder:text-zinc-400 w-full rounded-full focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -417,13 +452,27 @@ export default function BlogPage() {
                 )}
               </div>
             </div>
+            
+            {/* Štítky populárních kategorií */}
+            <div className="hidden md:flex items-center justify-center gap-3 mt-8 animate-fade-in-up" style={{animationDelay: "0.4s"}}>
+              <span className="text-sm text-zinc-400">Populární kategorie:</span>
+              {categories.slice(0, 3).map((category) => (
+                <button
+                  key={category}
+                  onClick={() => handleCategorySelect(category)}
+                  className="text-sm text-zinc-300 hover:text-orange-300 transition-colors px-3 py-1 rounded-full border border-zinc-700 hover:border-orange-500/50 bg-zinc-800/50"
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
         
-        {/* Vylepšená vlnitá čára */}
-        <div className="w-full overflow-hidden">
+        {/* Vylepšená vlnitá čára s větším kontrastem */}
+        <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden z-10">
           <svg
-            className="w-full"
+            className="w-full h-auto"
             viewBox="0 0 1200 120"
             preserveAspectRatio="none"
             fill="white"

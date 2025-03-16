@@ -62,7 +62,7 @@ export function Hero() {
 
           <div className="absolute inset-0">
             <Image
-              src={`https://i.ibb.co/hFQ8VWBP/thumb.jpg`}
+              src={`https://i.ibb.co/0jjhHq8h/expohledavky-thumb.jpg`}
               alt="Background"
               fill
               className="object-cover object-center animate-zoom-out"
@@ -76,7 +76,7 @@ export function Hero() {
             <div className="absolute inset-0 [&>iframe]:w-[177.77777778vh] [&>iframe]:h-[56.25vw] [&>iframe]:min-w-full [&>iframe]:min-h-full [&>iframe]:absolute [&>iframe]:top-1/2 [&>iframe]:left-1/2 [&>iframe]:-translate-x-1/2 [&>iframe]:-translate-y-1/2">
               <iframe
                 ref={iframeRef}
-                src="https://player.vimeo.com/video/1059169392?h=2d12ab0104&badge=0&autopause=0&player_id=0&app_id=58479&background=1&muted=1&loop=1&autoplay=1"
+                src="https://player.vimeo.com/video/1066379583?h=2d12ab0104&badge=0&autopause=0&player_id=0&app_id=58479&background=1&muted=1&loop=1&autoplay=1"
                 frameBorder="0"
                 allow="autoplay; fullscreen; picture-in-picture"
                 title="expohledavky"

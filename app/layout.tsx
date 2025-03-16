@@ -15,7 +15,8 @@ export const metadata: Metadata = {
   title: "EX Pohledávky - komplexní řešení vašich pohledávek",
   description: "Jsme experti na řešení pohledávek. Pohledávky řešíme mimosoudně, soudně a exekučně.",
   keywords: "faktura, směnka, pohledávka, dluhy, odkup firem, dluží mi, exekuce",
-    generator: 'v0.dev'
+  generator: 'v0.dev',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
 }
 
 export default function RootLayout({

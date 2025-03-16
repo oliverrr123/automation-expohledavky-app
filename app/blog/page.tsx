@@ -1,6 +1,7 @@
 "use client"
 
-import React, { useState, useEffect, useRef, useMemo } from "react"
+import type React from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Search, ArrowRight, Calendar, Clock, X } from "lucide-react"
@@ -15,62 +16,50 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { SectionWrapper } from "@/components/section-wrapper"
 
-// Sample blog posts data - v reálné aplikaci by toto přicházelo z API nebo MDX souborů
 interface BlogPost {
-  slug: string;
-  title: string;
-  subtitle: string;
-  date: string;
-  author: string;
-  authorPosition: string;
-  authorImage: string;
-  readTime: string;
-  category: string;
-  tags: string[];
-  image: string;
-  excerpt: string;
+  id: string
+  title: string
+  excerpt: string
+  date: string
+  image: string
+  slug: string
+  readTime?: string
+  category?: string
+  author?: string
+  authorImage?: string
+  subtitle?: string
+  authorPosition?: string
+  tags?: string[]
 }
+
+interface Category {
+  name: string
+  slug: string
+  count?: number
+}
+
+const categoryDefinitions: Category[] = [
+  { name: "Všechny články", slug: "" },
+  { name: "Prevence", slug: "prevence" },
+  { name: "Insolvence", slug: "insolvence" },
+  { name: "Vymáhání pohledávek", slug: "vymahani-pohledavek" },
+  { name: "Správa pohledávek", slug: "sprava-pohledavek" },
+  { name: "Etika vymáhání", slug: "etika-vymahani" },
+  { name: "Finanční analýza", slug: "financni-analyza" }
+]
 
 const blogPosts: BlogPost[] = [
   {
-    slug: "eticke-vymahani-dluhu-v-ceskych-firmach",
-    title: "Etické vymáhání dluhů v českých firmách",
-    subtitle: "Právní pravidla vs. obchodní etika: Kde je hranice?",
-    date: "16. 3. 2025",
-    author: "Mgr. Martin Dvořák",
-    authorPosition: "Právní specialista",
-    authorImage: "/placeholder.svg?height=120&width=120",
-    readTime: "6 minut čtení",
-    category: "Etika vymáhání",
-    tags: ["etika","vymáhání pohledávek","obchodní etika","právo","finance","mediace"],
-    image: "https://images.unsplash.com/photo-1531498352491-042fbae4cf57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIxNDg0MDh8&ixlib=rb-4.0.3&q=80&w=1080",
-    excerpt: "Prozkoumejte etické vymáhání pohledávek v ČR s důrazem na právní a etické standardy.",
-  },
-
-  {
-    slug: "restrukturalizace-pro-msp-pravni-a-prakticke-kroky",
-    title: "Restrukturalizace pro MSP: Právní a praktické kroky",
-    subtitle: "Jak efektivně vymáhat pohledávky v insolvenci",
-    date: "16. 3. 2025",
-    author: "Mgr. Martin Dvořák",
-    authorPosition: "Právní specialista",
-    authorImage: "/placeholder.svg?height=120&width=120",
-    readTime: "7 minut čtení",
-    category: "Insolvence",
-    tags: ["restrukturalizace","insolvence","právní strategie","vymáhání pohledávek","obchodní poradenství"],
-    image: "https://images.unsplash.com/photo-1620856900883-e12a5ea43735?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIxMzc2MDd8&ixlib=rb-4.0.3&q=80&w=1080",
-    excerpt: "Objevte právní strategie a praktické kroky pro úspěšnou restrukturalizaci malých a středních podniků.",
-  },
-
-  {
+    id: "1",
     slug: "prevence-platebni-neschopnosti-u-zakazniku",
     title: "Prevence platební neschopnosti u zákazníků",
     subtitle: "Získejte klid díky osobnímu přístupu a pravidelným auditům",
     date: "16. 3. 2025",
     author: "Mgr. Martin Dvořák",
     authorPosition: "Právní specialista",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/h1g0nf3P/man2.jpg",
     readTime: "5 minut čtení",
     category: "Prevence",
     tags: ["platební neschopnost","pohledávky","obchodní vztahy","prevence","finance","audity","podnikání"],
@@ -79,13 +68,14 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "2",
     slug: "novy-insolvencni-zakon-sance-a-vyzvy-2024",
     title: "Nový Insolvenční Zákon: Šance a Výzvy 2024",
     subtitle: "Jak změny ovlivní vymáhání pohledávek v Česku?",
     date: "16. 3. 2025",
-    author: "Jan Novák",
+    author: "Jan Petrů",
     authorPosition: "Specialista na pohledávky",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/GfpZGQK8/man1.jpg",
     readTime: "6 minut čtení",
     category: "Insolvence",
     tags: ["insolvence","pohledávky","právní změny","obchodní vztahy","restrukturalizace","podnikání"],
@@ -94,13 +84,14 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "3",
     slug: "insolvence-sprava-pohledavek-v-krizi",
     title: "Insolvence: Správa pohledávek v krizi",
     subtitle: "Strategie a přístupy pro české podniky v nestabilní době",
     date: "15. 3. 2025",
-    author: "Jan Novák",
+    author: "Jan Petrů",
     authorPosition: "Specialista na pohledávky",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/GfpZGQK8/man1.jpg",
     readTime: "8 minut čtení",
     category: "Insolvence",
     tags: ["insolvence","správa pohledávek","české podniky","finance","obchodní právo","komunikace","důvěra"],
@@ -109,13 +100,14 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "4",
     slug: "uspesne-vymahani-klicove-strategie",
     title: "Úspěšné Vymáhání: Klíčové Strategie",
     subtitle: "Jak vyjednávat s dlužníky a minimalizovat náklady",
     date: "15. 3. 2025",
     author: "Ing. Petra Svobodová",
     authorPosition: "Finanční analytik",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/gLQvHwmc/woman2.jpg",
     readTime: "8 minut čtení",
     category: "Vymáhání pohledávek",
     tags: ["vymáhání pohledávek","právo","finance","obchodní vztahy","vyjednávání","důvěra","podnikání"],
@@ -124,13 +116,14 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "5",
     slug: "smirci-rizeni-klic-k-prevenci-soudnich-sporu",
     title: "Smírčí řízení: Klíč k prevenci soudních sporů",
     subtitle: "Optimalizace procesu s AI v oblasti správy pohledávek",
     date: "15. 3. 2025",
     author: "Ing. Petra Svobodová",
     authorPosition: "Finanční analytik",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/gLQvHwmc/woman2.jpg",
     readTime: "7 minut čtení",
     category: "Správa pohledávek",
     tags: ["správa pohledávek","smírčí řízení","prevence sporů","AI","automatizace","MSP","právní proces"],
@@ -139,13 +132,14 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "6",
     slug: "insolvence-po-pandemii-nove-strategie-v-cr",
     title: "Insolvence po pandemii: Nové strategie v ČR",
     subtitle: "Jak legislativní změny a AI formují vymáhání pohledávek",
     date: "15. 3. 2025",
     author: "Mgr. Martin Dvořák",
     authorPosition: "Právní specialista",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/h1g0nf3P/man2.jpg",
     readTime: "5 minut čtení",
     category: "Insolvence",
     tags: ["insolvence","česká legislativa","pohledávky","automatizace","umělá inteligence","firmy","post-pandemická nejistota"],
@@ -154,13 +148,14 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "7",
     slug: "optimalizace-dluhu-role-insolvencniho-spravce",
     title: "Optimalizace dluhů: Role insolvenčního správce",
     subtitle: "Efektivní strategie a moderní technologie v insolvenci",
     date: "15. 3. 2025",
     author: "Ing. Petra Svobodová",
     authorPosition: "Finanční analytik",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/gLQvHwmc/woman2.jpg",
     readTime: "8 minut čtení",
     category: "Insolvence",
     tags: ["insolvence","restrukturalizace","firemní dluhy","automatizace","digitalizace","umělá inteligence","vymáhání pohledávek"],
@@ -169,13 +164,14 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "8",
     slug: "moratoria-na-insolvence-vyzvy-pro-veritele",
     title: "Moratoria na insolvence: Výzvy pro věřitele",
     subtitle: "Jak moderní technologie mění vymáhání pohledávek",
     date: "15. 3. 2025",
     author: "Ing. Petra Svobodová",
     authorPosition: "Finanční analytik",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/gLQvHwmc/woman2.jpg",
     readTime: "6 minut čtení",
     category: "Insolvence",
     tags: ["insolvence","moratorium","vymáhání pohledávek","technologie","digitalizace","automatizace","věřitelé"],
@@ -184,13 +180,14 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "9",
     slug: "novelizace-insolvencniho-zakona-vyzvy-a-sance",
     title: "Novelizace insolvenčního zákona: Výzvy a šance",
     subtitle: "Jak změny ovlivní vymáhání pohledávek českých firem",
     date: "15. 3. 2025",
     author: "Mgr. Martin Dvořák",
     authorPosition: "Právní specialista",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/h1g0nf3P/man2.jpg",
     readTime: "6 minut čtení",
     category: "Insolvence",
     tags: ["insolvence","vymáhání pohledávek","české firmy","právní změny","věřitelé","automatizace","digitalizace"],
@@ -199,13 +196,14 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "10",
     slug: "eticke-vymahani-jak-chranit-reputaci-firmy",
     title: "Etické vymáhání: Jak chránit reputaci firmy",
     subtitle: "Minimalizujte rizika s etickými přístupy ve vymáhání pohledávek",
     date: "15. 3. 2025",
-    author: "Jan Novák",
+    author: "Jan Petrů",
     authorPosition: "Specialista na pohledávky",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/GfpZGQK8/man1.jpg",
     readTime: "6 minut čtení",
     category: "Etika vymáhání",
     tags: ["etika vymáhání","pohledávky","reputační rizika","podnikání","technologie","automatizace","Česká republika"],
@@ -213,13 +211,14 @@ const blogPosts: BlogPost[] = [
     excerpt: "Objevte etické strategie vymáhání pohledávek a chraňte reputaci své firmy v ČR.",
   },
   {
+    id: "11",
     slug: "eticke-vymahani-pravo-vs-vztahy",
     title: "Etické vymáhání: Právo vs. vztahy",
     subtitle: "Jak české MSP zvládají etická dilemata při vymáhání pohledávek",
     date: "15. 3. 2025",
     author: "Mgr. Martin Dvořák",
     authorPosition: "Právní specialista",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/h1g0nf3P/man2.jpg",
     readTime: "6 minut čtení",
     category: "Etika vymáhání",
     tags: ["etika", "vymáhání pohledávek", "obchodní vztahy", "MSP", "Česká republika", "právo", "podnikání"],
@@ -227,13 +226,14 @@ const blogPosts: BlogPost[] = [
     excerpt: "Objevte, jak české MSP balancují mezi právními nároky a obchodními vztahy v etickém vymáhání.",
   },
   {
+    id: "12",
     slug: "inkasovani-pohledavek-v-case-inflace",
     title: "Inkasování pohledávek v čase inflace",
     subtitle: "Chraňte jmění před inflací s efektivními postupy",
     date: "15. 3. 2025",
     author: "Ing. Petra Svobodová",
     authorPosition: "Finanční analytik",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/gLQvHwmc/woman2.jpg",
     readTime: "6 minut čtení",
     category: "Správa pohledávek",
     tags: ["pohledávky","inflace","MSP","automatizace","správa financí","technologie"],
@@ -241,13 +241,14 @@ const blogPosts: BlogPost[] = [
     excerpt: "Objevte strategie pro správu pohledávek během inflace a chraňte své jmění.",
   },
   {
+    id: "13",
     slug: "ai-revoluce-v-predikci-platebni-moralky",
     title: "AI revoluce v predikci platební morálky",
     subtitle: "Objevte efektivitu a právní výzvy AI v českých firmách",
     date: "15. 3. 2025",
     author: "Ing. Petra Svobodová",
     authorPosition: "Finanční analytik",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/gLQvHwmc/woman2.jpg",
     readTime: "6 minut čtení",
     category: "Správa pohledávek",
     tags: ["AI","platební morálka","správa pohledávek","české firmy","právní výzvy","MSP","automatizace"],
@@ -255,13 +256,14 @@ const blogPosts: BlogPost[] = [
     excerpt: "Využití AI v predikci platební morálky zlepšuje správu pohledávek a přináší právní výzvy.",
   },
   {
+    id: "14",
     slug: "ai-a-digitalizace-ve-sprave-pohledavek",
     title: "AI a digitalizace ve správě pohledávek",
     subtitle: "České podniky využívají AI pro lepší správu pohledávek",
     date: "15. 3. 2025",
     author: "Ing. Petra Svobodová",
     authorPosition: "Finanční analytik",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/gLQvHwmc/woman2.jpg",
     readTime: "6 minut čtení",
     category: "Správa pohledávek",
     tags: ["AI","digitalizace","správa pohledávek","české podniky","MSP","automatizace"],
@@ -269,13 +271,14 @@ const blogPosts: BlogPost[] = [
     excerpt: "Zjistěte, jak AI a digitální technologie mění správu pohledávek v českých MSP.",
   },
   {
+    id: "15",
     slug: "digitalizace-meni-spravu-pohledavek-v-ceskych-msp",
     title: "Digitalizace mění správu pohledávek v českých MSP",
     subtitle: "Jak automatizace zvyšuje efektivitu a konkurenceschopnost podniků",
     date: "15. 3. 2025",
-    author: "Jan Novák",
+    author: "Jan Petrů",
     authorPosition: "Specialista na pohledávky",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/GfpZGQK8/man1.jpg",
     readTime: "5 minut čtení",
     category: "Finanční analýza",
     tags: ["digitalizace","automatizace","správa pohledávek","české MSP","efektivita"],
@@ -283,13 +286,14 @@ const blogPosts: BlogPost[] = [
     excerpt: "Digitalizace a automatizace zlepšují správu pohledávek v českých MSP.",
   },
   {
+    id: "16",
     slug: "prediktivni-analyza-klic-ke-zdravym-pohledavkam-msp",
     title: "Prediktivní analýza: Klíč ke zdravým pohledávkám MSP",
     subtitle: "Transformujte správu pohledávek pomocí moderních technologií",
     date: "15. 3. 2025",
     author: "Mgr. Martin Dvořák",
     authorPosition: "Právní specialista",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/h1g0nf3P/man2.jpg",
     readTime: "3 minuty čtení",
     category: "Prevence",
     tags: ["správa pohledávek","prediktivní analýza","MSP","cash flow","technologie"],
@@ -297,27 +301,14 @@ const blogPosts: BlogPost[] = [
     excerpt: "Objevte, jak prediktivní analýza zlepší řízení pohledávek v MSP.",
   },
   {
-    slug: "novela-insolvencniho-zakona-sance-pro-startupy",
-    title: "Novela insolvenčního zákona: Šance pro startupy?",
-    subtitle: "Jak změny ovlivňují zajišťování pohledávek u technologických firem",
-    date: "15. 3. 2025",
-    author: "Jan Novák",
-    authorPosition: "Specialista na pohledávky",
-    authorImage: "/placeholder.svg?height=120&width=120",
-    readTime: "3 minuty čtení",
-    category: "Insolvence",
-    tags: ["insolvenční zákon","startupy","technologické firmy","pohledávky","právní změny"],
-    image: "/images/blog/article-1742057915664.jpg",
-    excerpt: "Novelizace insolvenčního zákona přináší výzvy i příležitosti pro startupy v ČR.",
-  },
-  {
+    id: "17",
     slug: "digitalizace-soudniho-vymahani-sance-pro-ceske-firmy",
     title: "Digitalizace soudního vymáhání: Šance pro české firmy",
     subtitle: "Rychlost a transparentnost vymáhání pohledávek díky digitalizaci",
     date: "15. 3. 2025", 
     author: "Mgr. Martin Dvořák",
     authorPosition: "Právní specialista",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/h1g0nf3P/man2.jpg",
     readTime: "4 minuty čtení",
     category: "Vymáhání pohledávek",
     tags: ["digitalizace", "soudní vymáhání", "pohledávky", "legislativa", "konkurenceschopnost"],
@@ -325,13 +316,14 @@ const blogPosts: BlogPost[] = [
     excerpt: "Jak digitalizace mění soudní vymáhání pohledávek a jaké to přináší výhody českým firmám."
   },
   {
+    id: "18",
     slug: "kvalita-versus-rychlost-vymahani",
     title: "Kvalita versus rychlost vymáhání: Co upřednostnit?",
     subtitle: "Jak najít rovnováhu mezi efektivitou a etikou při vymáhání pohledávek",
     date: "15. 3. 2025",
-    author: "Jan Novák",
+    author: "Jan Petrů",
     authorPosition: "Specialista na pohledávky",
-    authorImage: "/placeholder.svg?height=120&width=120",
+    authorImage: "https://i.ibb.co/GfpZGQK8/man1.jpg",
     readTime: "5 minut čtení",
     category: "Etika vymáhání",
     tags: ["etika", "vymáhání pohledávek", "efektivita", "obchodní vztahy", "praxe"],
@@ -352,70 +344,81 @@ const categories = [
 
 export default function BlogPage() {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchTerm, setSearchTerm] = useState("")
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [suggestions, setSuggestions] = useState<BlogPost[]>([])
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
+  const [isSearching, setIsSearching] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const suggestionsRef = useRef<HTMLDivElement>(null)
   const [selectedCategory, setSelectedCategory] = useState("")
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
-  
-  const postsPerPage = 9
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage)
-  
-  useEffect(() => {
-    // Simulace načítání dat
-    setTimeout(() => {
-      setIsLoaded(true)
-      setFilteredPosts(blogPosts)
-    }, 500)
-  }, [])
 
-  // Filtrování podle kategorie
-  const handleCategorySelect = (category: string) => {
-    if (selectedCategory === category) {
-      setSelectedCategory("")
-    } else {
-      setSelectedCategory(category)
-    }
-    setCurrentPage(1)
-  }
-  
-  // Filtrování podle tagu
-  const filterByTag = (tag: string) => {
-    setSearchQuery(tag)
-    setCurrentPage(1)
-  }
-  
-  // Filtrování příspěvků podle vyhledávání a kategorie
-  useEffect(() => {
-    let filtered = [...blogPosts]
-    
-    // Filtrování podle kategorie
-    if (selectedCategory) {
-      filtered = filtered.filter(post => post.category === selectedCategory)
-    }
-    
-    // Filtrování podle vyhledávacího dotazu
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      filtered = filtered.filter(post => 
-        post.title.toLowerCase().includes(query) || 
-        post.subtitle.toLowerCase().includes(query) || 
-        post.excerpt.toLowerCase().includes(query) ||
-        post.tags.some(tag => tag.toLowerCase().includes(query))
-      )
-    }
-    
-    // Řazení podle data (nejnovější první)
-    filtered = filtered.sort((a, b) => {
-      return new Date(b.date).getTime() - new Date(a.date).getTime()
+  const allPosts = useRef(blogPosts).current
+
+  // Calculate category counts based on actual data
+  const categories = useMemo(() => {
+    // Create a map to count posts by category slug
+    const categoryCounts = new Map<string, number>()
+
+    // Count posts for each category
+    allPosts.forEach((post) => {
+      if (post.category) {
+        const categorySlug = post.category
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+        const currentCount = categoryCounts.get(categorySlug) || 0
+        categoryCounts.set(categorySlug, currentCount + 1)
+      }
     })
-    
-    setFilteredPosts(filtered)
-  }, [searchQuery, selectedCategory])
+
+    // Create the categories array with real counts
+    return categoryDefinitions.map((category: Category) => ({
+      ...category,
+      count: category.slug === "" ? allPosts.length : categoryCounts.get(category.slug) || 0,
+    }))
+  }, [allPosts])
+
+  // Update suggestions when search term changes
+  useEffect(() => {
+    if (searchTerm.trim().length > 0) {
+      const searchTermLower = searchTerm.toLowerCase().trim()
+      const matchedItems = allPosts.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchTermLower) ||
+          post.excerpt.toLowerCase().includes(searchTermLower) ||
+          post.category?.toLowerCase().includes(searchTermLower) ||
+          post.author?.toLowerCase().includes(searchTermLower),
+      )
+
+      setSuggestions(matchedItems)
+      setShowSuggestions(matchedItems.length > 0)
+      setSelectedSuggestionIndex(-1)
+    } else if (showSuggestions) {
+      // If the search field is empty but suggestions should be shown (on focus)
+      setSuggestions(allPosts)
+    }
+  }, [searchTerm, allPosts, showSuggestions])
+
+  // Handle click outside to close suggestions
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        suggestionsRef.current &&
+        !suggestionsRef.current.contains(event.target as Node) &&
+        searchInputRef.current &&
+        !searchInputRef.current.contains(event.target as Node)
+      ) {
+        setShowSuggestions(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
 
   // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -445,535 +448,446 @@ export default function BlogPage() {
   // Navigate to a post
   const navigateToPost = (post: BlogPost) => {
     setShowSuggestions(false)
-    setSearchQuery("")
+    setSearchTerm("")
     window.location.href = `/blog/${post.slug}`
   }
 
-  // Handle click outside to close suggestions
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        suggestionsRef.current &&
-        !suggestionsRef.current.contains(event.target as Node) &&
-        searchInputRef.current &&
-        !searchInputRef.current.contains(event.target as Node)
-      ) {
-        setShowSuggestions(false)
-      }
+  // Handle search submission
+  const handleSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault()
+
+    if (!searchTerm.trim()) {
+      setIsSearching(false)
+      return
     }
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
+    setIsSearching(true)
+    setShowSuggestions(false)
+  }
 
-  // Update suggestions when search query changes
-  useEffect(() => {
-    if (searchQuery.trim().length > 0) {
-      const searchTermLower = searchQuery.toLowerCase().trim()
-      const matchedItems = blogPosts.filter(
-        (post) =>
-          post.title.toLowerCase().includes(searchTermLower) ||
-          post.excerpt.toLowerCase().includes(searchTermLower) ||
-          post.category?.toLowerCase().includes(searchTermLower) ||
-          post.tags.some(tag => tag.toLowerCase().includes(searchTermLower))
-      )
+  // Clear search
+  const clearSearch = () => {
+    setSearchTerm("")
+    setShowSuggestions(false)
+    setSuggestions([])
+    setIsSearching(false)
+  }
 
-      setSuggestions(matchedItems)
-      setShowSuggestions(matchedItems.length > 0)
-      setSelectedSuggestionIndex(-1)
-    } else {
-      setSuggestions([])
-      setShowSuggestions(false)
-    }
-  }, [searchQuery])
+  // Handle focus on search input
+  const handleFocus = () => {
+    // Show all posts as suggestions when the field is focused
+    setSuggestions(allPosts)
+    setShowSuggestions(true)
+  }
 
   // Highlight matching text in suggestions
   const highlightMatch = (text: string, query: string) => {
     if (!query.trim()) return text
 
-    try {
-      const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      const regex = new RegExp(`(${escapedQuery})`, "gi");
-      return text.replace(regex, '<mark class="bg-orange-600 text-white font-bold px-1 py-0.5 rounded">$1</mark>');
-    } catch (error) {
-      return text;
-    }
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi")
+    return text.replace(regex, '<mark class="px-0.5">$1</mark>')
   }
 
-  // Add styles for search suggestions
   useEffect(() => {
-    const style = document.createElement('style')
-    style.textContent = `
-      .search-suggestions {
-        background: rgba(255, 255, 255, 1);
-        backdrop-filter: blur(12px);
-        border: 2px solid rgba(249, 115, 22, 0.5);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        overflow-y: auto;
-        max-height: 420px;
-        margin-bottom: -150px;
-        padding-bottom: 0;
-        position: relative;
-        z-index: 2000;
-      }
-      .search-suggestions::-webkit-scrollbar {
-        width: 6px;
-      }
-      .search-suggestions::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 3px;
-      }
-      .search-suggestions::-webkit-scrollbar-thumb {
-        background-color: rgba(249, 115, 22, 0.8);
-        border-radius: 3px;
-        border: 1px solid rgba(249, 115, 22, 0.1);
-      }
-      .search-suggestions::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(249, 115, 22, 1);
-      }
-      .suggestion-item:hover mark {
-        background-color: #f97316;
-      }
-      .suggestion-item.selected mark {
-        background-color: #f97316;
-      }
-      .suggestion-item:hover {
-        background-color: rgba(249, 115, 22, 0.1);
-      }
-      .suggestion-item.selected {
-        background-color: rgba(249, 115, 22, 0.1);
-      }
-      mark {
-        background-color: #f97316;
-        color: white;
-        font-weight: 700;
-        padding: 0 4px;
-        border-radius: 3px;
-      }
-    `
-    document.head.appendChild(style)
-    return () => {
-      document.head.removeChild(style)
-    }
+    // Set loaded state after a small delay to trigger animations
+    const timer = setTimeout(() => {
+      setIsLoaded(true)
+    }, 100)
+
+    return () => clearTimeout(timer)
   }, [])
 
-  return (
-    <div className="min-h-screen bg-white">
-      <Header isLandingPage={false} />
-      
-      {/* Hero section - moderní design s výraznějšími oranžovými prvky */}
-      <section className="relative pt-36 pb-48 overflow-hidden">
-        {/* Pozadí s gradientem a texturou */}
-        <div className="absolute inset-0 bg-zinc-900 z-0">
-          {/* Textury a gradienty */}
-          <div className="absolute inset-0 opacity-30"
-               style={{
-                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2V6h4V4H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-               }}
-          ></div>
-          
-          {/* Vylepšené gradienty */}
-          <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/90 via-zinc-900/80 to-zinc-900"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-600/10 via-transparent to-orange-600/10"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white to-transparent"></div>
-        </div>
-        
-        {/* Dekorativní prvky */}
-        <div className="absolute top-1/2 right-5 w-[500px] h-[500px] rounded-full bg-orange-500/10 blur-[100px]"></div>
-        <div className="absolute top-1/3 left-10 w-[400px] h-[400px] rounded-full bg-orange-600/10 blur-[80px]"></div>
-        <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 w-2/3 h-64 bg-orange-500/20 blur-[120px]"></div>
-        
-        {/* Animované plovoucí kruhy s většími rozměry */}
-        <div className="absolute top-20 left-[10%] w-8 h-8 rounded-full bg-orange-400/40 animate-float"></div>
-        <div className="absolute top-40 right-[20%] w-12 h-12 rounded-full bg-orange-500/40 animate-float" style={{ animationDelay: "1s" }}></div>
-        <div className="absolute bottom-32 left-[30%] w-16 h-16 rounded-full bg-orange-600/30 animate-float" style={{ animationDelay: "2s" }}></div>
-        <div className="absolute bottom-48 right-[35%] w-10 h-10 rounded-full bg-orange-300/30 animate-float" style={{ animationDelay: "3s" }}></div>
-        
-        {/* Content container */}
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
-            {/* Oranžový badge nad nadpisem */}
-            <div className="inline-flex items-center bg-orange-600/20 backdrop-blur-sm px-6 py-3 rounded-full border border-orange-500/30 mb-8 text-orange-300 animate-fade-in-up shadow-lg shadow-orange-500/10">
-              <span className="block w-2 h-2 rounded-full bg-orange-400 mr-3"></span>
-              <span className="text-sm font-medium tracking-wide">Odborné články pro firmy a podnikatele</span>
-            </div>
-            
-            {/* Hlavní nadpis */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 text-center text-white leading-tight tracking-tight animate-fade-in-up" style={{animationDelay: "0.1s"}}>
-              <span className="relative inline-block">
-                Náš
-                <span className="absolute -bottom-3 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 to-transparent"></span>
-              </span>
-              <span className="relative ml-5 inline-block text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-500">
-                blog
-                <span className="absolute -bottom-3 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 to-orange-600"></span>
-              </span>
-            </h1>
-            
-            {/* Podnadpis s lepším formátováním */}
-            <p className="text-xl md:text-2xl text-center max-w-4xl mx-auto mb-16 text-zinc-300 leading-relaxed animate-fade-in-up" style={{animationDelay: "0.2s"}}>
-              Aktualizovaný blog o správě, odkupu a vymáhání pohledávek. <br className="hidden md:block" />
-              Najdete zde <span className="text-orange-300 font-medium">odborné články s praktickými radami</span> pro firmy
-              a podnikatele v českém právním prostředí.
-            </p>
-            
-            {/* Enhanced search bar with improved UX */}
-            <div className="relative max-w-2xl mx-auto group animate-fade-in-up" style={{animationDelay: "0.3s"}}>
-              <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/40 to-orange-600/40 rounded-full blur-lg opacity-100 group-hover:opacity-100 transition-all duration-500"></div>
-              <div className="relative bg-white shadow-md hover:shadow-lg rounded-full border-2 border-orange-300 transition-all duration-300">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-600 transition-transform duration-300 group-focus-within:scale-110">
-                  <Search className="h-5 w-5" />
-                </div>
-                <input
-                  ref={searchInputRef}
-                  type="search"
-                  placeholder="Hledat články, témata nebo autory..."
-                  className="bg-white border-transparent pl-12 pr-12 py-4 text-[16px] text-zinc-900 font-medium placeholder:text-zinc-500 w-full rounded-full focus:ring-2 focus:ring-orange-300 focus:border-transparent transition-all duration-300"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-700 transition-colors p-1.5 hover:bg-zinc-100 rounded-full"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
+  // Filter posts based on selected category
+  const filteredPosts = useMemo(() => {
+    if (!selectedCategory) {
+      return allPosts // Return all posts for "All articles" view
+    }
 
-                {/* Improved Search suggestions with compact design */}
-                {showSuggestions && (
-                  <div
-                    ref={suggestionsRef}
-                    className="absolute left-0 right-0 md:absolute md:left-auto md:right-auto search-suggestions rounded-xl overflow-auto w-full md:w-auto min-w-full"
-                    style={{
-                      top: "calc(100% + 8px)",
-                      zIndex: 2000,
-                      boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)'
-                    }}
+    // For specific category
+    return allPosts.filter((post) => {
+      const postCategorySlug = post.category
+        ?.toLowerCase()
+        .replace(/\s+/g, "-")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+      return postCategorySlug === selectedCategory
+    })
+  }, [selectedCategory, allPosts])
+
+  // Get featured post (first post in the list)
+  const featuredPost = allPosts[0]
+
+  // Only show featured post separately on the "Všechny články" view
+  const showFeaturedPost = selectedCategory === ""
+
+  return (
+    <div className="min-h-screen bg-gray-50 pb-16 pt-28">
+      {/* Add a style for the highlight effect */}
+      <style jsx global>{`
+        .suggestion-item:hover mark {
+          background-color: rgba(249, 115, 22, 0.4);
+          color: white;
+        }
+        .suggestion-item.selected mark {
+          background-color: rgba(249, 115, 22, 0.4);
+          color: white;
+        }
+        mark {
+          padding: 0;
+          background-color: rgba(249, 115, 22, 0.3);
+          color: white;
+          border-radius: 2px;
+        }
+      `}</style>
+
+      {/* Hero Section with fade-in animation */}
+      <section
+        className={`bg-zinc-900 py-16 text-white transition-opacity duration-1000 ${isLoaded ? "opacity-100" : "opacity-0"}`}
+      >
+        <div className="container">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="mb-4 text-4xl font-bold md:text-5xl">
+              <span className="text-white">EX</span>
+              <span className="text-orange-500">POHLEDÁVKY</span>
+            </h1>
+            <h2 className="mb-6 text-xl font-medium md:text-2xl">Odborný portál o správě a vymáhání pohledávek</h2>
+            <p className="mb-8 text-gray-200">
+              Vítejte na našem blogu věnovaném správě, odkupu a vymáhání pohledávek. Najdete zde odborné články s
+              praktickými radami pro firmy a podnikatele v českém právním prostředí.
+            </p>
+
+            {/* Search Bar with subtle animation */}
+            <div
+              className="mx-auto mb-8 max-w-xl transform transition-all duration-500 ease-in-out hover:scale-[1.02]"
+              style={{ position: "relative", zIndex: "10" }}
+            >
+              <div className="relative">
+                <form onSubmit={handleSearch} className="relative z-[100]">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white z-20" size={20} />
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Hledat články..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    onFocus={handleFocus}
+                    className="w-full rounded-full border-0 bg-white/10 px-5 pl-10 py-3 text-white placeholder-gray-300 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300"
+                  />
+                  {searchTerm && (
+                    <button
+                      type="button"
+                      onClick={clearSearch}
+                      className="absolute right-16 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
+                    >
+                      <X size={18} />
+                    </button>
+                  )}
+                  <button
+                    type="submit"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-orange-500 p-2 text-white hover:bg-orange-600 transition-colors duration-300"
                   >
-                    <div className="py-1 bg-white backdrop-blur-sm border-2 border-orange-300 rounded-xl shadow-lg">
-                      {suggestions.length > 0 ? (
-                        <>
-                          <div className="sticky top-0 px-4 py-3 text-base font-bold text-zinc-900 bg-orange-50 border-b-2 border-orange-200 backdrop-blur-sm z-10 flex items-center justify-between">
-                            <span>Nalezeno <span className="text-orange-600">{suggestions.length}</span> výsledků</span>
-                            <button
-                              onClick={() => setShowSuggestions(false)}
-                              className="text-zinc-700 hover:text-zinc-900 transition-colors p-1.5 hover:bg-orange-100 rounded-full"
+                    <Search className="h-5 w-5" />
+                  </button>
+
+                  {/* Search suggestions */}
+                  {showSuggestions && (
+                    <div
+                      ref={suggestionsRef}
+                      className="absolute z-[100] mt-2 w-full bg-zinc-800/95 backdrop-blur-sm rounded-xl shadow-lg max-h-80 overflow-auto border border-zinc-700 transition-all duration-300"
+                      style={{ transform: "translateY(4px)" }}
+                    >
+                      <div className="py-2 px-2">
+                        <ul className="space-y-1">
+                          {suggestions.map((post, index) => (
+                            <li
+                              key={post.id}
+                              className={`suggestion-item px-3 py-2 cursor-pointer flex items-start rounded-lg transition-all duration-200 ${
+                                selectedSuggestionIndex === index
+                                  ? "bg-orange-500/20 text-white"
+                                  : "hover:bg-zinc-700/50"
+                              }`}
+                              onClick={() => navigateToPost(post)}
+                              onMouseEnter={() => setSelectedSuggestionIndex(index)}
                             >
-                              <X className="h-4 w-4" />
-                            </button>
-                          </div>
-                          <div className="divide-y divide-orange-50">
-                            {suggestions.map((post, index) => (
-                              <div
-                                key={post.slug}
-                                className={`suggestion-item px-4 py-4 cursor-pointer transition-all duration-200 hover:bg-orange-100 ${
-                                  selectedSuggestionIndex === index ? "bg-orange-100" : "bg-white"
-                                }`}
-                                onClick={() => navigateToPost(post)}
-                                onMouseEnter={() => setSelectedSuggestionIndex(index)}
-                              >
-                                <div className="flex items-start gap-4">
-                                  {/* Thumbnail */}
-                                  <div className="relative flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200 shadow-sm">
-                                    <img
-                                      src={post.image}
-                                      alt=""
-                                      className="w-full h-full object-cover"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                                  </div>
-                                  
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 mb-1.5">
-                                      <Badge 
-                                        variant="secondary" 
-                                        className="px-2 py-0.5 text-[11px] bg-orange-500 text-white rounded-full font-bold shadow-sm"
-                                      >
-                                        {post.category}
-                                      </Badge>
-                                      <span className="text-[11px] text-zinc-800 font-medium flex items-center gap-1">
-                                        <Clock className="w-3 h-3 text-orange-600" />
-                                        {post.readTime}
-                                      </span>
-                                    </div>
-                                    <div
-                                      className="font-bold text-[15px] text-zinc-900 mb-1.5 leading-tight line-clamp-1"
-                                      dangerouslySetInnerHTML={{
-                                        __html: highlightMatch(post.title, searchQuery)
-                                      }}
-                                    />
-                                    <div
-                                      className="text-[13px] text-zinc-800 line-clamp-2 leading-snug"
-                                      dangerouslySetInnerHTML={{
-                                        __html: highlightMatch(post.excerpt, searchQuery)
-                                      }}
-                                    />
-                                  </div>
-                                </div>
+                              <div className="flex-1 min-w-0 mr-2">
+                                <div
+                                  className={`font-medium text-left truncate ${selectedSuggestionIndex === index ? "text-white" : "text-zinc-200"}`}
+                                  dangerouslySetInnerHTML={{
+                                    __html: highlightMatch(post.title, searchTerm),
+                                  }}
+                                />
+                                <div
+                                  className="text-sm text-zinc-400 truncate text-left mt-1"
+                                  dangerouslySetInnerHTML={{
+                                    __html: highlightMatch(
+                                      post.excerpt.substring(0, 75) + (post.excerpt.length > 75 ? "..." : ""),
+                                      searchTerm,
+                                    ),
+                                  }}
+                                />
                               </div>
-                            ))}
-                          </div>
-                        </>
-                      ) : (
-                        <div className="px-6 py-10 text-center">
-                          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-500/20 mb-4 shadow-inner">
-                            <Search className="h-7 w-7 text-orange-600" />
-                          </div>
-                          <p className="text-lg font-bold text-zinc-800 mb-2">Žádné výsledky nenalezeny</p>
-                          <p className="text-base text-zinc-700">Zkuste upravit vyhledávací dotaz</p>
-                        </div>
-                      )}
+                              <span className="text-xs bg-orange-500/20 text-orange-300 rounded-full px-2 py-0.5 ml-auto flex-shrink-0 whitespace-nowrap">
+                                {post.category}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </form>
               </div>
             </div>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="bg-transparent text-white hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105"
+            >
+              <Link href="/o-nas">Více o nás</Link>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Procházet podle kategorií - vylepšený design */}
-      <section className={`bg-gradient-to-b from-white to-orange-50/30 py-16 relative ${showSuggestions ? 'pt-32' : ''}`}>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-6">
-              Procházet podle <span className="text-orange-600">kategorií</span>
-            </h2>
-            <p className="text-zinc-600 max-w-2xl mx-auto mb-8">
-              Vyberte si kategorii, která vás zajímá, a objevte relevantní články z dané oblasti.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => handleCategorySelect(category)}
-                className={`relative group flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-300 ${
-                  selectedCategory === category
-                    ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/20"
-                    : "bg-white hover:bg-orange-50 text-zinc-700 hover:text-orange-600 border border-zinc-100 hover:border-orange-200"
-                }`}
-              >
-                <span className="font-medium text-sm text-center">{category}</span>
-                {selectedCategory === category && (
-                  <span className="absolute -top-1 -right-1 w-3 h-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
+      <div className="container">
+        {/* Search Results */}
+        {isSearching && (
+          <div className="my-8">
+            <div className="bg-white rounded-xl p-6 shadow-md">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-zinc-900">
+                  {suggestions.length > 0
+                    ? `Výsledky vyhledávání (${suggestions.length})`
+                    : "Žádné výsledky nenalezeny"}
+                </h2>
+                <Button variant="ghost" size="sm" onClick={clearSearch} className="text-zinc-500 hover:text-zinc-700">
+                  Zrušit vyhledávání
+                </Button>
+              </div>
 
-      {/* Seznam článků - vylepšený design */}
-      <section className="py-20 bg-white relative">
-        <div className="container mx-auto px-4 relative z-10">
-          {/* Filtry a řazení */}
-          <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-            <div className="w-full md:w-auto flex items-center gap-4">
-              {selectedCategory && (
-                <Badge
-                  variant="outline"
-                  className="flex items-center gap-1 px-4 py-2 bg-orange-100 text-orange-800 border-orange-200 rounded-full"
-                >
-                  {selectedCategory}
-                  <button 
-                    onClick={() => setSelectedCategory("")}
-                    className="ml-2 hover:bg-orange-200 rounded-full p-1 transition-colors"
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
-                </Badge>
+              {suggestions.length > 0 ? (
+                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                  {suggestions.map((post) => (
+                    <div key={post.id} className="transform transition-all duration-500 ease-in-out hover:scale-[1.03]">
+                      <ArticleCard post={post} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-zinc-600 mb-4">Zkuste upravit vyhledávací dotaz nebo procházet kategorie níže.</p>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {categories.map((category: Category) => (
+                      <button
+                        key={category.slug}
+                        onClick={() => setSelectedCategory(category.slug)}
+                        className="rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-800 hover:bg-orange-200 transition-colors"
+                      >
+                        {category.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
           </div>
+        )}
 
-          {/* Výsledky vyhledávání */}
-          {searchQuery && (
-            <div className="mb-8 p-4 bg-orange-50 border border-orange-100 rounded-lg">
-              <p className="text-zinc-700">
-                {filteredPosts.length === 0 ? (
-                  "Žádné články neodpovídají vašemu vyhledávání"
-                ) : (
-                  `Nalezeno ${filteredPosts.length} ${
-                    filteredPosts.length === 1 ? "článek" : 
-                    filteredPosts.length >= 2 && filteredPosts.length <= 4 ? "články" : "článků"
-                  }`
-                )}
-                {searchQuery && ` pro "${searchQuery}"`}
-                {selectedCategory && ` v kategorii "${selectedCategory}"`}
-              </p>
+        {/* Only show regular content when not searching */}
+        {!isSearching && (
+          <>
+            {/* Categories Navigation with horizontal scroll animation */}
+            <div className="my-8 overflow-x-auto relative">
+              <div className="flex gap-4 whitespace-nowrap pb-2">
+                {categories.map((category: Category, index: number) => (
+                  <button
+                    key={category.slug}
+                    onClick={() => setSelectedCategory(category.slug)}
+                    className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 ${
+                      category.slug === selectedCategory
+                        ? "bg-orange-500 text-white"
+                        : "bg-white text-zinc-700 hover:bg-orange-100"
+                    }`}
+                    style={{
+                      transitionDelay: `${index * 50}ms`,
+                      opacity: isLoaded ? 1 : 0,
+                      transform: isLoaded ? "translateY(0)" : "translateY(20px)",
+                    }}
+                  >
+                    {category.name} <span className="ml-1 text-xs opacity-70">({category.count})</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          )}
 
-          {/* Grid s články */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-            {isLoaded ? (
-              filteredPosts
-                .slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage)
-                .map((post) => (
-                  <Card key={post.slug} className="group overflow-hidden flex flex-col h-full border-none rounded-xl shadow-md hover:shadow-xl transition-all duration-300">
-                    <Link href={`/blog/${post.slug}`} className="relative block h-64 overflow-hidden">
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <div className="absolute top-4 left-4">
-                        <Badge className="bg-orange-500 hover:bg-orange-600 text-white border-none shadow-lg">
-                          {post.category}
-                        </Badge>
-                      </div>
-                    </Link>
-
-                    <CardHeader className="flex-grow p-6 space-y-4">
-                      <div className="flex items-center gap-4 text-sm text-zinc-500">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4 text-orange-500" />
-                          <span>{post.date}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-4 w-4 text-orange-500" />
-                          <span>{post.readTime}</span>
-                        </div>
-                      </div>
-
-                      <Link href={`/blog/${post.slug}`}>
-                        <CardTitle className="text-2xl font-bold text-zinc-900 group-hover:text-orange-600 transition-colors">
-                          {post.title}
-                        </CardTitle>
-                      </Link>
-
-                      <p className="text-zinc-600 text-base line-clamp-3 min-h-[4.5rem]">
-                        {post.excerpt}
-                      </p>
-
-                      <div className="flex flex-wrap gap-2 pt-2">
-                        {post.tags.slice(0, 3).map((tag) => (
-                          <button
-                            key={tag}
-                            onClick={(e) => {
-                              e.preventDefault()
-                              filterByTag(tag)
-                            }}
-                            className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-orange-50 text-orange-700 hover:bg-orange-100 transition-colors"
-                          >
-                            {tag}
-                          </button>
-                        ))}
-                      </div>
-                    </CardHeader>
-
-                    <CardFooter className="px-6 py-4 border-t border-zinc-100">
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="inline-flex items-center text-base font-medium text-orange-600 hover:text-orange-700 transition-colors"
-                      >
-                        Přečíst článek
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </Link>
-                    </CardFooter>
-                  </Card>
-                ))
-            ) : (
-              // Loading stav
-              Array.from({ length: 6 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="bg-zinc-100 animate-pulse rounded-xl h-[500px]"
-                ></div>
-              ))
+            {/* Latest Article Section with fade-up animation - only shown on "Všechny články" */}
+            {showFeaturedPost && (
+              <SectionWrapper animation="fade-up">
+                <section className="py-8">
+                  <h2 className="mb-8 text-2xl font-bold text-zinc-900">Nejnovější článek</h2>
+                  <div className="transform transition-all duration-500 ease-in-out hover:scale-[1.01]">
+                    <FeaturedArticle post={featuredPost} />
+                  </div>
+                </section>
+              </SectionWrapper>
             )}
+
+            {/* All Articles Section with staggered fade-up animations */}
+            <SectionWrapper animation="fade-up" delay={200}>
+              <section className="py-8">
+                <h2 className="mb-8 text-2xl font-bold text-zinc-900">
+                  {selectedCategory
+                    ? categories.find((c: Category) => c.slug === selectedCategory)?.name || "Články"
+                    : "Všechny články"}
+                </h2>
+                {filteredPosts.length > 0 ? (
+                  <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    {filteredPosts.map((post, index) => (
+                      <div
+                        key={post.id}
+                        className="transform transition-all duration-500 ease-in-out hover:scale-[1.03]"
+                        style={{ transitionDelay: `${index * 100}ms` }}
+                      >
+                        <ArticleCard post={post} />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 bg-white rounded-xl shadow-sm">
+                    <p className="text-zinc-600">Žádné články v této kategorii.</p>
+                    <button
+                      onClick={() => setSelectedCategory("")}
+                      className="mt-4 text-orange-500 hover:text-orange-600 font-medium"
+                    >
+                      Zobrazit všechny články
+                    </button>
+                  </div>
+                )}
+              </section>
+            </SectionWrapper>
+
+            {/* Newsletter Section with fade-left animation */}
+            <SectionWrapper animation="fade-left" delay={300}>
+              <section className="my-12 rounded-xl bg-zinc-100 p-8">
+                <div className="mx-auto max-w-2xl text-center">
+                  <h2 className="mb-4 text-2xl font-bold">Odebírejte náš newsletter</h2>
+                  <p className="mb-6 text-zinc-600">
+                    Přihlaste se k odběru našeho newsletteru a dostávejte nejnovější články a aktuální informace z
+                    oblasti správy a vymáhání pohledávek.
+                  </p>
+                  <div className="flex flex-col gap-4 sm:flex-row">
+                    <input
+                      type="email"
+                      placeholder="Váš e-mail"
+                      className="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-300"
+                    />
+                    <Button className="whitespace-nowrap transition-all duration-300 hover:scale-105">
+                      Přihlásit se
+                    </Button>
+                  </div>
+                </div>
+              </section>
+            </SectionWrapper>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function FeaturedArticle({ post }: { post: BlogPost }) {
+  return (
+    <Link href={`/blog/${post.slug}`} className="group">
+      <article className="overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg">
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="relative aspect-[16/9] md:aspect-auto">
+            <Image
+              src={post.image || "/placeholder.svg"}
+              alt={post.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
+          </div>
+          <div className="flex flex-col justify-center p-6 lg:py-12 xl:py-24">
+            <div className="mb-2 flex items-center gap-2">
+              <div className="relative h-8 w-8 overflow-hidden rounded-full">
+                <Image
+                  src={post.authorImage || "/placeholder.svg"}
+                  alt={post.author || "Autor"}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <span className="text-sm text-zinc-600">{post.author}</span>
+              <span className="text-sm text-zinc-400">•</span>
+              <span className="text-sm text-zinc-500">{post.date}</span>
+            </div>
+
+            <div className="mb-3 w-fit rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-800">
+              {post.category}
+            </div>
+
+            <h2 className="mb-3 text-2xl font-bold text-zinc-900 group-hover:text-orange-500">{post.title}</h2>
+            <p className="mb-4 text-zinc-600">{post.excerpt}</p>
+
+            <div className="mt-auto flex items-center gap-1 text-sm text-zinc-500">
+              <Clock className="h-4 w-4" />
+              {post.readTime}
+            </div>
+          </div>
+        </div>
+      </article>
+    </Link>
+  )
+}
+
+function ArticleCard({ post }: { post: BlogPost }) {
+  return (
+    <Link href={`/blog/${post.slug}`} className="group">
+      <article className="h-full overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg">
+        <div className="relative aspect-[16/9]">
+          <Image
+            src={post.image || "/placeholder.svg"}
+            alt={post.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+            <div className="rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white inline">
+              {post.category}
+            </div>
+          </div>
+        </div>
+        <div className="p-6">
+          <div className="mb-2 flex items-center gap-2">
+            <div className="relative h-6 w-6 overflow-hidden rounded-full">
+              <Image
+                src={post.authorImage || "/placeholder.svg"}
+                alt={post.author || "Autor"}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <span className="text-xs text-zinc-600">{post.author}</span>
+            <span className="text-xs text-zinc-400">•</span>
+            <span className="text-xs text-zinc-500">{post.date}</span>
           </div>
 
-          {/* Stránkování */}
-          {filteredPosts.length > postsPerPage && (
-            <div className="mt-16 flex justify-center">
-              <nav className="inline-flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  className="rounded-lg border-zinc-200"
-                >
-                  Předchozí
-                </Button>
+          <h3 className="mb-2 text-xl font-bold text-zinc-900 group-hover:text-orange-500">{post.title}</h3>
+          <p className="mb-4 text-sm text-zinc-600">{post.excerpt}</p>
 
-                <div className="flex items-center gap-2">
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <Button
-                      key={page}
-                      variant={currentPage === page ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setCurrentPage(page)}
-                      className={`w-10 h-10 ${
-                        currentPage === page
-                          ? "bg-orange-500 hover:bg-orange-600 text-white"
-                          : "border-zinc-200 hover:border-orange-500 hover:text-orange-600"
-                      }`}
-                    >
-                      {page}
-                    </Button>
-                  ))}
-                </div>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  className="rounded-lg border-zinc-200"
-                >
-                  Další
-                </Button>
-              </nav>
-            </div>
-          )}
+          <div className="mt-auto flex items-center gap-1 text-sm text-zinc-500">
+            <Clock className="h-4 w-4" />
+            {post.readTime}
+          </div>
         </div>
-      </section>
-
-      {/* Add custom scrollbar and highlight styles */}
-      <style jsx global>{`
-        /* Remove default search input styles */
-        input[type="search"]::-webkit-search-decoration,
-        input[type="search"]::-webkit-search-cancel-button,
-        input[type="search"]::-webkit-search-results-button,
-        input[type="search"]::-webkit-search-results-decoration {
-          -webkit-appearance: none;
-        }
-        
-        /* Cool focus effect for search input */
-        .search-suggestions input:focus {
-          box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
-        }
-        
-        /* Smooth hover transitions */
-        .suggestion-item {
-          transition: all 0.2s ease;
-        }
-        
-        /* Subtle hover animation */
-        .suggestion-item:hover {
-          transform: translateX(4px);
-        }
-        
-        /* Fix for Firefox scrollbar */
-        .search-suggestions {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(249, 115, 22, 0.3) rgba(255, 255, 255, 0.2);
-        }
-      `}</style>
-    </div>
+      </article>
+    </Link>
   )
 }
 

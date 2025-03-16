@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Eye, User, FileText, Gavel, CreditCard, CheckCircle, ArrowRight, Send, Phone } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Footer } from "@/components/footer"
+import { toast } from "sonner"
 
 export default function ServiceLayout({
   children,
@@ -50,6 +51,19 @@ export default function ServiceLayout({
         setFormStatus("idle")
       }, 3000)
     }, 1500)
+  }
+
+  const handleCopy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      if (text.includes("@")) {
+        toast.success("Email zkopírován")
+      } else {
+        toast.success("Telefonní číslo zkopírováno")
+      }
+    } catch (err) {
+      toast.error("Kopírování se nezdařilo")
+    }
   }
 
   return (
@@ -314,7 +328,14 @@ export default function ServiceLayout({
                             <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
                               <Phone className="h-4 w-4 text-orange-400" />
                             </div>
-                            <a href="tel:+420735500003" className="hover:text-orange-300 transition-colors">
+                            <a 
+                              href="tel:+420735500003" 
+                              className="hover:text-orange-300 transition-colors cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                handleCopy("+420735500003")
+                              }}
+                            >
                               +420 735 500 003
                             </a>
                           </div>
@@ -322,7 +343,14 @@ export default function ServiceLayout({
                             <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
                               <Send className="h-4 w-4 text-orange-400" />
                             </div>
-                            <a href="mailto:info@expohledavky.cz" className="hover:text-orange-300 transition-colors">
+                            <a 
+                              href="mailto:info@expohledavky.cz" 
+                              className="hover:text-orange-300 transition-colors cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                handleCopy("info@expohledavky.cz")
+                              }}
+                            >
                               info@expohledavky.cz
                             </a>
                           </div>
@@ -425,7 +453,7 @@ export default function ServiceLayout({
                             Předžalobní výzva je odesílána naší externí advokátní kanceláří a z našich bohatých letitých
                             zkušenosti platí, že spousta dlužníků uhradí dluh už jen z důvodu, že se do věci vložil
                             advokát. V předžalobní výzvě je dlužník upozorněn i na skutečnost, že liknavostí při úhradě
-                            dluhu se mu pohledávky „prodraží" o náklady soudního řízení a případně i náklady exekuce.
+                            dluhu se mu pohledávky "prodraží" o náklady soudního řízení a případně i náklady exekuce.
                           </p>
                           <div className="p-4 bg-orange-50 border border-orange-100 rounded-lg mt-4">
                             <p className="font-medium text-orange-800">

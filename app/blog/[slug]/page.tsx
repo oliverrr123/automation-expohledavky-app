@@ -7,13 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { getPostBySlug, getAllPostSlugs, getAllPosts } from '@/lib/posts';
 import MDXContent from '@/components/mdx-content';
 
-// Generování statických parametrů pro všechny články
+// Generate static parameters for all articles
 export async function generateStaticParams() {
   const slugs = getAllPostSlugs();
   return slugs.map((slug) => ({ slug }));
 }
 
-// Metadata pro SEO
+// Metadata for SEO
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const post = await getPostBySlug(params.slug);
   if (!post) return {
@@ -35,15 +35,15 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await getPostBySlug(params.slug);
   
-  // Pokud článek neexistuje, zobrazíme stránku s chybou
+  // If the article doesn't exist, show error page
   if (!post) {
     return notFound();
   }
 
-  // Získání všech článků pro sekci Související články
+  // Get all posts for Related Articles section
   const allPosts = await getAllPosts();
   
-  // Filtrování souvisejících článků (stejná kategorie nebo sdílené tagy, ale ne aktuální článek)
+  // Filter related posts (same category or shared tags, but not current article)
   const relatedPosts = allPosts
     .filter(relatedPost => 
       relatedPost.slug !== params.slug && (
@@ -54,9 +54,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           ))
       )
     )
-    .slice(0, 2); // Omezení na 2 související články
+    .slice(0, 2); // Limit to 2 related articles
 
-  // Rozdělení obsahu pro vytvoření obsahu článku
+  // Split content to create article table of contents
   const headingsRegex = /<h([2-3])\s+id="([^"]+)">([^<]+)<\/h\1>/g;
   const headings: { id: string; title: string; level: number }[] = [];
   
@@ -71,16 +71,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     });
   }
 
-  // Vytvoření URL pro sdílení - použijeme slug z parametrů, které již byly awaited
-  const slug = params.slug; // Získáme hodnotu po await
-  const shareUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/blog/${slug}`
-    : `https://expohledavky.cz/blog/${slug}`;
-  
+  // Create sharing URLs
+  const shareUrl = `https://expohledavky.cz/blog/${params.slug}`;
   const shareTitle = encodeURIComponent(post.frontMatter.title);
   const shareText = encodeURIComponent(post.frontMatter.excerpt || '');
 
-  // Funkce pro generování URL pro sdílení
   const getShareUrl = (platform: string) => {
     switch (platform) {
       case 'facebook':
@@ -97,97 +92,71 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   };
 
   return (
-    <article className="min-h-screen bg-white">
-      {/* Kompaktnější tmavý header */}
-      <div className="bg-gradient-to-r from-zinc-900 via-black to-zinc-800 text-white pb-12 pt-28 relative overflow-hidden">
-        {/* Dekorativní prvky v pozadí */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_20%,rgba(249,115,22,0.4),transparent_40%)]"></div>
-          <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_70%_80%,rgba(249,115,22,0.3),transparent_40%)]"></div>
+    <article className="min-h-screen bg-gray-50 pb-16 pt-32">
+      {/* Breadcrumbs */}
+      <div className="container border-b border-gray-200 pb-4">
+        <div className="flex items-center text-sm text-zinc-500">
+          <Link href="/" className="hover:text-orange-500 transition-colors duration-300">
+            ExPohledávky
+          </Link>
+          <span className="mx-2">/</span>
+          <Link href="/blog" className="hover:text-orange-500 transition-colors duration-300">
+            Blog
+          </Link>
+          <span className="mx-2">/</span>
+          <span className="text-zinc-700">
+            {post.frontMatter.title}
+          </span>
         </div>
+      </div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          {/* Breadcrumbs a zpět na blog v jednom řádku */}
-          <div className="flex justify-between items-center border-b border-zinc-700/30 pb-3">
-            <div className="flex items-center text-sm text-zinc-400">
-              <Link href="/" className="hover:text-orange-400 transition-colors duration-300">
-                ExPohledávky
-              </Link>
-              <span className="mx-2">/</span>
-              <Link href="/blog" className="hover:text-orange-400 transition-colors duration-300">
-                Blog
-              </Link>
-              <span className="mx-2">/</span>
-              <span className="text-orange-400 truncate max-w-[200px]">
-                {post.frontMatter.title}
-              </span>
-            </div>
-            <Button variant="ghost" className="text-zinc-400 hover:text-orange-400 hover:bg-zinc-800/40 -mr-2" asChild>
-              <Link href="/blog" className="flex items-center gap-1 text-sm">
-                <ArrowLeft className="h-3 w-3" />
-                Zpět na blog
-              </Link>
-            </Button>
-          </div>
+      <div className="container mt-8">
+        <Button variant="ghost" className="mb-6" asChild>
+          <Link href="/blog" className="flex items-center gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Zpět na blogy
+          </Link>
+        </Button>
 
-          {/* Header Content */}
-          <div className="mx-auto max-w-4xl mt-6">
-            {/* Kategorie a metadata v jednom řádku */}
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-              {post.frontMatter.category && (
-                <Badge className="bg-orange-500 text-white hover:bg-orange-600 px-3 py-1">
-                  {post.frontMatter.category}
-                </Badge>
-              )}
-              
-              <div className="flex items-center gap-4 text-sm text-zinc-400">
-                {post.frontMatter.date && (
-                  <div className="flex items-center gap-1">
-                    <Calendar className="h-4 w-4 text-orange-500" />
-                    <span>{new Date(post.frontMatter.date).toLocaleDateString('cs-CZ', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric'
-                    })}</span>
-                  </div>
+        <div className="mx-auto max-w-4xl">
+          {/* Article Header */}
+          <header className="mb-8">
+            <h1 className="mb-6 text-3xl font-bold text-zinc-900 md:text-4xl">{post.frontMatter.title}</h1>
+
+            <div className="mb-6 flex flex-wrap items-center gap-4 border-b border-gray-200 pb-6">
+              <div className="flex items-center gap-4">
+                {post.frontMatter.category && (
+                  <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-800">
+                    {post.frontMatter.category}
+                  </span>
                 )}
                 
-                {post.frontMatter.readTime && (
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4 text-orange-500" />
-                    <span>{post.frontMatter.readTime}</span>
-                  </div>
-                )}
+                <div className="flex items-center gap-4 text-sm text-zinc-500">
+                  {post.frontMatter.date && (
+                    <div className="flex items-center gap-1">
+                      <Calendar className="h-4 w-4" />
+                      <span>{new Date(post.frontMatter.date).toLocaleDateString('cs-CZ', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                      })}</span>
+                    </div>
+                  )}
+                  
+                  {post.frontMatter.readTime && (
+                    <div className="flex items-center gap-1">
+                      <Clock className="h-4 w-4" />
+                      <span>{post.frontMatter.readTime}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Article Header */}
-            <header className="mb-8">
-              <h1 className="mb-4 text-3xl font-bold text-white md:text-4xl lg:text-5xl leading-tight">{post.frontMatter.title}</h1>
-              
-              {post.frontMatter.subtitle && (
-                <p className="text-xl text-zinc-300">{post.frontMatter.subtitle}</p>
-              )}
-            </header>
-          </div>
-        </div>
-      </div>
-
-      {/* Vlnitá oddělující linie mezi headerem a obsahem */}
-      <div className="bg-white relative -mt-6 z-10">
-        <svg viewBox="0 0 1440 80" className="w-full h-auto fill-orange-50">
-          <path d="M0,32L60,42.7C120,53,240,75,360,69.3C480,64,600,32,720,32C840,32,960,64,1080,64C1200,64,1320,32,1380,16L1440,0L1440,120L1380,120C1320,120,1200,120,1080,120C960,120,840,120,720,120C600,120,480,120,360,120C240,120,120,120,60,120L0,120Z"></path>
-        </svg>
-      </div>
-
-      {/* Světlý obsah článku */}
-      <div className="bg-orange-50 pt-4 pb-16">
-        <div className="container mx-auto px-4 relative z-20">  
-          <div className="mx-auto max-w-4xl bg-white p-8 rounded-lg shadow-md">
             {/* Featured Image */}
             {post.frontMatter.image && (
-              <div className="mb-10 -mt-16 overflow-hidden rounded-lg shadow-xl">
-                <div className="relative aspect-[16/9]">
+              <div className="mb-8 overflow-hidden rounded-xl">
+                <div className="relative aspect-[21/9]">
                   <Image
                     src={post.frontMatter.image}
                     alt={post.frontMatter.title}
@@ -199,126 +168,184 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 </div>
               </div>
             )}
-            
-            {/* Flexibilní layout pro obsah a TOC na větších obrazovkách */}
-            <div className="lg:flex lg:gap-8">
-              {/* Table of Contents - na větších obrazovkách vpravo, na menších nahoře */}
-              {headings.length > 0 && (
-                <div className="lg:order-2 lg:w-1/4 mb-8 lg:mb-0 lg:sticky lg:top-24 lg:self-start">
-                  <div className="rounded-lg bg-orange-50 border border-orange-100 p-4 shadow-md">
-                    <h3 className="mb-3 flex items-center gap-2 text-base font-semibold text-zinc-800">
-                      <BookOpen className="h-4 w-4 text-orange-500" />
-                      Obsah článku
-                    </h3>
-                    <ul className="space-y-1.5 text-sm">
-                      {headings.map((item) => (
-                        <li
-                          key={item.id}
-                          className={`transform transition-all duration-300 ${item.level === 3 ? 'ml-3' : ''}`}
+
+            {/* Article Excerpt */}
+            {post.frontMatter.excerpt && (
+              <div className="mb-8 rounded-lg bg-zinc-100 p-6 text-lg text-zinc-700">
+                {post.frontMatter.excerpt}
+              </div>
+            )}
+          </header>
+
+          {/* Content Layout */}
+          <div className="lg:flex lg:gap-8">
+            {/* Table of Contents */}
+            {headings.length > 0 && (
+              <div className="lg:order-2 lg:w-1/4 mb-8 lg:mb-0 lg:sticky lg:top-24 lg:self-start">
+                <div className="rounded-lg border border-gray-200 p-6 hover:border-orange-200 transition-colors duration-300">
+                  <h4 className="mb-4 font-bold">Obsah článku</h4>
+                  <ul className="space-y-2">
+                    {headings.map((item) => (
+                      <li
+                        key={item.id}
+                        className={item.level === 3 ? 'ml-3' : ''}
+                      >
+                        <a
+                          href={`#${item.id}`}
+                          className="text-orange-600 hover:text-orange-800 hover:underline transition-colors duration-300"
                         >
-                          <a
-                            href={`#${item.id}`}
-                            className="text-orange-600 hover:text-orange-700 hover:underline transition-colors duration-300"
-                          >
-                            {item.title}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
+                          {item.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {/* Article Content */}
+            <div className={`lg:order-1 ${headings.length > 0 ? 'lg:w-3/4' : 'w-full'}`}>
+              <div className="prose prose-zinc prose-lg mx-auto">
+                <MDXContent source={post.mdxSource} />
+              </div>
+
+              {/* CTA Section */}
+              <div className="mt-8 relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 p-8 md:p-12 shadow-xl">
+                <div className="absolute inset-0 bg-grid-white/10" />
+                <div className="relative">
+                  <div className="inline-flex items-center rounded-full bg-white/20 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/30 mb-6">
+                    <span className="relative">Získejte odbornou pomoc</span>
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                    Potřebujete pomoc s vymáháním pohledávek?
+                  </h3>
+                  <p className="text-lg text-white/90 mb-8 max-w-2xl">
+                    Naši specialisté jsou připraveni vám pomoci s jakýmkoliv problémem týkajícím se pohledávek. Získejte bezplatnou konzultaci ještě dnes.
+                  </p>
+                  <div className="flex flex-wrap gap-4">
+                    <Button 
+                      asChild
+                      size="lg"
+                      className="bg-white text-orange-600 hover:bg-white/90 hover:text-orange-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                    >
+                      <Link href="/poptavka">
+                        Nezávazně poptat
+                      </Link>
+                    </Button>
+                    <Button 
+                      asChild
+                      variant="outline"
+                      size="lg"
+                      className="bg-transparent border-white text-white hover:bg-white/10 hover:text-white transition-all duration-300"
+                    >
+                      <Link href="/kontakt">
+                        Kontaktovat nás
+                      </Link>
+                    </Button>
+                  </div>
+                  <div className="mt-6 flex items-center gap-4 text-white/80 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      <span>Odpovídáme do 24 hodin</span>
+                    </div>
+                    <div className="hidden md:flex items-center gap-2">
+                      <Share2 className="h-4 w-4" />
+                      <span>90% úspěšnost vymáhání</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+ 
+              {/* Tags */}
+              {post.frontMatter.tags && post.frontMatter.tags.length > 0 && (
+                <div className="mt-4 pt-8">
+                  <h3 className="mb-4 text-lg font-bold">Související témata</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {post.frontMatter.tags.map((tag: string) => (
+                      <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`}>
+                        <Badge variant="outline" className="border-orange-200 text-orange-700 hover:border-orange-500 hover:bg-orange-50">
+                          {tag}
+                        </Badge>
+                      </Link>
+                    ))}
                   </div>
                 </div>
               )}
 
-              {/* Article Content - vylepšené formátování */}
-              <div className={`lg:order-1 ${headings.length > 0 ? 'lg:w-3/4' : 'w-full'}`}>
-                <div className="prose prose-lg max-w-none 
-                  prose-headings:text-zinc-800 prose-headings:font-bold prose-headings:mt-8 prose-headings:mb-4
-                  prose-h1:text-3xl prose-h1:mt-10 prose-h1:mb-6
-                  prose-h2:text-2xl prose-h2:border-b prose-h2:border-orange-100 prose-h2:pb-2
-                  prose-h3:text-xl
-                  prose-p:text-zinc-700 prose-p:leading-relaxed prose-p:my-4
-                  prose-a:text-orange-600 hover:prose-a:text-orange-700 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
-                  prose-strong:text-orange-700 prose-strong:font-semibold
-                  prose-code:bg-orange-50 prose-code:text-orange-700 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
-                  prose-blockquote:border-l-4 prose-blockquote:border-orange-300 prose-blockquote:bg-orange-50/50 prose-blockquote:py-1 prose-blockquote:pl-4 prose-blockquote:italic
-                  prose-img:rounded-lg prose-img:shadow-md
-                  prose-ul:my-4 prose-ul:list-disc prose-ul:pl-6
-                  prose-ol:my-4 prose-ol:list-decimal prose-ol:pl-6
-                  prose-li:my-2
-                ">
-                  <MDXContent source={post.mdxSource} />
+              {/* Share Section */}
+              <div className="mt-12 border-t border-gray-200 pt-8">
+                <h3 className="mb-4 flex items-center gap-2 text-xl font-bold">
+                  <Share2 className="h-5 w-5" />
+                  Sdílet článek
+                </h3>
+                <div className="flex gap-4">
+                  {[
+                    { platform: 'facebook', label: 'Facebook', icon: Facebook, color: 'text-orange-500' },
+                    { platform: 'linkedin', label: 'LinkedIn', icon: Linkedin, color: 'text-orange-500' },
+                    { platform: 'twitter', label: 'Twitter', icon: Twitter, color: 'text-orange-500' },
+                    { platform: 'email', label: 'Email', icon: Mail, color: 'text-orange-500' }
+                  ].map((item) => (
+                    <Button
+                      key={item.platform}
+                      variant="outline"
+                      size="sm"
+                      className="transition-all duration-300 hover:scale-105 hover:bg-orange-50"
+                      asChild
+                    >
+                      <a
+                        href={getShareUrl(item.platform)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2"
+                      >
+                        <item.icon className={`h-4 w-4 ${item.color}`} />
+                        {item.label}
+                      </a>
+                    </Button>
+                  ))}
                 </div>
-
-                {/* Tags */}
-                {post.frontMatter.tags && post.frontMatter.tags.length > 0 && (
-                  <div className="mt-10 pt-6 border-t border-zinc-200">
-                    <h3 className="mb-4 text-lg font-semibold text-zinc-800">Související témata</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {post.frontMatter.tags.map((tag: string) => (
-                        <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`}>
-                          <Badge variant="outline" className="border-orange-200 text-orange-700 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300">
-                            {tag}
-                          </Badge>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Share buttons */}
-                <div className="mt-8 pb-4 border-b border-orange-100">
-                  <p className="mb-4 text-zinc-600 font-medium">Sdílet článek</p>
-                  <div className="flex flex-wrap gap-2">
-                    <a 
-                      href={getShareUrl('facebook')} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-orange-200 text-zinc-700 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300"
-                    >
-                      <Facebook className="h-4 w-4 text-blue-600" />
-                      <span>Facebook</span>
-                    </a>
-                    <a 
-                      href={getShareUrl('linkedin')} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-orange-200 text-zinc-700 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300"
-                    >
-                      <Linkedin className="h-4 w-4 text-blue-700" />
-                      <span>LinkedIn</span>
-                    </a>
-                    <a 
-                      href={getShareUrl('twitter')} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-orange-200 text-zinc-700 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300"
-                    >
-                      <Twitter className="h-4 w-4 text-blue-400" />
-                      <span>Twitter</span>
-                    </a>
-                    <a 
-                      href={getShareUrl('email')} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-orange-200 text-zinc-700 hover:border-orange-500 hover:bg-orange-50 transition-all duration-300"
-                    >
-                      <Mail className="h-4 w-4 text-zinc-600" />
-                      <span>Email</span>
-                    </a>
-                  </div>
-                </div>
-
               </div>
-            </div>
 
-            {/* Contact CTA */}
-            <div className="mt-16 rounded-lg bg-gradient-to-r from-orange-500 to-orange-400 p-8 text-center shadow-lg">
-              <h3 className="mb-3 text-2xl font-bold text-white">Potřebujete pomoc s vymáháním pohledávek?</h3>
-              <p className="mb-6 text-white/90">Naši specialisté jsou připraveni vám pomoci s jakýmkoliv problémem týkajícím se pohledávek.</p>
-              <Button asChild className="bg-black hover:bg-zinc-800 text-white shadow-md">
-                <Link href="/kontakt">Kontaktujte nás</Link>
-              </Button>
-            </div>
+              {/* Related Posts */}
+              {relatedPosts.length > 0 && (
+                <div className="mt-12 border-t border-gray-200 pt-8">
+                  <h3 className="mb-6 text-xl font-bold">Související články</h3>
+                  <div className="grid gap-6 md:grid-cols-2">
+                    {relatedPosts.map((relatedPost) => (
+                      <Link 
+                        key={relatedPost.slug} 
+                        href={`/blog/${relatedPost.slug}`}
+                        className="group block"
+                      >
+                        <div className="rounded-lg border border-gray-200 overflow-hidden hover:border-orange-200 transition-all duration-300">
+                          {relatedPost.frontMatter.image && (
+                            <div className="relative aspect-[16/9]">
+                              <Image
+                                src={relatedPost.frontMatter.image}
+                                alt={relatedPost.frontMatter.title}
+                                fill
+                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
+                            </div>
+                          )}
+                          <div className="p-4">
+                            <h4 className="font-semibold text-zinc-900 group-hover:text-orange-600 transition-colors duration-300">
+                              {relatedPost.frontMatter.title}
+                            </h4>
+                            {relatedPost.frontMatter.excerpt && (
+                              <p className="mt-2 text-sm text-zinc-600 line-clamp-2">
+                                {relatedPost.frontMatter.excerpt}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+           </div>
           </div>
         </div>
       </div>

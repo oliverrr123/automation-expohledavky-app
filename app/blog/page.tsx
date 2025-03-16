@@ -34,6 +34,21 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "prevence-platebni-neschopnosti-u-zakazniku",
+    title: "Prevence platební neschopnosti u zákazníků",
+    subtitle: "Získejte klid díky osobnímu přístupu a pravidelným auditům",
+    date: "16. 3. 2025",
+    author: "Mgr. Martin Dvořák",
+    authorPosition: "Právní specialista",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "5 minut čtení",
+    category: "Prevence",
+    tags: ["platební neschopnost","pohledávky","obchodní vztahy","prevence","finance","audity","podnikání"],
+    image: "https://images.unsplash.com/45/QDSMoAMTYaZoXpcwBjsL__DSC0104-1.jpg?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIxMzIyOTF8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte, jak předcházet platební neschopnosti u klíčových zákazníků pomocí osobního přístupu a preventivních auditů.",
+  },
+
+  {
     slug: "novy-insolvencni-zakon-sance-a-vyzvy-2024",
     title: "Nový Insolvenční Zákon: Šance a Výzvy 2024",
     subtitle: "Jak změny ovlivní vymáhání pohledávek v Česku?",

@@ -34,6 +34,21 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "eticke-vymahani-dluhu-v-ceskych-firmach",
+    title: "Etické vymáhání dluhů v českých firmách",
+    subtitle: "Právní pravidla vs. obchodní etika: Kde je hranice?",
+    date: "16. 3. 2025",
+    author: "Mgr. Martin Dvořák",
+    authorPosition: "Právní specialista",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "6 minut čtení",
+    category: "Etika vymáhání",
+    tags: ["etika","vymáhání pohledávek","obchodní etika","právo","finance","mediace"],
+    image: "https://images.unsplash.com/photo-1531498352491-042fbae4cf57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIxNDg0MDh8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Prozkoumejte etické vymáhání pohledávek v ČR s důrazem na právní a etické standardy.",
+  },
+
+  {
     slug: "restrukturalizace-pro-msp-pravni-a-prakticke-kroky",
     title: "Restrukturalizace pro MSP: Právní a praktické kroky",
     subtitle: "Jak efektivně vymáhat pohledávky v insolvenci",

@@ -463,8 +463,13 @@ export default function BlogPage() {
   const highlightMatch = (text: string, query: string) => {
     if (!query.trim()) return text
 
-    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi")
-    return text.replace(regex, '<mark class="bg-orange-200/20 text-orange-200">$1</mark>')
+    try {
+      const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp(`(${escapedQuery})`, "gi");
+      return text.replace(regex, '<mark class="bg-orange-600 text-white font-bold px-1 py-0.5 rounded">$1</mark>');
+    } catch (error) {
+      return text;
+    }
   }
 
   // Add styles for search suggestions
@@ -472,16 +477,50 @@ export default function BlogPage() {
     const style = document.createElement('style')
     style.textContent = `
       .search-suggestions {
-        background: rgba(24, 24, 27, 0.95);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(249, 115, 22, 0.2);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        background: rgba(255, 255, 255, 1);
+        backdrop-filter: blur(12px);
+        border: 2px solid rgba(249, 115, 22, 0.5);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        overflow-y: auto;
+        max-height: 420px;
+        margin-bottom: -150px;
+        padding-bottom: 0;
+        position: relative;
+        z-index: 2000;
+      }
+      .search-suggestions::-webkit-scrollbar {
+        width: 6px;
+      }
+      .search-suggestions::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+      }
+      .search-suggestions::-webkit-scrollbar-thumb {
+        background-color: rgba(249, 115, 22, 0.8);
+        border-radius: 3px;
+        border: 1px solid rgba(249, 115, 22, 0.1);
+      }
+      .search-suggestions::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(249, 115, 22, 1);
       }
       .suggestion-item:hover mark {
-        background-color: rgba(249, 115, 22, 0.4);
+        background-color: #f97316;
       }
       .suggestion-item.selected mark {
-        background-color: rgba(249, 115, 22, 0.4);
+        background-color: #f97316;
+      }
+      .suggestion-item:hover {
+        background-color: rgba(249, 115, 22, 0.1);
+      }
+      .suggestion-item.selected {
+        background-color: rgba(249, 115, 22, 0.1);
+      }
+      mark {
+        background-color: #f97316;
+        color: white;
+        font-weight: 700;
+        padding: 0 4px;
+        border-radius: 3px;
       }
     `
     document.head.appendChild(style)
@@ -501,7 +540,7 @@ export default function BlogPage() {
           {/* Textury a gradienty */}
           <div className="absolute inset-0 opacity-30"
                style={{
-                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2V6h4V4H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
                }}
           ></div>
           
@@ -552,16 +591,16 @@ export default function BlogPage() {
             
             {/* Enhanced search bar with improved UX */}
             <div className="relative max-w-2xl mx-auto group animate-fade-in-up" style={{animationDelay: "0.3s"}}>
-              <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-              <div className="relative bg-white/95 backdrop-blur-sm rounded-full border border-orange-100/50 shadow-sm hover:shadow-md transition-all duration-300">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-400/80 transition-transform duration-300 group-focus-within:scale-110">
+              <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/40 to-orange-600/40 rounded-full blur-lg opacity-100 group-hover:opacity-100 transition-all duration-500"></div>
+              <div className="relative bg-white shadow-md hover:shadow-lg rounded-full border-2 border-orange-300 transition-all duration-300">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-600 transition-transform duration-300 group-focus-within:scale-110">
                   <Search className="h-5 w-5" />
                 </div>
                 <input
                   ref={searchInputRef}
                   type="search"
                   placeholder="Hledat články, témata nebo autory..."
-                  className="bg-transparent border-transparent pl-12 pr-12 py-3.5 text-[15px] text-zinc-800 placeholder:text-zinc-400 w-full rounded-full focus:ring-1 focus:ring-orange-200 focus:border-transparent transition-all duration-300"
+                  className="bg-white border-transparent pl-12 pr-12 py-4 text-[16px] text-zinc-900 font-medium placeholder:text-zinc-500 w-full rounded-full focus:ring-2 focus:ring-orange-300 focus:border-transparent transition-all duration-300"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -569,7 +608,7 @@ export default function BlogPage() {
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors p-1.5 hover:bg-zinc-100/80 rounded-full"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-700 transition-colors p-1.5 hover:bg-zinc-100 rounded-full"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -579,62 +618,67 @@ export default function BlogPage() {
                 {showSuggestions && (
                   <div
                     ref={suggestionsRef}
-                    className="absolute z-50 w-full mt-2 search-suggestions rounded-2xl overflow-hidden"
+                    className="absolute left-0 right-0 md:absolute md:left-auto md:right-auto search-suggestions rounded-xl overflow-auto w-full md:w-auto min-w-full"
                     style={{
-                      maxHeight: '70vh',
-                      overflowY: 'auto',
-                      scrollbarWidth: 'thin',
-                      scrollbarColor: 'rgba(249, 115, 22, 0.3) rgba(255, 255, 255, 0.1)',
-                      boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)'
+                      top: "calc(100% + 8px)",
+                      zIndex: 2000,
+                      boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)'
                     }}
                   >
-                    <div className="py-1 bg-white/95 backdrop-blur-sm border border-orange-100/50 rounded-2xl shadow-lg">
+                    <div className="py-1 bg-white backdrop-blur-sm border-2 border-orange-300 rounded-xl shadow-lg">
                       {suggestions.length > 0 ? (
                         <>
-                          <div className="sticky top-0 px-3 py-2 text-xs font-medium text-zinc-500 bg-white/95 border-b border-zinc-100/80 backdrop-blur-sm z-10">
-                            Nalezeno {suggestions.length} výsledků
+                          <div className="sticky top-0 px-4 py-3 text-base font-bold text-zinc-900 bg-orange-50 border-b-2 border-orange-200 backdrop-blur-sm z-10 flex items-center justify-between">
+                            <span>Nalezeno <span className="text-orange-600">{suggestions.length}</span> výsledků</span>
+                            <button
+                              onClick={() => setShowSuggestions(false)}
+                              className="text-zinc-700 hover:text-zinc-900 transition-colors p-1.5 hover:bg-orange-100 rounded-full"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
                           </div>
-                          <div className="divide-y divide-zinc-100/80">
+                          <div className="divide-y divide-orange-50">
                             {suggestions.map((post, index) => (
                               <div
                                 key={post.slug}
-                                className={`suggestion-item px-3 py-2.5 cursor-pointer transition-all duration-200 hover:bg-orange-50/80 ${
-                                  selectedSuggestionIndex === index ? "bg-orange-50/80" : ""
+                                className={`suggestion-item px-4 py-4 cursor-pointer transition-all duration-200 hover:bg-orange-100 ${
+                                  selectedSuggestionIndex === index ? "bg-orange-100" : "bg-white"
                                 }`}
                                 onClick={() => navigateToPost(post)}
                                 onMouseEnter={() => setSelectedSuggestionIndex(index)}
                               >
-                                <div className="flex items-start gap-3">
+                                <div className="flex items-start gap-4">
                                   {/* Thumbnail */}
-                                  <div className="relative flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-zinc-100">
+                                  <div className="relative flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden bg-zinc-100 border border-zinc-200 shadow-sm">
                                     <img
                                       src={post.image}
                                       alt=""
                                       className="w-full h-full object-cover"
                                     />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                                   </div>
                                   
                                   <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 mb-1">
+                                    <div className="flex items-center gap-2 mb-1.5">
                                       <Badge 
                                         variant="secondary" 
-                                        className="px-2 py-0.5 text-[10px] bg-orange-100/80 text-orange-700 rounded-full font-medium"
+                                        className="px-2 py-0.5 text-[11px] bg-orange-500 text-white rounded-full font-bold shadow-sm"
                                       >
                                         {post.category}
                                       </Badge>
-                                      <span className="text-[10px] text-zinc-400 flex items-center gap-1">
-                                        <Clock className="w-3 h-3" />
+                                      <span className="text-[11px] text-zinc-800 font-medium flex items-center gap-1">
+                                        <Clock className="w-3 h-3 text-orange-600" />
                                         {post.readTime}
                                       </span>
                                     </div>
                                     <div
-                                      className="font-medium text-sm text-zinc-900 truncate mb-0.5"
+                                      className="font-bold text-[15px] text-zinc-900 mb-1.5 leading-tight line-clamp-1"
                                       dangerouslySetInnerHTML={{
                                         __html: highlightMatch(post.title, searchQuery)
                                       }}
                                     />
                                     <div
-                                      className="text-xs text-zinc-500 line-clamp-1"
+                                      className="text-[13px] text-zinc-800 line-clamp-2 leading-snug"
                                       dangerouslySetInnerHTML={{
                                         __html: highlightMatch(post.excerpt, searchQuery)
                                       }}
@@ -646,12 +690,12 @@ export default function BlogPage() {
                           </div>
                         </>
                       ) : (
-                        <div className="px-4 py-8 text-center">
-                          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-orange-100/80 mb-3">
-                            <Search className="h-6 w-6 text-orange-400" />
+                        <div className="px-6 py-10 text-center">
+                          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-500/20 mb-4 shadow-inner">
+                            <Search className="h-7 w-7 text-orange-600" />
                           </div>
-                          <p className="text-sm text-zinc-600 mb-1">Žádné výsledky nenalezeny</p>
-                          <p className="text-xs text-zinc-400">Zkuste upravit vyhledávací dotaz</p>
+                          <p className="text-lg font-bold text-zinc-800 mb-2">Žádné výsledky nenalezeny</p>
+                          <p className="text-base text-zinc-700">Zkuste upravit vyhledávací dotaz</p>
                         </div>
                       )}
                     </div>
@@ -664,7 +708,7 @@ export default function BlogPage() {
       </section>
 
       {/* Procházet podle kategorií - vylepšený design */}
-      <section className="bg-gradient-to-b from-white to-orange-50/30 py-16 relative">
+      <section className={`bg-gradient-to-b from-white to-orange-50/30 py-16 relative ${showSuggestions ? 'pt-32' : ''}`}>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 mb-6">
@@ -870,53 +914,6 @@ export default function BlogPage() {
 
       {/* Add custom scrollbar and highlight styles */}
       <style jsx global>{`
-        .search-suggestions {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(249, 115, 22, 0.3) rgba(255, 255, 255, 0.1);
-          max-height: 70vh; /* Použije 70% výšky viewport pro všechna zařízení */
-        }
-        
-        /* Responzivní výška pro mobilní zařízení */
-        @media (max-width: 768px) {
-          .search-suggestions {
-            max-height: 60vh; /* Na menších zařízeních použijeme menší výšku */
-          }
-        }
-        
-        .search-suggestions::-webkit-scrollbar {
-          width: 6px;
-        }
-        .search-suggestions::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 3px;
-        }
-        .search-suggestions::-webkit-scrollbar-thumb {
-          background-color: rgba(249, 115, 22, 0.3);
-          border-radius: 3px;
-          border: 1px solid rgba(249, 115, 22, 0.1);
-        }
-        .search-suggestions::-webkit-scrollbar-thumb:hover {
-          background-color: rgba(249, 115, 22, 0.5);
-        }
-        .suggestion-item mark {
-          background-color: rgba(249, 115, 22, 0.1);
-          color: #c2410c;
-          padding: 0 2px;
-          border-radius: 2px;
-          font-weight: 500;
-        }
-        .suggestion-item:hover mark {
-          background-color: rgba(249, 115, 22, 0.2);
-          color: #9a3412;
-        }
-        
-        /* Prevent black background during fast scrolling */
-        .search-suggestions > div {
-          background-color: white;
-          position: relative;
-          z-index: 1;
-        }
-        
         /* Remove default search input styles */
         input[type="search"]::-webkit-search-decoration,
         input[type="search"]::-webkit-search-cancel-button,
@@ -938,6 +935,12 @@ export default function BlogPage() {
         /* Subtle hover animation */
         .suggestion-item:hover {
           transform: translateX(4px);
+        }
+        
+        /* Fix for Firefox scrollbar */
+        .search-suggestions {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(249, 115, 22, 0.3) rgba(255, 255, 255, 0.2);
         }
       `}</style>
     </div>

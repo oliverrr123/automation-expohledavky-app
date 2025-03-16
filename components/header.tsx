@@ -80,7 +80,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
     <header className="fixed inset-x-0 top-0 z-50 transition-colors duration-500">
       <div className="bg-zinc-900 text-zinc-200">
         <div className="container mx-auto flex items-center justify-between px-4 py-2">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2 sm:gap-6">
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
               <a href="tel:+420735500003" className="text-sm hover:text-white">
@@ -112,13 +112,13 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
       </div>
 
       <div
-        className={`${isScrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"} transition-all duration-500`}
+        className={`${isScrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"} transition-all duration-500 w-full`}
       >
-        <div className="container mx-auto px-4">
+        <div className="container max-w-full xl:max-w-7xl 2xl:max-w-[1400px] px-4 mx-auto">
           <nav className="flex h-16 items-center justify-between">
             <div className="flex lg:flex-1">
               <Link href="/" className="-m-1.5 p-1.5">
-                <span className="text-2xl font-bold">
+                <span className="text-2xl font-bold whitespace-nowrap">
                   <span className={`${isScrolled ? "text-zinc-900" : "text-white"} transition-colors duration-500`}>
                     EX
                   </span>
@@ -131,7 +131,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon" className="hover:bg-transparent">
-                    <Menu className={`h-6 w-6 ${isScrolled ? "text-zinc-900" : "text-white"} bg-blue`} />
+                    <Menu className={`h-6 w-6 ${isScrolled ? "text-zinc-900" : "text-white"}`} />
                     <span className="sr-only">Otevřít menu</span>
                   </Button>
                 </SheetTrigger>
@@ -181,7 +181,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
               </Sheet>
             </div>
 
-            <div className="hidden lg:flex lg:gap-x-8">
+            <div className="hidden lg:flex lg:gap-x-4 xl:gap-x-6 2xl:gap-x-8 overflow-x-auto justify-center">
               {navigation.map((item) =>
                 item.hasDropdown ? (
                   <div
@@ -192,9 +192,9 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                   >
                     <Link
                       href={item.href}
-                      className={`flex items-center text-sm font-semibold leading-6 transition-colors duration-500 ${
+                      className={`flex items-center text-sm font-semibold leading-6 transition-colors duration-500 whitespace-nowrap ${
                         isScrolled ? "text-zinc-900 hover:text-orange-500" : "text-white hover:text-orange-300"
-                      }`}
+                      } px-1 nav-item`}
                     >
                       {item.name}
                       <ChevronDown className="ml-1 h-4 w-4" />
@@ -223,19 +223,19 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`text-sm font-semibold leading-6 transition-colors duration-500 ${
+                    className={`text-sm font-semibold leading-6 transition-colors duration-500 whitespace-nowrap ${
                       isScrolled ? "text-zinc-900 hover:text-orange-500" : "text-white hover:text-orange-300"
-                    }`}
+                    } px-1 nav-item`}
                   >
                     {item.name}
                   </Link>
-                ),
+                )
               )}
             </div>
 
             <div className="hidden lg:flex lg:flex-1 lg:justify-end">
               <Button
-                className={`transition-colors duration-300 ${
+                className={`transition-colors duration-300 whitespace-nowrap ${
                   !isScrolled
                     ? "bg-white text-zinc-900 hover:bg-white/90"
                     : "bg-zinc-900 text-white hover:bg-zinc-900/90"

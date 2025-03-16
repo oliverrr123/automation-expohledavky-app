@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Search, ArrowRight, Calendar, Clock, X } from "lucide-react"
@@ -306,11 +306,16 @@ const categories = [
 ]
 
 export default function BlogPage() {
+  const [isLoaded, setIsLoaded] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [suggestions, setSuggestions] = useState<BlogPost[]>([])
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const suggestionsRef = useRef<HTMLDivElement>(null)
   const [selectedCategory, setSelectedCategory] = useState("")
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [isLoaded, setIsLoaded] = useState(false)
   
   const postsPerPage = 9
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage)
@@ -366,6 +371,109 @@ export default function BlogPage() {
     
     setFilteredPosts(filtered)
   }, [searchQuery, selectedCategory])
+
+  // Handle keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!showSuggestions) return
+
+    // Arrow down
+    if (e.key === "ArrowDown") {
+      e.preventDefault()
+      setSelectedSuggestionIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : prev))
+    }
+    // Arrow up
+    else if (e.key === "ArrowUp") {
+      e.preventDefault()
+      setSelectedSuggestionIndex((prev) => (prev > 0 ? prev - 1 : 0))
+    }
+    // Enter
+    else if (e.key === "Enter" && selectedSuggestionIndex >= 0) {
+      e.preventDefault()
+      navigateToPost(suggestions[selectedSuggestionIndex])
+    }
+    // Escape
+    else if (e.key === "Escape") {
+      setShowSuggestions(false)
+    }
+  }
+
+  // Navigate to a post
+  const navigateToPost = (post: BlogPost) => {
+    setShowSuggestions(false)
+    setSearchQuery("")
+    window.location.href = `/blog/${post.slug}`
+  }
+
+  // Handle click outside to close suggestions
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        suggestionsRef.current &&
+        !suggestionsRef.current.contains(event.target as Node) &&
+        searchInputRef.current &&
+        !searchInputRef.current.contains(event.target as Node)
+      ) {
+        setShowSuggestions(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
+  // Update suggestions when search query changes
+  useEffect(() => {
+    if (searchQuery.trim().length > 0) {
+      const searchTermLower = searchQuery.toLowerCase().trim()
+      const matchedItems = blogPosts.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchTermLower) ||
+          post.excerpt.toLowerCase().includes(searchTermLower) ||
+          post.category?.toLowerCase().includes(searchTermLower) ||
+          post.tags.some(tag => tag.toLowerCase().includes(searchTermLower))
+      )
+
+      setSuggestions(matchedItems)
+      setShowSuggestions(matchedItems.length > 0)
+      setSelectedSuggestionIndex(-1)
+    } else {
+      setSuggestions([])
+      setShowSuggestions(false)
+    }
+  }, [searchQuery])
+
+  // Highlight matching text in suggestions
+  const highlightMatch = (text: string, query: string) => {
+    if (!query.trim()) return text
+
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi")
+    return text.replace(regex, '<mark class="bg-orange-200/20 text-orange-200">$1</mark>')
+  }
+
+  // Add styles for search suggestions
+  useEffect(() => {
+    const style = document.createElement('style')
+    style.textContent = `
+      .search-suggestions {
+        background: rgba(24, 24, 27, 0.95);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(249, 115, 22, 0.2);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+      .suggestion-item:hover mark {
+        background-color: rgba(249, 115, 22, 0.4);
+      }
+      .suggestion-item.selected mark {
+        background-color: rgba(249, 115, 22, 0.4);
+      }
+    `
+    document.head.appendChild(style)
+    return () => {
+      document.head.removeChild(style)
+    }
+  }, [])
 
   return (
     <div className="min-h-screen bg-white">
@@ -427,25 +535,112 @@ export default function BlogPage() {
               a podnikatele v českém právním prostředí.
             </p>
             
-            {/* Vylepšený vyhledávací formulář */}
+            {/* Enhanced search bar with improved UX */}
             <div className="relative max-w-2xl mx-auto group animate-fade-in-up" style={{animationDelay: "0.3s"}}>
-              <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-orange-400 rounded-full opacity-80 blur-xl group-hover:opacity-100 transition duration-300 animate-pulse"></div>
-              <div className="relative bg-zinc-800/80 backdrop-blur-sm rounded-full border border-orange-600/30 shadow-2xl">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-orange-400" />
-                <Input
+              <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+              <div className="relative bg-white/95 backdrop-blur-sm rounded-full border border-orange-100/50 shadow-sm hover:shadow-md transition-all duration-300">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-400/80 transition-transform duration-300 group-focus-within:scale-110">
+                  <Search className="h-5 w-5" />
+                </div>
+                <input
+                  ref={searchInputRef}
                   type="search"
-                  placeholder="Hledat články..."
-                  className="bg-transparent border-transparent pl-16 pr-16 py-8 text-lg text-white placeholder:text-zinc-400 w-full rounded-full focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  placeholder="Hledat články, témata nebo autory..."
+                  className="bg-transparent border-transparent pl-12 pr-12 py-3.5 text-[15px] text-zinc-800 placeholder:text-zinc-400 w-full rounded-full focus:ring-1 focus:ring-orange-200 focus:border-transparent transition-all duration-300"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleKeyDown}
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-6 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors p-1.5 hover:bg-zinc-100/80 rounded-full"
                   >
-                    <X className="h-6 w-6" />
+                    <X className="h-4 w-4" />
                   </button>
+                )}
+
+                {/* Improved Search suggestions with compact design */}
+                {showSuggestions && (
+                  <div
+                    ref={suggestionsRef}
+                    className="absolute z-50 w-full mt-2 search-suggestions rounded-2xl overflow-hidden"
+                    style={{
+                      maxHeight: '70vh',
+                      overflowY: 'auto',
+                      scrollbarWidth: 'thin',
+                      scrollbarColor: 'rgba(249, 115, 22, 0.3) rgba(255, 255, 255, 0.1)',
+                      boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)'
+                    }}
+                  >
+                    <div className="py-1 bg-white/95 backdrop-blur-sm border border-orange-100/50 rounded-2xl shadow-lg">
+                      {suggestions.length > 0 ? (
+                        <>
+                          <div className="sticky top-0 px-3 py-2 text-xs font-medium text-zinc-500 bg-white/95 border-b border-zinc-100/80 backdrop-blur-sm z-10">
+                            Nalezeno {suggestions.length} výsledků
+                          </div>
+                          <div className="divide-y divide-zinc-100/80">
+                            {suggestions.map((post, index) => (
+                              <div
+                                key={post.slug}
+                                className={`suggestion-item px-3 py-2.5 cursor-pointer transition-all duration-200 hover:bg-orange-50/80 ${
+                                  selectedSuggestionIndex === index ? "bg-orange-50/80" : ""
+                                }`}
+                                onClick={() => navigateToPost(post)}
+                                onMouseEnter={() => setSelectedSuggestionIndex(index)}
+                              >
+                                <div className="flex items-start gap-3">
+                                  {/* Thumbnail */}
+                                  <div className="relative flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-zinc-100">
+                                    <img
+                                      src={post.image}
+                                      alt=""
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </div>
+                                  
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <Badge 
+                                        variant="secondary" 
+                                        className="px-2 py-0.5 text-[10px] bg-orange-100/80 text-orange-700 rounded-full font-medium"
+                                      >
+                                        {post.category}
+                                      </Badge>
+                                      <span className="text-[10px] text-zinc-400 flex items-center gap-1">
+                                        <Clock className="w-3 h-3" />
+                                        {post.readTime}
+                                      </span>
+                                    </div>
+                                    <div
+                                      className="font-medium text-sm text-zinc-900 truncate mb-0.5"
+                                      dangerouslySetInnerHTML={{
+                                        __html: highlightMatch(post.title, searchQuery)
+                                      }}
+                                    />
+                                    <div
+                                      className="text-xs text-zinc-500 line-clamp-1"
+                                      dangerouslySetInnerHTML={{
+                                        __html: highlightMatch(post.excerpt, searchQuery)
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="px-4 py-8 text-center">
+                          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-orange-100/80 mb-3">
+                            <Search className="h-6 w-6 text-orange-400" />
+                          </div>
+                          <p className="text-sm text-zinc-600 mb-1">Žádné výsledky nenalezeny</p>
+                          <p className="text-xs text-zinc-400">Zkuste upravit vyhledávací dotaz</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
@@ -531,13 +726,13 @@ export default function BlogPage() {
           )}
 
           {/* Grid s články */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
             {isLoaded ? (
               filteredPosts
                 .slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage)
                 .map((post) => (
                   <Card key={post.slug} className="group overflow-hidden flex flex-col h-full border-none rounded-xl shadow-md hover:shadow-xl transition-all duration-300">
-                    <Link href={`/blog/${post.slug}`} className="relative block h-52 overflow-hidden">
+                    <Link href={`/blog/${post.slug}`} className="relative block h-64 overflow-hidden">
                       <img
                         src={post.image}
                         alt={post.title}
@@ -551,8 +746,8 @@ export default function BlogPage() {
                       </div>
                     </Link>
 
-                    <CardHeader className="flex-grow">
-                      <div className="flex items-center gap-4 text-sm text-zinc-500 mb-3">
+                    <CardHeader className="flex-grow p-6 space-y-4">
+                      <div className="flex items-center gap-4 text-sm text-zinc-500">
                         <div className="flex items-center gap-1">
                           <Calendar className="h-4 w-4 text-orange-500" />
                           <span>{post.date}</span>
@@ -564,16 +759,16 @@ export default function BlogPage() {
                       </div>
 
                       <Link href={`/blog/${post.slug}`}>
-                        <CardTitle className="text-xl font-bold text-zinc-900 group-hover:text-orange-600 transition-colors mb-2">
+                        <CardTitle className="text-2xl font-bold text-zinc-900 group-hover:text-orange-600 transition-colors">
                           {post.title}
                         </CardTitle>
                       </Link>
 
-                      <p className="text-zinc-600 text-sm line-clamp-2 mb-4">
+                      <p className="text-zinc-600 text-base line-clamp-3 min-h-[4.5rem]">
                         {post.excerpt}
                       </p>
 
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-2 pt-2">
                         {post.tags.slice(0, 3).map((tag) => (
                           <button
                             key={tag}
@@ -581,7 +776,7 @@ export default function BlogPage() {
                               e.preventDefault()
                               filterByTag(tag)
                             }}
-                            className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-50 text-orange-700 hover:bg-orange-100 transition-colors"
+                            className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-orange-50 text-orange-700 hover:bg-orange-100 transition-colors"
                           >
                             {tag}
                           </button>
@@ -589,13 +784,13 @@ export default function BlogPage() {
                       </div>
                     </CardHeader>
 
-                    <CardFooter className="pt-4 border-t border-zinc-100">
+                    <CardFooter className="px-6 py-4 border-t border-zinc-100">
                       <Link
                         href={`/blog/${post.slug}`}
-                        className="inline-flex items-center text-sm font-medium text-orange-600 hover:text-orange-700 transition-colors"
+                        className="inline-flex items-center text-base font-medium text-orange-600 hover:text-orange-700 transition-colors"
                       >
                         Přečíst článek
-                        <ArrowRight className="ml-2 h-4 w-4" />
+                        <ArrowRight className="ml-2 h-5 w-5" />
                       </Link>
                     </CardFooter>
                   </Card>
@@ -605,7 +800,7 @@ export default function BlogPage() {
               Array.from({ length: 6 }).map((_, index) => (
                 <div
                   key={index}
-                  className="bg-zinc-100 animate-pulse rounded-xl h-[400px]"
+                  className="bg-zinc-100 animate-pulse rounded-xl h-[500px]"
                 ></div>
               ))
             )}
@@ -657,6 +852,79 @@ export default function BlogPage() {
           )}
         </div>
       </section>
+
+      {/* Add custom scrollbar and highlight styles */}
+      <style jsx global>{`
+        .search-suggestions {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(249, 115, 22, 0.3) rgba(255, 255, 255, 0.1);
+          max-height: 70vh; /* Použije 70% výšky viewport pro všechna zařízení */
+        }
+        
+        /* Responzivní výška pro mobilní zařízení */
+        @media (max-width: 768px) {
+          .search-suggestions {
+            max-height: 60vh; /* Na menších zařízeních použijeme menší výšku */
+          }
+        }
+        
+        .search-suggestions::-webkit-scrollbar {
+          width: 6px;
+        }
+        .search-suggestions::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 3px;
+        }
+        .search-suggestions::-webkit-scrollbar-thumb {
+          background-color: rgba(249, 115, 22, 0.3);
+          border-radius: 3px;
+          border: 1px solid rgba(249, 115, 22, 0.1);
+        }
+        .search-suggestions::-webkit-scrollbar-thumb:hover {
+          background-color: rgba(249, 115, 22, 0.5);
+        }
+        .suggestion-item mark {
+          background-color: rgba(249, 115, 22, 0.1);
+          color: #c2410c;
+          padding: 0 2px;
+          border-radius: 2px;
+          font-weight: 500;
+        }
+        .suggestion-item:hover mark {
+          background-color: rgba(249, 115, 22, 0.2);
+          color: #9a3412;
+        }
+        
+        /* Prevent black background during fast scrolling */
+        .search-suggestions > div {
+          background-color: white;
+          position: relative;
+          z-index: 1;
+        }
+        
+        /* Remove default search input styles */
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+          -webkit-appearance: none;
+        }
+        
+        /* Cool focus effect for search input */
+        .search-suggestions input:focus {
+          box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+        }
+        
+        /* Smooth hover transitions */
+        .suggestion-item {
+          transition: all 0.2s ease;
+        }
+        
+        /* Subtle hover animation */
+        .suggestion-item:hover {
+          transform: translateX(4px);
+        }
+      `}</style>
     </div>
   )
 }

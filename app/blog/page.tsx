@@ -52,6 +52,21 @@ const categoryDefinitions: Category[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "prevence-nedobytnych-pohledavek-v-inflaci",
+    title: "Prevence nedobytných pohledávek v inflaci",
+    subtitle: "Jak chránit finance pomocí důvěry a právních jistot",
+    date: "16. 3. 2025",
+    author: "Ing. Petra Svobodová",
+    authorPosition: "Finanční analytik",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "8 minut čtení",
+    category: "Prevence",
+    tags: ["finance","právo","obchodní vztahy","nedobytné pohledávky","inflace","prevence","právní jistota"],
+    image: "https://images.unsplash.com/photo-1531497865144-0464ef8fb9a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIxNTgwNDN8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte strategie k minimalizaci rizika nedobytných pohledávek v době rostoucí inflace.",
+  },
+
+  {
     id: "1",
     slug: "prevence-platebni-neschopnosti-u-zakazniku",
     title: "Prevence platební neschopnosti u zákazníků",

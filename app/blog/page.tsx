@@ -310,7 +310,6 @@ export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState("")
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [sortBy, setSortBy] = useState<"newest" | "oldest">("newest")
   const [isLoaded, setIsLoaded] = useState(false)
   
   const postsPerPage = 9
@@ -360,17 +359,13 @@ export default function BlogPage() {
       )
     }
     
-    // Řazení podle data
+    // Řazení podle data (nejnovější první)
     filtered = filtered.sort((a, b) => {
-      if (sortBy === "newest") {
-        return new Date(b.date).getTime() - new Date(a.date).getTime()
-      } else {
-        return new Date(a.date).getTime() - new Date(b.date).getTime()
-      }
+      return new Date(b.date).getTime() - new Date(a.date).getTime()
     })
     
     setFilteredPosts(filtered)
-  }, [searchQuery, selectedCategory, sortBy])
+  }, [searchQuery, selectedCategory])
 
   return (
     <div className="min-h-screen bg-white">
@@ -514,17 +509,6 @@ export default function BlogPage() {
                   </button>
                 </Badge>
               )}
-            </div>
-
-            <div className="w-full md:w-auto flex items-center gap-4">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as "newest" | "oldest")}
-                className="px-4 py-2 rounded-lg border border-zinc-200 text-sm text-zinc-700 focus:border-orange-500 focus:ring-orange-500 bg-white"
-              >
-                <option value="newest">Nejnovější</option>
-                <option value="oldest">Nejstarší</option>
-              </select>
             </div>
           </div>
 

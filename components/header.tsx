@@ -77,7 +77,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
   }, [])
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 transition-colors duration-500">
+    <header className="fixed inset-x-0 top-0 z-40 transition-colors duration-500">
       <div className="bg-zinc-900 text-zinc-200">
         <div className="container mx-auto flex items-center justify-between px-4 py-2">
           <div className="flex items-center gap-2 sm:gap-6">
@@ -114,7 +114,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
       <div
         className={`${isScrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"} transition-all duration-500 w-full`}
       >
-        <div className="container max-w-full xl:max-w-7xl 2xl:max-w-[1400px] px-4 mx-auto">
+        <div className="container max-w-full xl:max-w-7xl 2xl:max-w-[1400px] px-4 mx-auto relative">
           <nav className="flex h-16 items-center justify-between">
             <div className="flex lg:flex-1">
               <Link href="/" className="-m-1.5 p-1.5">
@@ -181,12 +181,12 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
               </Sheet>
             </div>
 
-            <div className="hidden lg:flex lg:gap-x-4 xl:gap-x-6 2xl:gap-x-8 overflow-x-auto justify-center">
+            <div className="hidden lg:flex lg:gap-x-4 xl:gap-x-6 2xl:gap-x-8 justify-center">
               {navigation.map((item) =>
                 item.hasDropdown ? (
                   <div
                     key={item.name}
-                    className="relative"
+                    className="relative h-full flex items-center"
                     onMouseEnter={() => handleMouseEnter(item.name)}
                     onMouseLeave={handleMouseLeave}
                   >
@@ -202,7 +202,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
 
                     {activeDropdown === item.name && (
                       <div
-                        className="absolute left-0 top-full z-50 mt-3 w-64 rounded-lg border border-gray-100 bg-white p-2 shadow-lg"
+                        className="dropdown-menu absolute left-0 top-full z-[100] mt-1 w-64 overflow-visible rounded-lg border border-gray-100 bg-white p-2 shadow-lg"
                         onMouseEnter={() => handleMouseEnter(item.name)}
                         onMouseLeave={handleMouseLeave}
                       >

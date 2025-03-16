@@ -53,6 +53,16 @@ body {
     white-space: nowrap;
   }
   
+  /* Styly pro dropdown menu */
+  .dropdown-menu {
+    position: absolute;
+    z-index: 999;
+    visibility: visible;
+    top: 100%;
+    left: 0;
+    overflow: visible;
+  }
+  
   /* Animace pro plovoucí prvky */
   @keyframes float {
     0% {

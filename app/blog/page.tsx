@@ -34,6 +34,21 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "restrukturalizace-pro-msp-pravni-a-prakticke-kroky",
+    title: "Restrukturalizace pro MSP: Právní a praktické kroky",
+    subtitle: "Jak efektivně vymáhat pohledávky v insolvenci",
+    date: "16. 3. 2025",
+    author: "Mgr. Martin Dvořák",
+    authorPosition: "Právní specialista",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "7 minut čtení",
+    category: "Insolvence",
+    tags: ["restrukturalizace","insolvence","právní strategie","vymáhání pohledávek","obchodní poradenství"],
+    image: "https://images.unsplash.com/photo-1620856900883-e12a5ea43735?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIxMzc2MDd8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte právní strategie a praktické kroky pro úspěšnou restrukturalizaci malých a středních podniků.",
+  },
+
+  {
     slug: "prevence-platebni-neschopnosti-u-zakazniku",
     title: "Prevence platební neschopnosti u zákazníků",
     subtitle: "Získejte klid díky osobnímu přístupu a pravidelným auditům",

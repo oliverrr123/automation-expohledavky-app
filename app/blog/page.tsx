@@ -639,7 +639,6 @@ export default function BlogPage() {
                 </form>
               </div>
             </div>
-
             <Button
               asChild
               variant="outline"

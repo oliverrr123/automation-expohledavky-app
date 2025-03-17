@@ -52,6 +52,21 @@ const categoryDefinitions: Category[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "eticka-dilemata-ve-vymahani-pohledavek",
+    title: "Etická dilemata ve vymáhání pohledávek",
+    subtitle: "Jak balancovat právo a lidskost v českém prostředí",
+    date: "17. 3. 2025",
+    author: "Jan Novák",
+    authorPosition: "Specialista na pohledávky",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "7 minut čtení",
+    category: "Etika vymáhání",
+    tags: ["etika","vymáhání pohledávek","české právo","obchodní vztahy","finanční stabilita"],
+    image: "https://images.unsplash.com/photo-1531498352491-042fbae4cf57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIxOTU3ODB8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Prozkoumejte etická dilemata při vymáhání pohledávek a balancujte mezi právními nástroji a lidským přístupem.",
+  },
+
+  {
     slug: "prevence-nedobytnych-pohledavek-v-inflaci",
     title: "Prevence nedobytných pohledávek v inflaci",
     subtitle: "Jak chránit finance pomocí důvěry a právních jistot",

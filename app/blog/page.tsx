@@ -52,6 +52,21 @@ const categoryDefinitions: Category[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "eticke-vymahani-pohledavek-v-cr",
+    title: "Etické vymáhání pohledávek v ČR",
+    subtitle: "Jak vymáhat pohledávky a zachovat dobré vztahy",
+    date: "17. 3. 2025",
+    author: "Jan Novák",
+    authorPosition: "Specialista na pohledávky",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "8 minut čtení",
+    category: "Etika vymáhání",
+    tags: ["etika","vymáhání pohledávek","české právo","obchodní vztahy","ekonomická stabilita"],
+    image: "https://images.unsplash.com/photo-1707623988408-ab88c9981730?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIyMTgxNTN8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte, jak eticky vymáhat pohledávky v ČR a udržet dobré firemní vztahy.",
+  },
+
+  {
     slug: "eticka-dilemata-ve-vymahani-pohledavek",
     title: "Etická dilemata ve vymáhání pohledávek",
     subtitle: "Jak balancovat právo a lidskost v českém prostředí",

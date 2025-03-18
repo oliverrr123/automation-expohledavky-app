@@ -52,6 +52,21 @@ const categoryDefinitions: Category[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "optimalizace-cash-flow-klic-k-uspechu-2024",
+    title: "Optimalizace cash flow: Klíč k úspěchu 2024",
+    subtitle: "Strategie pro řízení pohledávek a obchodních vztahů",
+    date: "18. 3. 2025",
+    author: "Ing. Petra Svobodová",
+    authorPosition: "Finanční analytik",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "6 minut čtení",
+    category: "Finanční analýza",
+    tags: ["cash flow","finanční strategie","řízení pohledávek","obchodní vztahy","právo","vyjednávání"],
+    image: "https://images.unsplash.com/photo-1517940001917-1c03b8b1b85b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIyODIxNzd8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Zlepšete finanční zdraví firmy efektivním řízením pohledávek. Komunikace a vyjednávání v roce 2024.",
+  },
+
+  {
     slug: "eticke-vymahani-pohledavek-v-cr",
     title: "Etické vymáhání pohledávek v ČR",
     subtitle: "Jak vymáhat pohledávky a zachovat dobré vztahy",

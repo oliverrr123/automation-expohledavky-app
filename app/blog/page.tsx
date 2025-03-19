@@ -52,6 +52,21 @@ const categoryDefinitions: Category[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "mimosoudni-vyrovnani-klic-k-lepsim-vztahum",
+    title: "Mimosoudní vyrovnání: Klíč k lepším vztahům",
+    subtitle: "Jak osobní vztahy ovlivňují řešení neuhrazených pohledávek",
+    date: "19. 3. 2025",
+    author: "Jan Novák",
+    authorPosition: "Specialista na pohledávky",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "5 minut čtení",
+    category: "Vymáhání pohledávek",
+    tags: ["pohledávky","mimosoudní vyrovnání","obchodní vztahy","důvěra","komunikace","finance","právo"],
+    image: "https://images.unsplash.com/photo-1556557285-cbd49d68f67f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDIzNjg1NTJ8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte roli důvěry a komunikace při mimosoudním vyrovnání pohledávek v Česku.",
+  },
+
+  {
     slug: "optimalizace-cash-flow-klic-k-uspechu-2024",
     title: "Optimalizace cash flow: Klíč k úspěchu 2024",
     subtitle: "Strategie pro řízení pohledávek a obchodních vztahů",

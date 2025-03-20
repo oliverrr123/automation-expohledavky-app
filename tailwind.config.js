@@ -138,6 +138,16 @@ module.exports = {
             transform: "translateX(0)",
           },
         },
+        "section-fade-down": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(-2rem)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
         "section-zoom": {
           "0%": {
             opacity: "0",
@@ -172,6 +182,7 @@ module.exports = {
         "section-fade-up": "section-fade-up 0.7s ease-out forwards",
         "section-fade-left": "section-fade-left 0.7s ease-out forwards",
         "section-fade-right": "section-fade-right 0.7s ease-out forwards",
+        "section-fade-down": "section-fade-down 0.7s ease-out forwards",
         "section-zoom": "section-zoom 0.7s ease-out forwards",
         "section-bounce": "section-bounce 1s cubic-bezier(0.25, 0.1, 0.25, 1.5) forwards",
       },
@@ -181,8 +192,10 @@ module.exports = {
     "animate-section-fade-up",
     "animate-section-fade-left",
     "animate-section-fade-right",
+    "animate-section-fade-down",
     "animate-section-zoom",
     "animate-section-bounce",
+    "animate-fade"
   ],
   plugins: [require("tailwindcss-animate")],
 }

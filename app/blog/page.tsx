@@ -52,6 +52,21 @@ const categoryDefinitions: Category[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "zmeny-zakona-vyzva-pro-spravu-pohledavek",
+    title: "Změny zákona: Výzva pro správu pohledávek",
+    subtitle: "Jak se české střední firmy přizpůsobují novým právním normám",
+    date: "20. 3. 2025",
+    author: "Mgr. Martin Dvořák",
+    authorPosition: "Právní specialista",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "7 minut čtení",
+    category: "Finanční analýza",
+    tags: ["finanční analýza","obchodní právo","správa pohledávek","české firmy","lidský faktor"],
+    image: "https://images.unsplash.com/photo-1518475155060-0d631de637e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDI0NTQ5MjZ8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte dopady zákonných změn na správu pohledávek u středních firem v ČR.",
+  },
+
+  {
     slug: "mimosoudni-vyrovnani-klic-k-lepsim-vztahum",
     title: "Mimosoudní vyrovnání: Klíč k lepším vztahům",
     subtitle: "Jak osobní vztahy ovlivňují řešení neuhrazených pohledávek",

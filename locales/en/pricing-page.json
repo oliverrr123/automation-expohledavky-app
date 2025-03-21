@@ -1,0 +1,71 @@
+{
+  "title": "PRICING",
+  "subtitle": "Basic rates valid from January 1, 2023",
+  "pricingTable": {
+    "header": {
+      "specification": "Specification of individual departments in processing each receivable",
+      "rate": "Rate per action - processing one receivable"
+    },
+    "rows": [
+      {
+        "service": "Administration - processing of receivable",
+        "price": "1,000 CZK"
+      },
+      {
+        "service": "Investigation department",
+        "price": "1,300 CZK"
+      },
+      {
+        "service": "Collection by debt specialists",
+        "price": "2,000 CZK" 
+      },
+      {
+        "service": "Legal department",
+        "price": "3,000 CZK"
+      },
+      {
+        "service": "Court action - 15% of the receivable amount",
+        "price": "minimum of 15,000 CZK"
+      },
+      {
+        "service": "Legal enforceability clause by a notary",
+        "price": "minimum of 12,000 CZK"
+      },
+      {
+        "service": "Visit to the debtor",
+        "price": "30 CZK/km + 500 CZK/hour"
+      }
+    ]
+  },
+  "notes": [
+    "For actions in a foreign language, the hourly rate increases by 30%.",
+    "Prices are quoted without VAT."
+  ],
+  "contactForm": {
+    "title": "Contact Form",
+    "fields": {
+      "name": {
+        "label": "Full name",
+        "placeholder": "Full name"
+      },
+      "email": {
+        "label": "Your email",
+        "placeholder": "Your email"
+      },
+      "phone": {
+        "label": "Phone contact",
+        "placeholder": "Phone contact"
+      },
+      "amount": {
+        "label": "Receivable amount",
+        "placeholder": "Receivable amount"
+      },
+      "message": {
+        "label": "Your message",
+        "placeholder": "Your message... provide all known details about your receivable..."
+      }
+    },
+    "submitButton": "Send message",
+    "successMessage": "Message has been sent. Thank you!"
+  }
+} 

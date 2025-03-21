@@ -1,0 +1,47 @@
+{
+  "hero": {
+    "badge": "Naše služby",
+    "title": "Odkup firem",
+    "subtitle": "Profesionální řešení pro majitele, kteří chtějí prodat svou společnost"
+  },
+  "mainSection": {
+    "badge": "Komplexní řešení",
+    "title": "Odkup firem",
+    "paragraphs": [
+      "Vlastníte firmu, kterou již nepotřebujete a rádi byste ji prodali?",
+      "Pak neváhejte a kontaktuje nás, připravíme vám nabídku šitou na míru na odkup společnosti. Nabízíme odkoupení firem za nejlepší cenu. Cenové podmínky, případně převzetí společnosti za úplatu jsou individuální. Každému vyhotovíme analýzu, na jejímž základě předložíme individuální nabídku."
+    ],
+    "button": "Nezávazná poptávka"
+  },
+  "requirements": {
+    "badge": "Naše požadavky",
+    "title": "Máme zájem o firmy, které:",
+    "items": [
+      "byly založeny, ale nedošlo k uskutečnění podnikatelského záměru, případně společnost dříve podnikala, ale už ji nechcete dále provozovat a spravovat",
+      "mají jasnou a bezproblémovou historii a k dispozici je účetnictví společnosti",
+      "firmy jsou bez závazků"
+    ],
+    "note": "Spolupracujeme rovněž se soukromými exekutory po celé ČR, tudíž jsme schopni realizovat vymáhání ve zkrácené době."
+  },
+  "documents": {
+    "badge": "Potřebné dokumenty",
+    "title": "V případě odkupu budeme vyžadovat tyto podklady:",
+    "items": [
+      {
+        "icon": "FileText",
+        "title": "Potvrzení o bezdlužnosti",
+        "description": "Potvrzení o bezdlužnosti ze strany finančního úřadu, zdravotní pojišťovny, správy sociálního zabezpečení a celního úřadu"
+      },
+      {
+        "icon": "ClipboardCheck",
+        "title": "Prohlášení o bezdlužnosti",
+        "description": "Prohlášení o bezdlužnosti od stávajícího majitele a jednatele (dle zákona ručí svým majetkem za případné nesrovnalosti mezi aktuálním stavem společnosti a stavem uvedeným v prohlášení)"
+      },
+      {
+        "icon": "Building",
+        "title": "Kompletní účetnictví",
+        "description": "Kompletní účetnictví společnosti"
+      }
+    ]
+  }
+} 

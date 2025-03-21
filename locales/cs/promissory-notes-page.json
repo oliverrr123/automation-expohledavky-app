@@ -1,0 +1,51 @@
+{
+  "hero": {
+    "badge": "Naše služby",
+    "title": "Odkup směnek",
+    "subtitle": "Profesionální řešení pro majitele směnek, kteří chtějí získat finanční prostředky"
+  },
+  "introduction": {
+    "badge": "Komplexní řešení",
+    "title": "Odkup směnek",
+    "description": "Služba odkup směnek funguje tak, že společnosti Expohledávky s.r.o., prostřednictvím emailu, zašlete Vaši poptávku této služby a společnost Vás bude obratem kontaktovat a informovat o podmínkách odkupu směnky. Směnka se převádí rubopisem nebo postoupením.",
+    "button": "Nezávazná poptávka"
+  },
+  "transferByEndorsement": {
+    "badge": "Způsob A",
+    "title": "Převod směnky rubopisem",
+    "description": "Směnka je cenný papír a základním typem jejího převodu je rubopis, indosament, který umožňuje rychlý a jednoduchý převod práv vyplývajících ze směnky. Indosamentem lze převádět všechny směnky, kromě rekta směnek, tedy směnek s doložkou „nikoli na řad\". Podstata převodu rubopisem spočívá v tom, že dosavadní majitel směnky (remitent), vyznačí na rubu směnky nebo na jejím přívěsku indosační doložku a předá směnku novému majiteli (indosantovi), na něhož tím přejdou všechna práva ze směnky, která jsou obsahem převáděné směnky.",
+    "icon": "PenTool"
+  },
+  "transferByAssignment": {
+    "badge": "Způsob B",
+    "title": "Převod směnky postoupením (odkup)",
+    "paragraphs": [
+      "Je-li směnka na jméno opatřena doložkou „nikoli na řad\", může být převedena pouze cesí, tedy postoupením pohledávky smlouvou podle § 1879 a násl. zák. č. 89/2012 Sb., občanský zákoník, ve znění pozdějších předpisů. Postupník (ten kdo nabývá směnku) vstupuje na základě smlouvy o postoupení pohledávky do všech práv postupitele (toho kdo směnku postupuje) spojených s pohledávkou, tj. nedochází pouze k převodu práv ze směnky jako v případě rubopisu. Odkoupení směnky je tedy realizováno na základě smlouvy o postoupení pohledávky.",
+      "Cena (úplata, smluvní odměna) se pohybuje v rozmezí od 50 do 80 procent nominální hodnoty předmětu odkupu a závisí na nominální výši pohledávky nebo směnky a jejich kvalitě. Určuje se individuálně a s konečnou platností je stanovena v návrhu smlouvy. Bylo-li sjednáno postoupení směnky za úplatu, odpovídá postupitel postupníkovi až do výše přijaté úplaty s úroky za to, že pohledávka v době postoupení trvala, a podle dohody s postupníkem, může ručit i za její dobytnost.",
+      "V případě dohody o úhradě hotových výdajů postupníka, účelně vynaložených v souvislosti se zajištěním právních služeb, zejména na soudní a jiné poplatky, cestovní výdaje, poštovné, telekomunikační poplatky, znalecké posudky a odborná vyjádření, překlady, opisy a fotokopie, spojených s vymáháním pohledávky mimosoudní i soudní cestou, je zohledňována zejména složitost a skutková a právní náročnost věci, časové požadavky a nároky postupitele na vyřízení věci, jakož i bonita dlužníka."
+    ],
+    "icon": "ScrollText"
+  },
+  "benefits": {
+    "badge": "Výhody odkupu směnek",
+    "title": "Proč využít službu odkupu směnek?",
+    "description": "Nabídka služby odkupu směnky vás může zbavit starostí s upomínáním dlužníků a výdajů na úhradu právních služeb",
+    "items": [
+      {
+        "icon": "FileText",
+        "title": "Okamžitá likvidita",
+        "description": "Získáte finanční prostředky ihned, bez čekání na splatnost směnky."
+      },
+      {
+        "icon": "Repeat",
+        "title": "Přenos rizika",
+        "description": "Riziko nezaplacení směnky přechází na naši společnost."
+      },
+      {
+        "icon": "ScrollText",
+        "title": "Právní jistota",
+        "description": "Celý proces je zajištěn právně závaznou smlouvou o postoupení pohledávky."
+      }
+    ]
+  }
+} 

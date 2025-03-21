@@ -1,0 +1,57 @@
+{
+  "hero": {
+    "badge": "Naše služby",
+    "title": "Správa firemných pohľadávok",
+    "subtitle": "Profesionálny outsourcing správy pohľadávok pre vašu firmu"
+  },
+  "mainSection": {
+    "badge": "Komplexné riešenie",
+    "title": "Správa firemných pohľadávok",
+    "paragraphs": [
+      "Ponúkame outsourcing správy pohľadávok, vďaka ktorému bude o Vaše pohľadávky riadne postarané.",
+      "Vaše faktúry spracujeme rýchlo, spoľahlivo, diskrétne a s maximálnou starostlivosťou. Vďaka nášmu informačnému portálu máte neustály prehľad o stave vašich pohľadávok. Naše služby zahŕňajú v tejto oblasti:"
+    ],
+    "button": "Nezáväzný dopyt",
+    "services": {
+      "title": "Naše služby zahŕňajú:",
+      "items": [
+        "Náklady účtujeme iba, ak je nutné súdne riešenie Vašej pohľadávky, alebo mimoriadne výdavky v prípade osobnej návštevy dlžníka naším špecialistom",
+        "Zabezpečíme exekúciu vymáhanej pohľadávky vrátane mimosúdneho a súdneho inkasa tuzemských (zahraničných) pohľadávok",
+        "Vyhodnotenie rentability pohľadávok na vymáhanie",
+        "Prevzatie jednotlivých pohľadávok na vymáhanie",
+        "Prevzatie balíka pohľadávok na vymáhanie"
+      ]
+    }
+  },
+  "benefits": {
+    "badge": "Výhody spolupráce",
+    "title": "Prečo zveriť správu pohľadávok nám?",
+    "description": "Outsourcing správy pohľadávok vám prináša radu výhod, ktoré vám pomôžu sústrediť sa na vaše hlavné podnikanie",
+    "items": [
+      {
+        "title": "Úspora nákladov",
+        "description": "Nemusíte zamestnávať vlastných špecialistov na vymáhanie pohľadávok, platíte iba za skutočne poskytnuté služby."
+      },
+      {
+        "title": "Profesionálny prístup",
+        "description": "Naši špecialisti majú dlhoročné skúsenosti s vymáhaním pohľadávok a poznajú všetky potrebné postupy."
+      },
+      {
+        "title": "Prehľadný reporting",
+        "description": "Prostredníctvom nášho informačného systému máte neustály prehľad o stave vašich pohľadávok."
+      },
+      {
+        "title": "Rýchlosť a efektivita",
+        "description": "Vďaka špecializácii a skúsenostiam dokážeme vaše pohľadávky riešiť rýchlejšie a efektívnejšie."
+      },
+      {
+        "title": "Právne zázemie",
+        "description": "Máme k dispozícii tím právnikov, ktorí sú pripravení riešiť aj zložité prípady."
+      },
+      {
+        "title": "Diskrétnosť",
+        "description": "Ku všetkým prípadom pristupujeme s maximálnou diskrétnosťou a profesionalitou."
+      }
+    ]
+  }
+} 

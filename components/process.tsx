@@ -4,60 +4,33 @@ import { useState, useEffect } from "react"
 import { Eye, User, FileText, Gavel, CreditCard } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SectionWrapper } from "./section-wrapper"
+import { useTranslations } from "@/lib/i18n"
 
-const steps = [
-  {
-    key: "kontrola",
-    title: "Kontrola",
-    icon: Eye,
-    description:
-      "Po zaslání Vaší pohledávky na náš email se do jejího rozboru zapojí naše specializované oddělení, které odborně posoudí všechny podklady a vyhodnotí nejoptimálnější postup, zejména, zda je pohledávka vhodná k odkupu či k vymáhání.",
-  },
-  {
-    key: "zastoupeni",
-    title: "Zastoupení",
-    icon: User,
-    description:
-      "Pokud budou Vámi dodané podklady kompletní a bude možné pohledávku vymáhat, zašleme Vám obratem adekvátní návrh smlouvy na zastupování v rámci vymáhání Vašeho finančního nároku vůči dlužníkovi.",
-  },
-  {
-    key: "vyzva",
-    title: "Výzva",
-    icon: FileText,
-    description:
-      "V případě, že vymáhání není ani po dobu cca 14 – 21 dnů úspěšné, navrhneme Vám zaslat předžalobní výzvu. Předžalobní výzva je odesílána naší externí advokátní kanceláří.",
-  },
-  {
-    key: "zaloba",
-    title: "Žaloba",
-    icon: Gavel,
-    description:
-      "Nesplní-li dlužník dobrovolně dluh na základě předžalobní výzvy, je na něj podána žaloba, respektive návrh na vydání elektronického platebního rozkazu. Podáním žaloby začíná soudní fáze vymáhání Vaší pohledávky.",
-  },
-  {
-    key: "exekuce",
-    title: "Exekuce",
-    icon: CreditCard,
-    description:
-      "Pokud Váš dlužník ani na základě vydaného Platebního rozkazu neplní, vybereme nejvhodnějšího exekutora a předáme mu soudní rozhodnutí. Tím celý proces vymáhání a soudního řízení dospěje do finální fáze.",
-  },
-]
+// Icon mapping to maintain the icons with translated content
+const iconMap = {
+  kontrola: Eye,
+  zastoupeni: User,
+  vyzva: FileText,
+  zaloba: Gavel,
+  exekuce: CreditCard,
+}
 
 export function Process() {
+  const t = useTranslations('process')
   const [activeStep, setActiveStep] = useState("kontrola")
 
   // Add auto-scrolling effect
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveStep((current) => {
-        const currentIndex = steps.findIndex((step) => step.key === current)
-        const nextIndex = (currentIndex + 1) % steps.length
-        return steps[nextIndex].key
+        const currentIndex = t.steps.findIndex((step: any) => step.key === current)
+        const nextIndex = (currentIndex + 1) % t.steps.length
+        return t.steps[nextIndex].key
       })
     }, 5000) // Change step every 5 seconds
 
     return () => clearInterval(interval)
-  }, [])
+  }, [t.steps])
 
   return (
     <section className="relative py-24 sm:py-32 overflow-hidden">
@@ -70,9 +43,9 @@ export function Process() {
         <SectionWrapper animation="fade-up">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl bg-clip-text text-transparent bg-gradient-to-b from-zinc-900 to-zinc-500">
-              Průběh naší spolupráce
+              {t.title}
             </h2>
-            <p className="mt-4">Zjistěte, jak vám můžeme pomoci krok za krokem</p>
+            <p className="mt-4">{t.subtitle}</p>
           </div>
         </SectionWrapper>
 
@@ -80,10 +53,10 @@ export function Process() {
           <div className="flex flex-col gap-8">
             <SectionWrapper animation="zoom" delay={200}>
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 min-h-[300px] sm:min-h-[200px] relative overflow-hidden">
-                {steps.map((step) => {
+                {t.steps.map((step: any) => {
                   const isActive = step.key === activeStep
-                  const currentIndex = steps.findIndex((s) => s.key === activeStep)
-                  const stepIndex = steps.findIndex((s) => s.key === step.key)
+                  const currentIndex = t.steps.findIndex((s: any) => s.key === activeStep)
+                  const stepIndex = t.steps.findIndex((s: any) => s.key === step.key)
                   const shouldEnterFromTop = stepIndex > currentIndex
 
                   return (
@@ -108,9 +81,9 @@ export function Process() {
 
             <SectionWrapper animation="fade-up" delay={400}>
               <div className="flex flex-col lg:flex-row items-center justify-center gap-4">
-                {steps.map((step, index) => {
-                  const Icon = step.icon
-                  const isLast = index === steps.length - 1
+                {t.steps.map((step: any, index: number) => {
+                  const Icon = iconMap[step.key as keyof typeof iconMap]
+                  const isLast = index === t.steps.length - 1
                   return (
                     <div key={step.key} className="flex items-center">
                       <button

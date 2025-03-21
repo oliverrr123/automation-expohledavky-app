@@ -2,47 +2,31 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
+import { useParams } from "next/navigation"
 import { Phone, Globe, Menu, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { toast } from "sonner"
 
-const navigation = [
-  { name: "Úvod", href: "/" },
-  { name: "O nás", href: "/o-nas" },
-  {
-    name: "Naše služby",
-    href: "/nase-sluzby",
-    hasDropdown: true,
-    submenu: [
-      { name: "Vymáhání pohledávek", href: "/nase-sluzby/vymahani-pohledavek" },
-      { name: "Správa firemních pohledávek", href: "/nase-sluzby/sprava-firemnich-pohledavek" },
-      { name: "Odkup a prodej pohledávek", href: "/nase-sluzby/odkup-prodej-pohledavek" },
-      { name: "Odkup firem", href: "/nase-sluzby/odkup-firem" },
-      { name: "Odkup směnek", href: "/nase-sluzby/odkup-smenek" },
-      { name: "Partner v Lichtenštejnsku", href: "https://expohledavky.cz/firstAdvisoryGroup.pdf", target: "_blank" },
-    ],
-  },
-  { name: "Ceník", href: "/cenik" },
-  { name: "Slovník a vzory", href: "/slovnik-a-vzory" },
-  { name: "Blog", href: "/blog" },
-  { name: "Kariéra", href: "/kariera" },
-  { name: "Kontakt", href: "/kontakt" },
-]
-
 export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
+  const { locale } = useParams() || { locale: "cs" }
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
+  const [translations, setTranslations] = useState<any>(null)
+  
   const handleCopy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text)
-      toast.success("Telefonní číslo zkopírováno")
+      if (translations) {
+        toast.success(translations.phone.successMessage)
+      }
     } catch (err) {
-      toast.error("Kopírování se nezdařilo")
+      if (translations) {
+        toast.error(translations.phone.errorMessage)
+      }
     }
   }
 
@@ -62,6 +46,23 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
       setActiveDropdown(null)
     }, 100) // Small delay to allow moving to dropdown
   }
+
+  // Load translations based on locale
+  useEffect(() => {
+    const loadTranslations = async () => {
+      try {
+        const headerTranslations = await import(`@/locales/${locale || 'cs'}/header.json`)
+        setTranslations(headerTranslations.default)
+      } catch (error) {
+        console.error("Failed to load header translations:", error)
+        // Fallback to Czech if translations fail to load
+        const fallbackTranslations = await import(`@/locales/cs/header.json`)
+        setTranslations(fallbackTranslations.default)
+      }
+    }
+    
+    loadTranslations()
+  }, [locale])
 
   useEffect(() => {
     if (isLandingPage) {
@@ -86,6 +87,9 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
     }
   }, [])
 
+  // Don't render until translations are loaded
+  if (!translations) return null
+
   return (
     <header className="fixed inset-x-0 top-0 z-40 transition-colors duration-500">
       <div className="bg-zinc-900 text-zinc-200">
@@ -94,35 +98,31 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
             <div className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
               <a 
-                href="tel:+420735500003" 
+                href={`tel:${translations.phone.number}`}
                 className="text-sm hover:text-white cursor-pointer"
                 onClick={(e) => {
                   e.preventDefault()
-                  handleCopy("+420735500003")
+                  handleCopy(translations.phone.number)
                 }}
               >
-                +420 735 500 003
+                {translations.phone.display}
               </a>
             </div>
-            <span className="hidden text-sm text-zinc-400 sm:block">9:30 – 16:00</span>
+            <span className="hidden text-sm text-zinc-400 sm:block">{translations.topBar.hours}</span>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="text-zinc-200 hover:bg-zinc-800 hover:text-zinc-50">
                 <Globe className="mr-2 h-4 w-4" />
-                Česká republika
+                {translations.topBar.country}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>
-                <Link href="https://exreceivables.com/">United Kingdom</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="https://expohladavky.sk/">Slovakia</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="https://excredit.ro/">Romania</Link>
-              </DropdownMenuItem>
+              {translations.countries.map((country: { name: string, href: string }) => (
+                <DropdownMenuItem key={country.name}>
+                  <Link href={country.href} rel="noopener noreferrer">{country.name}</Link>
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -137,9 +137,9 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
               <Link href="/" className="-m-1.5 p-1.5">
                 <span className="text-2xl font-bold">
                   <span className={`${isScrolled ? "text-zinc-900" : "text-white"} transition-colors duration-500`}>
-                    EX
+                    {translations.company.prefix}
                   </span>
-                  <span className="text-orange-500">POHLEDÁVKY</span>
+                  <span className="text-orange-500">{translations.company.name}</span>
                 </span>
               </Link>
             </div>
@@ -149,15 +149,15 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon" className="hover:bg-transparent">
                     <Menu className={`h-6 w-6 ${isScrolled ? "text-zinc-900" : "text-white"} bg-blue`} />
-                    <span className="sr-only">Otevřít menu</span>
+                    <span className="sr-only">{translations.mobileMenu.openMenu}</span>
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right">
                   <SheetHeader>
-                    <SheetTitle>Menu</SheetTitle>
+                    <SheetTitle>{translations.mobileMenu.menuTitle}</SheetTitle>
                   </SheetHeader>
                   <nav className="mt-6">
-                    {navigation.map((item) => (
+                    {translations.navigation.map((item: any) => (
                       <div key={item.name}>
                         {item.hasDropdown ? (
                           <>
@@ -168,7 +168,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                               {item.name}
                             </Link>
                             <div className="pl-4 border-l border-gray-200">
-                              {item.submenu?.map((subItem) => (
+                              {item.submenu?.map((subItem: any) => (
                                 <Link
                                   key={subItem.name}
                                   href={subItem.href}
@@ -191,7 +191,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                       </div>
                     ))}
                     <Button className="mt-6 w-full" variant="default">
-                      Klientská zóna
+                      {translations.buttons.clientZone}
                     </Button>
                   </nav>
                 </SheetContent>
@@ -199,7 +199,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
             </div>
 
             <div className="hidden lg:flex lg:gap-x-8">
-              {navigation.map((item) =>
+              {translations.navigation.map((item: any) =>
                 item.hasDropdown ? (
                   <div
                     key={item.name}
@@ -223,7 +223,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                         onMouseEnter={() => handleMouseEnter(item.name)}
                         onMouseLeave={handleMouseLeave}
                       >
-                        {item.submenu?.map((subItem) => (
+                        {item.submenu?.map((subItem: any) => (
                           <Link
                             key={subItem.name}
                             href={subItem.href}
@@ -258,7 +258,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                     : "bg-zinc-900 text-white hover:bg-zinc-900/90"
                 }`}
               >
-                <Link href="/klient-prihlaseni">Klientská zóna</Link>
+                <Link href={translations.buttons.clientLogin}>{translations.buttons.clientZone}</Link>
               </Button>
             </div>
           </nav>

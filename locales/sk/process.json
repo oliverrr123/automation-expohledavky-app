@@ -1,0 +1,31 @@
+{
+  "title": "Priebeh našej spolupráce",
+  "subtitle": "Zistite, ako vám môžeme pomôcť krok za krokom",
+  "steps": [
+    {
+      "key": "kontrola",
+      "title": "Kontrola",
+      "description": "Po zaslaní Vašej pohľadávky na náš email sa do jej rozboru zapojí naše špecializované oddelenie, ktoré odborne posúdi všetky podklady a vyhodnotí najoptimálnejší postup, najmä, či je pohľadávka vhodná na odkúpenie alebo na vymáhanie."
+    },
+    {
+      "key": "zastoupeni",
+      "title": "Zastúpenie",
+      "description": "Ak budú Vami dodané podklady kompletné a bude možné pohľadávku vymáhať, zašleme Vám obratom adekvátny návrh zmluvy na zastupovanie v rámci vymáhania Vášho finančného nároku voči dlžníkovi."
+    },
+    {
+      "key": "vyzva",
+      "title": "Výzva",
+      "description": "V prípade, že vymáhanie nie je ani po dobu cca 14 – 21 dní úspešné, navrhneme Vám zaslať predžalobnú výzvu. Predžalobná výzva je odosielaná našou externou advokátskou kanceláriou."
+    },
+    {
+      "key": "zaloba",
+      "title": "Žaloba",
+      "description": "Ak dlžník nesplní dobrovoľne dlh na základe predžalobnej výzvy, je naňho podaná žaloba, respektíve návrh na vydanie elektronického platobného rozkazu. Podaním žaloby začína súdna fáza vymáhania Vašej pohľadávky."
+    },
+    {
+      "key": "exekuce",
+      "title": "Exekúcia",
+      "description": "Ak Váš dlžník ani na základe vydaného Platobného rozkazu neplní, vyberieme najvhodnejšieho exekútora a odovzdáme mu súdne rozhodnutie. Tým celý proces vymáhania a súdneho konania dospeje do finálnej fázy."
+    }
+  ]
+} 

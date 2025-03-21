@@ -17,6 +17,9 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { SectionWrapper } from "@/components/section-wrapper"
+import { useTranslations } from "@/lib/i18n"
+import DOMPurify from "dompurify"
+import { sanitizeHTML } from "@/lib/utils"
 
 interface BlogPost {
   id: string
@@ -52,6 +55,7 @@ const categoryDefinitions: Category[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    id: "zmeny-zakona-vyzva-pro-spravu-pohledavek",
     slug: "zmeny-zakona-vyzva-pro-spravu-pohledavek",
     title: "Změny zákona: Výzva pro správu pohledávek",
     subtitle: "Jak se české střední firmy přizpůsobují novým právním normám",
@@ -67,6 +71,7 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "mimosoudni-vyrovnani-klic-k-lepsim-vztahum",
     slug: "mimosoudni-vyrovnani-klic-k-lepsim-vztahum",
     title: "Mimosoudní vyrovnání: Klíč k lepším vztahům",
     subtitle: "Jak osobní vztahy ovlivňují řešení neuhrazených pohledávek",
@@ -82,6 +87,7 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "optimalizace-cash-flow-klic-k-uspechu-2024",
     slug: "optimalizace-cash-flow-klic-k-uspechu-2024",
     title: "Optimalizace cash flow: Klíč k úspěchu 2024",
     subtitle: "Strategie pro řízení pohledávek a obchodních vztahů",
@@ -97,6 +103,7 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "eticke-vymahani-pohledavek-v-cr",
     slug: "eticke-vymahani-pohledavek-v-cr",
     title: "Etické vymáhání pohledávek v ČR",
     subtitle: "Jak vymáhat pohledávky a zachovat dobré vztahy",
@@ -112,6 +119,7 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "eticka-dilemata-ve-vymahani-pohledavek",
     slug: "eticka-dilemata-ve-vymahani-pohledavek",
     title: "Etická dilemata ve vymáhání pohledávek",
     subtitle: "Jak balancovat právo a lidskost v českém prostředí",
@@ -127,6 +135,7 @@ const blogPosts: BlogPost[] = [
   },
 
   {
+    id: "prevence-nedobytnych-pohledavek-v-inflaci",
     slug: "prevence-nedobytnych-pohledavek-v-inflaci",
     title: "Prevence nedobytných pohledávek v inflaci",
     subtitle: "Jak chránit finance pomocí důvěry a právních jistot",
@@ -433,15 +442,17 @@ const categories = [
 ]
 
 export default function BlogPage() {
+  const t = useTranslations('blogPage')
   const [isLoaded, setIsLoaded] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [suggestions, setSuggestions] = useState<BlogPost[]>([])
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
   const [isSearching, setIsSearching] = useState(false)
+  const [searchResults, setSearchResults] = useState<BlogPost[]>([])
+  const [selectedCategory, setSelectedCategory] = useState("")
   const searchInputRef = useRef<HTMLInputElement>(null)
   const suggestionsRef = useRef<HTMLDivElement>(null)
-  const [selectedCategory, setSelectedCategory] = useState("")
 
   const allPosts = useRef(blogPosts).current
 
@@ -542,15 +553,43 @@ export default function BlogPage() {
     window.location.href = `/blog/${post.slug}`
   }
 
-  // Handle search submission
-  const handleSearch = (e?: React.FormEvent) => {
-    if (e) e.preventDefault()
+  // Validate search query to prevent injection attacks
+  const validateSearchQuery = (query: string): string => {
+    // Remove potentially dangerous characters, limit length
+    return query
+      .replace(/[^\w\s.,?!-]/g, '') // Only allow alphanumeric, spaces and basic punctuation
+      .substring(0, 100); // Limit length to 100 characters
+  }
 
-    if (!searchTerm.trim()) {
-      setIsSearching(false)
+  const handleSearch = (e?: React.FormEvent) => {
+    if (e) {
+      e.preventDefault()
+    }
+    
+    // Validate the search term before using it
+    const validatedSearchTerm = validateSearchQuery(searchTerm)
+    setSearchTerm(validatedSearchTerm)
+    
+    // Skip search for empty queries
+    if (!validatedSearchTerm.trim()) {
       return
     }
-
+    
+    // Filter results based on search term
+    const filtered = blogPosts
+      .filter((post) => {
+        if (selectedCategory && selectedCategory !== "all") {
+          return post.category === selectedCategory
+        }
+        return true
+      })
+      .filter(
+        (post) =>
+          post.title.toLowerCase().includes(validatedSearchTerm.toLowerCase()) ||
+          post.excerpt.toLowerCase().includes(validatedSearchTerm.toLowerCase())
+      )
+    
+    setSearchResults(filtered)
     setIsSearching(true)
     setShowSuggestions(false)
   }
@@ -560,6 +599,7 @@ export default function BlogPage() {
     setSearchTerm("")
     setShowSuggestions(false)
     setSuggestions([])
+    setSearchResults([])
     setIsSearching(false)
   }
 
@@ -573,9 +613,10 @@ export default function BlogPage() {
   // Highlight matching text in suggestions
   const highlightMatch = (text: string, query: string) => {
     if (!query.trim()) return text
-
-    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi")
-    return text.replace(regex, '<mark class="px-0.5">$1</mark>')
+    // Sanitize the query string before using it in regex
+    const sanitizedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    const regex = new RegExp(`(${sanitizedQuery})`, "gi")
+    return sanitizeHTML(text.replace(regex, '<mark>$1</mark>'))
   }
 
   useEffect(() => {
@@ -640,10 +681,9 @@ export default function BlogPage() {
               <span className="text-white">EX</span>
               <span className="text-orange-500">POHLEDÁVKY</span>
             </h1>
-            <h2 className="mb-6 text-xl font-medium md:text-2xl">Odborný portál o správě a vymáhání pohledávek</h2>
+            <h2 className="mb-6 text-xl font-medium md:text-2xl">{t.hero.subtitle}</h2>
             <p className="mb-8 text-gray-200">
-              Vítejte na našem blogu věnovaném správě, odkupu a vymáhání pohledávek. Najdete zde odborné články s
-              praktickými radami pro firmy a podnikatele v českém právním prostředí.
+              {t.hero.description}
             </p>
 
             {/* Search Bar with subtle animation */}
@@ -657,7 +697,7 @@ export default function BlogPage() {
                   <input
                     ref={searchInputRef}
                     type="text"
-                    placeholder="Hledat články..."
+                    placeholder={t.search.placeholder}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onKeyDown={handleKeyDown}
@@ -735,7 +775,7 @@ export default function BlogPage() {
               size="lg"
               className="bg-transparent text-white hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105"
             >
-              <Link href="/o-nas">Více o nás</Link>
+              <Link href="/o-nas">{t.sections.aboutUs}</Link>
             </Button>
           </div>
         </div>
@@ -748,18 +788,18 @@ export default function BlogPage() {
             <div className="bg-white rounded-xl p-6 shadow-md">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-zinc-900">
-                  {suggestions.length > 0
-                    ? `Výsledky vyhledávání (${suggestions.length})`
-                    : "Žádné výsledky nenalezeny"}
+                  {searchResults.length > 0
+                    ? `${t.search.results} (${searchResults.length})`
+                    : t.search.noResults}
                 </h2>
                 <Button variant="ghost" size="sm" onClick={clearSearch} className="text-zinc-500 hover:text-zinc-700">
-                  Zrušit vyhledávání
+                  {t.search.cancel}
                 </Button>
               </div>
 
-              {suggestions.length > 0 ? (
+              {searchResults.length > 0 ? (
                 <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                  {suggestions.map((post) => (
+                  {searchResults.map((post) => (
                     <div key={post.id} className="transform transition-all duration-500 ease-in-out hover:scale-[1.03]">
                       <ArticleCard post={post} />
                     </div>
@@ -767,7 +807,7 @@ export default function BlogPage() {
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-zinc-600 mb-4">Zkuste upravit vyhledávací dotaz nebo procházet kategorie níže.</p>
+                  <p className="text-zinc-600 mb-4">{t.search.adjust}</p>
                   <div className="flex flex-wrap justify-center gap-2">
                     {categories.map((category: Category) => (
                       <button
@@ -816,7 +856,7 @@ export default function BlogPage() {
             {showFeaturedPost && (
               <SectionWrapper animation="fade-up">
                 <section className="py-8">
-                  <h2 className="mb-8 text-2xl font-bold text-zinc-900">Nejnovější článek</h2>
+                  <h2 className="mb-8 text-2xl font-bold text-zinc-900">{t.sections.latestArticle}</h2>
                   <div className="transform transition-all duration-500 ease-in-out hover:scale-[1.01]">
                     <FeaturedArticle post={featuredPost} />
                   </div>
@@ -830,7 +870,7 @@ export default function BlogPage() {
                 <h2 className="mb-8 text-2xl font-bold text-zinc-900">
                   {selectedCategory
                     ? categories.find((c: Category) => c.slug === selectedCategory)?.name || "Články"
-                    : "Všechny články"}
+                    : t.categories.allArticles}
                 </h2>
                 {filteredPosts.length > 0 ? (
                   <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -846,12 +886,12 @@ export default function BlogPage() {
                   </div>
                 ) : (
                   <div className="text-center py-12 bg-white rounded-xl shadow-sm">
-                    <p className="text-zinc-600">Žádné články v této kategorii.</p>
+                    <p className="text-zinc-600">{t.categories.noCategoryArticles}</p>
                     <button
                       onClick={() => setSelectedCategory("")}
                       className="mt-4 text-orange-500 hover:text-orange-600 font-medium"
                     >
-                      Zobrazit všechny články
+                      {t.categories.showAllArticles}
                     </button>
                   </div>
                 )}
@@ -862,19 +902,18 @@ export default function BlogPage() {
             <SectionWrapper animation="fade-left" delay={300}>
               <section className="my-12 rounded-xl bg-zinc-100 p-8">
                 <div className="mx-auto max-w-2xl text-center">
-                  <h2 className="mb-4 text-2xl font-bold">Odebírejte náš newsletter</h2>
+                  <h2 className="mb-4 text-2xl font-bold">{t.newsletter.title}</h2>
                   <p className="mb-6 text-zinc-600">
-                    Přihlaste se k odběru našeho newsletteru a dostávejte nejnovější články a aktuální informace z
-                    oblasti správy a vymáhání pohledávek.
+                    {t.newsletter.description}
                   </p>
                   <div className="flex flex-col gap-4 sm:flex-row">
                     <input
                       type="email"
-                      placeholder="Váš e-mail"
+                      placeholder={t.newsletter.placeholder}
                       className="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 transition-all duration-300"
                     />
                     <Button className="whitespace-nowrap transition-all duration-300 hover:scale-105">
-                      Přihlásit se
+                      {t.newsletter.button}
                     </Button>
                   </div>
                 </div>

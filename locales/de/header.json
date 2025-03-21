@@ -1,0 +1,51 @@
+{
+  "topBar": {
+    "hours": "9:30 – 16:00",
+    "country": "Tschechische Republik"
+  },
+  "company": {
+    "prefix": "EX",
+    "name": "FORDERUNGEN"
+  },
+  "navigation": [
+    { "name": "Startseite", "href": "/" },
+    { "name": "Über uns", "href": "/o-nas" },
+    {
+      "name": "Unsere Dienstleistungen",
+      "href": "/nase-sluzby",
+      "hasDropdown": true,
+      "submenu": [
+        { "name": "Forderungseintreibung", "href": "/nase-sluzby/vymahani-pohledavek" },
+        { "name": "Verwaltung von Unternehmensforderungen", "href": "/nase-sluzby/sprava-firemnich-pohledavek" },
+        { "name": "Ankauf und Verkauf von Forderungen", "href": "/nase-sluzby/odkup-prodej-pohledavek" },
+        { "name": "Unternehmensübernahme", "href": "/nase-sluzby/odkup-firem" },
+        { "name": "Ankauf von Wechseln", "href": "/nase-sluzby/odkup-smenek" },
+        { "name": "Partner in Liechtenstein", "href": "https://expohledavky.cz/firstAdvisoryGroup.pdf", "target": "_blank" }
+      ]
+    },
+    { "name": "Preisliste", "href": "/cenik" },
+    { "name": "Glossar und Vorlagen", "href": "/slovnik-a-vzory" },
+    { "name": "Blog", "href": "/blog" },
+    { "name": "Karriere", "href": "/kariera" },
+    { "name": "Kontakt", "href": "/kontakt" }
+  ],
+  "countries": [
+    { "name": "United Kingdom", "href": "https://exreceivables.com/" },
+    { "name": "Slowakei", "href": "https://expohladavky.sk/" },
+    { "name": "Rumänien", "href": "https://excredit.ro/" }
+  ],
+  "buttons": {
+    "clientZone": "Kundenbereich",
+    "clientLogin": "/klient-prihlaseni"
+  },
+  "mobileMenu": {
+    "openMenu": "Menü öffnen",
+    "menuTitle": "Menü"
+  },
+  "phone": {
+    "number": "+420735500003",
+    "display": "+420 735 500 003",
+    "successMessage": "Telefonnummer kopiert",
+    "errorMessage": "Kopieren fehlgeschlagen"
+  }
+} 

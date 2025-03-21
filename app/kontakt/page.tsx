@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, type FormEvent } from "react"
+import { useState, type FormEvent, useEffect } from "react"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -12,17 +12,38 @@ import Image from "next/image"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
+import { useTranslations } from "@/lib/i18n"
+import { generateCSRFToken } from "@/lib/csrf"
 
 export default function ContactPage() {
+  const t = useTranslations('contactPage')
+  
   const [formData, setFormData] = useState({
     jmeno: "",
     email: "",
     telefon: "",
     zprava: "",
+    csrfToken: ""
   })
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [activeInfoBox, setActiveInfoBox] = useState<number | null>(null)
   const [copyStatus, setCopyStatus] = useState<{ [key: number]: boolean }>({})
+
+  useEffect(() => {
+    // Generate a CSRF token on the client side
+    const fetchCSRFToken = async () => {
+      try {
+        // Note: In a real implementation, you might want to fetch this from a dedicated API endpoint
+        // for even stronger security. For simplicity, we're generating it client-side here.
+        const token = generateCSRFToken();
+        setFormData(prev => ({ ...prev, csrfToken: token }));
+      } catch (error) {
+        console.error("Error generating CSRF token:", error);
+      }
+    };
+    
+    fetchCSRFToken();
+  }, []);
 
   const handleCopy = async (text: string, index: number) => {
     try {
@@ -31,15 +52,15 @@ export default function ContactPage() {
       
       // Determine the type of content being copied
       if (text.startsWith("+420")) {
-        toast.success("Telefonní číslo zkopírováno")
+        toast.success(t.contactInfo.copySuccess.phone)
       } else if (text.includes("@")) {
-        toast.success("Email zkopírován")
+        toast.success(t.contactInfo.copySuccess.email)
       } else if (text.includes("Praha")) {
-        toast.success("Adresa zkopírována")
+        toast.success(t.contactInfo.copySuccess.address)
       } else if (text.includes("Pondělí")) {
-        toast.success("Otevírací doba zkopírována")
+        toast.success(t.contactInfo.copySuccess.hours)
       } else {
-        toast.success("Zkopírováno do schránky")
+        toast.success(t.contactInfo.copySuccess.generic)
       }
       
       // Reset the copy status after 2 seconds
@@ -47,7 +68,7 @@ export default function ContactPage() {
         setCopyStatus((prev) => ({ ...prev, [index]: false }))
       }, 2000)
     } catch (err) {
-      toast.error("Kopírování se nezdařilo")
+      toast.error(t.contactInfo.copyError)
     }
   }
 
@@ -58,25 +79,49 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    
+    // CSRF token is already included in formData
     setFormStatus("submitting")
 
-    // Simulate API call
-    setTimeout(() => {
-      // Form submission logic would go here
-      console.log("Form submitted:", formData)
-      setFormStatus("success")
+    try {
+      // Send the form data to the API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // Reset form after submission
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Something went wrong');
+      }
+
+      // Success
+      setFormStatus("success");
+      toast.success(t.contact.success);
+
+      // Generate a new CSRF token
+      const newToken = generateCSRFToken();
+      
+      // Reset form after success
       setTimeout(() => {
         setFormData({
           jmeno: "",
           email: "",
           telefon: "",
           zprava: "",
-        })
-        setFormStatus("idle")
-      }, 3000)
-    }, 1500)
+          csrfToken: newToken
+        });
+        setFormStatus("idle");
+      }, 3000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setFormStatus("error");
+      toast.error(error instanceof Error ? error.message : t.contact.errors.unknown);
+    }
   }
 
   return (
@@ -139,11 +184,11 @@ export default function ContactPage() {
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
               <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                Jsme tu pro vás
+                {t.hero.badge}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Kontaktujte nás</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero.title}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                Máte otázky nebo potřebujete pomoc s vymáháním pohledávek? Náš tým je připraven vám pomoci.
+                {t.hero.subtitle}
               </p>
               <div className="flex flex-wrap justify-center gap-4 mt-8">
                 <Button
@@ -162,7 +207,7 @@ export default function ContactPage() {
                       aria-hidden="true"
                     />
                     <span className="relative z-10 flex items-center">
-                      Napsat zprávu <MessageSquare className="ml-2 h-4 w-4" />
+                      {t.hero.buttons.writeMessage} <MessageSquare className="ml-2 h-4 w-4" />
                     </span>
                   </a>
                 </Button>
@@ -177,7 +222,7 @@ export default function ContactPage() {
                       aria-hidden="true"
                     />
                     <span className="relative z-10 flex items-center">
-                      <Phone className="mr-2 h-4 w-4" /> Zavolat ihned
+                      <Phone className="mr-2 h-4 w-4" /> {t.hero.buttons.callNow}
                     </span>
                   </a>
                 </Button>
@@ -193,9 +238,9 @@ export default function ContactPage() {
           <div className="container mx-auto px-4 max-w-7xl">
             <SectionWrapper animation="fade-up">
               <div className="max-w-3xl mx-auto text-center mb-12">
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">Kontaktní informace</h2>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.contactInfo.title}</h2>
                 <p className="text-lg text-gray-600">
-                  Zajímají vás další informace? Chcete pomoci s vaší pohledávkou? Kontaktujte nás!
+                  {t.contactInfo.subtitle}
                 </p>
               </div>
             </SectionWrapper>
@@ -204,73 +249,73 @@ export default function ContactPage() {
               {[
                 {
                   icon: Phone,
-                  title: "Telefon",
+                  title: t.contactInfo.items[0].title,
                   content: (
                     <div className="space-y-2">
                       <p>
                         <a 
-                          href="tel:+420735500003" 
+                          href={`tel:${t.contactInfo.items[0].content[0]}`}
                           className="text-white hover:text-orange-300 transition-colors cursor-pointer"
                           onClick={(e) => {
                             e.preventDefault()
-                            handleCopy("+420735500003", 0)
+                            handleCopy(t.contactInfo.items[0].content[0], 0)
                           }}
                         >
-                          +420 735 500 003
+                          {t.contactInfo.items[0].content[0]}
                         </a>
                       </p>
                       <p>
                         <a 
-                          href="tel:+420266710318" 
+                          href={`tel:${t.contactInfo.items[0].content[1]}`}
                           className="text-white hover:text-orange-300 transition-colors cursor-pointer"
                           onClick={(e) => {
                             e.preventDefault()
-                            handleCopy("+420266710318", 1)
+                            handleCopy(t.contactInfo.items[0].content[1], 1)
                           }}
                         >
-                          +420 266 710 318
+                          {t.contactInfo.items[0].content[1]}
                         </a>
                       </p>
                     </div>
                   ),
                   dark: true,
-                  copyText: ["+420735500003", "+420266710318"],
+                  copyText: t.contactInfo.items[0].content,
                 },
                 {
                   icon: Mail,
-                  title: "E-mail",
+                  title: t.contactInfo.items[1].title,
                   content: (
                     <p>
                       <a
-                        href="mailto:info@expohledavky.cz"
+                        href={`mailto:${t.contactInfo.items[1].content[0]}`}
                         className="text-white hover:text-zinc-200 transition-colors cursor-pointer"
                         onClick={(e) => {
                           e.preventDefault()
-                          handleCopy("info@expohledavky.cz", 2)
+                          handleCopy(t.contactInfo.items[1].content[0], 2)
                         }}
                       >
-                        info@expohledavky.cz
+                        {t.contactInfo.items[1].content[0]}
                       </a>
                     </p>
                   ),
                   dark: false,
-                  copyText: ["info@expohledavky.cz"],
+                  copyText: t.contactInfo.items[1].content,
                 },
                 {
                   icon: MapPin,
-                  title: "City Empiria",
+                  title: t.contactInfo.items[2].title,
                   content: (
                     <p>
                       <span 
                         className="cursor-pointer"
-                        onClick={() => handleCopy("Na strži 1702/65, 140 00 Praha 4-Nusle", 3)}
+                        onClick={() => handleCopy(t.contactInfo.items[2].content[0], 3)}
                       >
-                        Na strži 1702/65, 140 00 <br /> Praha 4-Nusle
+                        {t.contactInfo.items[2].content[0].replace(", ", ", \n")}
                       </span>
                     </p>
                   ),
                   dark: true,
-                  copyText: ["Na strži 1702/65, 140 00 Praha 4-Nusle"],
+                  copyText: t.contactInfo.items[2].content,
                 },
                 {
                   icon: Clock,
@@ -338,32 +383,17 @@ export default function ContactPage() {
           <div className="container mx-auto px-4">
             <SectionWrapper animation="fade-up">
               <div className="max-w-3xl mx-auto text-center mb-12">
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">Jak probíhá spolupráce</h2>
-                <p className="text-lg text-gray-600">Jednoduchý proces, jak vám můžeme pomoci s vašimi pohledávkami</p>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.process.title}</h2>
+                <p className="text-lg text-gray-600">{t.process.subtitle}</p>
               </div>
             </SectionWrapper>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {[
-                {
-                  step: "01",
-                  title: "Kontaktujte nás",
-                  description: "Vyplňte kontaktní formulář nebo nám zavolejte a popište svůj problém s pohledávkou.",
-                  icon: MessageSquare,
-                },
-                {
-                  step: "02",
-                  title: "Konzultace",
-                  description: "Náš specialista vás kontaktuje a probereme s vámi možnosti řešení vaší situace.",
-                  icon: HelpCircle,
-                },
-                {
-                  step: "03",
-                  title: "Řešení",
-                  description: "Začneme pracovat na vymáhání vaší pohledávky s maximální efektivitou.",
-                  icon: CheckCircle,
-                },
-              ].map((item, index) => (
+              {t.process.steps.map((item: {
+                step: string;
+                title: string;
+                description: string;
+              }, index: number) => (
                 <SectionWrapper key={index} animation="fade-up" delay={200 * (index + 1)}>
                   <div className="bg-white rounded-xl p-8 shadow-md border border-gray-100 h-full relative overflow-hidden group hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
                     <div className="absolute -right-2 -top-6 text-8xl font-bold text-gray-100 opacity-80 group-hover:text-orange-100 transition-colors duration-500 text-right">
@@ -371,7 +401,13 @@ export default function ContactPage() {
                     </div>
                     <div className="relative z-10">
                       <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4 group-hover:bg-orange-200 transition-colors duration-500">
-                        <item.icon className="h-6 w-6 text-orange-600" />
+                        {index === 0 ? (
+                          <MessageSquare className="h-6 w-6 text-orange-600" />
+                        ) : index === 1 ? (
+                          <HelpCircle className="h-6 w-6 text-orange-600" />
+                        ) : (
+                          <CheckCircle className="h-6 w-6 text-orange-600" />
+                        )}
                       </div>
                       <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
                       <p className="text-gray-600">{item.description}</p>
@@ -389,10 +425,10 @@ export default function ContactPage() {
             <SectionWrapper animation="fade-up">
               <div className="max-w-3xl mx-auto text-center mb-12">
                 <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                  Jsme připraveni vám pomoci
+                  {t.contactForm.badge}
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">Napište nám!</h2>
-                <p className="text-gray-600">Vyplňte formulář a náš tým vás bude kontaktovat co nejdříve</p>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.contactForm.title}</h2>
+                <p className="text-gray-600">{t.contactForm.subtitle}</p>
               </div>
             </SectionWrapper>
 
@@ -404,6 +440,7 @@ export default function ContactPage() {
                   <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-orange-500/5 rounded-full blur-3xl"></div>
 
                   <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                    <input type="hidden" name="csrfToken" value={formData.csrfToken} />
                     <div className="space-y-4">
                       <div className="relative">
                         <input
@@ -413,7 +450,7 @@ export default function ContactPage() {
                           type="text"
                           value={formData.jmeno}
                           onChange={handleChange}
-                          placeholder="Jméno a příjmení"
+                          placeholder={t.contactForm.form.name}
                           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300"
                           disabled={formStatus === "submitting" || formStatus === "success"}
                         />
@@ -429,7 +466,7 @@ export default function ContactPage() {
                           type="email"
                           value={formData.email}
                           onChange={handleChange}
-                          placeholder="Váš e-mail"
+                          placeholder={t.contactForm.form.email}
                           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300"
                           disabled={formStatus === "submitting" || formStatus === "success"}
                         />
@@ -442,7 +479,7 @@ export default function ContactPage() {
                           type="text"
                           value={formData.telefon}
                           onChange={handleChange}
-                          placeholder="Telefonní kontakt"
+                          placeholder={t.contactForm.form.phone}
                           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300"
                           disabled={formStatus === "submitting" || formStatus === "success"}
                         />
@@ -455,7 +492,7 @@ export default function ContactPage() {
                           rows={5}
                           value={formData.zprava}
                           onChange={handleChange}
-                          placeholder="Vaše zpráva..."
+                          placeholder={t.contactForm.form.message}
                           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300 resize-none"
                           disabled={formStatus === "submitting" || formStatus === "success"}
                         ></textarea>
@@ -487,7 +524,7 @@ export default function ContactPage() {
 
                         {formStatus === "idle" && (
                           <span className="relative z-10 flex items-center justify-center">
-                            Odeslat zprávu <Send className="ml-2 h-4 w-4" />
+                            {t.contactForm.form.submit} <Send className="ml-2 h-4 w-4" />
                           </span>
                         )}
 
@@ -513,17 +550,17 @@ export default function ContactPage() {
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                               ></path>
                             </svg>
-                            Odesílání...
+                            {t.contactForm.form.sending}
                           </span>
                         )}
 
                         {formStatus === "success" && (
                           <span className="relative z-10 flex items-center justify-center">
-                            <CheckCircle className="mr-2 h-5 w-5" /> Zpráva odeslána!
+                            <CheckCircle className="mr-2 h-5 w-5" /> {t.contactForm.form.success}
                           </span>
                         )}
 
-                        {formStatus === "error" && <span className="relative z-10">Zkuste to prosím znovu</span>}
+                        {formStatus === "error" && <span className="relative z-10">{t.contactForm.form.error}</span>}
                       </Button>
                     </div>
                   </form>
@@ -535,10 +572,9 @@ export default function ContactPage() {
                   <div className="bg-zinc-900 text-white p-8 rounded-xl relative overflow-hidden">
                     <div className="absolute -top-10 -right-10 w-40 h-40 bg-orange-500/10 rounded-full blur-3xl"></div>
 
-                    <h3 className="text-2xl font-semibold mb-4">Rychlá odpověď</h3>
+                    <h3 className="text-2xl font-semibold mb-4">{t.contactForm.quickResponse.title}</h3>
                     <p className="text-zinc-300 mb-6">
-                      Náš tým vám odpoví do 24 hodin v pracovní dny. Pro urgentní případy nás neváhejte kontaktovat
-                      telefonicky.
+                      {t.contactForm.quickResponse.description}
                     </p>
 
                     <div className="flex items-center gap-3 mb-4">
@@ -585,14 +621,15 @@ export default function ContactPage() {
                       allowFullScreen
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
+                      sandbox="allow-scripts allow-same-origin allow-popups"
                     ></iframe>
 
                     {/* Map overlay with hover effect */}
                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent flex items-end transition-opacity duration-300 hover:opacity-0">
                       <div className="p-4 text-white w-full">
-                        <p className="font-medium">City Empiria, Praha 4</p>
+                        <p className="font-medium">{t.contactForm.map.title}</p>
                         <div className="flex items-center text-sm mt-1">
-                          <MapPin className="h-4 w-4 mr-1" /> Na strži 1702/65, 140 00
+                          <MapPin className="h-4 w-4 mr-1" /> {t.contactForm.map.address}
                         </div>
                       </div>
                     </div>
@@ -608,29 +645,13 @@ export default function ContactPage() {
           <div className="container mx-auto px-4">
             <SectionWrapper animation="fade-up">
               <div className="max-w-3xl mx-auto text-center mb-12">
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">Často kladené otázky</h2>
-                <p className="text-gray-600">Odpovědi na nejčastější dotazy ohledně našich služeb</p>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.faq.title}</h2>
+                <p className="text-gray-600">{t.faq.subtitle}</p>
               </div>
             </SectionWrapper>
 
             <div className="max-w-3xl mx-auto">
-              {[
-                {
-                  question: "Jak dlouho trvá vymáhání pohledávky?",
-                  answer:
-                    "Doba vymáhání pohledávky závisí na mnoha faktorech, jako je výše pohledávky, dostupnost dlužníka a jeho ochota spolupracovat. Obvykle se snažíme o mimosoudní řešení, které může trvat několik týdnů. V případě soudního vymáhání se doba prodlužuje na měsíce.",
-                },
-                {
-                  question: "Kolik stojí vaše služby?",
-                  answer:
-                    "Naše odměna je obvykle stanovena jako procento z vymožené částky, zpravidla 20-30%. Přesné podmínky závisí na konkrétním případu a jsou vždy předem dohodnuty. Pro více informací navštivte naši stránku s ceníkem nebo nás kontaktujte.",
-                },
-                {
-                  question: "Vymáháte pohledávky i v zahraničí?",
-                  answer:
-                    "Ano, poskytujeme služby vymáhání pohledávek i v zahraničí. Spolupracujeme s partnery v různých zemích, což nám umožňuje efektivně řešit i mezinárodní případy.",
-                },
-              ].map((item, index) => (
+              {t.faq.questions.map((item: { question: string; answer: string }, index: number) => (
                 <SectionWrapper key={index} animation="fade-up" delay={100 * (index + 1)}>
                   <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-4 hover:shadow-md transition-shadow duration-300">
                     <h3 className="text-xl font-semibold mb-3">{item.question}</h3>
@@ -651,10 +672,9 @@ export default function ContactPage() {
                 <div className="absolute -top-24 -right-24 w-64 h-64 bg-orange-500/20 rounded-full blur-3xl"></div>
 
                 <div className="relative z-10 max-w-3xl mx-auto text-center">
-                  <h2 className="text-3xl font-bold text-white mb-6">Připraveni vám pomoci s vašimi pohledávkami</h2>
+                  <h2 className="text-3xl font-bold text-white mb-6">{t.cta.title}</h2>
                   <p className="text-lg text-zinc-300 mb-8">
-                    Neváhejte nás kontaktovat pro nezávaznou konzultaci. Náš tým odborníků je připraven vám pomoci s
-                    vymáháním vašich pohledávek.
+                    {t.cta.description}
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <Button
@@ -673,7 +693,7 @@ export default function ContactPage() {
                           className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                           aria-hidden="true"
                         />
-                        <span className="relative z-10">Kontaktovat nás</span>
+                        <span className="relative z-10">{t.cta.buttons.contactUs}</span>
                       </a>
                     </Button>
                     <Button
@@ -686,7 +706,7 @@ export default function ContactPage() {
                           className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                           aria-hidden="true"
                         />
-                        <span className="relative z-10">Naše služby</span>
+                        <span className="relative z-10">{t.cta.buttons.ourServices}</span>
                       </Link>
                     </Button>
                   </div>

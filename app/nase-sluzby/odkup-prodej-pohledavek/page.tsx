@@ -2,8 +2,19 @@ import Image from "next/image"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle, DollarSign, FileText, BarChart } from "lucide-react"
+import { useTranslations } from "@/lib/i18n"
+
+// Icon mapping for process steps icons
+const iconMap = {
+  FileText,
+  CheckCircle,
+  DollarSign,
+  BarChart
+}
 
 export default function OdkupProdejPohledavekPage() {
+  const t = useTranslations('receivablesPurchasePage')
+  
   return (
     <>
       {/* Hero Section */}
@@ -21,11 +32,11 @@ export default function OdkupProdejPohledavekPage() {
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
               <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                Naše služby
+                {t.hero.badge}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Odkup a prodej pohledávek</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero.title}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                Rychlé a efektivní řešení pro věřitele, kteří chtějí své pohledávky prodat
+                {t.hero.subtitle}
               </p>
             </SectionWrapper>
           </div>
@@ -40,19 +51,15 @@ export default function OdkupProdejPohledavekPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    Komplexní řešení
+                    {t.mainSection.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">Odkup a prodej pohledávek</h2>
-                  <p className="text-gray-600 mb-4 text-lg">
-                    Odkup pohledávky je v současné době populární služba u všech věřitelů. Pokud se již nechcete
-                    pohledávkou dále zabývat a nevadí vám, že přijdete o část svých peněz, je tato služba určena právě
-                    vám.
-                  </p>
-                  <p className="text-gray-600 mb-8">
-                    Specializujeme se na odkup pohledávek jak od fyzických, tak od právnických osob. Díky vysokému
-                    procentu úspěšnosti můžeme nabídnout výhodnou kupní cenu odpovídající současnému stavu pohledávky a
-                    vy už nebudete mít se samotným vymáháním nic společného.
-                  </p>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.mainSection.title}</h2>
+                  
+                  {t.mainSection.paragraphs.map((paragraph: string, index: number) => (
+                    <p key={index} className={`text-gray-600 ${index === 0 ? 'mb-4 text-lg' : 'mb-8'}`}>
+                      {paragraph}
+                    </p>
+                  ))}
 
                   <div className="mt-8">
                     <Button
@@ -60,7 +67,7 @@ export default function OdkupProdejPohledavekPage() {
                       className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
                     >
                       <a href="#contact-form" className="flex items-center">
-                        Nezávazná poptávka <ArrowRight className="ml-2 h-4 w-4" />
+                        {t.mainSection.button} <ArrowRight className="ml-2 h-4 w-4" />
                       </a>
                     </Button>
                   </div>
@@ -79,40 +86,28 @@ export default function OdkupProdejPohledavekPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    Proces odkupu
+                    {t.process.badge}
                   </div>
                   <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">
-                    Odkupu pohledávek předchází jejich prověření zahrnující:
+                    {t.process.title}
                   </h2>
 
                   <div className="grid md:grid-cols-3 gap-8 mt-8">
-                    {[
-                      {
-                        icon: FileText,
-                        title: "Historie vzniku pohledávky",
-                        description: "Důkladně analyzujeme okolnosti vzniku pohledávky a její vývoj v čase.",
-                      },
-                      {
-                        icon: CheckCircle,
-                        title: "Prostudování souvisejících podkladů",
-                        description: "Pečlivě prověříme veškerou dokumentaci spojenou s pohledávkou.",
-                      },
-                      {
-                        icon: DollarSign,
-                        title: "Návrh ceny odkupu",
-                        description: "Na základě analýzy navrhneme spravedlivou cenu za odkup pohledávky.",
-                      },
-                    ].map((item, index) => (
-                      <SectionWrapper key={index} animation="zoom" delay={index * 100}>
-                        <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-8 shadow-sm border border-orange-100 h-full transition-all duration-300 hover:shadow-md hover:-translate-y-1">
-                          <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
-                            <item.icon className="h-6 w-6 text-orange-600" />
+                    {t.process.steps.map((step: any, index: number) => {
+                      const Icon = iconMap[step.icon as keyof typeof iconMap];
+                      
+                      return (
+                        <SectionWrapper key={index} animation="zoom" delay={index * 100}>
+                          <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-8 shadow-sm border border-orange-100 h-full transition-all duration-300 hover:shadow-md hover:-translate-y-1">
+                            <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
+                              <Icon className="h-6 w-6 text-orange-600" />
+                            </div>
+                            <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+                            <p className="text-gray-600">{step.description}</p>
                           </div>
-                          <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                          <p className="text-gray-600">{item.description}</p>
-                        </div>
-                      </SectionWrapper>
-                    ))}
+                        </SectionWrapper>
+                      );
+                    })}
                   </div>
 
                   <div className="mt-10 p-6 bg-zinc-900 text-white rounded-xl">
@@ -121,8 +116,7 @@ export default function OdkupProdejPohledavekPage() {
                         <BarChart className="h-5 w-5 text-orange-400" />
                       </div>
                       <p className="text-lg">
-                        Spolupracujeme rovněž se soukromými exekutory po celé ČR, tudíž jsme schopni realizovat vymáhání
-                        ve zkrácené době.
+                        {t.process.note}
                       </p>
                     </div>
                   </div>
@@ -139,35 +133,17 @@ export default function OdkupProdejPohledavekPage() {
           <SectionWrapper animation="fade-up">
             <div className="text-center mb-12">
               <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                Výhody prodeje pohledávek
+                {t.benefits.badge}
               </div>
-              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">Proč prodat své pohledávky?</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.benefits.title}</h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Prodej pohledávek přináší řadu výhod, které vám pomohou zlepšit cash flow a soustředit se na vaše hlavní
-                podnikání
+                {t.benefits.description}
               </p>
             </div>
           </SectionWrapper>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                title: "Okamžitá likvidita",
-                description: "Získáte finanční prostředky ihned, bez čekání na úhradu od dlužníka.",
-              },
-              {
-                title: "Žádné další starosti",
-                description: "Přenecháte veškeré vymáhání na nás a můžete se soustředit na své podnikání.",
-              },
-              {
-                title: "Jistota příjmu",
-                description: "Dostanete garantovanou částku bez ohledu na to, zda se pohledávku podaří vymoci.",
-              },
-              {
-                title: "Úspora nákladů",
-                description: "Nemusíte investovat do právních služeb a dalších nákladů spojených s vymáháním.",
-              },
-            ].map((benefit, index) => (
+            {t.benefits.items.map((benefit: any, index: number) => (
               <SectionWrapper key={index} animation="zoom" delay={index * 100}>
                 <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 h-full transition-all duration-300 hover:shadow-md hover:-translate-y-1">
                   <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">

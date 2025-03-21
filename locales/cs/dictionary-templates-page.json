@@ -1,0 +1,182 @@
+{
+  "header": {
+    "title": "Slovník a vzory",
+    "description": "Přinášíme vám užitečné informace o právních pojmech z oblasti pohledávek a vzory dokumentů ke stažení zdarma."
+  },
+  "search": {
+    "placeholder": "Hledat pojmy a vzory...",
+    "button": "Hledat",
+    "typeLabels": {
+      "document": "Vzor",
+      "dictionary": "Pojem"
+    }
+  },
+  "tabs": {
+    "templates": "Vzory ke stažení",
+    "dictionary": "Slovník pojmů"
+  },
+  "templates": [
+    {
+      "id": "smenka-bez-protestu",
+      "title": "Směnka bez protestu",
+      "description": "Vzor ke stažení zdarma",
+      "content": "Vzor směnky bez protestu ke stažení zdarma. Náhled vyplněné směnky včetně prázdného vzoru pro stažení a vyplnění.",
+      "imageUrl": "https://expohledavky.cz/uploads/vzory/smenka-bez-protestu.jpg",
+      "imageAlt": "Směnka bez protestu",
+      "downloadOptions": [
+        {
+          "url": "https://www.expohledavky.cz/uploads/vzory/smenka-bez-protestu-k-vyplneni.doc",
+          "label": "Stáhnout DOC"
+        },
+        {
+          "url": "https://www.expohledavky.cz/uploads/vzory/smenka-bez-protestu-k-vyplneni.pdf",
+          "label": "Stáhnout PDF"
+        }
+      ],
+      "headerBackground": "bg-orange-50",
+      "headerTextColor": "text-orange-700"
+    },
+    {
+      "id": "smlouva-o-zapujcce",
+      "title": "Smlouva o zápůjčce",
+      "description": "Vzor ke stažení zdarma",
+      "content": "Vzor smlouvy o zápůjčce ke stažení zdarma. Dokument je připraven k vyplnění a použití pro vaše potřeby.",
+      "imageUrl": "https://expohledavky.cz/uploads/vzory/smlouva-o-zapujcce.jpg",
+      "imageAlt": "Smlouva o zápůjčce",
+      "downloadOptions": [
+        {
+          "url": "https://www.expohledavky.cz/uploads/vzory/smlouva-o-zapujcce-k-vyplneni.doc",
+          "label": "Stáhnout DOC"
+        }
+      ],
+      "headerBackground": "bg-blue-50",
+      "headerTextColor": "text-blue-700"
+    },
+    {
+      "id": "uznani-dluhu",
+      "title": "Uznání dluhu a dohoda o splátkách",
+      "description": "Vzor ke stažení zdarma",
+      "content": "Vzor uznání dluhu a dohody o splátkách ke stažení zdarma. Náhled vyplněného dokumentu včetně prázdného vzoru.",
+      "imageUrl": "https://expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.jpg",
+      "imageAlt": "Uznání dluhu a dohoda o splátkách",
+      "downloadOptions": [
+        {
+          "url": "https://www.expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.doc",
+          "label": "Stáhnout DOC"
+        },
+        {
+          "url": "https://www.expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.pdf",
+          "label": "Stáhnout PDF"
+        }
+      ],
+      "headerBackground": "bg-green-50",
+      "headerTextColor": "text-green-700"
+    }
+  ],
+  "dictionaryTerms": [
+    {
+      "id": "pohledavka",
+      "title": "Pohledávka",
+      "description": "Co je to pohledávka?",
+      "content": "Pohledávka je právo věřitele (fyzické či právnické osoby) požadovat na dlužníkovi plnění vzniklé z určitého závazku. Pohledávka může být peněžitá i nepeněžitá.",
+      "type": "dictionary",
+      "letter": "P",
+      "background": "from-orange-50 to-orange-100",
+      "textColor": "text-orange-700",
+      "buttonColor": "text-orange-600 hover:text-orange-800 hover:bg-orange-50",
+      "updateDate": "12.10.2021",
+      "detailLetter": {
+        "background": "bg-orange-100",
+        "textColor": "text-orange-700"
+      },
+      "detailContent": {
+        "intro": "Pohledávka je právo věřitele (fyzické či právnické osoby) požadovat na dlužníkovi plnění vzniklé z určitého závazku. Pohledávka může být peněžitá i nepeněžitá. Věřitel má v době splatnosti právo vymáhat pohledávku po dlužníkovi a ten má povinnost tento závazek vůči věřiteli vyrovnat.",
+        "sections": [
+          {
+            "title": "Jaký je rozdíl mezi pohledávkou a dluhem?",
+            "content": "Pohledávka je vlastně právo plnění plynoucí z určitého závazku, které má určitá osoba (věřitel) vůči jinému účastníkovi závazku (dlužníkovi). Naopak proti pohledávce stojí takzvaný dluh – tedy povinnost účastníka závazku něco dát, něčeho se zdržet, něco udělat či něco strpět."
+          },
+          {
+            "title": "Typy pohledávek dle doby splatnosti",
+            "content": "Krátkodobá pohledávka je splatná do 12 měsíců. Dlouhodobá pohledávka má dobu splatnosti delší než 12 měsíců.",
+            "isList": true,
+            "items": [
+              {
+                "bold": "Krátkodobá pohledávka",
+                "text": " je splatná do 12 měsíců."
+              },
+              {
+                "bold": "Dlouhodobá pohledávka",
+                "text": " má dobu splatnosti delší než 12 měsíců."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "smenka",
+      "title": "Směnka",
+      "description": "Co je to směnka?",
+      "content": "Směnka je cenný papír obsahující bezpodmínečný platební příkaz nebo slib zaplatit určitou částku. Existuje několik druhů směnek, jako je zajišťovací směnka, směnka vlastní, směnka cizí a další.",
+      "type": "dictionary",
+      "letter": "S",
+      "background": "from-blue-50 to-blue-100",
+      "textColor": "text-blue-700",
+      "buttonColor": "text-blue-600 hover:text-blue-800 hover:bg-blue-50",
+      "updateDate": "12.10.2021",
+      "detailLetter": {
+        "background": "bg-blue-100",
+        "textColor": "text-blue-700"
+      },
+      "detailContent": {
+        "intro": "Směnka je cenný papír obsahující bezpodmínečný platební příkaz nebo slib zaplatit určitou částku.",
+        "sections": [
+          {
+            "title": "Zajišťovací směnka",
+            "content": "Směnka může sloužit i jako zajištění peněžitého závazku a je možno ji uplatnit poté, co povinnost na základně původního peněžitého závazku nebyla splněna."
+          },
+          {
+            "title": "Směnka vlastní",
+            "content": "Tvořena na základně dvou směnečných účastníků – emitent (výstavce) a remitent (osoba, na jejíž řad nebo jméno je směnka vydána). Obsahuje bezpodmínečný platební slib („Zaplatím\")."
+          }
+        ]
+      }
+    },
+    {
+      "id": "prevzeti-dluhu",
+      "title": "Převzetí dluhu",
+      "description": "Co znamená převzetí dluhu?",
+      "content": "Převzetí dluhu je právní institut, kdy třetí osoba přebírá dluh od původního dlužníka. K převzetí dluhu je potřeba souhlas věřitele.",
+      "type": "dictionary",
+      "letter": "P",
+      "background": "from-green-50 to-green-100",
+      "textColor": "text-green-700",
+      "buttonColor": "text-green-600 hover:text-green-800 hover:bg-green-50",
+      "updateDate": "12.10.2021",
+      "detailLetter": {
+        "background": "bg-green-100",
+        "textColor": "text-green-700"
+      },
+      "detailContent": {
+        "intro": "Převzetí dluhu je právní institut, kdy třetí osoba přebírá dluh od původního dlužníka. K převzetí dluhu je potřeba souhlas věřitele.",
+        "sections": [
+          {
+            "title": "",
+            "content": "Obsah této stránky je momentálně ve výstavbě. Brzy zde naleznete podrobné informace o převzetí dluhu."
+          }
+        ]
+      }
+    }
+  ],
+  "cta": {
+    "title": "Potřebujete pomoc s vašimi pohledávkami?",
+    "description": "Naši specialisté vám rádi pomohou s řešením vašich pohledávek. Kontaktujte nás pro nezávaznou konzultaci.",
+    "button": "Kontaktujte nás"
+  },
+  "detailedDictionary": {
+    "title": "Podrobný slovník pojmů"
+  },
+  "download": "Stáhnout",
+  "readMore": "Číst více"
+} 

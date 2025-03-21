@@ -1,0 +1,77 @@
+{
+  "company": {
+    "prefix": "EX",
+    "name": "POHĽADÁVKY",
+    "slogan": "Komplexné riešenie vašich pohľadávok.",
+    "motto": "\"Aj z vašich pohľadávok urobíme EX!\""
+  },
+  "contact": {
+    "address": {
+      "text": "Na strži 1702/65, 140 00, Praha 4-Nusle",
+      "successMessage": "Adresa skopírovaná"
+    },
+    "email": {
+      "text": "info@expohledavky.cz",
+      "successMessage": "Email skopírovaný"
+    },
+    "phones": [
+      {
+        "number": "+420266710318",
+        "display": "+420 266 710 318"
+      },
+      {
+        "number": "+420735500003",
+        "display": "+420 735 500 003"
+      }
+    ],
+    "successMessage": {
+      "phone": "Telefónne číslo skopírované",
+      "bankAccount": "Číslo účtu skopírované",
+      "error": "Kopírovanie sa nepodarilo"
+    }
+  },
+  "navigation": {
+    "title": "Navigácia",
+    "links": [
+      { "title": "Úvod", "href": "/" },
+      { "title": "O nás", "href": "/o-nas" },
+      { "title": "Vymáhanie pohľadávok", "href": "/nase-sluzby/vymahani-pohledavek" },
+      { "title": "Odkúpenie pohľadávok", "href": "/nase-sluzby/odkup-prodej-pohledavek" },
+      { "title": "Register exekúcií", "href": "https://lustrace.expohledavky.cz/" },
+      { "title": "Kontakt", "href": "/kontakt" }
+    ]
+  },
+  "downloads": {
+    "title": "Vzory na stiahnutie zdarma",
+    "templates": [
+      { "title": "Zmenka bez protestu", "href": "/slovnik-a-vzory#smenka-bez-protestu" },
+      { "title": "Zmluva o pôžičke", "href": "/slovnik-a-vzory#smlouva-o-zapujcce" },
+      { "title": "Uznanie dlhu", "href": "/slovnik-a-vzory#uznani-dluhu" }
+    ]
+  },
+  "bank": {
+    "title": "Platobné údaje",
+    "accounts": [
+      {
+        "bank": "Raiffeisenbank, a.s.",
+        "account": "777 7777 355 / 5500"
+      },
+      {
+        "bank": "Fio banka, a.s.",
+        "account": "250 2040 263 / 2010"
+      }
+    ]
+  },
+  "social": {
+    "title": "Sledujte nás",
+    "links": [
+      { "type": "facebook", "href": "https://www.facebook.com/expohledavkypraha/" },
+      { "type": "linkedin", "href": "https://www.linkedin.com/company/expohledávky-s-r-o/" },
+      { "type": "instagram", "href": "https://www.instagram.com/expohledavky/" }
+    ]
+  },
+  "copyright": {
+    "text": "© 2025 Všetky práva vyhradené.",
+    "privacyPolicy": "Ochrana osobných údajov"
+  }
+} 

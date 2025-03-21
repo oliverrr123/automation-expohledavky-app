@@ -1,0 +1,24 @@
+{
+  "title": "Unsere Referenzen",
+  "subtitle": "Was sagen unsere Kunden über uns?",
+  "testimonials": [
+    {
+      "author": "Ing. Jan Dvořák",
+      "text": "Die Firma EX Forderungen erbringt zuverlässig umfassende Dienstleistungen für uns, wobei wir mit Freude feststellen können, dass wir nur einen sehr entgegenkommenden Ansatz und Bereitschaft kennengelernt haben. Wir wenden uns gerne mit jedem Problem an das Unternehmen und wissen, dass wir immer ein qualitativ hochwertiges Ergebnis erhalten werden."
+    },
+    {
+      "author": "Jan Decker",
+      "company": "thimble.cz",
+      "text": "EX Forderungen ist immer eine Garantie für professionelle Dienstleistungen im Bereich des Forderungseinzugs. Dank der hervorragenden Arbeit von Herrn Chromy ist unser Cashflow sehr gut und wir müssen keine Zeit damit verschwenden, um die Zahlung von Rechnungen zu bitten."
+    },
+    {
+      "author": "Petra Novotná",
+      "text": "Mit der Firma EX Forderungen, die für unser Unternehmen die gesamte Agenda der Forderungseintreibung abwickelt, bin ich äußerst zufrieden. Flexibilität, Schnelligkeit und Zuverlässigkeit des Unternehmens sind wertvolle Vorteile."
+    }
+  ],
+  "ariaLabels": {
+    "previousTestimonial": "Vorherige Referenz",
+    "nextTestimonial": "Nächste Referenz",
+    "goToSlide": "Zu Folie gehen"
+  }
+} 

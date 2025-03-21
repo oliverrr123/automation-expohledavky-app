@@ -1,0 +1,77 @@
+{
+  "hero": {
+    "badge": "Komplexné riešenie",
+    "title": "Naše služby",
+    "description": "Ponúkame komplexné portfólio služieb v oblasti správy a vymáhania pohľadávok. Či už potrebujete vymôcť dlžnú čiastku, predať pohľadávku alebo odkúpiť firmu, sme tu pre vás s profesionálnym prístupom a dlhoročnými skúsenosťami."
+  },
+  "services": [
+    {
+      "id": "vymahani-pohledavek",
+      "title": "Vymáhanie pohľadávok",
+      "description": "Komplexné riešenie pre vymáhanie Vašich pohľadávok od prvotného kontaktu s dlžníkom až po exekučné konanie.",
+      "icon": "FileText",
+      "color": "orange",
+      "cta": "Zistiť viac"
+    },
+    {
+      "id": "sprava-firemnich-pohledavek",
+      "title": "Správa firemných pohľadávok",
+      "description": "Profesionálna správa a monitoring pohľadávok pre firmy, vrátane prevencie vzniku problematických pohľadávok.",
+      "icon": "Building",
+      "color": "blue",
+      "cta": "Zistiť viac"
+    },
+    {
+      "id": "odkup-prodej-pohledavek",
+      "title": "Odkúp a predaj pohľadávok",
+      "description": "Rýchly a efektívny odkúp Vašich pohľadávok za výhodných podmienok, alebo sprostredkovanie ich predaja.",
+      "icon": "CreditCard",
+      "color": "green",
+      "cta": "Zistiť viac"
+    },
+    {
+      "id": "odkup-firem",
+      "title": "Odkúp firiem",
+      "description": "Špecializujeme sa na odkúp firiem v rôznych fázach podnikania, vrátane spoločností v problémoch.",
+      "icon": "Briefcase",
+      "color": "purple",
+      "cta": "Zistiť viac"
+    },
+    {
+      "id": "odkup-smenek",
+      "title": "Odkúp zmeniek",
+      "description": "Odkupujeme zmenky všetkých typov za výhodných podmienok s rýchlym vyplatením finančných prostriedkov.",
+      "icon": "FileSignature",
+      "color": "red",
+      "cta": "Zistiť viac"
+    }
+  ],
+  "cta": {
+    "title": "Neviete, ktorú službu zvoliť?",
+    "description": "Každá situácia je jedinečná a vyžaduje individuálny prístup. Kontaktujte nás a naši špecialisti vám pomôžu vybrať najvhodnejšie riešenie pre vašu konkrétnu situáciu.",
+    "button": "Kontaktujte nás"
+  },
+  "whyChooseUs": {
+    "badge": "Prečo si vybrať nás",
+    "title": "Výhody spolupráce s nami",
+    "description": "Naša spoločnosť sa špecializuje na komplexné riešenie pohľadávok už niekoľko rokov. Vďaka našim skúsenostiam a profesionálnemu prístupu vám môžeme ponúknuť množstvo výhod.",
+    "advantages": [
+      {
+        "title": "Profesionálny prístup",
+        "description": "Naši špecialisti majú dlhoročné skúsenosti v odbore a poskytujú profesionálne služby na najvyššej úrovni."
+      },
+      {
+        "title": "Individuálne riešenie",
+        "description": "Ku každému prípadu pristupujeme individuálne a navrhujeme riešenia na mieru vašim potrebám."
+      },
+      {
+        "title": "Transparentné podmienky",
+        "description": "Všetky naše služby poskytujeme za jasne stanovených a transparentných podmienok."
+      },
+      {
+        "title": "Rýchle konanie",
+        "description": "Uvedomujeme si hodnotu času, preto konáme rýchlo a efektívne, aby sme vám pomohli čo najskôr."
+      }
+    ]
+  }
+} 

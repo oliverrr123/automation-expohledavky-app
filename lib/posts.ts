@@ -32,15 +32,36 @@ try {
   console.error('Chyba při vytváření adresáře:', error);
 }
 
+// Helper to sanitize slugs to prevent path traversal
+function sanitizeSlug(slug: string): string {
+  if (!slug) return '';
+  
+  // Remove any path traversal characters or patterns and forbidden characters
+  return slug
+    .replace(/\.\./g, '') // Remove path traversal sequences
+    .replace(/[\/\\]/g, '') // Remove slashes
+    .replace(/[^a-zA-Z0-9-_]/g, '') // Only allow alphanumeric, dashes and underscores
+    .substring(0, 100); // Limit length
+}
+
 export async function getPostBySlug(slug: string): Promise<PostData | null> {
   try {
+    // Sanitize slug to prevent path traversal attacks
+    const sanitizedSlug = sanitizeSlug(slug);
+    
+    // If the slug was modified during sanitization, it might be malicious
+    if (sanitizedSlug !== slug) {
+      console.warn(`Potentially malicious slug was sanitized: ${slug}`);
+      if (!sanitizedSlug) return null;
+    }
+    
     // Nejprve zkusíme najít soubor s datem v názvu
     const files = fs.readdirSync(postsDirectory);
     const datePattern = /^\d{4}-\d{2}-\d{2}-/;
     const matchingFile = files.find(file => {
       // Odstraníme datum z názvu souboru a porovnáme se slugem
       const fileWithoutDate = file.replace(datePattern, '').replace(/\.mdx$/, '');
-      return fileWithoutDate === slug;
+      return fileWithoutDate === sanitizedSlug;
     });
 
     let filePath;
@@ -48,7 +69,14 @@ export async function getPostBySlug(slug: string): Promise<PostData | null> {
       filePath = path.join(postsDirectory, matchingFile);
     } else {
       // Pokud nenajdeme soubor s datem, zkusíme najít soubor bez data
-      filePath = path.join(postsDirectory, `${slug}.mdx`);
+      filePath = path.join(postsDirectory, `${sanitizedSlug}.mdx`);
+    }
+
+    // Verify that the file path is within the posts directory
+    const resolvedPath = path.resolve(filePath);
+    if (!resolvedPath.startsWith(path.resolve(postsDirectory))) {
+      console.error(`Path traversal attempt detected: ${slug}`);
+      return null;
     }
 
     const source = fs.readFileSync(filePath, 'utf8');
@@ -69,7 +97,7 @@ export async function getPostBySlug(slug: string): Promise<PostData | null> {
     };
     
     return {
-      slug,
+      slug: sanitizedSlug,
       frontMatter,
       mdxSource,
     };
@@ -186,8 +214,22 @@ export async function getAllCategories(): Promise<string[]> {
 // Vyhledávání v článcích
 export async function searchPosts(query: string): Promise<PostData[]> {
   try {
+    // Validate and sanitize query parameter
+    if (!query) {
+      return [];
+    }
+    
+    // Sanitize the query
+    const sanitizedQuery = query
+      .replace(/[^\w\s.,?!-]/g, '') // Only allow alphanumeric, spaces and basic punctuation
+      .substring(0, 100); // Limit length to 100 characters
+    
+    if (!sanitizedQuery) {
+      return [];
+    }
+    
     const allPosts = await getAllPosts();
-    const lowerCaseQuery = query.toLowerCase();
+    const lowerCaseQuery = sanitizedQuery.toLowerCase();
     
     return allPosts.filter(post => {
       const { title, description, category, tags } = post.frontMatter;

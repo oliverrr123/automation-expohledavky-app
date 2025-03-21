@@ -1,0 +1,40 @@
+{
+  "hero": {
+    "title": "EXPOHLEDÁVKY",
+    "subtitle": "Expert portal on receivables management and collection",
+    "description": "Welcome to our blog dedicated to the management, purchase, and collection of receivables. Here you will find expert articles with practical advice for companies and entrepreneurs in the Czech legal environment."
+  },
+  "search": {
+    "placeholder": "Search articles...",
+    "button": "Search",
+    "results": "Search results",
+    "noResults": "No results found",
+    "cancel": "Cancel search",
+    "adjust": "Try adjusting your search query or browse the categories below."
+  },
+  "categories": {
+    "allArticles": "All articles",
+    "prevention": "Prevention",
+    "insolvency": "Insolvency",
+    "debtCollection": "Debt collection",
+    "debtManagement": "Receivables management",
+    "collectionEthics": "Collection ethics",
+    "financialAnalysis": "Financial analysis",
+    "noCategoryArticles": "No articles in this category.",
+    "showAllArticles": "Show all articles"
+  },
+  "sections": {
+    "latestArticle": "Latest article",
+    "allArticles": "All articles",
+    "aboutUs": "More about us"
+  },
+  "newsletter": {
+    "title": "Subscribe to our newsletter",
+    "description": "Sign up for our newsletter and receive the latest articles and current information on receivables management and collection.",
+    "placeholder": "Your email",
+    "button": "Subscribe"
+  },
+  "post": {
+    "readTime": "minute read"
+  }
+} 

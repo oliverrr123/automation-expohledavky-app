@@ -1,0 +1,40 @@
+{
+  "hero": {
+    "title": "EXPOHĽADÁVKY",
+    "subtitle": "Odborný portál o správe a vymáhaní pohľadávok",
+    "description": "Vitajte na našom blogu venovanom správe, odkúpeniu a vymáhaniu pohľadávok. Nájdete tu odborné články s praktickými radami pre firmy a podnikateľov v slovenskom právnom prostredí."
+  },
+  "search": {
+    "placeholder": "Hľadať články...",
+    "button": "Hľadať",
+    "results": "Výsledky vyhľadávania",
+    "noResults": "Žiadne výsledky nenájdené",
+    "cancel": "Zrušiť vyhľadávanie",
+    "adjust": "Skúste upraviť vyhľadávací dopyt alebo prehliadať kategórie nižšie."
+  },
+  "categories": {
+    "allArticles": "Všetky články",
+    "prevention": "Prevencia",
+    "insolvency": "Insolvencia",
+    "debtCollection": "Vymáhanie pohľadávok",
+    "debtManagement": "Správa pohľadávok",
+    "collectionEthics": "Etika vymáhania",
+    "financialAnalysis": "Finančná analýza",
+    "noCategoryArticles": "Žiadne články v tejto kategórii.",
+    "showAllArticles": "Zobraziť všetky články"
+  },
+  "sections": {
+    "latestArticle": "Najnovší článok",
+    "allArticles": "Všetky články",
+    "aboutUs": "Viac o nás"
+  },
+  "newsletter": {
+    "title": "Odoberajte náš newsletter",
+    "description": "Prihláste sa na odber nášho newslettera a dostávajte najnovšie články a aktuálne informácie z oblasti správy a vymáhania pohľadávok.",
+    "placeholder": "Váš e-mail",
+    "button": "Prihlásiť sa"
+  },
+  "post": {
+    "readTime": "minút čítania"
+  }
+} 

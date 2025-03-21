@@ -1,0 +1,141 @@
+{
+  "hero": {
+    "title": "Über EX Pohledávky",
+    "subtitle": "Wir sind Spezialisten für Forderungseintreibung mit langjähriger Erfahrung und hoher Erfolgsquote.",
+    "buttons": {
+      "contact": "Kontaktieren Sie uns",
+      "services": "Unsere Dienstleistungen"
+    }
+  },
+  "stats": {
+    "successRate": {
+      "value": "90%",
+      "label": "Erfolgsquote"
+    },
+    "experience": {
+      "value": "15+",
+      "label": "Jahre Erfahrung"
+    },
+    "clients": {
+      "value": "1000+",
+      "label": "Zufriedene Kunden"
+    },
+    "support": {
+      "value": "24/7",
+      "label": "Kundenbetreuung"
+    }
+  },
+  "mainContent": {
+    "badge": "Professioneller Ansatz",
+    "title": "Professionelle Forderungseintreibung",
+    "paragraphs": [
+      "Unser Unternehmen ist spezialisiert auf außergerichtliche und gerichtliche Forderungseintreibung. Wir bieten umfassende Rechtsdienstleistungen einschließlich der rechtlichen Bewertung jedes Falles und kostenloser Beratung. Wir arbeiten diskret, schnell und effizient.",
+      "Zu unseren Kunden zählen natürliche und juristische Personen, die ihr Geld zurückbekommen möchten. Wir berücksichtigen die Unterschiede bei Forderungen je nach Branche des jeweiligen Kunden. Wir bemühen uns, umfassende Dienstleistungen anzubieten, die genau auf Ihre Bedürfnisse zugeschnitten sind."
+    ],
+    "fee": "Die vertragliche Vergütung beträgt 20% bis 30% des eingetriebenen Betrags.",
+    "imageCaption": "Wir gehören zu den wenigen Forderungsspezialisten, die direkt mit Gerichtsvollziehern zusammenarbeiten"
+  },
+  "features": {
+    "title": "Unsere Hauptvorteile sind",
+    "subtitle": "Wir bieten umfassende Dienstleistungen mit Schwerpunkt auf Effizienz und Professionalität",
+    "items": [
+      {
+        "title": "Persönlicher Kontakt",
+        "description": "Wir bevorzugen den persönlichen Kontakt mit dem Schuldner an seinem Wohn- oder Arbeitsort"
+      },
+      {
+        "title": "Kostenlose Beratung",
+        "description": "Die Beratung zu Ihrer Forderung findet online oder telefonisch und kostenlos statt"
+      },
+      {
+        "title": "Diskreter Ansatz",
+        "description": "Wir bewahren stets höchste Diskretion gegenüber unseren Kunden"
+      },
+      {
+        "title": "Mehrere Lösungen",
+        "description": "Wir schlagen immer mehrere Lösungen für Ihre Situation vor, welche Lösung Sie wählen, liegt allein bei Ihnen"
+      }
+    ]
+  },
+  "success": {
+    "title": "ERFOLGSQUOTE",
+    "subtitle": "Bei der Forderungseintreibung sind wir überdurchschnittlich erfolgreich!",
+    "paragraphs": [
+      "Wir garantieren einen professionellen Ansatz und eine hohe Erfolgsquote bei der Forderungseintreibung.",
+      "Erfolgreiche Forderungseintreibung beruht auf der rechtzeitigen Bereitstellung hochwertiger Unterlagen über die Forderung und ausreichender Informationen über den Schuldner. In einem solchen Fall haben Sie bis zu 90% Chance, dass Ihre Forderungen vom Schuldner beglichen werden."
+    ],
+    "buttonText": "Unverbindliche Anfrage",
+    "arbitration": {
+      "title": "Schiedsverfahren",
+      "description": "In unserer Tätigkeit sind wir bereit, Forderungen durch Schiedsverfahren vor Schiedsrichtern einzutreiben, das primär auf Grundlage von Dokumenten (z.B. einer vertraglichen Schuldanerkennung mit Schiedsklausel) durchgeführt wird.",
+      "advantages": [
+        {
+          "title": "Schnellerer Prozess",
+          "description": "Viel schneller als Verfahren vor ordentlichen Gerichten"
+        },
+        {
+          "title": "Niedrigere Kosten",
+          "description": "Die Vergütung beträgt 3% des Streitwerts, mindestens 3.000 CZK (plus MwSt.)"
+        },
+        {
+          "title": "Einmalige Ausgabe",
+          "description": "Während des Schiedsverfahrens fallen keine weiteren Kosten an"
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "title": "Warum mit Profis zusammenarbeiten",
+    "subtitle": "Vergleich zwischen professionellem Ansatz und Eintreibung auf eigene Faust",
+    "professional": {
+      "title": "Zusammenarbeit mit uns",
+      "advantages": [
+        "Wir haben professionelle Erfahrung",
+        "Diskreter Umgang mit unseren Kunden",
+        "Kostenlose Beratung zu Ihrer Forderung",
+        "Vorschlag möglicher weiterer Lösungen",
+        "Rechtsservice im Rahmen unserer Dienstleistungen",
+        "Hohe Erfolgsquote bei der Eintreibung",
+        "Schnelle und effektive Lösungen"
+      ]
+    },
+    "diy": {
+      "title": "Eintreibung auf \"eigene Faust\"",
+      "disadvantages": [
+        "Laienhaftes Beurteilen des tatsächlichen Zustands der Forderung",
+        "Hohe Kosten für rechtliche Vertretung",
+        "Langwierige und schleppende Angelegenheit",
+        "Geringe Chancen auf erfolgreiche Eintreibung",
+        "Stress und Zeitverlust",
+        "Unkenntnis der rechtlichen Verfahren",
+        "Risiko der Verjährung der Forderung"
+      ]
+    }
+  },
+  "contact": {
+    "title": "Bereit, Ihnen zu helfen",
+    "description": "Außergerichtliche und gerichtliche Eintreibung bieten wir weltweit in Zusammenarbeit mit unseren Geschäftspartnern an. Wir bieten die Möglichkeit des Forderungsankaufs und des Outsourcings der Forderungsverwaltung.",
+    "form": {
+      "title": "Kontaktieren Sie uns",
+      "fields": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Ihr Name"
+        },
+        "email": {
+          "label": "E-Mail",
+          "placeholder": "ihre@email.de"
+        },
+        "phone": {
+          "label": "Telefon",
+          "placeholder": "+49 XXX XXX XXX"
+        },
+        "message": {
+          "label": "Nachricht",
+          "placeholder": "Beschreiben Sie uns Ihren Fall..."
+        }
+      },
+      "submitButton": "Nachricht senden"
+    }
+  }
+} 

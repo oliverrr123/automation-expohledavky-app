@@ -1,26 +1,131 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Link from "next/link"
+import { useParams } from "next/navigation"
 import { Phone, Mail, MapPin, FileText, Facebook, Linkedin, Instagram } from "lucide-react"
 import { toast } from "sonner"
 import type { LucideIcon } from "lucide-react"
 
+// Define types for the translations
+interface PhoneContact {
+  number: string;
+  display: string;
+}
+
+interface NavigationLink {
+  title: string;
+  href: string;
+}
+
+interface TemplateLink {
+  title: string;
+  href: string;
+}
+
+interface BankAccount {
+  bank: string;
+  account: string;
+}
+
+interface SocialLink {
+  type: string;
+  href: string;
+}
+
+interface FooterTranslations {
+  company: {
+    prefix: string;
+    name: string;
+    slogan: string;
+    motto: string;
+  };
+  contact: {
+    address: {
+      text: string;
+      successMessage: string;
+    };
+    email: {
+      text: string;
+      successMessage: string;
+    };
+    phones: PhoneContact[];
+    successMessage: {
+      phone: string;
+      bankAccount: string;
+      error: string;
+    };
+  };
+  navigation: {
+    title: string;
+    links: NavigationLink[];
+  };
+  downloads: {
+    title: string;
+    templates: TemplateLink[];
+  };
+  bank: {
+    title: string;
+    accounts: BankAccount[];
+  };
+  social: {
+    title: string;
+    links: SocialLink[];
+  };
+  copyright: {
+    text: string;
+    privacyPolicy: string;
+  };
+}
+
 export function Footer() {
+  const { locale } = useParams() || { locale: "cs" }
+  const [translations, setTranslations] = useState<FooterTranslations | null>(null)
+
+  // Load translations based on locale
+  useEffect(() => {
+    const loadTranslations = async () => {
+      try {
+        const footerTranslations = await import(`@/locales/${locale || 'cs'}/footer.json`)
+        setTranslations(footerTranslations.default)
+      } catch (error) {
+        console.error("Failed to load footer translations:", error)
+        // Fallback to Czech if translations fail to load
+        const fallbackTranslations = await import(`@/locales/cs/footer.json`)
+        setTranslations(fallbackTranslations.default)
+      }
+    }
+    
+    loadTranslations()
+  }, [locale])
+
   const handleCopy = async (text: string) => {
+    if (!translations) return;
+    
     try {
       await navigator.clipboard.writeText(text)
       if (text.includes("@")) {
-        toast.success("Email zkopírován")
-      } else if (text.includes("Praha")) {
-        toast.success("Adresa zkopírována")
+        toast.success(translations.contact.email.successMessage)
+      } else if (text.includes("Praha") || text.includes("Prague")) {
+        toast.success(translations.contact.address.successMessage)
       } else if (text.includes("/")) {
-        toast.success("Číslo účtu zkopírováno")
+        toast.success(translations.contact.successMessage.bankAccount)
       } else {
-        toast.success("Telefonní číslo zkopírováno")
+        toast.success(translations.contact.successMessage.phone)
       }
     } catch (err) {
-      toast.error("Kopírování se nezdařilo")
+      toast.error(translations.contact.successMessage.error)
     }
+  }
+
+  // Don't render until translations are loaded
+  if (!translations) return null
+
+  // Map icon types to components
+  const socialIcons: Record<string, LucideIcon> = {
+    facebook: Facebook,
+    linkedin: Linkedin,
+    instagram: Instagram
   }
 
   return (
@@ -31,61 +136,54 @@ export function Footer() {
           <div>
             <Link href="/" className="inline-block">
               <span className="text-2xl font-bold">
-                <span className="text-white">EX</span>
-                <span className="text-orange-500">POHLEDÁVKY</span>
+                <span className="text-white">{translations.company.prefix}</span>
+                <span className="text-orange-500">{translations.company.name}</span>
               </span>
             </Link>
             <p className="mt-4 text-gray-400">
-              Komplexní řešení vašich pohledávek.
+              {translations.company.slogan}
               <br />
-              <em>"I z vašich pohledávek uděláme EX!"</em>
+              <em>{translations.company.motto}</em>
             </p>
             <div className="mt-6 space-y-4 text-gray-400">
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 flex-none" />
                 <span 
                   className="cursor-pointer hover:text-white"
-                  onClick={() => handleCopy("Na strži 1702/65, 140 00, Praha 4-Nusle")}
+                  onClick={() => handleCopy(translations.contact.address.text)}
                 >
-                  Na strži 1702/65, 140 00, Praha 4-Nusle
+                  {translations.contact.address.text}
                 </span>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 flex-none" />
                 <a 
-                  href="mailto:info@expohledavky.cz" 
+                  href={`mailto:${translations.contact.email.text}`}
                   className="hover:text-white cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault()
-                    handleCopy("info@expohledavky.cz")
+                    handleCopy(translations.contact.email.text)
                   }}
                 >
-                  info@expohledavky.cz
+                  {translations.contact.email.text}
                 </a>
               </div>
               <div className="flex items-start gap-3">
                 <Phone className="h-5 w-5 flex-none" />
                 <div>
-                  <a 
-                    href="tel:+420266710318" 
-                    className="block hover:text-white cursor-pointer"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleCopy("+420266710318")
-                    }}
-                  >
-                    +420 266 710 318
-                  </a>
-                  <a 
-                    href="tel:+420735500003" 
-                    className="block hover:text-white cursor-pointer"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleCopy("+420735500003")
-                    }}
-                  >
-                    +420 735 500 003
-                  </a>
+                  {translations.contact.phones.map((phone: PhoneContact, index: number) => (
+                    <a 
+                      key={index}
+                      href={`tel:${phone.number}`}
+                      className="block hover:text-white cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleCopy(phone.number)
+                      }}
+                    >
+                      {phone.display}
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
@@ -93,19 +191,12 @@ export function Footer() {
 
           {/* Navigation */}
           <div>
-            <h3 className="text-lg font-semibold">Navigace</h3>
+            <h3 className="text-lg font-semibold">{translations.navigation.title}</h3>
             <ul className="mt-4 space-y-2">
-              {[
-                ["Úvod", "/"],
-                ["O nás", "/o-nas"],
-                ["Vymáhání pohledávek", "/nase-sluzby/vymahani-pohledavek"],
-                ["Odkup pohledávek", "/nase-sluzby/odkup-prodej-pohledavek"],
-                ["Registr exekucí", "https://lustrace.expohledavky.cz/"],
-                ["Kontakt", "/kontakt"],
-              ].map(([title, href]) => (
-                <li key={title}>
-                  <Link href={href} className="text-gray-400 hover:text-white">
-                    {title}
+              {translations.navigation.links.map((link: NavigationLink) => (
+                <li key={link.title}>
+                  <Link href={link.href} className="text-gray-400 hover:text-white">
+                    {link.title}
                   </Link>
                 </li>
               ))}
@@ -114,17 +205,13 @@ export function Footer() {
 
           {/* Downloads */}
           <div>
-            <h3 className="text-lg font-semibold">Vzory ke stažení zdarma</h3>
+            <h3 className="text-lg font-semibold">{translations.downloads.title}</h3>
             <ul className="mt-4 space-y-4">
-              {[
-                ["Směnka bez protestu", "/slovnik-a-vzory#smenka-bez-protestu"],
-                ["Smlouva o zápůjčce", "/slovnik-a-vzory#smlouva-o-zapujcce"],
-                ["Uznání dluhu", "/slovnik-a-vzory#uznani-dluhu"],
-              ].map(([title, href]) => (
-                <li key={title}>
-                  <Link href={href} className="flex items-center gap-2 text-gray-400 hover:text-white">
+              {translations.downloads.templates.map((template: TemplateLink) => (
+                <li key={template.title}>
+                  <Link href={template.href} className="flex items-center gap-2 text-gray-400 hover:text-white">
                     <FileText className="h-4 w-4" />
-                    {title}
+                    {template.title}
                   </Link>
                 </li>
               ))}
@@ -133,47 +220,38 @@ export function Footer() {
 
           {/* Social & Bank */}
           <div>
-            <h3 className="text-lg font-semibold">Platební údaje</h3>
+            <h3 className="text-lg font-semibold">{translations.bank.title}</h3>
             <div className="mt-4 space-y-4 text-gray-400">
-              <p>
-                Číslo účtu vedený u Raiffeisenbank, a.s.
-                <br />
-                <span 
-                  className="font-medium text-white cursor-pointer hover:text-orange-500 transition-colors"
-                  onClick={() => handleCopy("777 7777 355 / 5500")}
-                >
-                  777 7777 355 / 5500
-                </span>
-              </p>
-              <p>
-                Číslo účtu vedený u Fio banka, a.s.
-                <br />
-                <span 
-                  className="font-medium text-white cursor-pointer hover:text-orange-500 transition-colors"
-                  onClick={() => handleCopy("250 2040 263 / 2010")}
-                >
-                  250 2040 263 / 2010
-                </span>
-              </p>
+              {translations.bank.accounts.map((account: BankAccount, index: number) => (
+                <p key={index}>
+                  {account.bank}
+                  <br />
+                  <span 
+                    className="font-medium text-white cursor-pointer hover:text-orange-500 transition-colors"
+                    onClick={() => handleCopy(account.account)}
+                  >
+                    {account.account}
+                  </span>
+                </p>
+              ))}
             </div>
 
-            <h3 className="mt-8 text-lg font-semibold">Sledujte nás</h3>
+            <h3 className="mt-8 text-lg font-semibold">{translations.social.title}</h3>
             <div className="mt-4 flex gap-4">
-              {([ 
-                [Facebook, "https://www.facebook.com/expohledavkypraha/"],
-                [Linkedin, "https://www.linkedin.com/company/expohledávky-s-r-o/"],
-                [Instagram, "https://www.instagram.com/expohledavky/"],
-              ] as [LucideIcon, string][]).map(([Icon, href], idx) => (
-                <a
-                  key={idx}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
-                >
-                  <Icon className="h-5 w-5" />
-                </a>
-              ))}
+              {translations.social.links.map((link: SocialLink, idx: number) => {
+                const Icon = socialIcons[link.type]
+                return (
+                  <a
+                    key={idx}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white"
+                  >
+                    <Icon className="h-5 w-5" />
+                  </a>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -181,9 +259,9 @@ export function Footer() {
 
       <div className="border-t border-gray-800">
         <div className="container flex flex-col items-center justify-between gap-4 py-6 sm:flex-row">
-          <p className="text-sm text-gray-400">&copy; 2025 Všechna práva vyhrazena.</p>
+          <p className="text-sm text-gray-400">{translations.copyright.text}</p>
           <Link href="/ochrana-osobnich-udaju" className="text-sm text-gray-400 hover:text-white">
-            Ochrana osobních údajů
+            {translations.copyright.privacyPolicy}
           </Link>
         </div>
       </div>

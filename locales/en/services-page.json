@@ -1,0 +1,77 @@
+{
+  "hero": {
+    "badge": "Comprehensive solution",
+    "title": "Our services",
+    "description": "We offer a comprehensive portfolio of services in the field of receivables management and collection. Whether you need to collect a due amount, sell a receivable, or purchase a company, we are here for you with a professional approach and years of experience."
+  },
+  "services": [
+    {
+      "id": "vymahani-pohledavek",
+      "title": "Debt collection",
+      "description": "Comprehensive solution for collecting your receivables from initial contact with the debtor to enforcement proceedings.",
+      "icon": "FileText",
+      "color": "orange",
+      "cta": "Learn more"
+    },
+    {
+      "id": "sprava-firemnich-pohledavek",
+      "title": "Corporate receivables management",
+      "description": "Professional management and monitoring of receivables for companies, including prevention of problematic receivables.",
+      "icon": "Building",
+      "color": "blue",
+      "cta": "Learn more"
+    },
+    {
+      "id": "odkup-prodej-pohledavek",
+      "title": "Purchase and sale of receivables",
+      "description": "Quick and efficient purchase of your receivables under favorable conditions, or facilitation of their sale.",
+      "icon": "CreditCard",
+      "color": "green",
+      "cta": "Learn more"
+    },
+    {
+      "id": "odkup-firem",
+      "title": "Company purchase",
+      "description": "We specialize in purchasing companies at various stages of business, including companies in distress.",
+      "icon": "Briefcase",
+      "color": "purple",
+      "cta": "Learn more"
+    },
+    {
+      "id": "odkup-smenek",
+      "title": "Purchase of promissory notes",
+      "description": "We purchase promissory notes of all types under favorable conditions with quick payment of funds.",
+      "icon": "FileSignature",
+      "color": "red",
+      "cta": "Learn more"
+    }
+  ],
+  "cta": {
+    "title": "Not sure which service to choose?",
+    "description": "Each situation is unique and requires an individual approach. Contact us and our specialists will help you select the most suitable solution for your specific situation.",
+    "button": "Contact us"
+  },
+  "whyChooseUs": {
+    "badge": "Why choose us",
+    "title": "Benefits of working with us",
+    "description": "Our company has specialized in comprehensive receivables solutions for many years. Thanks to our experience and professional approach, we can offer you a number of advantages.",
+    "advantages": [
+      {
+        "title": "Professional approach",
+        "description": "Our specialists have many years of experience in the field and provide professional services at the highest level."
+      },
+      {
+        "title": "Individual solutions",
+        "description": "We approach each case individually and design solutions tailored to your needs."
+      },
+      {
+        "title": "Transparent conditions",
+        "description": "We provide all our services under clearly defined and transparent conditions."
+      },
+      {
+        "title": "Fast action",
+        "description": "We realize the value of time, so we act quickly and efficiently to help you as soon as possible."
+      }
+    ]
+  }
+} 

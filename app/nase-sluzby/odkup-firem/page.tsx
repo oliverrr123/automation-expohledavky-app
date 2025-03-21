@@ -2,8 +2,18 @@ import Image from "next/image"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle, FileText, Building, ClipboardCheck } from "lucide-react"
+import { useTranslations } from "@/lib/i18n"
+
+// Icon mapping for document icons
+const iconMap = {
+  FileText,
+  ClipboardCheck,
+  Building
+}
 
 export default function OdkupFiremPage() {
+  const t = useTranslations('companyPurchasePage')
+  
   return (
     <>
       {/* Hero Section */}
@@ -21,11 +31,11 @@ export default function OdkupFiremPage() {
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
               <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                Naše služby
+                {t.hero.badge}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Odkup firem</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero.title}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                Profesionální řešení pro majitele, kteří chtějí prodat svou společnost
+                {t.hero.subtitle}
               </p>
             </SectionWrapper>
           </div>
@@ -44,17 +54,15 @@ export default function OdkupFiremPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    Komplexní řešení
+                    {t.mainSection.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">Odkup firem</h2>
-                  <p className="text-gray-600 mb-4 text-lg">
-                    Vlastníte firmu, kterou již nepotřebujete a rádi byste ji prodali?
-                  </p>
-                  <p className="text-gray-600 mb-8">
-                    Pak neváhejte a kontaktuje nás, připravíme vám nabídku šitou na míru na odkup společnosti. Nabízíme
-                    odkoupení firem za nejlepší cenu. Cenové podmínky, případně převzetí společnosti za úplatu jsou
-                    individuální. Každému vyhotovíme analýzu, na jejímž základě předložíme individuální nabídku.
-                  </p>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.mainSection.title}</h2>
+                  
+                  {t.mainSection.paragraphs.map((paragraph: string, index: number) => (
+                    <p key={index} className={`text-gray-600 ${index === 0 ? 'mb-4 text-lg' : 'mb-8'}`}>
+                      {paragraph}
+                    </p>
+                  ))}
 
                   <div className="mt-8">
                     <Button
@@ -62,7 +70,7 @@ export default function OdkupFiremPage() {
                       className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
                     >
                       <a href="#contact-form" className="flex items-center">
-                        Nezávazná poptávka <ArrowRight className="ml-2 h-4 w-4" />
+                        {t.mainSection.button} <ArrowRight className="ml-2 h-4 w-4" />
                       </a>
                     </Button>
                   </div>
@@ -81,16 +89,12 @@ export default function OdkupFiremPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    Naše požadavky
+                    {t.requirements.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">Máme zájem o firmy, které:</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.requirements.title}</h2>
 
                   <ul className="space-y-4 mb-8">
-                    {[
-                      "byly založeny, ale nedošlo k uskutečnění podnikatelského záměru, případně společnost dříve podnikala, ale už ji nechcete dále provozovat a spravovat",
-                      "mají jasnou a bezproblémovou historii a k dispozici je účetnictví společnosti",
-                      "firmy jsou bez závazků",
-                    ].map((item, index) => (
+                    {t.requirements.items.map((item: string, index: number) => (
                       <li key={index} className="flex items-start gap-3 group">
                         <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-1 shadow-sm group-hover:shadow transition-shadow">
                           <CheckCircle className="h-4 w-4 text-orange-500" />
@@ -106,8 +110,7 @@ export default function OdkupFiremPage() {
                         <Building className="h-5 w-5 text-orange-400" />
                       </div>
                       <p className="text-lg">
-                        Spolupracujeme rovněž se soukromými exekutory po celé ČR, tudíž jsme schopni realizovat vymáhání
-                        ve zkrácené době.
+                        {t.requirements.note}
                       </p>
                     </div>
                   </div>
@@ -126,46 +129,32 @@ export default function OdkupFiremPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    Potřebné dokumenty
+                    {t.documents.badge}
                   </div>
                   <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">
-                    V případě odkupu budeme vyžadovat tyto podklady:
+                    {t.documents.title}
                   </h2>
 
                   <div className="grid md:grid-cols-1 gap-6 mt-8">
-                    {[
-                      {
-                        icon: FileText,
-                        title: "Potvrzení o bezdlužnosti",
-                        description:
-                          "Potvrzení o bezdlužnosti ze strany finančního úřadu, zdravotní pojišťovny, správy sociálního zabezpečení a celního úřadu",
-                      },
-                      {
-                        icon: ClipboardCheck,
-                        title: "Prohlášení o bezdlužnosti",
-                        description:
-                          "Prohlášení o bezdlužnosti od stávajícího majitele a jednatele (dle zákona ručí svým majetkem za případné nesrovnalosti mezi aktuálním stavem společnosti a stavem uvedeným v prohlášení)",
-                      },
-                      {
-                        icon: Building,
-                        title: "Kompletní účetnictví",
-                        description: "Kompletní účetnictví společnosti",
-                      },
-                    ].map((item, index) => (
-                      <SectionWrapper key={index} animation="zoom" delay={index * 100}>
-                        <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-8 shadow-sm border border-orange-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
-                          <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                              <item.icon className="h-6 w-6 text-orange-600" />
-                            </div>
-                            <div>
-                              <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                              <p className="text-gray-600">{item.description}</p>
+                    {t.documents.items.map((item: any, index: number) => {
+                      const Icon = iconMap[item.icon as keyof typeof iconMap];
+                      
+                      return (
+                        <SectionWrapper key={index} animation="zoom" delay={index * 100}>
+                          <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-8 shadow-sm border border-orange-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
+                            <div className="flex items-start gap-4">
+                              <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                                <Icon className="h-6 w-6 text-orange-600" />
+                              </div>
+                              <div>
+                                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                                <p className="text-gray-600">{item.description}</p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </SectionWrapper>
-                    ))}
+                        </SectionWrapper>
+                      );
+                    })}
                   </div>
                 </div>
               </SectionWrapper>

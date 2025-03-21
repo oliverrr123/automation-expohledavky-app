@@ -1,0 +1,154 @@
+{
+  "hero": {
+    "badge": "Professionelle Dienstleistung",
+    "title": "Forderungsankauf",
+    "subtitle": "Schnelle Liquidität durch den Verkauf Ihrer Forderungen"
+  },
+  "introduction": {
+    "description": "Unser Unternehmen ist auf den Ankauf von Forderungen spezialisiert. Wir bieten eine schnelle, diskrete und effektive Lösung für Unternehmen und Privatpersonen, die ihre Forderungen in Liquidität umwandeln möchten.",
+    "button": "Angebot anfordern",
+    "advantages": [
+      "Schnelles Bargeld für Ihre Forderungen",
+      "Faire Bewertung basierend auf der Qualität der Forderung",
+      "Risikoübertragung auf unser Unternehmen",
+      "Keine Folgekosten oder versteckte Gebühren"
+    ]
+  },
+  "purchaseProcedure": {
+    "title": "Wie funktioniert der Forderungsankauf?",
+    "subtitle": "Der Prozess des Forderungsankaufs ist einfach und unkompliziert",
+    "steps": [
+      {
+        "number": "01",
+        "title": "Einreichung der Anfrage",
+        "description": "Füllen Sie das Anfrageformular aus oder kontaktieren Sie uns telefonisch, um Ihre Forderung zu besprechen."
+      },
+      {
+        "number": "02",
+        "title": "Bewertung der Forderung",
+        "description": "Wir bewerten Ihre Forderung basierend auf verschiedenen Faktoren, wie Alter, Schuldnerbonität und Dokumentation."
+      },
+      {
+        "number": "03",
+        "title": "Preisangebot",
+        "description": "Wir unterbreiten Ihnen ein unverbindliches Angebot für den Ankauf Ihrer Forderung."
+      },
+      {
+        "number": "04",
+        "title": "Vertragsunterzeichnung",
+        "description": "Nach Annahme des Angebots unterzeichnen wir einen Forderungsabtretungsvertrag, der alle Bedingungen festlegt."
+      },
+      {
+        "number": "05",
+        "title": "Auszahlung",
+        "description": "Der vereinbarte Betrag wird umgehend auf Ihr Konto überwiesen, und wir übernehmen die weitere Bearbeitung der Forderung."
+      }
+    ]
+  },
+  "pricingFactors": {
+    "title": "Faktoren, die den Preis beeinflussen",
+    "description": "Der Preis, den wir für eine Forderung anbieten, hängt von verschiedenen Faktoren ab:",
+    "factors": [
+      {
+        "title": "Alter der Forderung",
+        "description": "Je jünger die Forderung, desto höher ist in der Regel der Preis. Bei Forderungen, die älter als 5 Jahre sind, sinkt der Wert erheblich."
+      },
+      {
+        "title": "Bonität des Schuldners",
+        "description": "Die finanzielle Situation des Schuldners ist ein entscheidender Faktor. Forderungen gegen solvente Unternehmen oder Personen erzielen höhere Preise."
+      },
+      {
+        "title": "Dokumentation",
+        "description": "Eine vollständige Dokumentation, einschließlich Verträgen, Rechnungen, Mahnungen und Nachweisen der Kommunikation mit dem Schuldner, erhöht den Wert der Forderung."
+      },
+      {
+        "title": "Höhe der Forderung",
+        "description": "Die Höhe der Forderung beeinflusst den Preis. Bei sehr niedrigen oder sehr hohen Beträgen kann der Prozentsatz variieren."
+      }
+    ]
+  },
+  "types": {
+    "title": "Arten von Forderungen, die wir ankaufen",
+    "items": [
+      {
+        "title": "Unternehmensforderungen",
+        "description": "Forderungen zwischen Unternehmen (B2B), wie unbezahlte Rechnungen für Waren oder Dienstleistungen.",
+        "icon": "building-office"
+      },
+      {
+        "title": "Verbraucherforderungen",
+        "description": "Forderungen von Unternehmen gegen Verbraucher (B2C), z.B. aus Kaufverträgen oder Dienstleistungen.",
+        "icon": "user"
+      },
+      {
+        "title": "Gesicherte Forderungen",
+        "description": "Forderungen, die durch Pfand, Hypothek oder andere Sicherheiten besichert sind.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Ungesicherte Forderungen",
+        "description": "Forderungen ohne spezifische Sicherheiten, basierend nur auf der Verpflichtung des Schuldners.",
+        "icon": "document-text"
+      },
+      {
+        "title": "Fällige Forderungen",
+        "description": "Bereits fällige Forderungen, bei denen der Schuldner in Verzug ist.",
+        "icon": "clock"
+      },
+      {
+        "title": "Künftige Forderungen",
+        "description": "Forderungen, die noch nicht fällig sind, aber in Zukunft fällig werden.",
+        "icon": "calendar"
+      }
+    ]
+  },
+  "priceRange": {
+    "title": "Preisgestaltung für den Forderungsankauf",
+    "description": "Unser Preisangebot hängt von der Qualität der Forderung ab. In der Regel bieten wir:",
+    "ranges": [
+      {
+        "percentage": "75-90%",
+        "description": "des Nennwerts für erstklassige Forderungen (jung, gut dokumentiert, solventer Schuldner)"
+      },
+      {
+        "percentage": "50-75%",
+        "description": "für Standardforderungen mit durchschnittlicher Einbringlichkeitswahrscheinlichkeit"
+      },
+      {
+        "percentage": "15-50%",
+        "description": "für problematische Forderungen (alt, schwierige Eintreibung, schlechte Bonität des Schuldners)"
+      }
+    ],
+    "note": "Jede Forderung wird individuell bewertet. Für ein genaues Angebot kontaktieren Sie uns bitte mit den Details Ihrer Forderung."
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "items": [
+      {
+        "question": "Was passiert nach dem Verkauf meiner Forderung?",
+        "answer": "Nach dem Verkauf gehen alle Rechte und Pflichten im Zusammenhang mit der Forderung auf unser Unternehmen über. Wir übernehmen die vollständige Verantwortung für die Eintreibung, und Sie haben keine weiteren Verpflichtungen. Der Schuldner wird über die Abtretung informiert und zahlt fortan direkt an uns."
+      },
+      {
+        "question": "Wie lange dauert der Prozess des Forderungsankaufs?",
+        "answer": "Der gesamte Prozess kann je nach Komplexität der Forderung und Vollständigkeit der Dokumentation zwischen 1-5 Werktagen dauern. In dringenden Fällen können wir den Prozess beschleunigen und innerhalb von 24 Stunden abschließen."
+      },
+      {
+        "question": "Müssen alle Forderungen eines Unternehmens verkauft werden?",
+        "answer": "Nein, Sie können einzelne Forderungen oder spezifische Gruppen von Forderungen verkaufen. Es ist nicht notwendig, alle Ihre Forderungen zu verkaufen. Wir bieten flexible Lösungen, die Ihren spezifischen Bedürfnissen entsprechen."
+      },
+      {
+        "question": "Haftet der Verkäufer, wenn der Schuldner nicht zahlt?",
+        "answer": "Dies hängt von der Art der Vereinbarung ab. Bei einem Verkauf ohne Rückgriffsrecht (ohne Regress) tragen wir das volle Risiko der Nichtzahlung. Bei einem Verkauf mit Rückgriffsrecht kann der Verkäufer unter bestimmten Bedingungen zur Verantwortung gezogen werden. Die genauen Bedingungen werden im Abtretungsvertrag festgelegt."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Bereit, Ihre Forderungen zu verkaufen?",
+    "description": "Kontaktieren Sie uns für eine unverbindliche Bewertung und ein maßgeschneidertes Angebot für den Ankauf Ihrer Forderungen.",
+    "button": "Kontaktieren Sie uns jetzt",
+    "contact": {
+      "email": "info@expohledavky.cz",
+      "phone": "+420 735 500 003"
+    }
+  }
+} 

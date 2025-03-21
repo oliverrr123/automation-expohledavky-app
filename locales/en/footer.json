@@ -1,0 +1,77 @@
+{
+  "company": {
+    "prefix": "EX",
+    "name": "RECEIVABLES",
+    "slogan": "Comprehensive solutions for your receivables.",
+    "motto": "\"We'll make an EX out of your receivables!\""
+  },
+  "contact": {
+    "address": {
+      "text": "Na strži 1702/65, 140 00, Prague 4-Nusle",
+      "successMessage": "Address copied"
+    },
+    "email": {
+      "text": "info@expohledavky.cz",
+      "successMessage": "Email copied"
+    },
+    "phones": [
+      {
+        "number": "+420266710318",
+        "display": "+420 266 710 318"
+      },
+      {
+        "number": "+420735500003",
+        "display": "+420 735 500 003"
+      }
+    ],
+    "successMessage": {
+      "phone": "Phone number copied",
+      "bankAccount": "Bank account copied",
+      "error": "Copy failed"
+    }
+  },
+  "navigation": {
+    "title": "Navigation",
+    "links": [
+      { "title": "Home", "href": "/" },
+      { "title": "About Us", "href": "/o-nas" },
+      { "title": "Debt Collection", "href": "/nase-sluzby/vymahani-pohledavek" },
+      { "title": "Receivables Purchase", "href": "/nase-sluzby/odkup-prodej-pohledavek" },
+      { "title": "Execution Registry", "href": "https://lustrace.expohledavky.cz/" },
+      { "title": "Contact", "href": "/kontakt" }
+    ]
+  },
+  "downloads": {
+    "title": "Free Templates",
+    "templates": [
+      { "title": "Promissory Note Without Protest", "href": "/slovnik-a-vzory#smenka-bez-protestu" },
+      { "title": "Loan Agreement", "href": "/slovnik-a-vzory#smlouva-o-zapujcce" },
+      { "title": "Debt Acknowledgment", "href": "/slovnik-a-vzory#uznani-dluhu" }
+    ]
+  },
+  "bank": {
+    "title": "Payment Details",
+    "accounts": [
+      {
+        "bank": "Raiffeisenbank, a.s.",
+        "account": "777 7777 355 / 5500"
+      },
+      {
+        "bank": "Fio banka, a.s.",
+        "account": "250 2040 263 / 2010"
+      }
+    ]
+  },
+  "social": {
+    "title": "Follow Us",
+    "links": [
+      { "type": "facebook", "href": "https://www.facebook.com/expohledavkypraha/" },
+      { "type": "linkedin", "href": "https://www.linkedin.com/company/expohledávky-s-r-o/" },
+      { "type": "instagram", "href": "https://www.instagram.com/expohledavky/" }
+    ]
+  },
+  "copyright": {
+    "text": "© 2025 All rights reserved.",
+    "privacyPolicy": "Privacy Policy"
+  }
+} 

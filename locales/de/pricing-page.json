@@ -1,0 +1,71 @@
+{
+  "title": "PREISLISTE",
+  "subtitle": "Grundtarife gültig ab 1. Januar 2023",
+  "pricingTable": {
+    "header": {
+      "specification": "Spezifikation der einzelnen Abteilungen bei der Bearbeitung jeder Forderung",
+      "rate": "Satz pro Vorgang - Bearbeitung einer Forderung"
+    },
+    "rows": [
+      {
+        "service": "Administration - Bearbeitung der Forderung",
+        "price": "1.000 Kč"
+      },
+      {
+        "service": "Ermittlungsabteilung",
+        "price": "1.300 Kč"
+      },
+      {
+        "service": "Eintreibung durch Inkassospezialisten",
+        "price": "2.000 Kč" 
+      },
+      {
+        "service": "Rechtsabteilung",
+        "price": "3.000 Kč"
+      },
+      {
+        "service": "Gerichtsklage - 15% der Forderungssumme",
+        "price": "mindestens 15.000 Kč"
+      },
+      {
+        "service": "Vollstreckbarkeitsklausel beim Notar",
+        "price": "mindestens 12.000 Kč"
+      },
+      {
+        "service": "Besuch beim Schuldner",
+        "price": "30 Kč/km + 500 Kč/Stunde"
+      }
+    ]
+  },
+  "notes": [
+    "Bei Tätigkeiten in einer Fremdsprache erhöht sich der Stundensatz um 30%.",
+    "Preise verstehen sich ohne Mehrwertsteuer."
+  ],
+  "contactForm": {
+    "title": "Kontaktformular",
+    "fields": {
+      "name": {
+        "label": "Vor- und Nachname",
+        "placeholder": "Vor- und Nachname"
+      },
+      "email": {
+        "label": "Ihre E-Mail",
+        "placeholder": "Ihre E-Mail"
+      },
+      "phone": {
+        "label": "Telefonkontakt",
+        "placeholder": "Telefonkontakt"
+      },
+      "amount": {
+        "label": "Forderungshöhe",
+        "placeholder": "Forderungshöhe"
+      },
+      "message": {
+        "label": "Ihre Nachricht",
+        "placeholder": "Ihre Nachricht... geben Sie alle bekannten Details zu Ihrer Forderung an..."
+      }
+    },
+    "submitButton": "Nachricht senden",
+    "successMessage": "Nachricht wurde gesendet. Vielen Dank!"
+  }
+} 

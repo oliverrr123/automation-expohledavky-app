@@ -1,0 +1,51 @@
+{
+  "hero": {
+    "badge": "Our services",
+    "title": "Debt collection",
+    "subtitle": "Professional solution for effective collection of your receivables"
+  },
+  "mainSection": {
+    "badge": "Comprehensive solution",
+    "title": "Debt collection",
+    "paragraphs": [
+      "We offer debt collection in a wide range of areas including accounting records or unpaid invoices.",
+      "We professionally assess each receivable and then propose the most appropriate solution procedure including, among other things, a comprehensive legal analysis. As part of debt collection, we specialize in invoices, loans, promissory notes, wages, rent or compensation for damages."
+    ],
+    "button": "Non-binding inquiry",
+    "specialization": {
+      "title": "We specialize in:",
+      "items": [
+        "collection of invoices for delivered goods and performed work",
+        "collection of debt acknowledgment for any reason of origin",
+        "collection of debt from a money loan agreement",
+        "collection of claims for damages",
+        "collection of unpaid rent",
+        "collection of promissory notes",
+        "and more..."
+      ]
+    }
+  },
+  "form": {
+    "fields": {
+      "jmeno": "Full name",
+      "email": "Email",
+      "telefon": "Phone",
+      "vyse": "Receivable amount (CZK)",
+      "zprava": "Message"
+    },
+    "statuses": {
+      "idle": "Send inquiry",
+      "submitting": "Sending...",
+      "success": "Sent!",
+      "error": "Error!"
+    }
+  },
+  "process": {
+    "tabs": {
+      "kontrola": "Verification",
+      "komunikace": "Communication",
+      "soud": "Court",
+      "exekuce": "Execution"
+    }
+  }
+} 

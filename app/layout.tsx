@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import type { Metadata, Viewport } from "next"
 import { Toaster } from "sonner"
+import { getMetadata } from "@/lib/i18n"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -18,29 +19,33 @@ export const viewport: Viewport = {
   maximumScale: 1,
 }
 
-export const metadata: Metadata = {
-  title: "EX Pohledávky - komplexní řešení vašich pohledávek",
-  description: "Jsme experti na řešení pohledávek. Pohledávky řešíme mimosoudně, soudně a exekučně.",
-  keywords: "faktura, směnka, pohledávka, dluhy, odkup firem, dluží mi, exekuce",
-  generator: 'v0.dev',
-  icons: {
-    icon: [
-      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-    ],
-    shortcut: '/favicon/favicon.ico',
-    apple: '/favicon/apple-touch-icon.png',
-    other: [
-      {
-        rel: 'apple-touch-icon',
-        url: '/favicon/apple-touch-icon.png',
-      },
-      {
-        rel: 'manifest',
-        url: '/favicon/site.webmanifest',
-      }
-    ],
-  },
+export const generateMetadata = (): Metadata => {
+  const meta = getMetadata();
+  
+  return {
+    title: meta.title,
+    description: meta.description,
+    keywords: meta.keywords,
+    generator: 'v0.dev',
+    icons: {
+      icon: [
+        { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+        { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      ],
+      shortcut: '/favicon/favicon.ico',
+      apple: '/favicon/apple-touch-icon.png',
+      other: [
+        {
+          rel: 'apple-touch-icon',
+          url: '/favicon/apple-touch-icon.png',
+        },
+        {
+          rel: 'manifest',
+          url: '/favicon/site.webmanifest',
+        }
+      ],
+    },
+  }
 }
 
 export default function RootLayout({
@@ -48,8 +53,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const meta = getMetadata();
+  
   return (
-    <html lang="cs" className={`scroll-smooth ${montserrat.variable}`}>
+    <html lang={meta.language} className={`scroll-smooth ${montserrat.variable}`}>
       <head>
         <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon/favicon-16x16.png" type="image/png" sizes="16x16" />

@@ -8,8 +8,11 @@ import { SectionWrapper } from "@/components/section-wrapper"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, ArrowRight } from "lucide-react"
 import Image from "next/image"
+import { useTranslations } from "@/lib/i18n"
 
 export default function VymahaniPohledavekPage() {
+  const t = useTranslations('debtCollectionPage')
+  
   const [formData, setFormData] = useState({
     jmeno: "",
     email: "",
@@ -108,11 +111,11 @@ export default function VymahaniPohledavekPage() {
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
               <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                Naše služby
+                {t.hero.badge}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Vymáhání pohledávek</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero.title}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                Profesionální řešení pro efektivní vymáhání vašich pohledávek
+                {t.hero.subtitle}
               </p>
             </SectionWrapper>
           </div>
@@ -128,18 +131,15 @@ export default function VymahaniPohledavekPage() {
                 <SectionWrapper animation="fade-right" className="md:col-span-7">
                   <div>
                     <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                      Komplexní řešení
+                      {t.mainSection.badge}
                     </div>
-                    <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">Vymáhání pohledávek</h2>
-                    <p className="text-gray-600 mb-4 text-lg">
-                      Nabízíme vymáhání pohledávek v širokém spektru oblastí včetně účetní evidence nebo nezaplacených
-                      faktur.
-                    </p>
-                    <p className="text-gray-600 mb-6">
-                      Každou pohledávku odborně posoudíme a následně navrhneme nejvhodnější postup řešení zahrnující mj.
-                      komplexní právní rozbor. V rámci vymáhání dluhů pohledávek se specializujeme na faktury, zápůjčky,
-                      směnky, mzdy, nájem či náhradu škody.
-                    </p>
+                    <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.mainSection.title}</h2>
+                    
+                    {t.mainSection.paragraphs.map((paragraph: string, index: number) => (
+                      <p key={index} className={`text-gray-600 ${index === 0 ? 'mb-4 text-lg' : 'mb-6'}`}>
+                        {paragraph}
+                      </p>
+                    ))}
 
                     <div className="mt-8">
                       <Button
@@ -147,7 +147,7 @@ export default function VymahaniPohledavekPage() {
                         className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
                       >
                         <a href="#contact-form" className="flex items-center">
-                          Nezávazná poptávka <ArrowRight className="ml-2 h-4 w-4" />
+                          {t.mainSection.button} <ArrowRight className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
                     </div>
@@ -156,17 +156,9 @@ export default function VymahaniPohledavekPage() {
 
                 <SectionWrapper animation="fade-left" delay={200} className="md:col-span-5">
                   <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-8 shadow-sm border border-orange-100">
-                    <h3 className="text-xl font-semibold mb-6 text-zinc-900">Specializujeme se na:</h3>
+                    <h3 className="text-xl font-semibold mb-6 text-zinc-900">{t.mainSection.specialization.title}</h3>
                     <ul className="space-y-4">
-                      {[
-                        "vymáhání faktur za dodané zboží a odvedenou práci",
-                        "vymáhání uznání dluhu z jakéhokoliv důvodu vzniku",
-                        "vymáhání dluhu ze smlouvy o zápůjčce peněz",
-                        "vymáhání nároku na náhradu škody",
-                        "vymáhání nezaplaceného nájemného",
-                        "vymáhání směnky",
-                        "a další...",
-                      ].map((item, index) => (
+                      {t.mainSection.specialization.items.map((item: string, index: number) => (
                         <li key={index} className="flex items-start gap-3 group">
                           <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm group-hover:shadow transition-shadow">
                             <CheckCircle className="h-4 w-4 text-orange-500" />

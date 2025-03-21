@@ -20,6 +20,7 @@ import { SectionWrapper } from "@/components/section-wrapper"
 import { useTranslations } from "@/lib/i18n"
 import DOMPurify from "dompurify"
 import { sanitizeHTML } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 
 interface BlogPost {
   id: string
@@ -443,6 +444,7 @@ const categories = [
 
 export default function BlogPage() {
   const t = useTranslations('blogPage')
+  const router = useRouter()
   const [isLoaded, setIsLoaded] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -550,7 +552,7 @@ export default function BlogPage() {
   const navigateToPost = (post: BlogPost) => {
     setShowSuggestions(false)
     setSearchTerm("")
-    window.location.href = `/blog/${post.slug}`
+    router.push(`/blog/${post.slug}`)
   }
 
   // Validate search query to prevent injection attacks

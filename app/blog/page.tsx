@@ -52,6 +52,21 @@ const categoryDefinitions: Category[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "ochrana-v-obchodu-jak-predejit-nedobytnym-dluhum",
+    title: "Ochrana v obchodu: Jak předejít nedobytným dluhům",
+    subtitle: "Klíčová role důvěry a vztahů v obchodních transakcích",
+    date: "21. 3. 2025",
+    author: "Ing. Petra Svobodová",
+    authorPosition: "Finanční analytik",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "5 minut čtení",
+    category: "Prevence",
+    tags: ["nedobytné pohledávky","obchodní vztahy","finanční stabilita","smluvní ochrana","důvěra","vztahový management"],
+    image: "https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDI1NDEzMTZ8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte osvědčené strategie k prevenci nedobytných pohledávek a posílení obchodních vztahů.",
+  },
+
+  {
     slug: "zmeny-zakona-vyzva-pro-spravu-pohledavek",
     title: "Změny zákona: Výzva pro správu pohledávek",
     subtitle: "Jak se české střední firmy přizpůsobují novým právním normám",

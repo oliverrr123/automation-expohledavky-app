@@ -52,6 +52,21 @@ const categoryDefinitions: Category[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "prevence-pohledavek-klic-k-uspechu",
+    title: "Prevence pohledávek: Klíč k úspěchu",
+    subtitle: "Získejte kontrolu nad pohledávkami s právem a empatií",
+    date: "22. 3. 2025",
+    author: "Mgr. Martin Dvořák",
+    authorPosition: "Právní specialista",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "7 minut čtení",
+    category: "Prevence",
+    tags: ["prevence pohledávek","právní postupy","vyjednávání","finanční stabilita","obchodní vztahy"],
+    image: "https://images.unsplash.com/photo-1681505504714-4ded1bc247e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDI2Mjc2MzZ8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Zjistěte, jak předcházet platební neschopnosti klientů s právními a vyjednávacími technikami.",
+  },
+
+  {
     slug: "ochrana-v-obchodu-jak-predejit-nedobytnym-dluhum",
     title: "Ochrana v obchodu: Jak předejít nedobytným dluhům",
     subtitle: "Klíčová role důvěry a vztahů v obchodních transakcích",

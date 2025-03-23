@@ -52,6 +52,21 @@ const categoryDefinitions: Category[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "mediace-klic-k-uspesnemu-vymahani-pohledavek",
+    title: "Mediace: Klíč k úspěšnému vymáhání pohledávek",
+    subtitle: "Objevte, jak mediace usnadňuje řešení pohledávek a chrání obchodní vztahy",
+    date: "23. 3. 2025",
+    author: "Ing. Petra Svobodová",
+    authorPosition: "Finanční analytik",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "6 minut čtení",
+    category: "Vymáhání pohledávek",
+    tags: ["mediace","vymáhání pohledávek","obchodní vztahy","právo","finance","podnikání"],
+    image: "https://images.unsplash.com/photo-1474314881477-04c4aac40a0e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDI3MTQwMTB8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Zkoumejte roli mediace ve vymáhání pohledávek a zefektivněte své podnikání.",
+  },
+
+  {
     slug: "prevence-pohledavek-klic-k-uspechu",
     title: "Prevence pohledávek: Klíč k úspěchu",
     subtitle: "Získejte kontrolu nad pohledávkami s právem a empatií",

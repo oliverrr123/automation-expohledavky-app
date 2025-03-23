@@ -1,0 +1,92 @@
+{
+  "contactForm": {
+    "badge": "Sme pripravení vám pomôcť",
+    "title": "Kontaktný formulár",
+    "description": "Vyplňte nižšie uvedený formulár a náš tím vás bude kontaktovať čo najskôr. Popíšte podrobnosti vašej pohľadávky a my vám navrhneme optimálne riešenie.",
+    "form": {
+      "name": {
+        "label": "Celé meno",
+        "placeholder": "Vaše celé meno"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "vas@email.com"
+      },
+      "phone": {
+        "label": "Telefónne číslo",
+        "placeholder": "+420 XXX XXX XXX"
+      },
+      "amount": {
+        "label": "Výška pohľadávky",
+        "placeholder": "Suma v CZK"
+      },
+      "message": {
+        "label": "Vaša správa",
+        "placeholder": "Popíšte podrobnosti vašej pohľadávky, uveďte všetky známe informácie..."
+      },
+      "submitButton": "Odoslať správu",
+      "submitting": "Odosielanie...",
+      "success": "Správa odoslaná!",
+      "error": "Prosím, skúste to znova"
+    }
+  },
+  "contactSidebar": {
+    "title": "Prečo nás kontaktovať?",
+    "reasons": [
+      "Profesionálne skúsenosti s vymáhaním pohľadávok",
+      "Bezplatná online konzultácia pre vašu pohľadávku",
+      "Diskrétny prístup k našim klientom",
+      "Navrhovanie možných riešení",
+      "Právna služba ako súčasť našich služieb"
+    ],
+    "contact": {
+      "title": "Máte otázky? Kontaktujte nás:",
+      "phone": "+420 735 500 003",
+      "email": "info@expohledavky.cz"
+    },
+    "toast": {
+      "emailCopied": "Email skopírovaný",
+      "phoneCopied": "Telefónne číslo skopírované",
+      "copyFailed": "Kopírovanie zlyhalo"
+    }
+  },
+  "process": {
+    "badge": "Ako to funguje",
+    "title": "Náš proces spolupráce",
+    "description": "Oboznámte sa s procesom vymáhania pohľadávok a jednotlivými krokmi, ktoré podnikáme pre úspešné získanie vašich financií.",
+    "steps": [
+      {
+        "key": "kontrola",
+        "title": "Analýza",
+        "description": "Po odoslaní vašej pohľadávky na náš email, naše špecializované oddelenie analyzuje všetky dokumenty a vyhodnotí najoptimálnejší postup, najmä či je pohľadávka vhodná na odkúpenie alebo vymáhanie.",
+        "additionalText": "Aby sme všetko správne vyhodnotili, je potrebné, aby ste poskytli všetky známe kontaktné informácie o dlžníkovi, ako je bydlisko, miesto podnikania, zamestnanie, telefón a email. Nie sme detektívna agentúra ani exekútor, preto nemáme prístup k týmto informáciám."
+      },
+      {
+        "key": "zastoupeni",
+        "title": "Zastupovanie",
+        "description": "Ak sú dokumenty, ktoré poskytnete, kompletné a je možné pohľadávku vymáhať, bezodkladne vám zašleme adekvátny návrh zmluvy o zastupovaní pri vymáhaní vašej finančnej pohľadávky voči dlžníkovi.",
+        "additionalText": "Vzhľadom na súčasnú nepriaznivú situáciu s ochorením COVID-19, sa snažíme minimalizovať všetky osobné kontakty, a preto sme väčšinu procesov, vrátane podpisovania zmlúv, nastavili tak, aby prebiehali predovšetkým prostredníctvom telefonickej a e-mailovej komunikácie. Šetrí to nielen váš čas, ale predovšetkým zdravie nás všetkých."
+      },
+      {
+        "key": "vyzva",
+        "title": "Predžalobná výzva",
+        "description": "V prípade, že vymáhanie nie je úspešné ani po približne 14-21 dňoch, navrhneme zaslanie predžalobnej výzvy.",
+        "additionalText": "Predžalobnú výzvu zasiela naša externá advokátska kancelária, a na základe našich dlhoročných skúseností mnohí dlžníci uhradia dlh práve preto, že sa do veci zapojil advokát. Predžalobná výzva tiež informuje dlžníka, že oneskorením úhrady dlhu sa pohľadávky stanú \"drahšími\" v dôsledku nákladov na súdne konanie a prípadne aj nákladov na exekúciu.",
+        "fee": "Zaslanie predžalobnej výzvy je spoplatnené poplatkom 2 000 CZK."
+      },
+      {
+        "key": "zaloba",
+        "title": "Žaloba",
+        "description": "Ak dlžník dobrovoľne nesplní dlh na základe predžalobnej výzvy, je proti nemu podaná žaloba, resp. návrh na vydanie elektronického platobného rozkazu. Podaním žaloby začína súdna fáza vymáhania vašej pohľadávky.",
+        "additionalText": "V žalobe žalobca opisuje dôvod pohľadávky a dokumentuje ho dôkazmi. Prípravu žaloby, ako aj ďalšie zastupovanie v súdnom konaní, samozrejme zabezpečuje naša externá advokátska kancelária.",
+        "fee": "Pre začatie súdneho konania je potrebné uhradiť náklady spojené so súdnym konaním (kompletné zastupovanie advokátom, súdne poplatky a poplatky exekútorského komisára). Výška nákladov sa určuje individuálne podľa výšky pohľadávky."
+      },
+      {
+        "key": "exekuce",
+        "title": "Exekúcia",
+        "description": "Ak váš dlžník nevyhovie ani na základe vydaného platobného rozkazu, vyberieme najvhodnejšieho exekútora a odovzdáme mu súdne rozhodnutie. Týmto sa celý proces vymáhania a súdneho konania dostáva do záverečnej fázy, kedy exekútor zabaví všetok dostupný majetok vášho dlžníka (hnuteľný a nehnuteľný majetok, bankový účet, postihnuteľné finančné príjmy, obchodné podiely a iné).",
+        "success": "V tejto fáze už existuje veľmi vysoká pravdepodobnosť úspešného vymoženia vašej pohľadávky."
+      }
+    ]
+  }
+} 

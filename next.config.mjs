@@ -59,6 +59,12 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
   experimental: {
     webpackBuildWorker: true,
@@ -67,6 +73,57 @@ const nextConfig = {
   },
   reactStrictMode: true,
   poweredByHeader: false,
+  
+  // Configure internationalization
+  i18n: {
+    // All locales supported
+    locales: ['cs', 'sk', 'de', 'en'],
+    // Default locale used when the locale is not specific in hostname
+    defaultLocale: 'cs',
+    // No locale-prefixed paths (as we'll use domains)
+    localeDetection: false,
+    // Domain-specific configurations
+    domains: process.env.NODE_ENV === 'production' ? [
+      {
+        domain: 'expohledavky.cz',
+        defaultLocale: 'cs',
+      },
+      {
+        domain: 'expohledavky.sk',
+        defaultLocale: 'sk',
+      },
+      {
+        domain: 'expohledavky.de',
+        defaultLocale: 'de',
+      },
+      {
+        domain: 'expohledavky.com',
+        defaultLocale: 'en',
+      },
+      {
+        domain: 'expohledavky.cz',
+        defaultLocale: 'cs',
+      },
+    ] : [
+      {
+        domain: 'cs.localhost',
+        defaultLocale: 'cs',
+      },
+      {
+        domain: 'sk.localhost',
+        defaultLocale: 'sk',
+      },
+      {
+        domain: 'de.localhost', 
+        defaultLocale: 'de',
+      },
+      {
+        domain: 'en.localhost',
+        defaultLocale: 'en',
+      },
+    ],
+  },
+  
   // Configure Content Security Policy headers
   async headers() {
     return [

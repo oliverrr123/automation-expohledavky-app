@@ -15,9 +15,13 @@ const montserrat = Montserrat({
 export function Hero() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
+  const [isClient, setIsClient] = useState(false)
+  
   const t = useTranslations('hero')
 
   useEffect(() => {
+    setIsClient(true)
+    
     const script = document.createElement("script")
     script.src = "https://player.vimeo.com/api/player.js"
     script.async = true

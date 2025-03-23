@@ -5,130 +5,47 @@
     "subtitle": "Schnelle Liquidität durch den Verkauf Ihrer Wechsel"
   },
   "introduction": {
+    "badge": "Umfassende Lösung",
+    "title": "Wechselankauf",
     "description": "Wir kaufen Wechsel aller Art und bieten Ihnen schnelle Liquidität ohne komplizierte Genehmigungsverfahren. Bei uns können Sie mit einer fairen Bewertung und einer schnellen Abwicklung rechnen.",
-    "button": "Angebot anfordern",
-    "advantages": [
-      "Schnelle Abwicklung innerhalb von 24-48 Stunden",
-      "Faire Preisgestaltung basierend auf der Qualität des Wechsels",
-      "Kauf von sowohl eigenen als auch fremden Wechseln",
-      "Professionelle und diskrete Beratung"
-    ]
+    "button": "Angebot anfordern"
   },
   "transferByEndorsement": {
+    "badge": "Methode A",
     "title": "Übertragung durch Indossament",
-    "description": "Das Indossament ist ein Vermerk auf der Rückseite des Wechsels, mit dem der Indossant (Verkäufer) seine Rechte auf den Indossatar (Käufer) überträgt. Der Wechsel kann mehrfach indossiert werden.",
-    "steps": [
-      {
-        "title": "Verkäuferidentifizierung",
-        "description": "Der aktuelle Inhaber des Wechsels muss sich identifizieren und nachweisen, dass er berechtigt ist, den Wechsel zu übertragen."
-      },
-      {
-        "title": "Wechselindossierung",
-        "description": "Der Verkäufer indossiert den Wechsel auf der Rückseite mit seinem Vor- und Nachnamen, Datum und seiner Unterschrift."
-      },
-      {
-        "title": "Übergabe",
-        "description": "Nach der Indossierung wird der Wechsel dem neuen Eigentümer übergeben, der dann alle damit verbundenen Rechte erhält."
-      }
-    ]
+    "description": "Das Indossament ist ein Vermerk auf der Rückseite des Wechsels, mit dem der Indossant (Verkäufer) seine Rechte auf den Indossatar (Käufer) überträgt. Der Wechsel kann mehrfach indossiert werden. Der aktuelle Inhaber des Wechsels muss sich identifizieren und nachweisen, dass er berechtigt ist, den Wechsel zu übertragen. Der Verkäufer indossiert den Wechsel auf der Rückseite mit seinem Vor- und Nachnamen, Datum und seiner Unterschrift. Nach der Indossierung wird der Wechsel dem neuen Eigentümer übergeben, der dann alle damit verbundenen Rechte erhält.",
+    "icon": "PenTool"
   },
   "transferByAssignment": {
+    "badge": "Methode B",
     "title": "Übertragung durch Abtretung",
-    "description": "Die Abtretung ist eine alternative Methode zur Übertragung von Wechseln, die verwendet wird, wenn eine Indossierung nicht möglich ist. Sie erfolgt durch einen separaten schriftlichen Vertrag.",
-    "steps": [
-      {
-        "title": "Abtretungsvertrag",
-        "description": "Es wird ein Abtretungsvertrag erstellt, in dem der Zedent (Verkäufer) seine Rechte aus dem Wechsel an den Zessionar (Käufer) abtritt."
-      },
-      {
-        "title": "Vertragsunterzeichnung",
-        "description": "Beide Parteien unterzeichnen den Abtretungsvertrag, der die Bedingungen der Übertragung festlegt."
-      },
-      {
-        "title": "Physische Übergabe",
-        "description": "Der Wechsel wird dem neuen Eigentümer physisch übergeben, zusammen mit dem unterzeichneten Abtretungsvertrag."
-      }
-    ]
+    "paragraphs": [
+      "Die Abtretung ist eine alternative Methode zur Übertragung von Wechseln, die verwendet wird, wenn eine Indossierung nicht möglich ist. Sie erfolgt durch einen separaten schriftlichen Vertrag. Es wird ein Abtretungsvertrag erstellt, in dem der Zedent (Verkäufer) seine Rechte aus dem Wechsel an den Zessionar (Käufer) abtritt.",
+      "Beide Parteien unterzeichnen den Abtretungsvertrag, der die Bedingungen der Übertragung festlegt. Der Wechsel wird dem neuen Eigentümer physisch übergeben, zusammen mit dem unterzeichneten Abtretungsvertrag. Der Preis (Gegenleistung, Vertragsgebühr) bewegt sich zwischen 50 und 80 Prozent des Nennwerts des Kaufobjekts und hängt vom Nennwert der Forderung oder des Wechsels und deren Qualität ab.",
+      "Wenn die Abtretung des Wechsels gegen eine Vergütung ausgehandelt wurde, haftet der Zedent gegenüber dem Zessionar bis zur Höhe der erhaltenen Vergütung mit Zinsen dafür, dass die Forderung zum Zeitpunkt der Abtretung bestand, und kann gemäß der Vereinbarung mit dem Zessionar auch für deren Einziehbarkeit garantieren."
+    ],
+    "icon": "ScrollText"
   },
   "benefits": {
-    "title": "Vorteile des Wechselverkaufs",
+    "badge": "Vorteile des Wechselverkaufs",
+    "title": "Warum den Wechselankauf-Service nutzen?",
+    "description": "Das Angebot des Wechselankauf-Services kann Sie von den Sorgen um die Mahnung von Schuldnern und Ausgaben für Rechtsdienstleistungen befreien",
     "items": [
       {
+        "icon": "FileText",
         "title": "Sofortige Liquidität",
-        "description": "Der Verkauf Ihres Wechsels ermöglicht Ihnen sofortigen Zugang zu Bargeld, ohne auf die Fälligkeit des Wechsels warten zu müssen.",
-        "icon": "currency-dollar"
+        "description": "Der Verkauf Ihres Wechsels ermöglicht Ihnen sofortigen Zugang zu Bargeld, ohne auf die Fälligkeit des Wechsels warten zu müssen."
       },
       {
+        "icon": "Repeat",
         "title": "Risikoübertragung",
-        "description": "Mit dem Verkauf des Wechsels übertragen Sie auch das Risiko der Nichtzahlung durch den Schuldner auf den Käufer.",
-        "icon": "shield-check"
+        "description": "Mit dem Verkauf des Wechsels übertragen Sie auch das Risiko der Nichtzahlung durch den Schuldner auf den Käufer."
       },
       {
-        "title": "Einfacher Prozess",
-        "description": "Der Verkauf eines Wechsels ist ein relativ einfacher Prozess, der weniger kompliziert ist als andere Finanzierungsmethoden.",
-        "icon": "document-check"
-      },
-      {
-        "title": "Keine Verschuldung",
-        "description": "Im Gegensatz zu einem Kredit schafft der Verkauf eines Wechsels keine neue Verschuldung für Ihr Unternehmen.",
-        "icon": "banknotes"
+        "icon": "ScrollText",
+        "title": "Rechtssicherheit",
+        "description": "Der gesamte Prozess ist durch einen rechtlich bindenden Vertrag über die Abtretung einer Forderung abgesichert."
       }
     ]
-  },
-  "pricingFactors": {
-    "title": "Faktoren, die den Preis beeinflussen",
-    "description": "Der Preis, den wir für einen Wechsel anbieten, hängt von verschiedenen Faktoren ab, die das Risiko und die Wahrscheinlichkeit der erfolgreichen Einlösung bestimmen.",
-    "factors": [
-      {
-        "title": "Bonität des Schuldners",
-        "description": "Die finanzielle Stabilität und Zahlungsfähigkeit des Wechselschuldners sind entscheidende Faktoren bei der Preisbestimmung."
-      },
-      {
-        "title": "Fälligkeitsdatum",
-        "description": "Je näher das Fälligkeitsdatum liegt, desto höher ist in der Regel der Preis, den wir für den Wechsel anbieten können."
-      },
-      {
-        "title": "Wechselsumme",
-        "description": "Die Höhe des auf dem Wechsel angegebenen Betrags beeinflusst ebenfalls den Preis, wobei größere Beträge oft attraktivere Konditionen erhalten."
-      },
-      {
-        "title": "Dokumentation",
-        "description": "Die Vollständigkeit und Korrektheit der mit dem Wechsel verbundenen Dokumentation wirken sich positiv auf den angebotenen Preis aus."
-      }
-    ]
-  },
-  "faq": {
-    "title": "Häufig gestellte Fragen",
-    "items": [
-      {
-        "question": "Welche Arten von Wechseln kaufen Sie?",
-        "answer": "Wir kaufen sowohl Eigenwechsel als auch Fremdwechsel, sowohl von Unternehmen als auch von Privatpersonen. Wir sind an Wechseln verschiedener Beträge und Fälligkeitstermine interessiert."
-      },
-      {
-        "question": "Wie lange dauert der Wechselankaufsprozess?",
-        "answer": "Der gesamte Prozess kann in der Regel innerhalb von 24-48 Stunden abgeschlossen werden, abhängig von der Komplexität des Falls und der Vollständigkeit der vorgelegten Dokumente."
-      },
-      {
-        "question": "Welchen Preis kann ich für meinen Wechsel erwarten?",
-        "answer": "Der Ankaufspreis hängt von mehreren Faktoren ab, wie der Bonität des Schuldners, dem Fälligkeitsdatum und der Höhe des Wechsels. In der Regel bieten wir 60-90% des Nennwerts für qualitativ hochwertige Wechsel."
-      },
-      {
-        "question": "Welche Dokumente benötige ich für den Verkauf eines Wechsels?",
-        "answer": "Sie benötigen den Originalwechsel, Ihre Identifikationsdokumente und gegebenenfalls Nachweise für die zugrundeliegende Forderung oder Geschäftsbeziehung."
-      },
-      {
-        "question": "Ist der Verkäufer eines Wechsels weiterhin haftbar, wenn der Wechselschuldner nicht zahlt?",
-        "answer": "Dies hängt von der Art der Übertragung ab. Bei einem regulären Indossament bleibt der Verkäufer in der Regel haftbar, wenn der Schuldner nicht zahlt. Bei einem Indossament ohne Rückgriff oder einer speziellen vertraglichen Vereinbarung kann diese Haftung ausgeschlossen werden."
-      }
-    ]
-  },
-  "cta": {
-    "title": "Bereit, Ihren Wechsel zu verkaufen?",
-    "description": "Kontaktieren Sie uns für eine unverbindliche Bewertung und ein maßgeschneidertes Angebot für den Ankauf Ihres Wechsels.",
-    "button": "Kontaktieren Sie uns jetzt",
-    "contact": {
-      "email": "info@expohledavky.cz",
-      "phone": "+420 735 500 003"
-    }
   }
 } 

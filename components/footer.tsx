@@ -6,6 +6,8 @@ import { useParams } from "next/navigation"
 import { Phone, Mail, MapPin, FileText, Facebook, Linkedin, Instagram } from "lucide-react"
 import { toast } from "sonner"
 import type { LucideIcon } from "lucide-react"
+import { getCurrentLocale } from "@/lib/i18n"
+import { getLanguageFromHostname } from "@/lib/domain-mapping"
 
 // Define types for the translations
 interface PhoneContact {
@@ -78,26 +80,155 @@ interface FooterTranslations {
   };
 }
 
-export function Footer() {
-  const { locale } = useParams() || { locale: "cs" }
-  const [translations, setTranslations] = useState<FooterTranslations | null>(null)
+// Default server-side Czech translations to prevent hydration mismatch
+const defaultFooterTranslations: FooterTranslations = {
+  company: {
+    prefix: "EX",
+    name: "Pohledávky",
+    slogan: "Specialisté na vymáhání pohledávek",
+    motto: "Komplexní řešení pro vaše pohledávky"
+  },
+  contact: {
+    address: {
+      text: "Praha 1, Nové Město, Spálená 97/29, 110 00",
+      successMessage: "Adresa byla zkopírována do schránky"
+    },
+    email: {
+      text: "info@expohledavky.cz",
+      successMessage: "E-mail byl zkopírován do schránky"
+    },
+    phones: [
+      {
+        number: "+420777888999",
+        display: "+420 777 888 999"
+      },
+      {
+        number: "+420777888111",
+        display: "+420 777 888 111"
+      }
+    ],
+    successMessage: {
+      phone: "Telefonní číslo bylo zkopírováno do schránky",
+      bankAccount: "Číslo účtu bylo zkopírováno do schránky",
+      error: "Nepodařilo se zkopírovat do schránky"
+    }
+  },
+  navigation: {
+    title: "Navigace",
+    links: [
+      {
+        title: "Domů",
+        href: "/"
+      },
+      {
+        title: "O nás",
+        href: "/o-nas"
+      },
+      {
+        title: "Naše služby",
+        href: "/nase-sluzby"
+      },
+      {
+        title: "Ceník",
+        href: "/cenik"
+      },
+      {
+        title: "Kontakt",
+        href: "/kontakt"
+      },
+      {
+        title: "Blog",
+        href: "/blog"
+      }
+    ]
+  },
+  downloads: {
+    title: "Ke stažení",
+    templates: [
+      {
+        title: "Plná moc",
+        href: "/files/plna-moc.pdf"
+      },
+      {
+        title: "Předání pohledávky",
+        href: "/files/predani-pohledavky.pdf"
+      },
+      {
+        title: "Rozhodčí doložka",
+        href: "/files/rozhodci-dolozka.pdf"
+      }
+    ]
+  },
+  bank: {
+    title: "Bankovní spojení",
+    accounts: [
+      {
+        bank: "Česká spořitelna",
+        account: "123456789/0800"
+      },
+      {
+        bank: "Komerční banka",
+        account: "987654321/0100"
+      }
+    ]
+  },
+  social: {
+    title: "Sociální sítě",
+    links: [
+      {
+        type: "facebook",
+        href: "https://facebook.com"
+      },
+      {
+        type: "linkedin",
+        href: "https://linkedin.com"
+      },
+      {
+        type: "instagram",
+        href: "https://instagram.com"
+      }
+    ]
+  },
+  copyright: {
+    text: "© 2023 EX Pohledávky. Všechna práva vyhrazena.",
+    privacyPolicy: "Ochrana osobních údajů"
+  }
+};
 
-  // Load translations based on locale
+export function Footer() {
+  const [translations, setTranslations] = useState<FooterTranslations>(defaultFooterTranslations)
+  const [isClient, setIsClient] = useState(false)
+
+  // Set isClient to true after hydration is complete
   useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  // Load translations based on locale only after hydration
+  useEffect(() => {
+    if (!isClient) return;
+
     const loadTranslations = async () => {
       try {
-        const footerTranslations = await import(`@/locales/${locale || 'cs'}/footer.json`)
-        setTranslations(footerTranslations.default)
+        // Use the domain detection method that works for other components
+        const detectedLocale = typeof window !== 'undefined' 
+          ? getLanguageFromHostname(window.location.hostname) 
+          : 'cs';
+          
+        console.log("Footer detected locale:", detectedLocale);
+        
+        const footerTranslations = await import(`@/locales/${detectedLocale}/footer.json`);
+        setTranslations(footerTranslations.default);
       } catch (error) {
-        console.error("Failed to load footer translations:", error)
+        console.error("Failed to load footer translations:", error);
         // Fallback to Czech if translations fail to load
-        const fallbackTranslations = await import(`@/locales/cs/footer.json`)
-        setTranslations(fallbackTranslations.default)
+        const fallbackTranslations = await import(`@/locales/cs/footer.json`);
+        setTranslations(fallbackTranslations.default);
       }
     }
     
-    loadTranslations()
-  }, [locale])
+    loadTranslations();
+  }, [isClient]);
 
   const handleCopy = async (text: string) => {
     if (!translations) return;
@@ -117,9 +248,6 @@ export function Footer() {
       toast.error(translations.contact.successMessage.error)
     }
   }
-
-  // Don't render until translations are loaded
-  if (!translations) return null
 
   // Map icon types to components
   const socialIcons: Record<string, LucideIcon> = {
@@ -250,22 +378,21 @@ export function Footer() {
                   >
                     <Icon className="h-5 w-5" />
                   </a>
-                )
+                );
               })}
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="border-t border-gray-800">
-        <div className="container flex flex-col items-center justify-between gap-4 py-6 sm:flex-row">
-          <p className="text-sm text-gray-400">{translations.copyright.text}</p>
-          <Link href="/ochrana-osobnich-udaju" className="text-sm text-gray-400 hover:text-white">
-            {translations.copyright.privacyPolicy}
-          </Link>
+        <div className="mt-12 border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
+          <p>{translations.copyright.text}</p>
+          <div className="mt-4 md:mt-0">
+            <Link href="/ochrana-osobnich-udaju" className="hover:text-white">
+              {translations.copyright.privacyPolicy}
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
   )
 }
-

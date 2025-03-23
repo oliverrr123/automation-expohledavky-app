@@ -9,12 +9,15 @@ import { Eye, User, FileText, Gavel, CreditCard, CheckCircle, ArrowRight, Send, 
 import { cn } from "@/lib/utils"
 import { Footer } from "@/components/footer"
 import { toast } from "sonner"
+import { useTranslations } from "@/lib/i18n"
 
 export default function ServiceLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const t = useTranslations('servicesLayout')
+  
   const [formData, setFormData] = useState({
     jmeno: "",
     email: "",
@@ -57,12 +60,12 @@ export default function ServiceLayout({
     try {
       await navigator.clipboard.writeText(text)
       if (text.includes("@")) {
-        toast.success("Email zkopírován")
+        toast.success(t.contactSidebar.toast.emailCopied)
       } else {
-        toast.success("Telefonní číslo zkopírováno")
+        toast.success(t.contactSidebar.toast.phoneCopied)
       }
     } catch (err) {
-      toast.error("Kopírování se nezdařilo")
+      toast.error(t.contactSidebar.toast.copyFailed)
     }
   }
 
@@ -121,12 +124,11 @@ export default function ServiceLayout({
               <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-12">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    Jsme připraveni vám pomoci
+                    {t.contactForm.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">Kontaktní formulář</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.contactForm.title}</h2>
                   <p className="text-gray-600 max-w-2xl mx-auto">
-                    Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve. Popište nám detaily vaší
-                    pohledávky a my vám navrhneme optimální řešení.
+                    {t.contactForm.description}
                   </p>
                 </div>
 
@@ -138,7 +140,7 @@ export default function ServiceLayout({
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                             <label htmlFor="jmeno" className="block text-sm font-medium text-gray-700 mb-1">
-                              Jméno a příjmení
+                              {t.contactForm.form.name.label}
                             </label>
                             <input
                               required
@@ -147,14 +149,14 @@ export default function ServiceLayout({
                               type="text"
                               value={formData.jmeno}
                               onChange={handleChange}
-                              placeholder="Vaše jméno a příjmení"
+                              placeholder={t.contactForm.form.name.placeholder}
                               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
                               disabled={formStatus === "submitting" || formStatus === "success"}
                             />
                           </div>
                           <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                              E-mail
+                              {t.contactForm.form.email.label}
                             </label>
                             <input
                               required
@@ -163,14 +165,14 @@ export default function ServiceLayout({
                               type="email"
                               value={formData.email}
                               onChange={handleChange}
-                              placeholder="vas@email.cz"
+                              placeholder={t.contactForm.form.email.placeholder}
                               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
                               disabled={formStatus === "submitting" || formStatus === "success"}
                             />
                           </div>
                           <div>
                             <label htmlFor="telefon" className="block text-sm font-medium text-gray-700 mb-1">
-                              Telefonní kontakt
+                              {t.contactForm.form.phone.label}
                             </label>
                             <input
                               required
@@ -179,14 +181,14 @@ export default function ServiceLayout({
                               type="text"
                               value={formData.telefon}
                               onChange={handleChange}
-                              placeholder="+420 XXX XXX XXX"
+                              placeholder={t.contactForm.form.phone.placeholder}
                               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
                               disabled={formStatus === "submitting" || formStatus === "success"}
                             />
                           </div>
                           <div>
                             <label htmlFor="vyse" className="block text-sm font-medium text-gray-700 mb-1">
-                              Výše pohledávky
+                              {t.contactForm.form.amount.label}
                             </label>
                             <input
                               required
@@ -195,7 +197,7 @@ export default function ServiceLayout({
                               type="text"
                               value={formData.vyse}
                               onChange={handleChange}
-                              placeholder="Částka v Kč"
+                              placeholder={t.contactForm.form.amount.placeholder}
                               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
                               disabled={formStatus === "submitting" || formStatus === "success"}
                             />
@@ -203,7 +205,7 @@ export default function ServiceLayout({
                         </div>
                         <div>
                           <label htmlFor="zprava" className="block text-sm font-medium text-gray-700 mb-1">
-                            Vaše zpráva
+                            {t.contactForm.form.message.label}
                           </label>
                           <textarea
                             required
@@ -212,7 +214,7 @@ export default function ServiceLayout({
                             rows={5}
                             value={formData.zprava}
                             onChange={handleChange}
-                            placeholder="Popište detaily vaší pohledávky, uveďte všechny známé podrobnosti..."
+                            placeholder={t.contactForm.form.message.placeholder}
                             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all resize-none"
                             disabled={formStatus === "submitting" || formStatus === "success"}
                           ></textarea>
@@ -243,7 +245,7 @@ export default function ServiceLayout({
 
                             {formStatus === "idle" && (
                               <span className="relative z-10 flex items-center justify-center">
-                                Odeslat zprávu <Send className="ml-2 h-4 w-4" />
+                                {t.contactForm.form.submitButton} <Send className="ml-2 h-4 w-4" />
                               </span>
                             )}
 
@@ -269,17 +271,19 @@ export default function ServiceLayout({
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                   ></path>
                                 </svg>
-                                Odesílání...
+                                {t.contactForm.form.submitting}
                               </span>
                             )}
 
                             {formStatus === "success" && (
                               <span className="relative z-10 flex items-center justify-center">
-                                <CheckCircle className="mr-2 h-5 w-5" /> Zpráva odeslána!
+                                <CheckCircle className="mr-2 h-5 w-5" /> {t.contactForm.form.success}
                               </span>
                             )}
 
-                            {formStatus === "error" && <span className="relative z-10">Zkuste to prosím znovu</span>}
+                            {formStatus === "error" && (
+                              <span className="relative z-10">{t.contactForm.form.error}</span>
+                            )}
                           </Button>
                         </div>
                       </form>
@@ -287,56 +291,34 @@ export default function ServiceLayout({
 
                     {/* Right side - info */}
                     <div className="md:col-span-4 bg-gradient-to-br from-zinc-900 to-zinc-800 text-white p-8">
-                      <h3 className="text-xl font-semibold mb-6">Proč nás kontaktovat?</h3>
+                      <h3 className="text-xl font-semibold mb-6">{t.contactSidebar.title}</h3>
                       <ul className="space-y-4">
-                        <li className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle className="h-4 w-4 text-orange-400" />
-                          </div>
-                          <span>Profesionální zkušenosti s vymáháním pohledávek</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle className="h-4 w-4 text-orange-400" />
-                          </div>
-                          <span>Bezplatná konzultace pohledávky online</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle className="h-4 w-4 text-orange-400" />
-                          </div>
-                          <span>Diskrétní přístup k našim klientům</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle className="h-4 w-4 text-orange-400" />
-                          </div>
-                          <span>Navržení dalších případných řešení</span>
-                        </li>
-                        <li className="flex items-start gap-3">
-                          <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle className="h-4 w-4 text-orange-400" />
-                          </div>
-                          <span>Právní servis v rámci našich služeb</span>
-                        </li>
+                        {t.contactSidebar.reasons.map((reason: string, index: number) => (
+                          <li key={index} className="flex items-start gap-3">
+                            <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <CheckCircle className="h-4 w-4 text-orange-400" />
+                            </div>
+                            <span>{reason}</span>
+                          </li>
+                        ))}
                       </ul>
 
                       <div className="mt-8 pt-8 border-t border-zinc-700">
-                        <p className="text-zinc-300 mb-4">Máte dotazy? Kontaktujte nás:</p>
+                        <p className="text-zinc-300 mb-4">{t.contactSidebar.contact.title}</p>
                         <div className="space-y-3">
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
                               <Phone className="h-4 w-4 text-orange-400" />
                             </div>
                             <a 
-                              href="tel:+420735500003" 
+                              href={`tel:${t.contactSidebar.contact.phone}`}
                               className="hover:text-orange-300 transition-colors cursor-pointer"
                               onClick={(e) => {
                                 e.preventDefault()
-                                handleCopy("+420735500003")
+                                handleCopy(t.contactSidebar.contact.phone)
                               }}
                             >
-                              +420 735 500 003
+                              {t.contactSidebar.contact.phone}
                             </a>
                           </div>
                           <div className="flex items-center gap-3">
@@ -344,14 +326,14 @@ export default function ServiceLayout({
                               <Send className="h-4 w-4 text-orange-400" />
                             </div>
                             <a 
-                              href="mailto:info@expohledavky.cz" 
+                              href={`mailto:${t.contactSidebar.contact.email}`}
                               className="hover:text-orange-300 transition-colors cursor-pointer"
                               onClick={(e) => {
                                 e.preventDefault()
-                                handleCopy("info@expohledavky.cz")
+                                handleCopy(t.contactSidebar.contact.email)
                               }}
                             >
-                              info@expohledavky.cz
+                              {t.contactSidebar.contact.email}
                             </a>
                           </div>
                         </div>
@@ -370,12 +352,11 @@ export default function ServiceLayout({
             <SectionWrapper animation="fade-up">
               <div className="text-center mb-12">
                 <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                  Jak to funguje
+                  {t.process.badge}
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900">Průběh naší spolupráce</h2>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900">{t.process.title}</h2>
                 <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-                  Seznamte se s procesem vymáhání pohledávek a jednotlivými kroky, které podnikáme pro úspěšné vymožení
-                  vašich financí.
+                  {t.process.description}
                 </p>
               </div>
             </SectionWrapper>
@@ -385,159 +366,64 @@ export default function ServiceLayout({
                 <div className="p-8">
                   {/* Tab Content */}
                   <div className="min-h-[220px] relative">
-                    {/* Kontrola */}
-                    <div
-                      className={`transition-all duration-500 absolute inset-0 ${activeTab === "kontrola" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"}`}
-                    >
-                      <div className="flex items-start gap-6">
-                        <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                          <Eye className="h-8 w-8 text-orange-500" />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-bold mb-4 text-zinc-900">Kontrola</h3>
-                          <p className="text-gray-600 mb-4">
-                            Po zaslání Vaší pohledávky na náš email se do jejího rozboru zapojí naše specializované
-                            oddělení, které odborně posoudí všechny podklady a vyhodnotí nejoptimálnější postup,
-                            zejména, zda je pohledávka vhodná k odkupu či k vymáhání.
-                          </p>
-                          <p className="text-gray-600">
-                            Abychom mohli správně a přesně vše vyhodnotit, je nutné, abyste nám k pohledávce zadali Vám
-                            známé kontakty na dlužníka, které máte, jako jsou bydliště, místo podnikání, zaměstnání,
-                            telefon a email. Nejsme detektivní kancelář ani exekutor a tím pádem nemáme přístup k těmto
-                            informacím.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Zastoupeni */}
-                    <div
-                      className={`transition-all duration-500 absolute inset-0 ${activeTab === "zastoupeni" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"}`}
-                    >
-                      <div className="flex items-start gap-6">
-                        <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                          <User className="h-8 w-8 text-orange-500" />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-bold mb-4 text-zinc-900">Zastoupení</h3>
-                          <p className="text-gray-600 mb-4">
-                            Pokud budou Vámi dodané podklady kompletní a bude možné pohledávku vymáhat, zašleme Vám
-                            obratem adekvátní návrh smlouvy na zastupování v rámci vymáhání Vašeho finančního nároku
-                            vůči dlužníkovi.
-                          </p>
-                          <p className="text-gray-600">
-                            Vzhledem k aktuální nepříznivé situaci s nemocí Covid-19 se snažíme veškeré osobní kontakty
-                            minimalizovat, a proto máme většinu procesů včetně podpisu smluv nastaveny tak, aby
-                            probíhaly především pomocí telefonní a emailové komunikace. Šetříme tím nejen Váš čas, ale
-                            hlavně zdraví nás všech.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Vyzva */}
-                    <div
-                      className={`transition-all duration-500 absolute inset-0 ${activeTab === "vyzva" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"}`}
-                    >
-                      <div className="flex items-start gap-6">
-                        <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                          <FileText className="h-8 w-8 text-orange-500" />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-bold mb-4 text-zinc-900">Výzva</h3>
-                          <p className="text-gray-600 mb-4">
-                            V případě, že vymáhání není ani po dobu cca 14 – 21 dnů úspěšné, navrhneme Vám zaslat
-                            předžalobní výzvu.
-                          </p>
-                          <p className="text-gray-600 mb-4">
-                            Předžalobní výzva je odesílána naší externí advokátní kanceláří a z našich bohatých letitých
-                            zkušenosti platí, že spousta dlužníků uhradí dluh už jen z důvodu, že se do věci vložil
-                            advokát. V předžalobní výzvě je dlužník upozorněn i na skutečnost, že liknavostí při úhradě
-                            dluhu se mu pohledávky "prodraží" o náklady soudního řízení a případně i náklady exekuce.
-                          </p>
-                          <div className="p-4 bg-orange-50 border border-orange-100 rounded-lg mt-4">
-                            <p className="font-medium text-orange-800">
-                              Zaslání předžalobní výzvy je zpoplatněno částkou ve výši 2 000 Kč.
-                            </p>
+                    {/* Process steps */}
+                    {t.process.steps.map((step: any) => (
+                      <div
+                        key={step.key}
+                        className={`transition-all duration-500 absolute inset-0 ${activeTab === step.key ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"}`}
+                      >
+                        <div className="flex items-start gap-6">
+                          <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                            {step.key === "kontrola" && <Eye className="h-8 w-8 text-orange-500" />}
+                            {step.key === "zastoupeni" && <User className="h-8 w-8 text-orange-500" />}
+                            {step.key === "vyzva" && <FileText className="h-8 w-8 text-orange-500" />}
+                            {step.key === "zaloba" && <Gavel className="h-8 w-8 text-orange-500" />}
+                            {step.key === "exekuce" && <CreditCard className="h-8 w-8 text-orange-500" />}
+                          </div>
+                          <div>
+                            <h3 className="text-2xl font-bold mb-4 text-zinc-900">{step.title}</h3>
+                            <p className="text-gray-600 mb-4">{step.description}</p>
+                            {step.additionalText && <p className="text-gray-600">{step.additionalText}</p>}
+                            
+                            {step.fee && (
+                              <div className="p-4 bg-orange-50 border border-orange-100 rounded-lg mt-4">
+                                <p className="font-medium text-orange-800">{step.fee}</p>
+                              </div>
+                            )}
+                            
+                            {step.success && (
+                              <div className="p-4 bg-green-50 border border-green-100 rounded-lg mt-4">
+                                <p className="font-medium text-green-800">{step.success}</p>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Zaloba */}
-                    <div
-                      className={`transition-all duration-500 absolute inset-0 ${activeTab === "zaloba" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"}`}
-                    >
-                      <div className="flex items-start gap-6">
-                        <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                          <Gavel className="h-8 w-8 text-orange-500" />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-bold mb-4 text-zinc-900">Žaloba</h3>
-                          <p className="text-gray-600 mb-4">
-                            Nesplní-li dlužník dobrovolně dluh na základě předžalobní výzvy, je na něj podána žaloba,
-                            respektive návrh na vydání elektronického platebního rozkazu. Podáním žaloby začíná soudní
-                            fáze vymáhání Vaší pohledávky.
-                          </p>
-                          <p className="text-gray-600 mb-4">
-                            V žalobě žalobce popíše důvod pohledávky a doloží jej listinami. Zpracování žaloby, jakož i
-                            další zastoupení v soudním řízení, samozřejmě zajišťuje naše externí advokátní kancelář.
-                          </p>
-                          <div className="p-4 bg-orange-50 border border-orange-100 rounded-lg mt-4">
-                            <p className="font-medium text-orange-800">
-                              Pro samotné zahájení soudního řízení je nezbytné uhradit náklady spojené se soudním
-                              řízením (kompletní zastoupení advokátem, poplatky soudu a inkasního komisaře). Výše
-                              nákladů se stanovuje individuálně dle výše pohledávky.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Exekuce */}
-                    <div
-                      className={`transition-all duration-500 absolute inset-0 ${activeTab === "exekuce" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"}`}
-                    >
-                      <div className="flex items-start gap-6">
-                        <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                          <CreditCard className="h-8 w-8 text-orange-500" />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-bold mb-4 text-zinc-900">Exekuce</h3>
-                          <p className="text-gray-600 mb-4">
-                            Pokud Váš dlužník ani na základě vydaného Platebního rozkazu neplní, vybereme nejvhodnějšího
-                            exekutora a předáme mu soudní rozhodnutí. Tím celý proces vymáhání a soudního řízení dospěje
-                            do finální fáze, kdy exekutor obstaví Vašemu dlužníkovi veškerá dostupná aktiva (majetek
-                            movitý a nemovitý, bankovní účet, postižitelný finanční příjem, obchodní podíly a jiné).
-                          </p>
-                          <div className="p-4 bg-green-50 border border-green-100 rounded-lg mt-4">
-                            <p className="font-medium text-green-800">
-                              V této fázi je již velmi vysoká pravděpodobnost úspěšného vymožení vaší pohledávky.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
 
                   {/* Tab Navigation */}
                   <div className="mt-16 border-t pt-8">
                     <div className="flex flex-wrap lg:flex-nowrap items-center justify-center gap-2">
-                      {[
-                        { key: "kontrola", title: "Kontrola", icon: Eye },
-                        { key: "zastoupeni", title: "Zastoupení", icon: User },
-                        { key: "vyzva", title: "Výzva", icon: FileText },
-                        { key: "zaloba", title: "Žaloba", icon: Gavel },
-                        { key: "exekuce", title: "Exekuce", icon: CreditCard },
-                      ].map((tab, index, array) => {
-                        const Icon = tab.icon
-                        const isActive = activeTab === tab.key
-                        const isLast = index === array.length - 1
+                      {t.process.steps.map((step: any, index: number, array: any[]) => {
+                        const isActive = activeTab === step.key;
+                        const isLast = index === array.length - 1;
+                        
+                        // Map step key to icon
+                        let Icon;
+                        switch(step.key) {
+                          case "kontrola": Icon = Eye; break;
+                          case "zastoupeni": Icon = User; break;
+                          case "vyzva": Icon = FileText; break;
+                          case "zaloba": Icon = Gavel; break;
+                          case "exekuce": Icon = CreditCard; break;
+                          default: Icon = Eye;
+                        }
 
                         return (
-                          <React.Fragment key={tab.key}>
+                          <React.Fragment key={step.key}>
                             <button
-                              onClick={() => setActiveTab(tab.key)}
+                              onClick={() => setActiveTab(step.key)}
                               className={cn(
                                 "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-300 shadow-sm hover:shadow w-full lg:w-auto justify-center",
                                 isActive
@@ -546,7 +432,7 @@ export default function ServiceLayout({
                               )}
                             >
                               <Icon className="h-5 w-5" />
-                              {tab.title}
+                              {step.title}
                             </button>
 
                             {/* Arrow between items */}

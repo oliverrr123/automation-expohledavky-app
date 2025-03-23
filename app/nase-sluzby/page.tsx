@@ -1,9 +1,12 @@
+"use client"
+
 import Link from "next/link"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { ArrowRight, FileText, Building, CreditCard, Briefcase, FileSignature } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n"
+import { useState, useEffect } from "react"
 
 // Icon mapping for service icons
 const iconMap = {
@@ -63,7 +66,15 @@ const colorVariants = {
 }
 
 export default function NaseSluzbyPage() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use client translations
   const t = useTranslations('servicesPage')
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   return (
     <div className="pt-16 pb-24">

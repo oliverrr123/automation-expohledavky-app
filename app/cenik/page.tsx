@@ -6,12 +6,36 @@ import { SectionWrapper } from "@/components/section-wrapper"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useTranslations } from "@/lib/i18n"
+import { getServerTranslations } from "@/lib/server-utils"
+import csPricingPage from '@/locales/cs/pricing-page.json'
+import enPricingPage from '@/locales/en/pricing-page.json'
+import skPricingPage from '@/locales/sk/pricing-page.json'
+import dePricingPage from '@/locales/de/pricing-page.json'
+
+// Get translations based on domain for server-side rendering
+const translationsByLang = {
+  cs: csPricingPage,
+  en: enPricingPage,
+  sk: skPricingPage,
+  de: dePricingPage
+};
+
+// Server-side default translations to prevent hydration mismatch
+const serverTranslations = getServerTranslations('pricingPage', translationsByLang);
 
 export default function PricingPage() {
-  const t = useTranslations('pricingPage')
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use server translations initially, then switch to client translations after hydration
+  const t = isClient ? useTranslations('pricingPage') : serverTranslations
   
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   const [formData, setFormData] = useState({
     jmeno: "",
     email: "",
@@ -38,7 +62,7 @@ export default function PricingPage() {
       zprava: "",
     })
     // Show success message
-    alert(t.contactForm.successMessage)
+    alert(t.contactForm.success)
   }
 
   return (

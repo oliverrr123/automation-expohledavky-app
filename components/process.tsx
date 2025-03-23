@@ -16,8 +16,16 @@ const iconMap = {
 }
 
 export function Process() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use client translations
   const t = useTranslations('process')
   const [activeStep, setActiveStep] = useState("kontrola")
+
+  // Set isClient to true after hydration
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   // Add auto-scrolling effect
   useEffect(() => {

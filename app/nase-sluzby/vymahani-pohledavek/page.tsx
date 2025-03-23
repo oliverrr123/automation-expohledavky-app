@@ -2,16 +2,38 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import { useTranslations } from "@/lib/i18n"
+import { getServerTranslations } from "@/lib/server-utils"
+import csDebtCollectionPage from '@/locales/cs/debt-collection-page.json'
+import enDebtCollectionPage from '@/locales/en/debt-collection-page.json'
+import skDebtCollectionPage from '@/locales/sk/debt-collection-page.json'
+import deDebtCollectionPage from '@/locales/de/debt-collection-page.json'
+
+// Get translations based on domain for server-side rendering
+const translationsByLang = {
+  cs: csDebtCollectionPage,
+  en: enDebtCollectionPage,
+  sk: skDebtCollectionPage,
+  de: deDebtCollectionPage
+};
+
+// Server-side default translations to prevent hydration mismatch
+const serverTranslations = getServerTranslations('debtCollectionPage', translationsByLang);
 
 export default function VymahaniPohledavekPage() {
-  const t = useTranslations('debtCollectionPage')
+  const [isClient, setIsClient] = useState(false)
+  const t = isClient ? useTranslations('debtCollectionPage') : serverTranslations
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   const [formData, setFormData] = useState({
     jmeno: "",

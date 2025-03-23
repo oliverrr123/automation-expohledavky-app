@@ -1,112 +1,47 @@
 {
   "hero": {
-    "badge": "Schnelle und diskrete Lösung",
-    "title": "Unternehmensankauf mit Verbindlichkeiten",
-    "subtitle": "Befreien Sie sich von einem problematischen Unternehmen und vermeiden Sie persönliche Haftung"
+    "badge": "Unsere Dienstleistungen",
+    "title": "Unternehmensankauf",
+    "subtitle": "Professionelle Lösung für Eigentümer, die ihr Unternehmen verkaufen möchten"
   },
-  "introduction": {
-    "description": "Sie haben ein Unternehmen mit Schulden und wissen nicht, wie Sie weitermachen sollen? Wir kaufen Ihr Unternehmen mit allen Verbindlichkeiten. Sie werden von der Last der Verbindlichkeiten befreit und müssen sich nicht mehr um die Forderungen der Gläubiger kümmern. Unsere Dienstleistung ist für Sie völlig kostenfrei.",
-    "button": "Unverbindliches Angebot anfordern",
-    "advantages": [
-      "Schneller Ankauf innerhalb von 24 Stunden",
-      "Diskrete Behandlung",
-      "Kostenlos für den Verkäufer",
-      "Befreiung von allen Verbindlichkeiten und Risiken"
-    ]
+  "mainSection": {
+    "badge": "Umfassende Lösung",
+    "title": "Unternehmensankauf",
+    "paragraphs": [
+      "Besitzen Sie ein Unternehmen, das Sie nicht mehr benötigen und gerne verkaufen würden?",
+      "Dann zögern Sie nicht und kontaktieren Sie uns, wir bereiten Ihnen ein maßgeschneidertes Angebot für den Ankauf Ihres Unternehmens vor. Wir bieten den Ankauf von Unternehmen zum besten Preis. Die Preisbedingungen bzw. die Übernahme des Unternehmens gegen Entgelt sind individuell. Für jeden erstellen wir eine Analyse, auf deren Grundlage wir ein individuelles Angebot unterbreiten."
+    ],
+    "button": "Unverbindliche Anfrage"
   },
-  "whyWorkWithUs": {
-    "title": "Die wichtigsten Vorteile unserer Dienstleistung",
-    "description": "Beim Verkauf eines verschuldeten Unternehmens entscheiden Zeit und Diskretion. Wir bieten nicht nur eine schnelle Lösung, sondern auch einen rechtlich korrekten und sicheren Prozess.",
+  "requirements": {
+    "badge": "Unsere Anforderungen",
+    "title": "Wir interessieren uns für Unternehmen, die:",
+    "items": [
+      "gegründet wurden, aber der Geschäftsplan nicht umgesetzt wurde, oder das Unternehmen früher tätig war, Sie es aber nicht mehr betreiben und verwalten möchten",
+      "eine klare und problemlose Historie haben und das Rechnungswesen des Unternehmens verfügbar ist",
+      "keine Verbindlichkeiten haben"
+    ],
+    "note": "Wir arbeiten auch mit privaten Vollstreckungsbeamten in ganz Tschechien zusammen, so dass wir in der Lage sind, die Beitreibung in kürzerer Zeit durchzuführen."
+  },
+  "documents": {
+    "badge": "Erforderliche Dokumente",
+    "title": "Im Falle eines Ankaufs benötigen wir folgende Unterlagen:",
     "items": [
       {
-        "title": "Schneller und kostenloser Prozess",
-        "description": "Der gesamte Prozess des Unternehmensankaufs mit Verbindlichkeiten dauert in der Regel nicht mehr als einige Tage. Wir übernehmen alle Kosten, die mit dem Ankauf verbunden sind.",
-        "icon": "rocket-launch"
+        "icon": "FileText",
+        "title": "Bescheinigung über Schuldenfreiheit",
+        "description": "Bescheinigung über Schuldenfreiheit vom Finanzamt, der Krankenversicherung, der Sozialversicherung und der Zollbehörde"
       },
       {
-        "title": "Rechtlich korrekte Lösung",
-        "description": "Wir führen den gesamten Prozess in Übereinstimmung mit den geltenden Gesetzen durch. Sie erhalten alle notwendigen rechtlichen Dokumente, die den Übergang von Rechten und Pflichten auf den neuen Eigentümer belegen.",
-        "icon": "scale"
+        "icon": "ClipboardCheck",
+        "title": "Erklärung zur Schuldenfreiheit",
+        "description": "Erklärung zur Schuldenfreiheit vom derzeitigen Eigentümer und Geschäftsführer (nach dem Gesetz haftet er mit seinem Vermögen für etwaige Unstimmigkeiten zwischen dem aktuellen Zustand des Unternehmens und dem in der Erklärung angegebenen Zustand)"
       },
       {
-        "title": "Vollständige Anonymität",
-        "description": "Wir garantieren vollständige Diskretion während des gesamten Prozesses. Ihre Identität und die Umstände des Verkaufs werden streng vertraulich behandelt.",
-        "icon": "user-circle"
-      },
-      {
-        "title": "Umfassende Unterstützung",
-        "description": "Unsere Experten begleiten Sie durch den gesamten Verkaufsprozess und lösen alle eventuellen Komplikationen. Wir übernehmen alle Verwaltungsangelegenheiten im Zusammenhang mit dem Eigentümerwechsel.",
-        "icon": "lifebuoy"
+        "icon": "Building",
+        "title": "Vollständige Buchhaltung",
+        "description": "Vollständige Buchhaltung des Unternehmens"
       }
     ]
-  },
-  "process": {
-    "title": "Wie funktioniert der Unternehmensankauf?",
-    "description": "Der gesamte Prozess der Unternehmensübernahme ist einfach und unkompliziert für den Verkäufer. Sie müssen nur wenige notwendige Dokumente bereitstellen und den Rest erledigen wir für Sie.",
-    "steps": [
-      {
-        "number": "01",
-        "title": "Erstgespräch",
-        "description": "Vereinbaren Sie ein kostenloses Erstgespräch, in dem wir Ihre Situation analysieren und einen individuellen Lösungsvorschlag vorbereiten."
-      },
-      {
-        "number": "02",
-        "title": "Unterlagenprüfung",
-        "description": "Wir benötigen grundlegende Dokumente wie Jahresabschlüsse, Liste der Verbindlichkeiten und andere Unterlagen zur Beurteilung der Situation des Unternehmens."
-      },
-      {
-        "number": "03",
-        "title": "Angebotserstellung",
-        "description": "Nach der Analyse legen wir die Bedingungen des Kaufvertrags fest und erstellen ein unverbindliches Angebot für den Ankauf des Unternehmens."
-      },
-      {
-        "number": "04",
-        "title": "Vertragsunterzeichnung",
-        "description": "Nach Annahme des Angebots unterzeichnen wir alle notwendigen Dokumente, die für die Übertragung des Unternehmens erforderlich sind."
-      },
-      {
-        "number": "05",
-        "title": "Unternehmensübertragung",
-        "description": "Wir kümmern uns um alle administrativen Schritte, die mit der Übertragung des Unternehmens verbunden sind, einschließlich der Eintragung im Handelsregister."
-      }
-    ]
-  },
-  "faq": {
-    "title": "Häufig gestellte Fragen",
-    "items": [
-      {
-        "question": "In welchen Situationen ist ein Unternehmensverkauf mit Verbindlichkeiten sinnvoll?",
-        "answer": "Ein Unternehmensverkauf ist eine geeignete Lösung, wenn Ihr Unternehmen mit erheblichen Verbindlichkeiten konfrontiert ist, die es nicht bewältigen kann, wenn Sie persönliche Haftung vermeiden möchten oder wenn Sie das Unternehmen nicht mehr weiterführen können oder wollen. Es ist auch sinnvoll bei drohender Insolvenz oder wenn Sie schnell und diskret aus dem Geschäft aussteigen möchten."
-      },
-      {
-        "question": "Welche Unterlagen benötige ich für den Verkauf meines Unternehmens?",
-        "answer": "Für die erste Beurteilung benötigen wir grundlegende Informationen über Ihr Unternehmen, wie Jahresabschlüsse, Liste der Verbindlichkeiten, Verträge mit wichtigen Gläubigern und Informationen über laufende Gerichts- oder Verwaltungsverfahren. Nach der Entscheidung zum Kauf benötigen wir dann Gründungsdokumente, Gesellschafterverträge und andere für die Übertragung erforderliche Dokumente."
-      },
-      {
-        "question": "Wie lange dauert der gesamte Prozess des Unternehmensverkaufs?",
-        "answer": "Die Dauer des Prozesses hängt von der Komplexität Ihrer Situation ab, aber in der Regel dauert der gesamte Prozess von der ersten Kontaktaufnahme bis zur vollständigen Übertragung des Unternehmens etwa 1-2 Wochen. In dringenden Fällen können wir den Prozess beschleunigen und ihn innerhalb weniger Tage abschließen."
-      },
-      {
-        "question": "Gehen alle Verbindlichkeiten des Unternehmens auf den neuen Eigentümer über?",
-        "answer": "Ja, beim Verkauf des Unternehmens gehen alle bekannten sowie unbekannten Verbindlichkeiten auf den neuen Eigentümer über. Sie werden als ursprünglicher Eigentümer vollständig von den Verbindlichkeiten des Unternehmens befreit. Es ist jedoch wichtig, alle bekannten Verbindlichkeiten bei der Übergabe offenzulegen."
-      },
-      {
-        "question": "Ist der Verkauf eines Unternehmens mit Verbindlichkeiten legal?",
-        "answer": "Ja, der Verkauf eines Unternehmens mit Verbindlichkeiten ist vollkommen legal und durch das Gesetz geregelt. Es handelt sich um eine standardmäßige Transaktion, bei der die Rechte und Pflichten des Unternehmens auf den neuen Eigentümer übergehen. Allerdings ist es wichtig, dass der Verkauf transparent und in Übereinstimmung mit den geltenden Gesetzen erfolgt."
-      },
-      {
-        "question": "Was passiert nach dem Verkauf mit dem Unternehmen?",
-        "answer": "Nach dem Verkauf übernimmt der neue Eigentümer die volle Kontrolle und Verantwortung für das Unternehmen. Der neue Eigentümer entscheidet dann, ob er das Unternehmen weiterführt, restrukturiert oder liquidiert. Als ursprünglicher Eigentümer haben Sie nach dem Verkauf keine weiteren Verpflichtungen oder Verantwortung für das Unternehmen."
-      }
-    ]
-  },
-  "cta": {
-    "title": "Bereit, Ihr Unternehmen mit Verbindlichkeiten zu verkaufen?",
-    "description": "Kontaktieren Sie uns für eine unverbindliche Beratung und ein maßgeschneidertes Angebot zum Ankauf Ihres Unternehmens.",
-    "button": "Kontaktieren Sie uns jetzt",
-    "contact": {
-      "email": "info@expohledavky.cz",
-      "phone": "+420 735 500 003"
-    }
   }
 } 

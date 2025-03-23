@@ -7,8 +7,16 @@ import { SectionWrapper } from "./section-wrapper"
 import { useTranslations } from "@/lib/i18n"
 
 export function Testimonials() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use client translations
   const t = useTranslations('testimonials')
   const [activeIndex, setActiveIndex] = useState(0)
+
+  // Set isClient to true after hydration
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   useEffect(() => {
     const timer = setInterval(() => {

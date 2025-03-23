@@ -20,11 +20,9 @@ import csPrivacyPolicyPage from '@/locales/cs/privacy-policy-page.json';
 import csHeader from '@/locales/cs/header.json';
 import csFooter from '@/locales/cs/footer.json';
 import csMetadata from '@/locales/cs/metadata.json';
+import csServicesLayout from '@/locales/cs/services-layout.json';
 
 // English translations
-import enHeader from '@/locales/en/header.json';
-import enFooter from '@/locales/en/footer.json';
-import enMetadata from '@/locales/en/metadata.json';
 import enHero from '@/locales/en/hero.json';
 import enAboutUs from '@/locales/en/about-us.json';
 import enProcess from '@/locales/en/process.json';
@@ -44,11 +42,12 @@ import enCareerPage from '@/locales/en/career-page.json';
 import enContactPage from '@/locales/en/contact-page.json';
 import enBlogPage from '@/locales/en/blog-page.json';
 import enPrivacyPolicyPage from '@/locales/en/privacy-policy-page.json';
+import enHeader from '@/locales/en/header.json';
+import enFooter from '@/locales/en/footer.json';
+import enMetadata from '@/locales/en/metadata.json';
+import enServicesLayout from '@/locales/en/services-layout.json';
 
 // German translations
-import deHeader from '@/locales/de/header.json';
-import deFooter from '@/locales/de/footer.json';
-import deMetadata from '@/locales/de/metadata.json';
 import deHero from '@/locales/de/hero.json';
 import deAboutUs from '@/locales/de/about-us.json';
 import deProcess from '@/locales/de/process.json';
@@ -68,11 +67,12 @@ import deCareerPage from '@/locales/de/career-page.json';
 import deContactPage from '@/locales/de/contact-page.json';
 import deBlogPage from '@/locales/de/blog-page.json';
 import dePrivacyPolicyPage from '@/locales/de/privacy-policy-page.json';
+import deHeader from '@/locales/de/header.json';
+import deFooter from '@/locales/de/footer.json';
+import deMetadata from '@/locales/de/metadata.json';
+import deServicesLayout from '@/locales/de/services-layout.json';
 
 // Slovak translations
-import skHeader from '@/locales/sk/header.json';
-import skFooter from '@/locales/sk/footer.json';
-import skMetadata from '@/locales/sk/metadata.json';
 import skHero from '@/locales/sk/hero.json';
 import skAboutUs from '@/locales/sk/about-us.json';
 import skProcess from '@/locales/sk/process.json';
@@ -92,9 +92,20 @@ import skCareerPage from '@/locales/sk/career-page.json';
 import skContactPage from '@/locales/sk/contact-page.json';
 import skBlogPage from '@/locales/sk/blog-page.json';
 import skPrivacyPolicyPage from '@/locales/sk/privacy-policy-page.json';
+import skHeader from '@/locales/sk/header.json';
+import skFooter from '@/locales/sk/footer.json';
+import skMetadata from '@/locales/sk/metadata.json';
+import skServicesLayout from '@/locales/sk/services-layout.json';
 
-// Default language is Czech
-const defaultLocale = 'cs';
+import { getLanguageFromHostname } from './domain-mapping';
+import Cookies from 'js-cookie';
+import { getInitialLocale } from './server-utils';
+
+// Cookie name for storing the locale (keep in sync with middleware.ts)
+const LOCALE_COOKIE = 'NEXT_LOCALE';
+
+// Available locales
+export const locales = ['cs', 'sk', 'de', 'en'];
 
 // All translations by locale and namespace
 const translations: Record<string, Record<string, any>> = {
@@ -120,7 +131,8 @@ const translations: Record<string, Record<string, any>> = {
     privacyPolicyPage: csPrivacyPolicyPage,
     header: csHeader,
     footer: csFooter,
-    metadata: csMetadata
+    metadata: csMetadata,
+    servicesLayout: csServicesLayout
   },
   en: {
     hero: enHero,
@@ -144,7 +156,8 @@ const translations: Record<string, Record<string, any>> = {
     privacyPolicyPage: enPrivacyPolicyPage,
     header: enHeader,
     footer: enFooter,
-    metadata: enMetadata
+    metadata: enMetadata,
+    servicesLayout: enServicesLayout
   },
   de: {
     hero: deHero,
@@ -168,7 +181,8 @@ const translations: Record<string, Record<string, any>> = {
     privacyPolicyPage: dePrivacyPolicyPage,
     header: deHeader,
     footer: deFooter,
-    metadata: deMetadata
+    metadata: deMetadata,
+    servicesLayout: deServicesLayout
   },
   sk: {
     hero: skHero,
@@ -192,43 +206,115 @@ const translations: Record<string, Record<string, any>> = {
     privacyPolicyPage: skPrivacyPolicyPage,
     header: skHeader,
     footer: skFooter,
-    metadata: skMetadata
+    metadata: skMetadata,
+    servicesLayout: skServicesLayout
   }
 };
 
-// Function to get translations for a specific namespace
-export function useTranslations(namespace: string, locale = defaultLocale) {
-  try {
-    // If the namespace doesn't exist in the requested locale, fall back to default locale
-    const ns = translations[locale]?.[namespace] || translations[defaultLocale]?.[namespace] || {};
-    return ns;
-  } catch (error) {
-    console.error(`Error loading translations for namespace "${namespace}" in locale "${locale}":`, error);
-    // Fall back to default locale
-    return translations[defaultLocale]?.[namespace] || {};
+/**
+ * Get current locale from cookies, browser settings, or window global 
+ */
+export function getCurrentLocale(): string {
+  // Server-side rendering (SSR) or static site generation (SSG)
+  if (typeof window === 'undefined') {
+    // Get locale from server-side function, no fallbacks
+    return getInitialLocale();
   }
+
+  // First priority: global variable set by _document.tsx or early script execution
+  if (window.__LOCALE__ && ['cs', 'sk', 'de', 'en'].includes(window.__LOCALE__)) {
+    return window.__LOCALE__;
+  }
+  
+  // Second priority: check localStorage for saved locale
+  try {
+    const storedLocale = localStorage.getItem('__LOCALE__');
+    if (storedLocale && ['cs', 'sk', 'de', 'en'].includes(storedLocale)) {
+      return storedLocale;
+    }
+  } catch (e) {
+    console.error('Error accessing localStorage:', e);
+  }
+
+  // Third priority: check cookie
+  const cookieLocale = Cookies.get(LOCALE_COOKIE);
+  if (cookieLocale && ['cs', 'sk', 'de', 'en'].includes(cookieLocale)) {
+    return cookieLocale;
+  }
+
+  // Use hostname detection, no default fallback
+  return getInitialLocale();
 }
 
-// Utility function to get a translated string with dot notation path
-export function t(path: string, locale = defaultLocale) {
-  try {
-    const [namespace, ...keys] = path.split('.');
-    const translations = useTranslations(namespace, locale);
-    
-    const result = keys.reduce((obj, key) => obj?.[key], translations);
-    return result !== undefined ? result : path;
-  } catch (error) {
-    console.error(`Error translating path "${path}" in locale "${locale}":`, error);
-    return path;
+/**
+ * Set and store user locale preference
+ */
+export function setLocale(locale: string) {
+  if (typeof window === 'undefined') {
+    return;
   }
+  
+  // Set cookie for future visits (30 days expiry)
+  Cookies.set(LOCALE_COOKIE, locale, { expires: 30 });
+  
+  // Set global variable to ensure consistency during the session
+  window.__LOCALE__ = locale;
+  
+  // Reload page to apply the new locale
+  window.location.reload();
 }
 
-// Utility function to get metadata for the current locale
-export function getMetadata(locale = defaultLocale) {
-  try {
-    return translations[locale]?.metadata || translations[defaultLocale].metadata;
-  } catch (error) {
-    console.error(`Error getting metadata for locale "${locale}":`, error);
-    return translations[defaultLocale].metadata;
+/**
+ * Get translations for a namespace in a specific locale
+ */
+export function getTranslations(namespace: string, locale?: string) {
+  // Determine locale to use
+  const localeToUse = locale || getCurrentLocale();
+  
+  // Return only the translations for the requested locale, no fallbacks
+  if (localeToUse && translations[localeToUse]?.[namespace]) {
+    return translations[localeToUse][namespace];
   }
-} 
+  
+  // If translations aren't available for this locale/namespace, return empty object
+  // NO FALLBACKS to other languages
+  return {};
+}
+
+/**
+ * Hook for accessing translations within components
+ */
+export function useTranslations(namespace: string, locale?: string): any {
+  const localeToUse = locale || getCurrentLocale();
+  
+  // Return only the translations for the requested locale, no fallbacks
+  if (localeToUse && translations[localeToUse]?.[namespace]) {
+    return translations[localeToUse][namespace];
+  }
+  
+  // If translations aren't available, return empty object
+  // NO FALLBACKS to other languages
+  return {};
+}
+
+/**
+ * Get metadata for a specific locale
+ */
+export function getLocaleMetadata(locale?: string) {
+  const localeToUse = locale || getCurrentLocale();
+  
+  // Return only the metadata for the requested locale, no fallbacks
+  if (localeToUse && translations[localeToUse]?.metadata) {
+    return translations[localeToUse].metadata;
+  }
+  
+  // If metadata isn't available for this locale, return empty object
+  // NO FALLBACKS to other languages
+  return {};
+}
+
+/**
+ * Alias for getLocaleMetadata for backward compatibility
+ * @deprecated Use getLocaleMetadata instead
+ */
+export const getMetadata = getLocaleMetadata; 

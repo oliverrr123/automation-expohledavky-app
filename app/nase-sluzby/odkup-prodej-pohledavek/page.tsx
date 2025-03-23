@@ -1,8 +1,11 @@
+"use client"
+
 import Image from "next/image"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle, DollarSign, FileText, BarChart } from "lucide-react"
 import { useTranslations } from "@/lib/i18n"
+import { useState, useEffect } from "react"
 
 // Icon mapping for process steps icons
 const iconMap = {
@@ -13,7 +16,15 @@ const iconMap = {
 }
 
 export default function OdkupProdejPohledavekPage() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use server translations initially, then switch to client translations after hydration
   const t = useTranslations('receivablesPurchasePage')
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   return (
     <>
@@ -102,8 +113,8 @@ export default function OdkupProdejPohledavekPage() {
                             <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
                               <Icon className="h-6 w-6 text-orange-600" />
                             </div>
-                            <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                            <p className="text-gray-600">{step.description}</p>
+                            <h3 className="text-xl font-semibold mb-2 hyphens-auto">{step.title}</h3>
+                            <p className="text-gray-600 hyphens-auto">{step.description}</p>
                           </div>
                         </SectionWrapper>
                       );
@@ -149,8 +160,8 @@ export default function OdkupProdejPohledavekPage() {
                   <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
                     <CheckCircle className="h-6 w-6 text-orange-600" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600">{benefit.description}</p>
+                  <h3 className="text-xl font-semibold mb-2 hyphens-auto">{benefit.title}</h3>
+                  <p className="text-gray-600 hyphens-auto">{benefit.description}</p>
                 </div>
               </SectionWrapper>
             ))}

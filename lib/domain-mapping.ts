@@ -1,0 +1,71 @@
+// Instead of importing from middleware, define the mapping directly here
+// This avoids circular dependencies and ensures compatibility with Pages Router
+export const DOMAIN_LANG_MAP: Record<string, string> = {
+  'expohledavky.com': 'en',
+  'expohledavky.cz': 'cs',
+  'expohledavky.sk': 'sk',
+  'expohledavky.de': 'de',
+  'en.localhost:3000': 'en',
+  'cs.localhost:3000': 'cs',
+  'sk.localhost:3000': 'sk',
+  'de.localhost:3000': 'de',
+  // No default for localhost
+}
+
+// Check if we're in development environment
+const isDev = typeof window !== 'undefined' ? 
+  window.location.hostname === 'localhost' || 
+  window.location.hostname.endsWith('.localhost') : 
+  process.env.NODE_ENV === 'development';
+
+/**
+ * Get language code based on the hostname
+ * This is used for client-side hostname detection
+ * Each domain STRICTLY serves its own language
+ */
+export function getLanguageFromHostname(hostname: string): string {
+  // Exact hostname match (including port)
+  if (DOMAIN_LANG_MAP[hostname]) {
+    return DOMAIN_LANG_MAP[hostname];
+  }
+
+  // Production domains without port - STRICT mapping
+  const domain = hostname.split(':')[0];
+  
+  // Check for production domains
+  if (domain.includes('expohledavky.com')) return 'en';
+  if (domain.includes('expohledavky.sk')) return 'sk';
+  if (domain.includes('expohledavky.de')) return 'de';
+  if (domain.includes('expohledavky.cz')) return 'cs';
+  
+  // Development environment - determine language from subdomain
+  if (domain.startsWith('en.')) return 'en';
+  if (domain.startsWith('sk.')) return 'sk';
+  if (domain.startsWith('de.')) return 'de';
+  if (domain.startsWith('cs.')) return 'cs';
+  
+  // If domain not recognized, return empty string - NO DEFAULT
+  return '';
+}
+
+// Map domain to URL
+export function getDomainForLanguage(lang: string): string {
+  // Special handling for development environment
+  if (isDev) {
+    return `${lang}.localhost${typeof window !== 'undefined' ? `:${window.location.port}` : ':3000'}`;
+  }
+  
+  // Production environment
+  // Reverse lookup from DOMAIN_LANG_MAP
+  for (const [domain, langCode] of Object.entries(DOMAIN_LANG_MAP)) {
+    // Skip development entries
+    if (domain.includes('localhost')) continue;
+    
+    if (langCode === lang) {
+      return domain;
+    }
+  }
+  
+  // Default to .com
+  return 'expohledavky.com';
+} 

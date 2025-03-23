@@ -1,0 +1,115 @@
+import '@/styles/globals.css'
+import type { AppProps } from 'next/app'
+import { useEffect } from 'react'
+import Head from 'next/head'
+import App from 'next/app'
+
+// Global type for window extensions
+declare global {
+  interface Window {
+    __LOCALE__?: string;
+  }
+}
+
+// Extended AppProps with initialLocale
+type MyAppProps = AppProps & {
+  initialLocale: string;
+}
+
+function MyApp({ Component, pageProps, initialLocale }: MyAppProps) {
+  // Set locale on first render
+  useEffect(() => {
+    // Set the global variable from server-provided locale
+    if (typeof window !== 'undefined' && initialLocale) {
+      window.__LOCALE__ = initialLocale;
+    }
+    
+    // Fallback detection only if initialLocale isn't provided
+    if (typeof window !== 'undefined' && !window.__LOCALE__) {
+      try {
+        const hostname = window.location.hostname;
+        const domain = hostname.split(':')[0];
+        
+        // Determine locale from domain - no default fallback
+        // Production domains
+        if (domain.includes('expohledavky.com')) window.__LOCALE__ = 'en';
+        else if (domain.includes('expohledavky.sk')) window.__LOCALE__ = 'sk';
+        else if (domain.includes('expohledavky.de')) window.__LOCALE__ = 'de';
+        else if (domain.includes('expohledavky.cz')) window.__LOCALE__ = 'cs';
+        
+        // Development environment subdomains
+        else if (domain.startsWith('en.')) window.__LOCALE__ = 'en';
+        else if (domain.startsWith('sk.')) window.__LOCALE__ = 'sk';
+        else if (domain.startsWith('de.')) window.__LOCALE__ = 'de';
+        else if (domain.startsWith('cs.')) window.__LOCALE__ = 'cs';
+        
+        // If still no locale is set, we must be on an unknown domain
+        // We'll use the hostname to make a best guess rather than defaulting to Czech
+        if (!window.__LOCALE__) {
+          if (domain.includes('en') || domain.includes('com')) window.__LOCALE__ = 'en';
+          else if (domain.includes('sk')) window.__LOCALE__ = 'sk';
+          else if (domain.includes('de')) window.__LOCALE__ = 'de';
+          else if (domain.includes('cz') || domain.includes('cs')) window.__LOCALE__ = 'cs';
+          // Last resort - English for international users
+          else window.__LOCALE__ = 'en';
+        }
+      } catch (e) {
+        console.error('Error in locale detection:', e);
+      }
+    }
+  }, [initialLocale]);
+
+  return (
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script dangerouslySetInnerHTML={{
+          __html: `window.__LOCALE__ = ${JSON.stringify(initialLocale || '')};`
+        }} />
+      </Head>
+      <Component {...pageProps} />
+    </>
+  )
+}
+
+// Server-side locale detection
+MyApp.getInitialProps = async (appContext: any) => {
+  // Call the original getInitialProps
+  const appProps = await App.getInitialProps(appContext);
+  
+  let initialLocale = '';
+  
+  // Server-side detection of hostname
+  if (appContext.ctx.req) {
+    const hostname = appContext.ctx.req.headers.host || '';
+    const domain = hostname.split(':')[0];
+    
+    // Production domains
+    if (domain.includes('expohledavky.com')) initialLocale = 'en';
+    else if (domain.includes('expohledavky.sk')) initialLocale = 'sk';
+    else if (domain.includes('expohledavky.de')) initialLocale = 'de';
+    else if (domain.includes('expohledavky.cz')) initialLocale = 'cs';
+    
+    // Development environment subdomains
+    else if (domain.startsWith('en.')) initialLocale = 'en';
+    else if (domain.startsWith('sk.')) initialLocale = 'sk';
+    else if (domain.startsWith('de.')) initialLocale = 'de';
+    else if (domain.startsWith('cs.')) initialLocale = 'cs';
+    
+    // If still no locale is set, we must be on an unknown domain
+    // We'll use the hostname to make a best guess rather than defaulting to Czech
+    if (!initialLocale) {
+      if (domain.includes('en') || domain.includes('com')) initialLocale = 'en';
+      else if (domain.includes('sk')) initialLocale = 'sk';
+      else if (domain.includes('de')) initialLocale = 'de';
+      else if (domain.includes('cz') || domain.includes('cs')) initialLocale = 'cs';
+      // Last resort - English for international users
+      else initialLocale = 'en';
+    }
+  }
+  
+  // Add the locale to the app props
+  return { ...appProps, initialLocale };
+}
+
+export default MyApp 

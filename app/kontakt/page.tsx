@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useState, type FormEvent, useEffect } from "react"
+import React, { useState, useEffect, FormEvent } from "react"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -13,10 +11,73 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { useTranslations } from "@/lib/i18n"
+import csContactPage from '@/locales/cs/contact-page.json'
+import enContactPage from '@/locales/en/contact-page.json'
+import skContactPage from '@/locales/sk/contact-page.json'
+import deContactPage from '@/locales/de/contact-page.json'
 import { generateCSRFToken } from "@/lib/csrf"
+import { headers } from 'next/headers'
+import { useParams } from "next/navigation"
+
+// Get translations based on domain for server-side rendering
+const translationsByLang: Record<string, typeof csContactPage> = {
+  cs: csContactPage,
+  en: enContactPage,
+  sk: skContactPage,
+  de: deContactPage
+};
+
+// Function to detect locale from hostname (for client-side use)
+const getLocaleFromHostname = (hostname: string) => {
+  const domain = hostname.split(':')[0];
+  
+  // Determine locale from domain
+  let locale = '';
+  
+  // Production domains
+  if (domain.includes('expohledavky.com')) locale = 'en';
+  else if (domain.includes('expohledavky.sk')) locale = 'sk';
+  else if (domain.includes('expohledavky.de')) locale = 'de';
+  else if (domain.includes('expohledavky.cz')) locale = 'cs';
+  
+  // Development environment subdomains
+  else if (domain.startsWith('en.')) locale = 'en';
+  else if (domain.startsWith('sk.')) locale = 'sk';
+  else if (domain.startsWith('de.')) locale = 'de';
+  else if (domain.startsWith('cs.')) locale = 'cs';
+  
+  // If still no locale is set, we must be on an unknown domain
+  // We'll use the hostname to make a best guess
+  if (!locale) {
+    if (domain.includes('en') || domain.includes('com')) locale = 'en';
+    else if (domain.includes('sk')) locale = 'sk';
+    else if (domain.includes('de')) locale = 'de';
+    else if (domain.includes('cz') || domain.includes('cs')) locale = 'cs';
+    else locale = 'en'; // Last resort - English for international users
+  }
+  
+  return locale;
+};
 
 export default function ContactPage() {
-  const t = useTranslations('contactPage')
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  const [serverLocale, setServerLocale] = useState('en') // Default to EN
+  
+  // Use server translations initially, then switch to client translations after hydration
+  const t = isClient ? useTranslations('contactPage') : translationsByLang[serverLocale] || translationsByLang['en']
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+    // Generate CSRF token when component mounts
+    setCsrfToken(generateCSRFToken())
+    
+    // Detect locale from hostname on client-side
+    const hostname = window.location.hostname;
+    const detectedLocale = getLocaleFromHostname(hostname);
+    setServerLocale(detectedLocale);
+  }, [])
   
   const [formData, setFormData] = useState({
     jmeno: "",
@@ -28,6 +89,8 @@ export default function ContactPage() {
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [activeInfoBox, setActiveInfoBox] = useState<number | null>(null)
   const [copyStatus, setCopyStatus] = useState<{ [key: number]: boolean }>({})
+
+  const [csrfToken, setCsrfToken] = useState("")
 
   useEffect(() => {
     // Generate a CSRF token on the client side
@@ -45,6 +108,13 @@ export default function ContactPage() {
     fetchCSRFToken();
   }, []);
 
+  // Debug information - can be removed in production
+  useEffect(() => {
+    if (isClient) {
+      console.log("Detected locale on client:", serverLocale);
+    }
+  }, [isClient, serverLocale]);
+
   const handleCopy = async (text: string, index: number) => {
     try {
       await navigator.clipboard.writeText(text)
@@ -52,15 +122,13 @@ export default function ContactPage() {
       
       // Determine the type of content being copied
       if (text.startsWith("+420")) {
-        toast.success(t.contactInfo.copySuccess.phone)
+        toast.success(t.contactInfo?.copySuccess?.phone)
       } else if (text.includes("@")) {
-        toast.success(t.contactInfo.copySuccess.email)
+        toast.success(t.contactInfo?.copySuccess?.email)
       } else if (text.includes("Praha")) {
-        toast.success(t.contactInfo.copySuccess.address)
-      } else if (text.includes("Pondělí")) {
-        toast.success(t.contactInfo.copySuccess.hours)
+        toast.success(t.contactInfo?.copySuccess?.address)
       } else {
-        toast.success(t.contactInfo.copySuccess.generic)
+        toast.success(t.contactInfo?.copySuccess?.generic)
       }
       
       // Reset the copy status after 2 seconds
@@ -68,7 +136,7 @@ export default function ContactPage() {
         setCopyStatus((prev) => ({ ...prev, [index]: false }))
       }, 2000)
     } catch (err) {
-      toast.error(t.contactInfo.copyError)
+      toast.error(t.contactInfo?.copyError)
     }
   }
 
@@ -77,7 +145,7 @@ export default function ContactPage() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     // CSRF token is already included in formData
@@ -101,7 +169,7 @@ export default function ContactPage() {
 
       // Success
       setFormStatus("success");
-      toast.success(t.contact.success);
+      toast.success(t.contactForm?.form?.success);
 
       // Generate a new CSRF token
       const newToken = generateCSRFToken();
@@ -120,7 +188,7 @@ export default function ContactPage() {
     } catch (error) {
       console.error('Error submitting form:', error);
       setFormStatus("error");
-      toast.error(error instanceof Error ? error.message : t.contact.errors.unknown);
+      toast.error(error instanceof Error ? error.message : t.contactForm?.form?.error);
     }
   }
 
@@ -184,11 +252,11 @@ export default function ContactPage() {
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
               <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                {t.hero.badge}
+                {t.hero?.badge}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero.title}</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero?.title}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                {t.hero.subtitle}
+                {t.hero?.subtitle}
               </p>
               <div className="flex flex-wrap justify-center gap-4 mt-8">
                 <Button
@@ -207,7 +275,7 @@ export default function ContactPage() {
                       aria-hidden="true"
                     />
                     <span className="relative z-10 flex items-center">
-                      {t.hero.buttons.writeMessage} <MessageSquare className="ml-2 h-4 w-4" />
+                      {t.hero?.buttons?.writeMessage} <MessageSquare className="ml-2 h-4 w-4" />
                     </span>
                   </a>
                 </Button>
@@ -222,7 +290,7 @@ export default function ContactPage() {
                       aria-hidden="true"
                     />
                     <span className="relative z-10 flex items-center">
-                      <Phone className="mr-2 h-4 w-4" /> {t.hero.buttons.callNow}
+                      <Phone className="mr-2 h-4 w-4" /> {t.hero?.buttons?.callNow}
                     </span>
                   </a>
                 </Button>
@@ -238,9 +306,9 @@ export default function ContactPage() {
           <div className="container mx-auto px-4 max-w-7xl">
             <SectionWrapper animation="fade-up">
               <div className="max-w-3xl mx-auto text-center mb-12">
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.contactInfo.title}</h2>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.contactInfo?.title}</h2>
                 <p className="text-lg text-gray-600">
-                  {t.contactInfo.subtitle}
+                  {t.contactInfo?.subtitle}
                 </p>
               </div>
             </SectionWrapper>
@@ -249,91 +317,73 @@ export default function ContactPage() {
               {[
                 {
                   icon: Phone,
-                  title: t.contactInfo.items[0].title,
+                  title: t.contactInfo?.items?.[0]?.title,
                   content: (
                     <div className="space-y-2">
                       <p>
                         <a 
-                          href={`tel:${t.contactInfo.items[0].content[0]}`}
+                          href={`tel:${t.contactInfo?.items?.[0]?.content?.[0]}`}
                           className="text-white hover:text-orange-300 transition-colors cursor-pointer"
                           onClick={(e) => {
                             e.preventDefault()
-                            handleCopy(t.contactInfo.items[0].content[0], 0)
+                            handleCopy(t.contactInfo?.items?.[0]?.content?.[0], 0)
                           }}
                         >
-                          {t.contactInfo.items[0].content[0]}
-                        </a>
-                      </p>
-                      <p>
-                        <a 
-                          href={`tel:${t.contactInfo.items[0].content[1]}`}
-                          className="text-white hover:text-orange-300 transition-colors cursor-pointer"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            handleCopy(t.contactInfo.items[0].content[1], 1)
-                          }}
-                        >
-                          {t.contactInfo.items[0].content[1]}
+                          {t.contactInfo?.items?.[0]?.content?.[0]}
                         </a>
                       </p>
                     </div>
                   ),
                   dark: true,
-                  copyText: t.contactInfo.items[0].content,
+                  copyText: t.contactInfo?.items?.[0]?.content?.[0],
                 },
                 {
                   icon: Mail,
-                  title: t.contactInfo.items[1].title,
+                  title: t.contactInfo?.items?.[1]?.title,
                   content: (
                     <p>
                       <a
-                        href={`mailto:${t.contactInfo.items[1].content[0]}`}
+                        href={`mailto:${t.contactInfo?.items?.[1]?.content?.[0]}`}
                         className="text-white hover:text-zinc-200 transition-colors cursor-pointer"
                         onClick={(e) => {
                           e.preventDefault()
-                          handleCopy(t.contactInfo.items[1].content[0], 2)
+                          handleCopy(t.contactInfo?.items?.[1]?.content?.[0], 1)
                         }}
                       >
-                        {t.contactInfo.items[1].content[0]}
+                        {t.contactInfo?.items?.[1]?.content?.[0]}
                       </a>
                     </p>
                   ),
                   dark: false,
-                  copyText: t.contactInfo.items[1].content,
+                  copyText: t.contactInfo?.items?.[1]?.content?.[0],
                 },
                 {
                   icon: MapPin,
-                  title: t.contactInfo.items[2].title,
+                  title: t.contactInfo?.items?.[2]?.title,
                   content: (
                     <p>
                       <span 
                         className="cursor-pointer"
-                        onClick={() => handleCopy(t.contactInfo.items[2].content[0], 3)}
+                        onClick={() => handleCopy(t.contactInfo?.items?.[2]?.content?.[0], 2)}
                       >
-                        {t.contactInfo.items[2].content[0].replace(", ", ", \n")}
+                        {t.contactInfo?.items?.[2]?.content?.[0]
+                          ? t.contactInfo.items[2].content[0].replace(", ", ", \n")
+                          : ''}
                       </span>
                     </p>
                   ),
                   dark: true,
-                  copyText: t.contactInfo.items[2].content,
+                  copyText: t.contactInfo?.items?.[2]?.content?.[0],
                 },
                 {
                   icon: Clock,
-                  title: "Pracovní hodiny",
+                  title: t.contactInfo?.items?.[3]?.title,
                   content: (
                     <p>
-                      <span 
-                        className="cursor-pointer"
-                        onClick={() => handleCopy("Pondělí až pátek od 9:00 do 18:00", 4)}
-                      >
-                        Pondělí až pátek <br />
-                        od 9:00 do 18:00
-                      </span>
+                      {t.contactInfo?.items?.[3]?.content?.[0]}
                     </p>
                   ),
-                  dark: false,
-                  copyText: ["Pondělí až pátek od 9:00 do 18:00"],
-                },
+                }
               ].map((item, index) => (
                 <SectionWrapper key={index} animation="fade-up" delay={100 * (index + 1)}>
                   <div
@@ -345,7 +395,7 @@ export default function ContactPage() {
                         : "hover:transform hover:scale-[1.03] hover:z-10 hover:shadow-lg",
                       copyStatus[index] && "ring-2 ring-green-400",
                     )}
-                    onClick={() => handleCopy(Array.isArray(item.copyText) ? item.copyText[0] : item.copyText, index)}
+                    onClick={() => handleCopy(item.copyText, index)}
                     onMouseEnter={() => setActiveInfoBox(index)}
                     onMouseLeave={() => setActiveInfoBox(null)}
                   >
@@ -383,13 +433,13 @@ export default function ContactPage() {
           <div className="container mx-auto px-4">
             <SectionWrapper animation="fade-up">
               <div className="max-w-3xl mx-auto text-center mb-12">
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.process.title}</h2>
-                <p className="text-lg text-gray-600">{t.process.subtitle}</p>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.process?.title}</h2>
+                <p className="text-lg text-gray-600">{t.process?.subtitle}</p>
               </div>
             </SectionWrapper>
 
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {t.process.steps.map((item: {
+              {(t.process?.steps || []).map((item: {
                 step: string;
                 title: string;
                 description: string;
@@ -425,10 +475,10 @@ export default function ContactPage() {
             <SectionWrapper animation="fade-up">
               <div className="max-w-3xl mx-auto text-center mb-12">
                 <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                  {t.contactForm.badge}
+                  {t.contactForm?.badge}
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.contactForm.title}</h2>
-                <p className="text-gray-600">{t.contactForm.subtitle}</p>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.contactForm?.title}</h2>
+                <p className="text-gray-600">{t.contactForm?.subtitle}</p>
               </div>
             </SectionWrapper>
 
@@ -450,7 +500,7 @@ export default function ContactPage() {
                           type="text"
                           value={formData.jmeno}
                           onChange={handleChange}
-                          placeholder={t.contactForm.form.name}
+                          placeholder={t.contactForm?.form?.name}
                           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300"
                           disabled={formStatus === "submitting" || formStatus === "success"}
                         />
@@ -466,7 +516,7 @@ export default function ContactPage() {
                           type="email"
                           value={formData.email}
                           onChange={handleChange}
-                          placeholder={t.contactForm.form.email}
+                          placeholder={t.contactForm?.form?.email}
                           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300"
                           disabled={formStatus === "submitting" || formStatus === "success"}
                         />
@@ -479,7 +529,7 @@ export default function ContactPage() {
                           type="text"
                           value={formData.telefon}
                           onChange={handleChange}
-                          placeholder={t.contactForm.form.phone}
+                          placeholder={t.contactForm?.form?.phone}
                           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300"
                           disabled={formStatus === "submitting" || formStatus === "success"}
                         />
@@ -492,7 +542,7 @@ export default function ContactPage() {
                           rows={5}
                           value={formData.zprava}
                           onChange={handleChange}
-                          placeholder={t.contactForm.form.message}
+                          placeholder={t.contactForm?.form?.message}
                           className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300 resize-none"
                           disabled={formStatus === "submitting" || formStatus === "success"}
                         ></textarea>
@@ -524,7 +574,7 @@ export default function ContactPage() {
 
                         {formStatus === "idle" && (
                           <span className="relative z-10 flex items-center justify-center">
-                            {t.contactForm.form.submit} <Send className="ml-2 h-4 w-4" />
+                            {t.contactForm?.form?.submit} <Send className="ml-2 h-4 w-4" />
                           </span>
                         )}
 
@@ -550,17 +600,17 @@ export default function ContactPage() {
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                               ></path>
                             </svg>
-                            {t.contactForm.form.sending}
+                            {t.contactForm?.form?.sending}
                           </span>
                         )}
 
                         {formStatus === "success" && (
                           <span className="relative z-10 flex items-center justify-center">
-                            <CheckCircle className="mr-2 h-5 w-5" /> {t.contactForm.form.success}
+                            <CheckCircle className="mr-2 h-5 w-5" /> {t.contactForm?.form?.success}
                           </span>
                         )}
 
-                        {formStatus === "error" && <span className="relative z-10">{t.contactForm.form.error}</span>}
+                        {formStatus === "error" && <span className="relative z-10">{t.contactForm?.form?.error}</span>}
                       </Button>
                     </div>
                   </form>
@@ -572,9 +622,9 @@ export default function ContactPage() {
                   <div className="bg-zinc-900 text-white p-8 rounded-xl relative overflow-hidden">
                     <div className="absolute -top-10 -right-10 w-40 h-40 bg-orange-500/10 rounded-full blur-3xl"></div>
 
-                    <h3 className="text-2xl font-semibold mb-4">{t.contactForm.quickResponse.title}</h3>
+                    <h3 className="text-2xl font-semibold mb-4">{t.contactForm?.quickResponse?.title}</h3>
                     <p className="text-zinc-300 mb-6">
-                      {t.contactForm.quickResponse.description}
+                      {t.contactForm?.quickResponse?.description}
                     </p>
 
                     <div className="flex items-center gap-3 mb-4">
@@ -627,9 +677,9 @@ export default function ContactPage() {
                     {/* Map overlay with hover effect */}
                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent flex items-end transition-opacity duration-300 hover:opacity-0">
                       <div className="p-4 text-white w-full">
-                        <p className="font-medium">{t.contactForm.map.title}</p>
+                        <p className="font-medium">{t.contactForm?.map?.title}</p>
                         <div className="flex items-center text-sm mt-1">
-                          <MapPin className="h-4 w-4 mr-1" /> {t.contactForm.map.address}
+                          <MapPin className="h-4 w-4 mr-1" /> {t.contactForm?.map?.address}
                         </div>
                       </div>
                     </div>
@@ -645,13 +695,13 @@ export default function ContactPage() {
           <div className="container mx-auto px-4">
             <SectionWrapper animation="fade-up">
               <div className="max-w-3xl mx-auto text-center mb-12">
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.faq.title}</h2>
-                <p className="text-gray-600">{t.faq.subtitle}</p>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.faq?.title}</h2>
+                <p className="text-gray-600">{t.faq?.subtitle}</p>
               </div>
             </SectionWrapper>
 
             <div className="max-w-3xl mx-auto">
-              {t.faq.questions.map((item: { question: string; answer: string }, index: number) => (
+              {(t.faq?.questions || []).map((item: { question: string; answer: string }, index: number) => (
                 <SectionWrapper key={index} animation="fade-up" delay={100 * (index + 1)}>
                   <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-4 hover:shadow-md transition-shadow duration-300">
                     <h3 className="text-xl font-semibold mb-3">{item.question}</h3>
@@ -672,9 +722,9 @@ export default function ContactPage() {
                 <div className="absolute -top-24 -right-24 w-64 h-64 bg-orange-500/20 rounded-full blur-3xl"></div>
 
                 <div className="relative z-10 max-w-3xl mx-auto text-center">
-                  <h2 className="text-3xl font-bold text-white mb-6">{t.cta.title}</h2>
+                  <h2 className="text-3xl font-bold text-white mb-6">{t.cta?.title}</h2>
                   <p className="text-lg text-zinc-300 mb-8">
-                    {t.cta.description}
+                    {t.cta?.description}
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <Button
@@ -693,7 +743,7 @@ export default function ContactPage() {
                           className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                           aria-hidden="true"
                         />
-                        <span className="relative z-10">{t.cta.buttons.contactUs}</span>
+                        <span className="relative z-10">{t.cta?.buttons?.contactUs}</span>
                       </a>
                     </Button>
                     <Button
@@ -706,7 +756,7 @@ export default function ContactPage() {
                           className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                           aria-hidden="true"
                         />
-                        <span className="relative z-10">{t.cta.buttons.ourServices}</span>
+                        <span className="relative z-10">{t.cta?.buttons?.ourServices}</span>
                       </Link>
                     </Button>
                   </div>

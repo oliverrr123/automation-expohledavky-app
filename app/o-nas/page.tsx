@@ -8,16 +8,41 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useTranslations } from "@/lib/i18n"
+import { useState, useEffect } from "react"
 
 export default function AboutUsPage() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use client translations
   const t = useTranslations('aboutPage')
   
-  // Feature icons mapping
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
+  // Feature icons mapping - expanded to include all possible translation variants
   const featureIcons = {
+    // Czech variants
     "Osobní kontakt": Users,
     "Bezplatná konzultace": Clock,
     "Diskrétní přístup": Shield,
-    "Více řešení": Briefcase
+    "Více řešení": Briefcase,
+    // English variants
+    "Personal contact": Users,
+    "Free consultation": Clock,
+    "Discreet approach": Shield,
+    "Multiple solutions": Briefcase,
+    // Slovak variants
+    "Osobný kontakt": Users,
+    "Bezplatná konzultácia": Clock,
+    "Diskrétny prístup": Shield,
+    "Viac riešení": Briefcase,
+    // German variants
+    "Persönlicher Kontakt": Users,
+    "Kostenlose Beratung": Clock,
+    "Diskreter Ansatz": Shield,
+    "Mehrere Lösungen": Briefcase
   }
   
   return (
@@ -218,7 +243,7 @@ export default function AboutUsPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {t.features.items.map((feature: any, index: number) => {
-              const Icon = featureIcons[feature.title as keyof typeof featureIcons];
+              const Icon = featureIcons[feature.title as keyof typeof featureIcons] || Users; // Fallback to Users icon if not found
               return (
                 <SectionWrapper key={feature.title} animation="zoom" delay={index * 100}>
                   <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 h-full transition-all duration-300 hover:shadow-md hover:-translate-y-1">

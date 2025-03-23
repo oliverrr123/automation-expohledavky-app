@@ -2,10 +2,18 @@
 
 import { SectionWrapper } from "./section-wrapper"
 import { useTranslations } from "@/lib/i18n"
-import { Fragment } from "react"
+import { Fragment, useState, useEffect } from "react"
 
 export function Partners() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use client translations
   const t = useTranslations('partners')
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   // Render the text with the link properly inserted
   const renderRankingText = () => {

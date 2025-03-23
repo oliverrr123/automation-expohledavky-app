@@ -1,8 +1,11 @@
+"use client"
+
 import Image from "next/image"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle, FileText, Building, ClipboardCheck } from "lucide-react"
 import { useTranslations } from "@/lib/i18n"
+import { useState, useEffect } from "react"
 
 // Icon mapping for document icons
 const iconMap = {
@@ -12,7 +15,15 @@ const iconMap = {
 }
 
 export default function OdkupFiremPage() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use client translations after hydration
   const t = useTranslations('companyPurchasePage')
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   return (
     <>

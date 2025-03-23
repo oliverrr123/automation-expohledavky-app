@@ -8,6 +8,97 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { toast } from "sonner"
+import { LanguageSwitcher } from "./language-switcher"
+
+// Define types for navigation items and translations
+interface SubmenuItem {
+  name: string;
+  href: string;
+  target?: string;
+}
+
+interface NavigationItem {
+  name: string;
+  href: string;
+  hasDropdown?: boolean;
+  submenu?: SubmenuItem[];
+}
+
+interface CountryItem {
+  name: string;
+  href: string;
+}
+
+interface HeaderTranslations {
+  phone: {
+    number: string;
+    display: string;
+    successMessage: string;
+    errorMessage: string;
+  };
+  topBar: {
+    hours: string;
+    country: string;
+  };
+  company: {
+    prefix: string;
+    name: string;
+  };
+  mobileMenu: {
+    openMenu: string;
+    menuTitle: string;
+  };
+  navigation: NavigationItem[];
+  buttons: {
+    clientZone: string;
+    clientLogin: string;
+  };
+  countries: CountryItem[];
+}
+
+// Update the default translations to include basic navigation items
+const defaultTranslations: HeaderTranslations = {
+  phone: {
+    number: "+420 777 123 456",
+    display: "+420 777 123 456",
+    successMessage: "Číslo zkopírováno do schránky",
+    errorMessage: "Nepodařilo se zkopírovat číslo"
+  },
+  topBar: {
+    hours: "Po-Pá: 9:00 - 17:00",
+    country: "Česká republika"
+  },
+  company: {
+    prefix: "EX",
+    name: "POHLEDÁVKY"
+  },
+  mobileMenu: {
+    openMenu: "Otevřít menu",
+    menuTitle: "Menu"
+  },
+  navigation: [
+    { name: "Úvod", href: "/" },
+    { name: "O nás", href: "/o-nas" },
+    { name: "Naše služby", href: "/nase-sluzby", hasDropdown: true, submenu: [
+      { name: "Vymáhání pohledávek", href: "/nase-sluzby/vymahani-pohledavek" },
+      { name: "Správa firemních pohledávek", href: "/nase-sluzby/sprava-firemnich-pohledavek" },
+      { name: "Odkup a prodej pohledávek", href: "/nase-sluzby/odkup-a-prodej-pohledavek" },
+      { name: "Odkup firem", href: "/nase-sluzby/odkup-firem" },
+      { name: "Odkup směnek", href: "/nase-sluzby/odkup-smenek" },
+      { name: "Partner v Lichtenštejnsku", href: "https://expohledavky.cz/firstAdvisoryGroup.pdf" }
+    ] },
+    { name: "Ceník", href: "/cenik" },
+    { name: "Slovník a vzory", href: "/slovniky-a-vzory" },
+    { name: "Blog", href: "/blog" },
+    { name: "Kariéra", href: "/kariera" },
+    { name: "Kontakt", href: "/kontakt" }
+  ],
+  buttons: {
+    clientZone: "Klientská zóna",
+    clientLogin: "/klient"
+  },
+  countries: []
+};
 
 export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
   const { locale } = useParams() || { locale: "cs" }
@@ -15,18 +106,16 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const [translations, setTranslations] = useState<any>(null)
+  // Start with default translations to avoid hydration mismatch
+  const [translations, setTranslations] = useState<HeaderTranslations>(defaultTranslations)
+  const [isLoaded, setIsLoaded] = useState(false)
   
   const handleCopy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text)
-      if (translations) {
-        toast.success(translations.phone.successMessage)
-      }
+      toast.success(translations.phone.successMessage)
     } catch (err) {
-      if (translations) {
-        toast.error(translations.phone.errorMessage)
-      }
+      toast.error(translations.phone.errorMessage)
     }
   }
 
@@ -51,18 +140,39 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
   useEffect(() => {
     const loadTranslations = async () => {
       try {
-        const headerTranslations = await import(`@/locales/${locale || 'cs'}/header.json`)
-        setTranslations(headerTranslations.default)
+        // Detect locale from hostname directly
+        const detectLocale = (): string => {
+          const hostname = window.location.hostname;
+          
+          if (hostname.includes('expohledavky.cz')) return 'cs';
+          if (hostname.includes('expohledavky.sk')) return 'sk';
+          if (hostname.includes('expohledavky.de')) return 'de';
+          if (hostname.includes('expohledavky.com')) return 'en';
+          
+          // Localhost development
+          if (hostname.includes('cs.localhost')) return 'cs';
+          if (hostname.includes('sk.localhost')) return 'sk';
+          if (hostname.includes('de.localhost')) return 'de';
+          if (hostname.includes('en.localhost')) return 'en';
+          
+          return 'cs'; // Default fallback
+        };
+        
+        const detectedLocale = typeof window !== 'undefined' ? detectLocale() : 'cs';
+        const headerTranslations = await import(`@/locales/${detectedLocale}/header.json`);
+        setTranslations(headerTranslations.default);
+        setIsLoaded(true);
       } catch (error) {
-        console.error("Failed to load header translations:", error)
+        console.error("Failed to load header translations:", error);
         // Fallback to Czech if translations fail to load
-        const fallbackTranslations = await import(`@/locales/cs/header.json`)
-        setTranslations(fallbackTranslations.default)
+        const fallbackTranslations = await import(`@/locales/cs/header.json`);
+        setTranslations(fallbackTranslations.default);
+        setIsLoaded(true);
       }
     }
     
-    loadTranslations()
-  }, [locale])
+    loadTranslations();
+  }, []);
 
   useEffect(() => {
     if (isLandingPage) {
@@ -87,9 +197,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
     }
   }, [])
 
-  // Don't render until translations are loaded
-  if (!translations) return null
-
+  // Always render with default translations first, then update with real translations
   return (
     <header className="fixed inset-x-0 top-0 z-40 transition-colors duration-500">
       <div className="bg-zinc-900 text-zinc-200">
@@ -99,7 +207,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
               <Phone className="h-4 w-4" />
               <a 
                 href={`tel:${translations.phone.number}`}
-                className="text-sm hover:text-white cursor-pointer"
+                className="text-sm hover:text-white cursor-pointer transition-opacity duration-300"
                 onClick={(e) => {
                   e.preventDefault()
                   handleCopy(translations.phone.number)
@@ -108,23 +216,11 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                 {translations.phone.display}
               </a>
             </div>
-            <span className="hidden text-sm text-zinc-400 sm:block">{translations.topBar.hours}</span>
+            <span className="hidden text-sm text-zinc-400 sm:block transition-opacity duration-300">
+              {translations.topBar.hours}
+            </span>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-zinc-200 hover:bg-zinc-800 hover:text-zinc-50">
-                <Globe className="mr-2 h-4 w-4" />
-                {translations.topBar.country}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {translations.countries.map((country: { name: string, href: string }) => (
-                <DropdownMenuItem key={country.name}>
-                  <Link href={country.href} rel="noopener noreferrer">{country.name}</Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <LanguageSwitcher />
         </div>
       </div>
 
@@ -144,6 +240,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
               </Link>
             </div>
 
+            {/* Always show navigation items, with a fade-in effect when loaded */}
             <div className="flex lg:hidden">
               <Sheet>
                 <SheetTrigger asChild>
@@ -209,7 +306,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                   >
                     <Link
                       href={item.href}
-                      className={`flex items-center text-sm font-semibold leading-6 transition-colors duration-500 ${
+                      className={`flex items-center text-sm font-semibold leading-6 transition-colors duration-500 opacity-100 ${
                         isScrolled ? "text-zinc-900 hover:text-orange-500" : "text-white hover:text-orange-300"
                       }`}
                     >

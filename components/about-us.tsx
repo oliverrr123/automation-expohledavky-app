@@ -1,9 +1,37 @@
+"use client"
+
 import { CheckCircle } from "lucide-react"
 import { SectionWrapper } from "./section-wrapper"
 import { useTranslations } from "@/lib/i18n"
+import { useState, useEffect } from "react"
+import Image from "next/image"
+import { getServerTranslations } from "@/lib/server-utils"
+import csAboutUs from '@/locales/cs/about-us.json'
+import enAboutUs from '@/locales/en/about-us.json'
+import skAboutUs from '@/locales/sk/about-us.json'
+import deAboutUs from '@/locales/de/about-us.json'
+
+// Get translations based on domain for server-side rendering
+const translationsByLang = {
+  cs: csAboutUs,
+  en: enAboutUs,
+  sk: skAboutUs,
+  de: deAboutUs
+};
+
+// Server-side default translations to prevent hydration mismatch
+const serverTranslations = getServerTranslations('aboutUs', translationsByLang);
 
 export function AboutUs() {
-  const t = useTranslations('aboutUs')
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use server translations initially, then switch to client translations after hydration
+  const t = isClient ? useTranslations('aboutUs') : serverTranslations
+
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   return (
     <section className="relative py-24 sm:py-32 overflow-hidden">

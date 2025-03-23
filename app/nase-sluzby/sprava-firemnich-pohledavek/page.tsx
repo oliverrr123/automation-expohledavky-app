@@ -1,11 +1,22 @@
+"use client"
+
 import Image from "next/image"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle } from "lucide-react"
 import { useTranslations } from "@/lib/i18n"
+import { useState, useEffect } from "react"
 
 export default function SpravaFiremnichPohledavekPage() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use client translations
   const t = useTranslations('corporateReceivablesPage')
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   return (
     <>

@@ -1,182 +1,57 @@
 {
   "hero": {
-    "badge": "Spezialisierte Dienstleistung",
-    "title": "Eintreibung von Unternehmensforderungen",
-    "subtitle": "Professionelle Lösung für Unternehmen mit unbezahlten Forderungen gegen andere Unternehmen"
+    "badge": "Unsere Dienstleistungen",
+    "title": "Verwaltung von Unternehmensforderungen",
+    "subtitle": "Professionelles Outsourcing der Forderungsverwaltung für Ihr Unternehmen"
   },
-  "introduction": {
-    "description": "Für den Fall, dass Sie Schwierigkeiten haben, Zahlungen von Ihren Geschäftspartnern einzutreiben, bieten wir eine umfassende und effektive Lösung zur Eintreibung Ihrer Forderungen. Unser Team aus Experten kombiniert rechtliche Expertise mit praktischer Erfahrung in der Geschäftswelt, um Ihre Forderungen effizient und diskret einzutreiben.",
-    "button": "Unverbindliches Angebot anfordern",
-    "advantages": [
-      "Erfolgsbasierte Vergütung - Sie zahlen nur bei erfolgreicher Eintreibung",
-      "Spezialisierung auf B2B-Forderungen",
-      "Rechtlich korrekte Vorgehensweise",
-      "Erhaltung von Geschäftsbeziehungen"
-    ]
+  "mainSection": {
+    "badge": "Umfassende Lösung",
+    "title": "Verwaltung von Unternehmensforderungen",
+    "paragraphs": [
+      "Wir bieten Outsourcing der Forderungsverwaltung, durch das Ihre Forderungen ordnungsgemäß betreut werden.",
+      "Wir bearbeiten Ihre Rechnungen schnell, zuverlässig, diskret und mit größter Sorgfalt. Dank unserem Informationsportal haben Sie ständig einen Überblick über den Status Ihrer Forderungen. Unsere Dienstleistungen in diesem Bereich umfassen:"
+    ],
+    "button": "Unverbindliche Anfrage",
+    "services": {
+      "title": "Unsere Dienstleistungen umfassen:",
+      "items": [
+        "Kosten berechnen wir nur, wenn eine gerichtliche Lösung Ihrer Forderung erforderlich ist oder außergewöhnliche Ausgaben im Falle eines persönlichen Besuchs beim Schuldner durch unseren Spezialisten anfallen",
+        "Wir sorgen für die Vollstreckung der einzutreibenden Forderung einschließlich außergerichtlicher und gerichtlicher Inkassodienstleistungen für inländische (ausländische) Forderungen",
+        "Bewertung der Rentabilität von Forderungen zur Eintreibung",
+        "Übernahme einzelner Forderungen zur Eintreibung",
+        "Übernahme eines Forderungspakets zur Eintreibung"
+      ]
+    }
   },
-  "whyChooseUs": {
-    "title": "Warum sollten Sie uns mit der Eintreibung Ihrer Forderungen beauftragen?",
-    "description": "Die Eintreibung von Forderungen zwischen Unternehmen erfordert einen speziellen Ansatz, der rechtliche Expertise mit Wirtschaftsverständnis verbindet.",
+  "benefits": {
+    "badge": "Vorteile der Zusammenarbeit",
+    "title": "Warum sollten Sie uns die Verwaltung Ihrer Forderungen anvertrauen?",
+    "description": "Das Outsourcing der Forderungsverwaltung bietet Ihnen zahlreiche Vorteile, die Ihnen helfen, sich auf Ihr Kerngeschäft zu konzentrieren",
     "items": [
       {
-        "title": "Hohe Erfolgsquote",
-        "description": "Dank unserer umfangreichen Erfahrung und spezialisierten Kenntnisse im Bereich der Unternehmensforderungen erreichen wir überdurchschnittliche Erfolgsquoten bei der Eintreibung.",
-        "icon": "chart-bar"
+        "title": "Kostenersparnis",
+        "description": "Sie müssen keine eigenen Spezialisten für die Eintreibung von Forderungen beschäftigen und zahlen nur für tatsächlich erbrachte Dienstleistungen."
       },
       {
         "title": "Professioneller Ansatz",
-        "description": "Wir vertreten Sie auf professionelle und kultivierte Weise, wodurch die Geschäftsbeziehungen zu Ihren Partnern nicht beschädigt werden.",
-        "icon": "briefcase"
+        "description": "Unsere Spezialisten verfügen über langjährige Erfahrung in der Eintreibung von Forderungen und kennen alle notwendigen Verfahren."
       },
       {
-        "title": "Individuelle Strategie",
-        "description": "Für jeden Fall entwickeln wir eine maßgeschneiderte Strategie, die auf die spezifischen Umstände und Charakteristika der Forderung und des Schuldners zugeschnitten ist.",
-        "icon": "puzzle-piece"
+        "title": "Übersichtliches Reporting",
+        "description": "Über unser Informationssystem haben Sie ständig einen Überblick über den Status Ihrer Forderungen."
       },
       {
-        "title": "Transparente Bedingungen",
-        "description": "Unsere Vergütung ist transparent und basiert auf dem Erfolg - wir berechnen Ihnen einen Prozentsatz des tatsächlich eingetriebenen Betrags, ohne versteckte Gebühren.",
-        "icon": "document-text"
+        "title": "Schnelligkeit und Effizienz",
+        "description": "Dank Spezialisierung und Erfahrung können wir Ihre Forderungen schneller und effizienter bearbeiten."
+      },
+      {
+        "title": "Rechtlicher Hintergrund",
+        "description": "Wir verfügen über ein Team von Anwälten, die bereit sind, auch komplexe Fälle zu lösen."
+      },
+      {
+        "title": "Diskretion",
+        "description": "Wir behandeln alle Fälle mit maximaler Diskretion und Professionalität."
       }
     ]
-  },
-  "process": {
-    "title": "Wie funktioniert die Eintreibung von Unternehmensforderungen?",
-    "description": "Unser Prozess ist darauf ausgerichtet, Ihre Forderungen effizient und mit maximaler Wahrscheinlichkeit des Erfolgs einzutreiben.",
-    "steps": [
-      {
-        "number": "01",
-        "title": "Analyse der Forderung",
-        "description": "Wir analysieren alle verfügbaren Informationen über die Forderung, einschließlich Verträge, Rechnungen und bisherige Kommunikation mit dem Schuldner."
-      },
-      {
-        "number": "02",
-        "title": "Strategieentwicklung",
-        "description": "Basierend auf der Analyse entwickeln wir eine individuelle Strategie für die Eintreibung, die die Spezifika des Falls berücksichtigt."
-      },
-      {
-        "number": "03",
-        "title": "Außergerichtliche Eintreibung",
-        "description": "Wir kontaktieren den Schuldner und verwenden verschiedene Techniken der Verhandlung und Überzeugung, um eine außergerichtliche Lösung zu erreichen."
-      },
-      {
-        "number": "04",
-        "title": "Rechtliche Schritte",
-        "description": "Falls notwendig, ergreifen wir rechtliche Maßnahmen, einschließlich der Vorbereitung einer Klage und der Vertretung vor Gericht."
-      },
-      {
-        "number": "05",
-        "title": "Vollstreckung",
-        "description": "Nach Erhalt eines Urteils arbeiten wir mit Gerichtsvollziehern zusammen, um die Vollstreckung durchzuführen und die Forderung einzutreiben."
-      }
-    ]
-  },
-  "services": {
-    "title": "Umfassende Dienstleistungen zur Eintreibung von Unternehmensforderungen",
-    "items": [
-      {
-        "title": "Analyse und Bewertung von Forderungen",
-        "description": "Umfassende Analyse der Forderung, Prüfung der Dokumentation und Einschätzung der Erfolgsaussichten bei der Eintreibung.",
-        "icon": "magnifying-glass"
-      },
-      {
-        "title": "Außergerichtliche Eintreibung",
-        "description": "Professionelle Kommunikation mit dem Schuldner, Verhandlung von Zahlungsbedingungen und Durchsetzung der Zahlung ohne Gerichtsverfahren.",
-        "icon": "chat-bubble-left-right"
-      },
-      {
-        "title": "Gerichtliche Eintreibung",
-        "description": "Vertretung in Gerichtsverfahren, Vorbereitung von Klagen und anderen notwendigen rechtlichen Dokumenten.",
-        "icon": "scale"
-      },
-      {
-        "title": "Vollstreckungsverfahren",
-        "description": "Durchführung der Zwangsvollstreckung nach Erhalt eines rechtskräftigen Urteils in Zusammenarbeit mit Gerichtsvollziehern.",
-        "icon": "flag"
-      },
-      {
-        "title": "Überwachung der Schuldner",
-        "description": "Kontinuierliche Überwachung der finanziellen Situation des Schuldners und Identifizierung des optimalen Zeitpunkts für die Eintreibung.",
-        "icon": "eye"
-      },
-      {
-        "title": "Verhandlung von Zahlungsplänen",
-        "description": "Aushandlung von Ratenzahlungsvereinbarungen und anderen alternativen Lösungen zur Sicherstellung der Zahlung.",
-        "icon": "calendar"
-      }
-    ]
-  },
-  "caseStudies": {
-    "title": "Erfolgsgeschichten",
-    "description": "Hier sind einige Beispiele für unsere erfolgreiche Eintreibung von Unternehmensforderungen",
-    "cases": [
-      {
-        "industry": "Bauwesen",
-        "description": "Eintreibung einer überfälligen Forderung von 450.000 Kč für erbrachte Baudienstleistungen. Trotz anfänglicher Weigerung des Schuldners zu zahlen, konnten wir durch eine Kombination aus rechtlichem Druck und Verhandlungsgeschick die vollständige Zahlung innerhalb von 30 Tagen erreichen.",
-        "result": "100% der Forderung erfolgreich eingetrieben"
-      },
-      {
-        "industry": "IT-Dienstleistungen",
-        "description": "Eintreibung einer Forderung von 280.000 Kč für IT-Implementierungsdienstleistungen. Der Schuldner behauptete, mit der Qualität der erbrachten Dienstleistungen unzufrieden zu sein. Nach einer detaillierten Analyse und Präsentation von Beweisen akzeptierte der Schuldner seine Verpflichtung.",
-        "result": "Vollständige Zahlung in 3 Raten"
-      },
-      {
-        "industry": "Logistik",
-        "description": "Eintreibung mehrerer kleinerer Forderungen von insgesamt 190.000 Kč für Transportdienstleistungen von einem Schuldner, der finanzielle Schwierigkeiten hatte. Durch Verhandlungen konnten wir einen Zahlungsplan vereinbaren, der die wirtschaftliche Situation des Schuldners berücksichtigte.",
-        "result": "Eintreibung von 85% des Betrags durch Ratenzahlung"
-      }
-    ]
-  },
-  "pricing": {
-    "title": "Preisgestaltung",
-    "description": "Unsere Vergütung basiert auf dem Prinzip des Erfolgs - wir berechnen Ihnen einen Prozentsatz des erfolgreich eingetriebenen Betrags",
-    "tiers": [
-      {
-        "title": "Standardfälle",
-        "percentage": "15-25%",
-        "description": "Für Standardfälle mit guter Dokumentation und Forderungen nicht älter als 6 Monate."
-      },
-      {
-        "title": "Komplexe Fälle",
-        "percentage": "25-30%",
-        "description": "Für komplexere Fälle mit unvollständiger Dokumentation oder Forderungen, die älter als 6 Monate sind."
-      },
-      {
-        "title": "Schwierige Fälle",
-        "percentage": "30-40%",
-        "description": "Für Fälle mit erheblichen Schwierigkeiten, wie Streitigkeiten über die Gültigkeit der Forderung, sehr alte Forderungen oder Schuldner mit finanziellen Problemen."
-      }
-    ],
-    "note": "Die genaue Höhe der Provision wird individuell für jeden Fall festgelegt und hängt von mehreren Faktoren ab. Für detailliertere Informationen kontaktieren Sie uns bitte für ein unverbindliches Angebot."
-  },
-  "faq": {
-    "title": "Häufig gestellte Fragen",
-    "items": [
-      {
-        "question": "Wie schnell können Sie meine Forderung eintreiben?",
-        "answer": "Die Dauer der Eintreibung hängt von vielen Faktoren ab, wie zum Beispiel dem Alter der Forderung, der Kooperationsbereitschaft des Schuldners und der Qualität der Dokumentation. Bei außergerichtlichen Eintreibungen können wir oft innerhalb von 30-90 Tagen Ergebnisse erzielen. Gerichtliche Verfahren können jedoch mehrere Monate bis Jahre dauern."
-      },
-      {
-        "question": "Welche Unterlagen benötige ich, um die Eintreibung zu starten?",
-        "answer": "Um die Eintreibung zu beginnen, benötigen wir idealerweise alle relevanten Dokumente im Zusammenhang mit der Forderung, wie Verträge, Bestellungen, Lieferscheine, Rechnungen, Mahnungen sowie jegliche Korrespondenz mit dem Schuldner. Je vollständiger die Dokumentation, desto höher sind die Erfolgsaussichten."
-      },
-      {
-        "question": "Was kostet mich die Eintreibung, wenn sie nicht erfolgreich ist?",
-        "answer": "Bei unserem erfolgsbasierten Modell zahlen Sie nur, wenn wir Ihre Forderung erfolgreich eintreiben. Wenn wir nicht erfolgreich sind, entstehen Ihnen keine Kosten. In bestimmten Fällen können jedoch im Voraus vereinbarte administrative Gebühren anfallen, die unabhängig vom Erfolg der Eintreibung sind."
-      },
-      {
-        "question": "Kann ich während des Eintreibungsprozesses noch direkt mit dem Schuldner kommunizieren?",
-        "answer": "Nach der Beauftragung unserer Dienstleistungen ist es am besten, die Kommunikation mit dem Schuldner uns zu überlassen, um eine einheitliche Strategie zu gewährleisten. Wenn der Schuldner Sie direkt kontaktiert, sollten Sie ihn an uns verweisen oder uns über die Kommunikation informieren."
-      }
-    ]
-  },
-  "cta": {
-    "title": "Bereit, Ihre Unternehmensforderungen einzutreiben?",
-    "description": "Kontaktieren Sie uns für eine unverbindliche Beratung und ein maßgeschneidertes Angebot zur Eintreibung Ihrer Forderungen.",
-    "button": "Kontaktieren Sie uns jetzt",
-    "contact": {
-      "email": "info@expohledavky.cz",
-      "phone": "+420 735 500 003"
-    }
   }
 } 

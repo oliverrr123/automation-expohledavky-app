@@ -1,0 +1,51 @@
+{
+  "topBar": {
+    "hours": "9:30 – 16:00",
+    "country": "Tschechische Republik"
+  },
+  "company": {
+    "prefix": "EX",
+    "name": "FORDERUNGEN"
+  },
+  "navigation": [
+    { "name": "Startseite", "href": "/" },
+    { "name": "Über uns", "href": "uber-uns" },
+    {
+      "name": "Unsere Dienstleistungen",
+      "href": "unsere-leistungen",
+      "hasDropdown": true,
+      "submenu": [
+        { "name": "Forderungseintreibung", "href": "unsere-leistungen/inkasso" },
+        { "name": "Verwaltung von Unternehmensforderungen", "href": "unsere-leistungen/firmen-forderungsmanagement" },
+        { "name": "Ankauf und Verkauf von Forderungen", "href": "unsere-leistungen/forderungskauf-verkauf" },
+        { "name": "Unternehmensübernahme", "href": "unsere-leistungen/unternehmenskauf" },
+        { "name": "Ankauf von Wechseln", "href": "unsere-leistungen/wechselkauf" },
+        { "name": "Partner in Liechtenstein", "href": "https://expohledavky.cz/firstAdvisoryGroup.pdf", "target": "_blank" }
+      ]
+    },
+    { "name": "Preisliste", "href": "preisliste" },
+    { "name": "Glossar und Vorlagen", "href": "worterbuch-vorlagen" },
+    { "name": "Blog", "href": "blog" },
+    { "name": "Karriere", "href": "karriere" },
+    { "name": "Kontakt", "href": "kontakt" }
+  ],
+  "countries": [
+    { "name": "United Kingdom", "href": "https://exreceivables.com/" },
+    { "name": "Slowakei", "href": "https://expohladavky.sk/" },
+    { "name": "Rumänien", "href": "https://excredit.ro/" }
+  ],
+  "buttons": {
+    "clientZone": "Kundenbereich",
+    "clientLogin": "kunden-login"
+  },
+  "mobileMenu": {
+    "openMenu": "Menü öffnen",
+    "menuTitle": "Menü"
+  },
+  "phone": {
+    "number": "+420735500003",
+    "display": "+420 735 500 003",
+    "successMessage": "Telefonnummer kopiert",
+    "errorMessage": "Kopieren fehlgeschlagen"
+  }
+} 

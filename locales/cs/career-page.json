@@ -1,0 +1,83 @@
+{
+  "hero": {
+    "title": "Kariéra v EX Pohledávkách",
+    "subtitle": "Staňte se součástí našeho úspěšného týmu a rozvíjejte svou kariéru v dynamickém prostředí"
+  },
+  "jobListing": {
+    "badge": "Aktuální pozice",
+    "title": "Obchodník - Specialista telefonního vymáhání",
+    "subtitle": "Optimálně pro muže s důrazným hlasem",
+    "quickInfo": {
+      "location": {
+        "label": "Lokalita",
+        "value": "Praha – Pankrác"
+      },
+      "startDate": {
+        "label": "Nástup",
+        "value": "Ihned"
+      },
+      "jobType": {
+        "label": "Typ úvazku",
+        "value": "Plný úvazek"
+      }
+    },
+    "jobDescription": {
+      "title": "Náplň práce",
+      "items": [
+        "Odchozí a příchozí hovory s dlužníky",
+        "Aktivní vymáhání pohledávek",
+        "Vyjednání úhrad či splátkových kalendářů",
+        "Odolnost vůči stresu"
+      ]
+    },
+    "requirements": {
+      "title": "Co požadujeme",
+      "items": [
+        "Vyjednávací schopnost",
+        "Zkušenosti s podobnou pozicí jsou velkou výhodou",
+        "Velmi dobrou znalost českého jazyka",
+        "Hlavní je mít chuť a obchodního ducha"
+      ]
+    },
+    "benefits": {
+      "title": "Co nabízíme?",
+      "items": [
+        {
+          "text": "Nástupní plat 25 000 Kč + zajímavé osobní ohodnocení dle výsledků"
+        },
+        {
+          "text": "Nástup možný ihned"
+        },
+        {
+          "text": "Místo výkonu práce: Praha – Pankrác",
+          "bold": true
+        },
+        {
+          "text": "Firemní mobilní telefon"
+        },
+        {
+          "text": "Sick days"
+        },
+        {
+          "text": "Multisport karta"
+        },
+        {
+          "text": "Skvělý tým nápomocných kolegů"
+        }
+      ]
+    },
+    "testimonial": {
+      "text": "\"Práce v EX Pohledávky mi dala možnost rozvíjet své komunikační dovednosti a vyjednávací schopnosti. Každý den je jiný a přináší nové výzvy. Oceňuji především skvělý kolektiv a férové ohodnocení.\"",
+      "author": "Jan Novák",
+      "position": "Specialista vymáhání, 3 roky v týmu",
+      "initials": "JN"
+    },
+    "application": {
+      "title": "Zaujala vás tato pozice?",
+      "description": "Stále tě to zajímá? Ozvi se nám na e-mailovou adresu <strong className=\"text-orange-600\">pohledavky@expohledavky.cz</strong>. Potkáme se, vzájemně se představíme, probereme možnosti a hlavně se k nám podíváš. Tak se přihlas, těšíme se na tebe!",
+      "buttonText": "Poslat životopis",
+      "email": "pohledavky@expohledavky.cz",
+      "urgentText": "Nástup ihned!"
+    }
+  }
+} 

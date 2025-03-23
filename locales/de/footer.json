@@ -1,0 +1,77 @@
+{
+  "company": {
+    "prefix": "EX",
+    "name": "FORDERUNGEN",
+    "slogan": "Umfassende Lösung für Ihre Forderungen.",
+    "motto": "\"Auch aus Ihren Forderungen machen wir EX!\""
+  },
+  "contact": {
+    "address": {
+      "text": "Na strži 1702/65, 140 00, Prag 4-Nusle",
+      "successMessage": "Adresse kopiert"
+    },
+    "email": {
+      "text": "info@expohledavky.cz",
+      "successMessage": "E-Mail kopiert"
+    },
+    "phones": [
+      {
+        "number": "+420266710318",
+        "display": "+420 266 710 318"
+      },
+      {
+        "number": "+420735500003",
+        "display": "+420 735 500 003"
+      }
+    ],
+    "successMessage": {
+      "phone": "Telefonnummer kopiert",
+      "bankAccount": "Kontonummer kopiert",
+      "error": "Kopieren fehlgeschlagen"
+    }
+  },
+  "navigation": {
+    "title": "Navigation",
+    "links": [
+      { "title": "Startseite", "href": "/" },
+      { "title": "Über uns", "href": "/o-nas" },
+      { "title": "Forderungseintreibung", "href": "/nase-sluzby/vymahani-pohledavek" },
+      { "title": "Ankauf von Forderungen", "href": "/nase-sluzby/odkup-prodej-pohledavek" },
+      { "title": "Vollstreckungsregister", "href": "https://lustrace.expohledavky.cz/" },
+      { "title": "Kontakt", "href": "/kontakt" }
+    ]
+  },
+  "downloads": {
+    "title": "Kostenlose Vorlagen zum Download",
+    "templates": [
+      { "title": "Wechsel ohne Protest", "href": "/slovnik-a-vzory#smenka-bez-protestu" },
+      { "title": "Darlehensvertrag", "href": "/slovnik-a-vzory#smlouva-o-zapujcce" },
+      { "title": "Schuldanerkennung", "href": "/slovnik-a-vzory#uznani-dluhu" }
+    ]
+  },
+  "bank": {
+    "title": "Zahlungsinformationen",
+    "accounts": [
+      {
+        "bank": "Raiffeisenbank, a.s.",
+        "account": "777 7777 355 / 5500"
+      },
+      {
+        "bank": "Fio banka, a.s.",
+        "account": "250 2040 263 / 2010"
+      }
+    ]
+  },
+  "social": {
+    "title": "Folgen Sie uns",
+    "links": [
+      { "type": "facebook", "href": "https://www.facebook.com/expohledavkypraha/" },
+      { "type": "linkedin", "href": "https://www.linkedin.com/company/expohledávky-s-r-o/" },
+      { "type": "instagram", "href": "https://www.instagram.com/expohledavky/" }
+    ]
+  },
+  "copyright": {
+    "text": "© 2025 Alle Rechte vorbehalten.",
+    "privacyPolicy": "Datenschutzrichtlinie"
+  }
+} 

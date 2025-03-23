@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react"
 
-type AnimationType = "fade-up" | "fade-down" | "fade-left" | "fade-right" | "fade" | "bounce"
+type AnimationType = "fade-up" | "fade-down" | "fade-left" | "fade-right" | "fade" | "bounce" | "zoom"
 
 interface SectionWrapperProps {
   children: React.ReactNode
@@ -51,19 +51,21 @@ export const SectionWrapper = ({
 
     switch (animation) {
       case "fade-up":
-        return "animate-fade-up"
+        return "animate-section-fade-up"
       case "fade-down":
-        return "animate-fade-down"
+        return "animate-section-fade-down"
       case "fade-left":
-        return "animate-fade-left"
+        return "animate-section-fade-left"
       case "fade-right":
-        return "animate-fade-right"
+        return "animate-section-fade-right"
       case "fade":
         return "animate-fade"
       case "bounce":
-        return "animate-bounce"
+        return "animate-section-bounce"
+      case "zoom":
+        return "animate-section-zoom"
       default:
-        return "animate-fade-up"
+        return "animate-section-fade-up"
     }
   }
 

@@ -1,0 +1,141 @@
+{
+  "hero": {
+    "title": "O společnosti EX Pohledávky",
+    "subtitle": "Jsme specialisté na vymáhání pohledávek s mnohaletými zkušenostmi a vysokou úspěšností.",
+    "buttons": {
+      "contact": "Kontaktujte nás",
+      "services": "Naše služby"
+    }
+  },
+  "stats": {
+    "successRate": {
+      "value": "90%",
+      "label": "Úspěšnost vymáhání"
+    },
+    "experience": {
+      "value": "15+",
+      "label": "Let zkušeností"
+    },
+    "clients": {
+      "value": "1000+",
+      "label": "Spokojených klientů"
+    },
+    "support": {
+      "value": "24/7",
+      "label": "Podpora klientů"
+    }
+  },
+  "mainContent": {
+    "badge": "Profesionální přístup",
+    "title": "Profesionální vymáhání pohledávek",
+    "paragraphs": [
+      "Naše společnost se specializuje na mimosoudní a soudní vymáhání pohledávek. Poskytujeme komplexní právní servis včetně právního posouzení každého případu a bezplatného poradenství. Pracujeme diskrétně, rychle a efektivně.",
+      "Našimi klienty jsou fyzické i právnické osoby, které chtějí zpět své peníze. Přihlížíme k odlišnostem pohledávek podle oborů podnikání konkrétního klienta. Snažíme se poskytnout komplexní služby ušité na míru právě Vašim potřebám."
+    ],
+    "fee": "Smluvní odměna činí 20% až 30% z vymožené částky.",
+    "imageCaption": "Jsme jedni z mála specialistů na pohledávky, kteří spolupracují přímo s exekutory"
+  },
+  "features": {
+    "title": "Mezi naše hlavní výhody patří",
+    "subtitle": "Nabízíme komplexní služby s důrazem na efektivitu a profesionalitu",
+    "items": [
+      {
+        "title": "Osobní kontakt",
+        "description": "Upřednotňujeme osobní kontakt s dlužníkem v místě jeho bydliště či pracoviště"
+      },
+      {
+        "title": "Bezplatná konzultace",
+        "description": "Konzultace pohledávky u nás probíhá online či telefonicky a to zdarma"
+      },
+      {
+        "title": "Diskrétní přístup",
+        "description": "K našim klientům si vždy uchováváme nejvyšší možný diskrétní přístup"
+      },
+      {
+        "title": "Více řešení",
+        "description": "Vždy navrhneme několik řešení vaší situace, jaké řešení zvolíte je pouze na vás"
+      }
+    ]
+  },
+  "success": {
+    "title": "ÚSPĚŠNOST",
+    "subtitle": "Ve vymáhání pohledávek si vedeme nadprůměrně!",
+    "paragraphs": [
+      "Garantujeme profesionální přístup a vysokou úspěšnost ve vymáhání pohledávek.",
+      "Úspěšné vymáhání pohledávek tkví v časném dodání kvalitních podkladů o pohledávce a dostatečných informacích o dlužníkovi. V takovém případě máte až 90% šanci na uhrazení vašich pohledávek dlužníkem."
+    ],
+    "buttonText": "Nezávazná poptávka",
+    "arbitration": {
+      "title": "Rozhodčí řízení",
+      "description": "V naší činnosti jsme připraveni vymáhat pohledávky cestou rozhodčího řízení před rozhodci, které probíhá primárně na základě listin (např. smluvního dokumentu uznání dluhu obsahujícího rozhodčí doložku).",
+      "advantages": [
+        {
+          "title": "Rychlejší proces",
+          "description": "Mnohem rychlejší než řízení před obecnými soudy"
+        },
+        {
+          "title": "Nižší náklady",
+          "description": "Odměna činí 3% z hodnoty předmětu sporu, min. 3.000 Kč (plus DPH)"
+        },
+        {
+          "title": "Jednorázový výdaj",
+          "description": "Žádné další náklady se v průběhu rozhodčího řízení nehradí"
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "title": "Proč spolupracovat s profesionály",
+    "subtitle": "Porovnání profesionálního přístupu a vymáhání na vlastní pěst",
+    "professional": {
+      "title": "Spolupráce s námi",
+      "advantages": [
+        "Máme profesionální zkušenosti",
+        "Diskrétní přístup k našim klientům",
+        "Bezplatná konzultace pohledávky",
+        "Navržení případných dalších řešení",
+        "Právní servis v rámci našich služeb",
+        "Vysoká úspěšnost vymáhání",
+        "Rychlé a efektivní řešení"
+      ]
+    },
+    "diy": {
+      "title": "Vymáhání na \"vlastní pěst\"",
+      "disadvantages": [
+        "Laické posouzení pravého stavu pohledávky",
+        "Vysoké náklady spojené s právním zastoupením",
+        "Dlouhodobá a vleklá záležitost",
+        "Nízká šance na úspěšné vymožení",
+        "Stres a ztráta času",
+        "Neznalost právních postupů",
+        "Riziko promlčení pohledávky"
+      ]
+    }
+  },
+  "contact": {
+    "title": "Připraveni vám pomoci",
+    "description": "Mimosoudní a soudní vymáhání poskytujeme po celém světě v součinnosti s našimi obchodními partnery. Nabízíme možnost odkupu pohledávek a outsourcing správy pohledávek.",
+    "form": {
+      "title": "Kontaktujte nás",
+      "fields": {
+        "name": {
+          "label": "Jméno",
+          "placeholder": "Vaše jméno"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "vas@email.cz"
+        },
+        "phone": {
+          "label": "Telefon",
+          "placeholder": "+420 XXX XXX XXX"
+        },
+        "message": {
+          "label": "Zpráva",
+          "placeholder": "Popište nám Váš případ..."
+        }
+      },
+      "submitButton": "Odeslat zprávu"
+    }
+  }
+} 

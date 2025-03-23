@@ -1,0 +1,51 @@
+{
+  "topBar": {
+    "hours": "9:30 – 16:00",
+    "country": "Czech Republic"
+  },
+  "company": {
+    "prefix": "EX",
+    "name": "RECEIVABLES"
+  },
+  "navigation": [
+    { "name": "Home", "href": "/" },
+    { "name": "About Us", "href": "about-us" },
+    {
+      "name": "Our Services",
+      "href": "services",
+      "hasDropdown": true,
+      "submenu": [
+        { "name": "Debt Collection", "href": "services/debt-collection" },
+        { "name": "Corporate Receivables Management", "href": "services/corporate-receivables" },
+        { "name": "Purchase & Sale of Receivables", "href": "services/receivables-purchase" },
+        { "name": "Company Acquisition", "href": "services/company-purchase" },
+        { "name": "Promissory Notes Purchase", "href": "services/promissory-notes" },
+        { "name": "Partner in Liechtenstein", "href": "https://expohledavky.cz/firstAdvisoryGroup.pdf", "target": "_blank" }
+      ]
+    },
+    { "name": "Pricing", "href": "pricing" },
+    { "name": "Dictionary & Templates", "href": "dictionary-templates" },
+    { "name": "Blog", "href": "blog" },
+    { "name": "Careers", "href": "careers" },
+    { "name": "Contact", "href": "contact" }
+  ],
+  "countries": [
+    { "name": "United Kingdom", "href": "https://exreceivables.com/" },
+    { "name": "Slovakia", "href": "https://expohladavky.sk/" },
+    { "name": "Romania", "href": "https://excredit.ro/" }
+  ],
+  "buttons": {
+    "clientZone": "Client Zone",
+    "clientLogin": "client-login"
+  },
+  "mobileMenu": {
+    "openMenu": "Open Menu",
+    "menuTitle": "Menu"
+  },
+  "phone": {
+    "number": "+420735500003",
+    "display": "+420 735 500 003",
+    "successMessage": "Phone number copied",
+    "errorMessage": "Copy failed"
+  }
+} 

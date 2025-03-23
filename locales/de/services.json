@@ -1,0 +1,38 @@
+{
+  "badge": "Professionelle Dienstleistungen",
+  "title": "Unsere Dienstleistungen",
+  "subtitle": "Nutzen Sie professionelle Dienstleistungen ohne Risiko!",
+  "linkText": "Dienstleistungsdetails",
+  "services": [
+    {
+      "title": "Forderungseintreibung",
+      "description": "Wir bieten Forderungseintreibung in einem breiten Spektrum von Bereichen, einschließlich Buchhaltungsunterlagen oder unbezahlter Rechnungen.",
+      "href": "/nase-sluzby/vymahani-pohledavek"
+    },
+    {
+      "title": "Verwaltung von Unternehmensforderungen",
+      "description": "Wir bieten Outsourcing der Forderungsverwaltung, wodurch Ihre Forderungen ordnungsgemäß und vor allem erfolgreich betreut werden.",
+      "href": "/nase-sluzby/sprava-firemnich-pohledavek"
+    },
+    {
+      "title": "Ankauf und Verkauf von Forderungen",
+      "description": "Wenn Sie mit dem Schuldner keine Geduld mehr haben und es Ihnen nichts ausmacht, einen Teil Ihres Geldes zu verlieren, ist dieser Service genau das Richtige für Sie.",
+      "href": "/nase-sluzby/odkup-prodej-pohledavek"
+    },
+    {
+      "title": "Unternehmensübernahme",
+      "description": "Wir bieten die Übernahme von Unternehmen zum besten Preis. Für jeden erstellen wir eine Analyse, auf deren Grundlage wir ein individuelles Angebot vorlegen.",
+      "href": "/nase-sluzby/odkup-firem"
+    },
+    {
+      "title": "Ankauf von Wechseln",
+      "description": "Unser Angebot zum Ankauf von Wechseln kann Sie von der Sorge um Mahnungen an Schuldner und den Kosten für Rechtsdienstleistungen befreien.",
+      "href": "/nase-sluzby/odkup-smenek"
+    },
+    {
+      "title": "Rechtsdienstleistungen",
+      "description": "Wir bieten Ihnen Rechtsservice im Rahmen unserer Dienstleistungen. Unser Anwaltsteam ist bereit, Ihnen hochwertige Lösungen einschließlich Rechtsvertretung zu bieten.",
+      "href": "#"
+    }
+  ]
+} 

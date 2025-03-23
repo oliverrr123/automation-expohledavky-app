@@ -1,0 +1,83 @@
+{
+  "hero": {
+    "title": "Karriere bei EX Forderungen",
+    "subtitle": "Werden Sie Teil unseres erfolgreichen Teams und entwickeln Sie Ihre Karriere in einer dynamischen Umgebung"
+  },
+  "jobListing": {
+    "badge": "Aktuelle Positionen",
+    "title": "Vertriebsmitarbeiter - Spezialist für telefonisches Inkasso",
+    "subtitle": "Optimal für Männer mit ausdrucksstarker Stimme",
+    "quickInfo": {
+      "location": {
+        "label": "Standort",
+        "value": "Prag – Pankrác"
+      },
+      "startDate": {
+        "label": "Eintritt",
+        "value": "Sofort"
+      },
+      "jobType": {
+        "label": "Beschäftigungsart",
+        "value": "Vollzeit"
+      }
+    },
+    "jobDescription": {
+      "title": "Aufgabenbereich",
+      "items": [
+        "Ausgehende und eingehende Anrufe mit Schuldnern",
+        "Aktive Forderungseintreibung",
+        "Verhandlung von Zahlungen oder Ratenzahlungsplänen",
+        "Stressresistenz"
+      ]
+    },
+    "requirements": {
+      "title": "Was wir fordern",
+      "items": [
+        "Verhandlungsgeschick",
+        "Erfahrungen mit einer ähnlichen Position sind ein großer Vorteil",
+        "Sehr gute Deutschkenntnisse",
+        "Am wichtigsten ist die Motivation und ein kaufmännischer Geist"
+      ]
+    },
+    "benefits": {
+      "title": "Was wir bieten?",
+      "items": [
+        {
+          "text": "Einstiegsgehalt 25.000 CZK + attraktive persönliche Bewertung je nach Ergebnissen"
+        },
+        {
+          "text": "Eintritt sofort möglich"
+        },
+        {
+          "text": "Arbeitsort: Prag – Pankrác",
+          "bold": true
+        },
+        {
+          "text": "Firmenhandy"
+        },
+        {
+          "text": "Sick Days"
+        },
+        {
+          "text": "Multisport-Karte"
+        },
+        {
+          "text": "Großartiges Team hilfsbereiter Kollegen"
+        }
+      ]
+    },
+    "testimonial": {
+      "text": "\"Die Arbeit bei EX Forderungen hat mir die Möglichkeit gegeben, meine Kommunikationsfähigkeiten und Verhandlungsgeschick zu entwickeln. Jeder Tag ist anders und bringt neue Herausforderungen mit sich. Ich schätze vor allem das großartige Team und die faire Vergütung.\"",
+      "author": "Jan Novák",
+      "position": "Inkasso-Spezialist, 3 Jahre im Team",
+      "initials": "JN"
+    },
+    "application": {
+      "title": "Interessiert Sie diese Position?",
+      "description": "Sind Sie immer noch interessiert? Kontaktieren Sie uns unter der E-Mail-Adresse <strong className=\"text-orange-600\">pohledavky@expohledavky.cz</strong>. Wir treffen uns, stellen uns gegenseitig vor, besprechen die Möglichkeiten und vor allem besuchen Sie uns. Bewerben Sie sich also, wir freuen uns auf Sie!",
+      "buttonText": "Lebenslauf senden",
+      "email": "pohledavky@expohledavky.cz",
+      "urgentText": "Eintritt sofort!"
+    }
+  }
+} 

@@ -4,39 +4,33 @@ import { useState, useEffect } from "react"
 import { Quote, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SectionWrapper } from "./section-wrapper"
-
-const testimonials = [
-  {
-    author: "Ing. Jan Dvořák",
-    text: "Společnost EX Pohledávky nám zajišťuje kompletní služby splehlivě, přičemž můžeme s potěšením konstatovat, že jsme poznali jen velmi vstřícný přístup a ochotu. Rádi se na společnost obracíme s jakýmkoli problémem a víme, že se dočkáme vždy kvalitního výsledku.",
-  },
-  {
-    author: "Jan Decker",
-    company: "thimble.cz",
-    text: "EX Pohledávky jsou vždy zárukou profesionálních služeb v oblasti vymáhání pohledávek. Díky skvělé práci pana Chromyho je naše cash-flow velice dobré a nemusíme ztrácet čas doprošováním se o úhrady faktur.",
-  },
-  {
-    author: "Petra Novotná",
-    text: "Se společností EX Pohledávky, která pro naší slopečnost zajišťuje kompletní agendu vymáhání pohledávek, jsem maximálně spokojena. Cennou devizou je pružnost, rychlost a spolehlovost společnosti.",
-  },
-]
+import { useTranslations } from "@/lib/i18n"
 
 export function Testimonials() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use client translations
+  const t = useTranslations('testimonials')
   const [activeIndex, setActiveIndex] = useState(0)
+
+  // Set isClient to true after hydration
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveIndex((current) => (current === testimonials.length - 1 ? 0 : current + 1))
+      setActiveIndex((current) => (current === t.testimonials.length - 1 ? 0 : current + 1))
     }, 5000)
     return () => clearInterval(timer)
-  }, [])
+  }, [t.testimonials.length])
 
   const goToPrevious = () => {
-    setActiveIndex((current) => (current === 0 ? testimonials.length - 1 : current - 1))
+    setActiveIndex((current) => (current === 0 ? t.testimonials.length - 1 : current - 1))
   }
 
   const goToNext = () => {
-    setActiveIndex((current) => (current === testimonials.length - 1 ? 0 : current + 1))
+    setActiveIndex((current) => (current === t.testimonials.length - 1 ? 0 : current + 1))
   }
 
   return (
@@ -44,8 +38,8 @@ export function Testimonials() {
       <div className="container">
         <SectionWrapper animation="fade-up">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Naše reference</h2>
-            <p className="mt-4 text-lg text-gray-600">Co o nás říkají naši klienti?</p>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.title}</h2>
+            <p className="mt-4 text-lg text-gray-600">{t.subtitle}</p>
           </div>
         </SectionWrapper>
 
@@ -54,7 +48,7 @@ export function Testimonials() {
           <button
             onClick={goToPrevious}
             className="absolute left-0 md:left-4 lg:left-24 xl:left-32 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-zinc-700 hover:text-orange-500 rounded-full p-2 shadow-md transition-all duration-300 hover:scale-110"
-            aria-label="Previous testimonial"
+            aria-label={t.ariaLabels.previousTestimonial}
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
@@ -63,13 +57,13 @@ export function Testimonials() {
           <button
             onClick={goToNext}
             className="absolute right-0 md:right-4 lg:right-24 xl:right-32 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-zinc-700 hover:text-orange-500 rounded-full p-2 shadow-md transition-all duration-300 hover:scale-110"
-            aria-label="Next testimonial"
+            aria-label={t.ariaLabels.nextTestimonial}
           >
             <ChevronRight className="h-6 w-6" />
           </button>
 
           <div className="relative h-[400px]">
-            {testimonials.map((testimonial, idx) => (
+            {t.testimonials.map((testimonial: any, idx: number) => (
               <div
                 key={idx}
                 className={cn(
@@ -92,7 +86,7 @@ export function Testimonials() {
           </div>
 
           <div className="mt-8 flex justify-center gap-3">
-            {testimonials.map((_, idx) => (
+            {t.testimonials.map((_: any, idx: number) => (
               <button
                 key={idx}
                 onClick={() => setActiveIndex(idx)}
@@ -101,7 +95,7 @@ export function Testimonials() {
                   idx === activeIndex ? "bg-orange-500" : "bg-gray-300 hover:bg-gray-400",
                 )}
               >
-                <span className="sr-only">Go to slide {idx + 1}</span>
+                <span className="sr-only">{t.ariaLabels.goToSlide} {idx + 1}</span>
               </button>
             ))}
           </div>

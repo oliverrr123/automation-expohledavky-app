@@ -1,0 +1,77 @@
+{
+  "hero": {
+    "badge": "Umfassende Lösung",
+    "title": "Unsere Dienstleistungen",
+    "description": "Wir bieten ein umfassendes Portfolio an Dienstleistungen im Bereich Forderungsmanagement und -eintreibung. Egal ob Sie einen fälligen Betrag eintreiben, eine Forderung verkaufen oder ein Unternehmen übernehmen möchten, wir stehen Ihnen mit professionellem Ansatz und langjähriger Erfahrung zur Seite."
+  },
+  "services": [
+    {
+      "id": "vymahani-pohledavek",
+      "title": "Forderungseintreibung",
+      "description": "Umfassende Lösung für die Eintreibung Ihrer Forderungen vom ersten Kontakt mit dem Schuldner bis zum Vollstreckungsverfahren.",
+      "icon": "FileText",
+      "color": "orange",
+      "cta": "Mehr erfahren"
+    },
+    {
+      "id": "sprava-firemnich-pohledavek",
+      "title": "Verwaltung von Unternehmensforderungen",
+      "description": "Professionelle Verwaltung und Überwachung von Forderungen für Unternehmen, einschließlich Prävention problematischer Forderungen.",
+      "icon": "Building",
+      "color": "blue",
+      "cta": "Mehr erfahren"
+    },
+    {
+      "id": "odkup-prodej-pohledavek",
+      "title": "Ankauf und Verkauf von Forderungen",
+      "description": "Schneller und effizienter Ankauf Ihrer Forderungen zu günstigen Konditionen oder Vermittlung ihres Verkaufs.",
+      "icon": "CreditCard",
+      "color": "green",
+      "cta": "Mehr erfahren"
+    },
+    {
+      "id": "odkup-firem",
+      "title": "Unternehmensübernahme",
+      "description": "Wir sind spezialisiert auf die Übernahme von Unternehmen in verschiedenen Geschäftsphasen, einschließlich Unternehmen in Schwierigkeiten.",
+      "icon": "Briefcase",
+      "color": "purple",
+      "cta": "Mehr erfahren"
+    },
+    {
+      "id": "odkup-smenek",
+      "title": "Ankauf von Wechseln",
+      "description": "Wir kaufen Wechsel aller Art zu günstigen Konditionen mit schneller Auszahlung der Geldmittel.",
+      "icon": "FileSignature",
+      "color": "red",
+      "cta": "Mehr erfahren"
+    }
+  ],
+  "cta": {
+    "title": "Wissen Sie nicht, welche Dienstleistung Sie wählen sollen?",
+    "description": "Jede Situation ist einzigartig und erfordert einen individuellen Ansatz. Kontaktieren Sie uns, und unsere Spezialisten helfen Ihnen, die beste Lösung für Ihre spezifische Situation zu finden.",
+    "button": "Kontaktieren Sie uns"
+  },
+  "whyChooseUs": {
+    "badge": "Warum uns wählen",
+    "title": "Vorteile der Zusammenarbeit mit uns",
+    "description": "Unser Unternehmen ist seit vielen Jahren auf umfassende Forderungslösungen spezialisiert. Dank unserer Erfahrung und unserem professionellen Ansatz können wir Ihnen zahlreiche Vorteile bieten.",
+    "advantages": [
+      {
+        "title": "Professioneller Ansatz",
+        "description": "Unsere Spezialisten verfügen über langjährige Erfahrung in der Branche und bieten professionelle Dienstleistungen auf höchstem Niveau."
+      },
+      {
+        "title": "Individuelle Lösung",
+        "description": "Wir gehen individuell an jeden Fall heran und entwerfen maßgeschneiderte Lösungen für Ihre Bedürfnisse."
+      },
+      {
+        "title": "Transparente Bedingungen",
+        "description": "Alle unsere Dienstleistungen bieten wir zu klar definierten und transparenten Bedingungen an."
+      },
+      {
+        "title": "Schnelles Handeln",
+        "description": "Wir sind uns des Wertes der Zeit bewusst, daher handeln wir schnell und effizient, um Ihnen so bald wie möglich zu helfen."
+      }
+    ]
+  }
+} 

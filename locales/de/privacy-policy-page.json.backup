@@ -1,0 +1,134 @@
+{
+  "title": "Datenschutz",
+  "introduction": "Auf dieser Seite finden Sie einen Überblick über die wichtigsten Grundsätze zum Schutz personenbezogener und anderer verarbeiteter Daten.",
+  "importantNote": "Der Schutz Ihrer personenbezogenen Daten ist für uns von größter Bedeutung. Wir verarbeiten Ihre personenbezogenen Daten in Übereinstimmung mit den geltenden Datenschutzgesetzen, insbesondere der Verordnung (EU) 2016/679 des Europäischen Parlaments und des Rates zum Schutz natürlicher Personen bei der Verarbeitung personenbezogener Daten und zum freien Datenverkehr.",
+  "sections": {
+    "whatIsPersonalData": {
+      "title": "1. Was sind personenbezogene Daten?",
+      "content": "Personenbezogene Daten sind alle Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen. Dies können beispielsweise Name, E-Mail-Adresse, Telefonnummer, Identifikationsnummer oder andere spezifische Merkmale sein."
+    },
+    "whoProcessesData": {
+      "title": "2. Wer verarbeitet Ihre personenbezogenen Daten?",
+      "content": "Der Verantwortliche für die Verarbeitung Ihrer personenbezogenen Daten ist:\n\nEX Pohledávky s.r.o.\nID: 09394117\nSteuerid.: CZ09394117\nSitz: Na strži 1702/65, 140 00 Praha 4-Nusle\n\nEingetragen im Handelsregister beim Stadtgericht Prag, Abteilung C, Einlage 335686"
+    },
+    "whatDataWeProcess": {
+      "title": "3. Welche personenbezogenen Daten verarbeiten wir?",
+      "introCustomer": "Wenn Sie unser Kunde/Nutzer unserer Dienstleistungen sind, verarbeiten wir personenbezogene Daten, die Sie uns im Zusammenhang mit der Nutzung unserer Dienstleistungen (z.B. im Rahmen der Inkassotätigkeit, der anwaltlichen Vertretung) bzw. im Zusammenhang mit dem Abschluss eines Vertrags zur Nutzung dieser Dienstleistung zur Verfügung stellen. Dabei handelt es sich in der Regel um Daten, die Sie uns bei der Übermittlung eines E-Mail-Formulars von der Website https://expohledavky.cz/ oder anderen Unterseiten dieser Hauptdomain für eine unserer Dienstleistungen mitteilen. In der Regel können wir folgende personenbezogene Daten verarbeiten (der genaue Umfang der verarbeiteten Daten hängt insbesondere von der Art der bestellten Dienstleistung und den Informationen ab, die Sie uns selbst zur Verfügung stellen):",
+      "customerDataList": [
+        "Vor- und Nachname;",
+        "Persönliche Identifikationsnummer;",
+        "Geburtsdatum;",
+        "Geschlecht;",
+        "Adresse des ständigen Wohnsitzes;",
+        "Adresse des vorübergehenden Wohnsitzes;",
+        "E-Mail-Adresse;",
+        "Telefonnummer;",
+        "Passwort nur in Form seines Abdrucks, aus dem das ursprüngliche Passwort nicht zurückgewonnen werden kann; für den Kundenbereich verwenden wir Passwortverschlüsselung bcrypt + eigenes Salt;",
+        "Rechnungs- und Zahlungsdaten (Bankkontonummer), die wir Ihrem Konto zuordnen (nur bei der Nutzung kostenpflichtiger Dienste wie z.B. der Hinterlegung einer Anzahlung für die anwaltliche Vertretung im Falle eines Gerichtsverfahrens);",
+        "Daten, die Sie im Rahmen der gegenseitigen Kommunikation freiwillig angeben, sei es persönlich, schriftlich, telefonisch oder auf andere Weise."
+      ],
+      "introVisitor": "Wenn Sie Besucher unserer Website sind, können wir insbesondere die unten aufgeführten Daten verarbeiten.",
+      "visitorDataList": [
+        "IP-Adresse, über die Ihr Endgerät auf unsere Seiten oder mobilen Anwendungen zugreift;",
+        "Daten, die über Cookies (oder andere Online-Identifikatoren) gewonnen werden, wie z.B.: Informationen über Ihr Endgerät (Browser-Typ, Einstellungen, Betriebssystem des Geräts), Geolokalisierungsdaten, allgemeine Informationen über Ihre Interessen, Informationen über besuchte Webseiten oder verwendete mobile Anwendungen usw. Mehr Informationen über Cookies und deren Einstellung finden Sie <a href=\"https://support.google.com/chrome/answer/95647\" target=\"_blank\" className=\"text-orange-500 hover:text-orange-600\" rel=\"noreferrer\">HIER</a>."
+      ],
+      "introPartner": "Wenn Sie unser Geschäftspartner sind, verarbeiten wir personenbezogene Daten, die Sie uns im Zusammenhang mit der Durchführung unserer gegenseitigen Zusammenarbeit zur Verfügung stellen. Dabei handelt es sich insbesondere um folgende personenbezogene Daten:",
+      "partnerDataList": [
+        "Vor- und Nachname (wenn Sie eine geschäftlich tätige natürliche Person oder eine Kontaktperson oder eine Person sind, die berechtigt ist, im Rahmen einer bestimmten Geschäftsbeziehung für den Geschäftspartner zu handeln);",
+        "E-Mail-Adresse (insbesondere bei Kontaktpersonen und Personen, die berechtigt sind, im Rahmen einer bestimmten Geschäftsbeziehung für den Geschäftspartner zu handeln);",
+        "Telefonnummer (insbesondere bei Kontaktpersonen und Personen, die berechtigt sind, im Rahmen einer bestimmten Geschäftsbeziehung für den Geschäftspartner zu handeln);",
+        "Rechnungsdaten (insbesondere Identifikationsnummer bei geschäftlich tätigen natürlichen Personen)."
+      ]
+    },
+    "whyWeProcess": {
+      "title": "4. Warum verarbeiten wir Ihre personenbezogenen Daten?",
+      "content": "Je nachdem, ob Sie unser Kunde, Besucher unserer Website oder Geschäftspartner sind, können wir Ihre personenbezogenen Daten für die unten genannten Verarbeitungszwecke verarbeiten."
+    },
+    "dataSources": {
+      "title": "5. Welche Quellen nutzen wir zur Erhebung Ihrer Daten?",
+      "content1": "Die personenbezogenen Daten, die wir über Sie verarbeiten werden, erhalten wir in der Regel direkt von Ihnen beim Abschluss eines Vertrags oder während der Dauer unserer Vertragsbeziehung, gegebenenfalls im Rahmen der Überwachung Ihrer Aktivitäten auf unseren Seiten (Konten) oder im Rahmen der individuellen (schriftlichen oder telefonischen) Kommunikation mit Ihnen.",
+      "content2": "In begründeten Fällen (insbesondere bei der Eintreibung ausstehender Beträge) können wir auch Informationen über Sie aus offenen Quellen, Listen und Registern, wie dem Handelsregister, dem Gewerberegister, dem Insolvenzregister usw. einholen."
+    },
+    "dataProvision": {
+      "title": "6. Bin ich verpflichtet, meine personenbezogenen Daten anzugeben? Was passiert, wenn ich meine personenbezogenen Daten nicht angebe?",
+      "content1": "Die Angabe Ihrer personenbezogenen Daten erfolgt freiwillig. Für die Anbahnung einer Geschäftsbeziehung und/oder die Bereitstellung bestimmter Dienstleistungen ist jedoch die Übermittlung bestimmter personenbezogener Daten erforderlich. Wenn Sie uns diese nicht übermitteln, kann keine Geschäftsbeziehung angebahnt und/oder die Dienstleistung nicht erbracht werden.",
+      "content2": "Gleichzeitig gilt, dass die Verarbeitung von Informationen über Besucher unserer Website, die oft anonym sind und es nicht ermöglichen, Sie als konkreten Benutzer zu identifizieren, es uns ermöglicht, einige unserer Dienste kostenlos anzubieten und diese ständig zu verbessern und neue Dienste zu entwickeln. Wenn Sie uns Ihre Daten nicht zur Verfügung stellen, kann es sein, dass wir einige unserer Online-Dienste nicht kostenlos anbieten können oder dass wir sie nicht in vollem Umfang oder in voller Qualität anbieten können. Es ist natürlich nicht Ihre Pflicht, unsere Dienste zu nutzen."
+    },
+    "dataAccess": {
+      "title": "7. Wer hat Zugang zu Ihren Daten?",
+      "content1": "Ihre Daten sind bei uns sicher. Wir wählen sorgfältig Partner aus, denen wir Ihre Daten anvertrauen und die in der Lage sind, eine solche technische und organisatorische Sicherung Ihrer Daten zu gewährleisten, dass kein unbefugter oder zufälliger Zugriff auf Ihre Daten oder ein anderer Missbrauch möglich ist. Der Schutz Ihrer Daten hat für uns Priorität. Alle unsere Partner sind zur Verschwiegenheit verpflichtet und dürfen die zur Verfügung gestellten Daten zu keinen anderen Zwecken nutzen als zu denen, zu denen wir sie ihnen zugänglich gemacht haben.",
+      "content2": "Partner, denen wir Ihre personenbezogenen Daten zugänglich machen, können je nach Art der von ihnen erbrachten Dienstleistungen die Position haben:",
+      "list": [
+        "Unsere Auftragsverarbeiter, die personenbezogene Daten nur für die von uns festgelegten Zwecke auf der Grundlage eines schriftlich abgeschlossenen Vertrags über die Verarbeitung personenbezogener Daten verarbeiten. Dabei handelt es sich insbesondere um Dienstleister, die wir zur Erfüllung unserer vertraglichen Verpflichtungen gegenüber unseren Kunden, Nutzern und Geschäftspartnern einsetzen."
+      ],
+      "content3": "Unter bestimmten, genau definierten Bedingungen sind wir dann verpflichtet, einige Ihrer persönlichen Daten auf der Grundlage geltender Rechtsvorschriften z.B. an die Polizei der Tschechischen Republik bzw. an andere Strafverfolgungsbehörden einschließlich spezialisierter Einheiten (ÚOOZ, Zollverwaltung usw.) und andere Behörden der öffentlichen Verwaltung weiterzugeben. Diese Stellen werden Ihre personenbezogenen Daten als eigenständige Verantwortliche verarbeiten.",
+      "content4": "Auf Ihren Wunsch teilen wir Ihnen die Empfänger Ihrer persönlichen Daten mit."
+    },
+    "thirdCountries": {
+      "title": "8. Werden Ihre personenbezogenen Daten an sogenannte Drittländer übermittelt?",
+      "content": "Da wir eine Vielzahl von Dienstleistungen im Online-Bereich anbieten, wo oft Daten weltweit übertragen werden, kann es vorkommen, dass im Rahmen der Erbringung von Dienstleistungen oder im Rahmen unserer Geschäftsbeziehung Ihre personenbezogenen Daten in sogenannte Drittländer außerhalb der Europäischen Union übermittelt werden. In diesem Fall übermitteln wir Ihre personenbezogenen Daten nur unter der Voraussetzung, dass die Europäische Kommission einen Beschluss über die Angemessenheit des Schutzes personenbezogener Daten erlassen hat, der Empfänger Ihrer personenbezogenen Daten an die EU-Standardvertragsklauseln zum Schutz personenbezogener Daten gebunden ist oder unter der Voraussetzung, dass der Empfänger andere geeignete Garantien für den Schutz personenbezogener Daten gegeben hat."
+    },
+    "dataRetention": {
+      "title": "9. Wie lange verarbeiten wir Ihre Daten?",
+      "content": "Wir werden Ihre personenbezogenen Daten nur für die Dauer verarbeiten, die im Hinblick auf den Zweck ihrer Verarbeitung erforderlich ist. Wenn die personenbezogenen Daten gleichzeitig für mehrere verschiedene Verarbeitungszwecke verwendet werden, werden wir sie verarbeiten, bis der Zweck mit der längeren Verarbeitungsdauer wegfällt. Für den Zweck mit der kürzeren Verarbeitungsdauer werden wir sie jedoch nicht mehr verwenden, sobald diese Frist abgelaufen ist. EX Pohledávky s.r.o. verwendet die folgenden Kriterien zur Bestimmung der Verarbeitungsdauer:",
+      "list": [
+        "im Falle der Vertragserfüllung verarbeiten wir Ihre personenbezogenen Daten für die Dauer des Vertragsverhältnisses zwischen uns;",
+        "im Falle der Erfüllung unserer gesetzlichen Verpflichtungen verarbeiten wir Ihre personenbezogenen Daten für die von den einschlägigen Rechtsvorschriften bestimmte Zeit;",
+        "im Falle unserer berechtigten Interessen verarbeiten wir Ihre personenbezogenen Daten für die Dauer des jeweiligen berechtigten Interesses. Zum Schutz unserer Rechte werden wir Ihre personenbezogenen Daten auch nach dem Erlöschen unserer gegenseitigen Beziehung verarbeiten, und zwar längstens bis zum Ende des 3. Kalenderjahres nach deren Erlöschen. Im Falle der Einleitung und des Andauerns eines Gerichts-, Verwaltungs- oder anderen Verfahrens, in dem unsere Rechte oder Pflichten Ihnen gegenüber entschieden werden, endet die Verarbeitung jedoch nicht vor dem Abschluss eines solchen Verfahrens;",
+        "wenn Sie uns Ihre Einwilligung zur Verarbeitung Ihrer personenbezogenen Daten erteilen, werden wir diese personenbezogenen Daten bis zum Widerruf der erteilten Einwilligung verarbeiten (es sei denn, wir legen bei der Einholung Ihrer Einwilligung eine kürzere Verarbeitungsdauer fest)."
+      ]
+    },
+    "dataSecurity": {
+      "title": "10. Wie werden meine persönlichen Daten gesichert?",
+      "content1": "Die verarbeiteten personenbezogenen Daten werden durch Standardverfahren und -technologien gesichert, die sie vor unbefugtem Zugriff durch Dritte schützen. Die getroffenen Sicherheitsmaßnahmen werden regelmäßig überprüft und aktualisiert. Um Ihre personenbezogenen Daten besser zu schützen, ist der Zugriff darauf durch ein Passwort geschützt, und die Daten werden bei der Übertragung zwischen Ihrem Browser und unserer Website verschlüsselt. Wir überprüfen regelmäßig, ob die zur Verarbeitung personenbezogener Daten verwendeten Systeme keine Schwachstellen aufweisen oder keinem Angriff ausgesetzt wurden.",
+      "content2": "Ungeachtet des oben Gesagten nehmen Sie bitte zur Kenntnis, dass es im Internet-Umfeld objektiv nicht möglich ist, die Sicherheit personenbezogener Daten vollständig zu garantieren. Ohne Ihre Hilfe und Ihr verantwortungsvolles Verhalten sind wir daher nicht in der Lage, Ihre personenbezogenen Daten zu 100 % zu schützen. Die Sicherheit Ihrer personenbezogenen Daten erhöhen Sie insbesondere dadurch, dass Sie einzigartige Passwörter verwenden und diese regelmäßig ändern. Bitte bewahren Sie Ihre Passwörter und andere Zugangsdaten vertraulich auf und beachten Sie die grundlegenden Sicherheitsregeln. Denken Sie immer daran, dass E-Mails, Chat-Sofortnachrichten, Blogs und andere Arten der Kommunikation mit anderen Website-Nutzern nicht verschlüsselt sind. Daher empfehlen wir dringend, diese Kommunikationsformen nicht zur Übermittlung vertraulicher Informationen zu verwenden."
+    },
+    "yourRights": {
+      "title": "11. Welche Rechte haben Sie in Bezug auf den Schutz personenbezogener Daten?",
+      "introText": "Im Zusammenhang mit der Verarbeitung Ihrer personenbezogenen Daten haben Sie die unten aufgeführten Rechte. Für die Ausübung dieser Rechte können jedoch bestimmte Ausnahmen gelten, so dass es nicht möglich sein kann, sie in allen Situationen auszuüben. Falls Sie Ihre Rechte ausüben und Ihr Antrag als berechtigt angesehen wird, werden wir die erforderlichen Maßnahmen ohne unnötige Verzögerung ergreifen, spätestens jedoch innerhalb eines Monats (in begründeten Fällen kann diese Frist um weitere zwei Monate verlängert werden).",
+      "rights": {
+        "information": {
+          "title": "Recht auf Information",
+          "content": "Sie haben das Recht, in kurzer, transparenter, verständlicher und leicht zugänglicher Form darüber informiert zu werden, wie Ihre persönlichen Daten verarbeitet werden."
+        },
+        "access": {
+          "title": "Recht auf Zugang zu personenbezogenen Daten",
+          "content": "Sie haben das Recht, von uns eine Bestätigung darüber zu erhalten, ob die Sie betreffenden personenbezogenen Daten verarbeitet werden oder nicht, und wenn dies der Fall ist, haben Sie das Recht, Zugang zu diesen personenbezogenen Daten (einschließlich der damit zusammenhängenden Informationen) und eine Kopie davon zu erhalten."
+        },
+        "correction": {
+          "title": "Recht auf Berichtigung",
+          "content": "Sie können uns um die Berichtigung unrichtiger personenbezogener Daten bitten. Sie können auch die Vervollständigung unvollständiger personenbezogener Daten verlangen, auch durch die Abgabe einer zusätzlichen Erklärung."
+        },
+        "deletion": {
+          "title": "Recht auf Löschung",
+          "content": "Sie können uns um die Löschung der verarbeiteten personenbezogenen Daten bitten, und zwar unter den Bedingungen gemäß Artikel 17 der Verordnung. Bitte beachten Sie, dass in einigen Fällen dieses Recht nicht ausgeübt werden kann und wir Ihre Daten weiterhin verarbeiten werden."
+        },
+        "restriction": {
+          "title": "Recht auf Einschränkung der Verarbeitung",
+          "content": "In bestimmten Fällen können Sie verlangen, dass wir die durchgeführte Verarbeitung einschränken (z.B. bis zur Klärung Ihrer Einwände)."
+        },
+        "portability": {
+          "title": "Recht auf Datenübertragbarkeit",
+          "content": "Sie können uns bitten, Ihnen oder einem Dritten die personenbezogenen Daten, die wir über Sie aufgrund eines Vertrages oder Ihrer Einwilligung elektronisch verarbeiten, zu übermitteln."
+        },
+        "withdrawConsent": {
+          "title": "Recht auf Widerruf der Einwilligung",
+          "content": "Wenn die Verarbeitung personenbezogener Daten auf Ihrer Einwilligung beruht, können Sie diese Einwilligung jederzeit widerrufen und so weitere Verarbeitungen für den in der Einwilligung genannten Zweck verhindern. Der Widerruf der Einwilligung berührt jedoch nicht die Rechtmäßigkeit der Verarbeitung während des Zeitraums vor ihrem Widerruf."
+        },
+        "objection": {
+          "title": "Recht auf Widerspruch",
+          "content": "Wenn wir Ihre personenbezogenen Daten auf der Grundlage unserer berechtigten Interessen verarbeiten, haben Sie das Recht, einer solchen Verarbeitung zu widersprechen. Wir können jedoch nachweisen, dass auf unserer Seite schwerwiegende berechtigte Gründe für eine weitere Verarbeitung vorliegen.\nWenn Ihre personenbezogenen Daten für Zwecke der Direktwerbung verarbeitet werden, haben Sie das Recht, jederzeit Widerspruch gegen die Verarbeitung dieser Daten einzulegen. Wenn Sie Widerspruch gegen die Verarbeitung für Zwecke der Direktwerbung einlegen, werden die personenbezogenen Daten nicht mehr für diese Zwecke verarbeitet."
+        },
+        "complaint": {
+          "title": "Recht, einen Antrag auf Abhilfe zu stellen und eine Beschwerde einzulegen",
+          "content": "Wenn Sie der Meinung sind, dass Ihre personenbezogenen Daten unter Verstoß gegen Rechtsvorschriften verarbeitet werden, wenden Sie sich bitte an uns, und wir werden unverzüglich Abhilfe schaffen. Dies berührt nicht Ihr Recht, eine Beschwerde über die durchgeführte Verarbeitung direkt beim Amt für den Schutz personenbezogener Daten einzulegen."
+        }
+      }
+    },
+    "contact": {
+      "title": "12. Wie können Sie uns kontaktieren?",
+      "content1": "Bei Fragen zum Datenschutz oder zum Widerruf Ihrer Einwilligung zur weiteren Verarbeitung Ihrer personenbezogenen Daten nutzen Sie bitte das Kontaktformular im Bereich personenbezogene Daten <a href=\"oou-formular/\" className=\"text-orange-500 hover:text-orange-600\">HIER</a> oder schriftlich an unsere Adresse: Expohledávky s.r.o., Na strži 1702/65, Nusle, 140 00 Praha 4, zu Händen des Datenschutzbeauftragten. Sie können uns auch über die E-Mail-Adresse des Datenschutzbeauftragten: oou@expohledavky.cz kontaktieren.",
+      "content2": "In diesem Zusammenhang möchten wir Sie darauf hinweisen, dass wir von Ihnen verlangen können, dass Sie Ihre Identität in geeigneter Weise nachweisen, damit wir Ihre Identität überprüfen können. Dies ist eine vorbeugende Sicherheitsmaßnahme, um den Zugriff unbefugter Personen auf Ihre personenbezogenen Daten zu verhindern."
+    }
+  }
+} 

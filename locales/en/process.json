@@ -1,0 +1,31 @@
+{
+  "title": "Our cooperation process",
+  "subtitle": "Find out how we can help you step by step",
+  "steps": [
+    {
+      "key": "kontrola",
+      "title": "Verification",
+      "description": "After sending your receivable to our email, our specialized department gets involved in its analysis, which professionally assesses all documents and evaluates the most optimal procedure, especially whether the receivable is suitable for purchase or collection."
+    },
+    {
+      "key": "zastoupeni",
+      "title": "Representation",
+      "description": "If the documents you provided are complete and it is possible to collect the receivable, we will promptly send you an adequate contract proposal for representation in the collection of your financial claim against the debtor."
+    },
+    {
+      "key": "vyzva",
+      "title": "Demand letter",
+      "description": "If the collection is not successful even after about 14-21 days, we will suggest sending a pre-litigation notice. The pre-litigation notice is sent by our external law firm."
+    },
+    {
+      "key": "zaloba",
+      "title": "Lawsuit",
+      "description": "If the debtor does not voluntarily fulfill the debt based on the pre-litigation notice, a lawsuit is filed against them, or rather a request for an electronic payment order. The judicial phase of your receivable collection begins with the filing of the lawsuit."
+    },
+    {
+      "key": "exekuce",
+      "title": "Enforcement",
+      "description": "If your debtor does not comply even on the basis of the issued Payment Order, we will select the most suitable bailiff and hand over the court decision to them. This brings the entire process of debt collection and court proceedings to the final phase."
+    }
+  ]
+} 

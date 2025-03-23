@@ -1,49 +1,21 @@
+"use client"
+
 import Link from "next/link"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { ArrowRight, FileText, Building, CreditCard, Briefcase, FileSignature } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "@/lib/i18n"
+import { useState, useEffect } from "react"
 
-const services = [
-  {
-    id: "vymahani-pohledavek",
-    title: "Vymáhání pohledávek",
-    description:
-      "Komplexní řešení pro vymáhání Vašich pohledávek od prvotního kontaktu s dlužníkem až po exekuční řízení.",
-    icon: FileText,
-    color: "orange",
-  },
-  {
-    id: "sprava-firemnich-pohledavek",
-    title: "Správa firemních pohledávek",
-    description:
-      "Profesionální správa a monitoring pohledávek pro firmy, včetně prevence vzniku problematických pohledávek.",
-    icon: Building,
-    color: "blue",
-  },
-  {
-    id: "odkup-prodej-pohledavek",
-    title: "Odkup a prodej pohledávek",
-    description:
-      "Rychlý a efektivní odkup Vašich pohledávek za výhodných podmínek, nebo zprostředkování jejich prodeje.",
-    icon: CreditCard,
-    color: "green",
-  },
-  {
-    id: "odkup-firem",
-    title: "Odkup firem",
-    description: "Specializujeme se na odkup firem v různých fázích podnikání, včetně společností v problémech.",
-    icon: Briefcase,
-    color: "purple",
-  },
-  {
-    id: "odkup-smenek",
-    title: "Odkup směnek",
-    description: "Odkupujeme směnky všech typů za výhodných podmínek s rychlým vyplacením finančních prostředků.",
-    icon: FileSignature,
-    color: "red",
-  },
-]
+// Icon mapping for service icons
+const iconMap = {
+  FileText,
+  Building,
+  CreditCard,
+  Briefcase,
+  FileSignature
+}
 
 const colorVariants = {
   orange: {
@@ -94,6 +66,16 @@ const colorVariants = {
 }
 
 export default function NaseSluzbyPage() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use client translations
+  const t = useTranslations('servicesPage')
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
   return (
     <div className="pt-16 pb-24">
       {/* Hero Section */}
@@ -102,13 +84,11 @@ export default function NaseSluzbyPage() {
           <SectionWrapper animation="fade-up">
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                Komplexní řešení
+                {t.hero.badge}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 mb-6">Naše služby</h1>
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 mb-6">{t.hero.title}</h1>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Nabízíme komplexní portfolio služeb v oblasti správy a vymáhání pohledávek. Ať už potřebujete vymoci
-                dlužnou částku, prodat pohledávku nebo odkoupit firmu, jsme tu pro vás s profesionálním přístupem a
-                letitými zkušenostmi.
+                {t.hero.description}
               </p>
             </div>
           </SectionWrapper>
@@ -120,9 +100,9 @@ export default function NaseSluzbyPage() {
         <div className="container mx-auto px-4">
           <SectionWrapper animation="fade-up" delay={200}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((service, index) => {
-                const colors = colorVariants[service.color]
-                const Icon = service.icon
+              {t.services.map((service: any, index: number) => {
+                const colors = colorVariants[service.color as keyof typeof colorVariants]
+                const Icon = iconMap[service.icon as keyof typeof iconMap]
 
                 return (
                   <Link
@@ -145,7 +125,7 @@ export default function NaseSluzbyPage() {
                         <p className="text-gray-600 mb-6">{service.description}</p>
                       </div>
                       <div className="flex items-center text-sm font-medium mt-2 group-hover:translate-x-1 transition-transform">
-                        <span className={colors.icon}>Zjistit více</span>
+                        <span className={colors.icon}>{service.cta}</span>
                         <ArrowRight className={cn("ml-1 h-4 w-4", colors.icon)} />
                       </div>
                     </SectionWrapper>
@@ -163,10 +143,9 @@ export default function NaseSluzbyPage() {
           <SectionWrapper animation="fade-up" delay={400}>
             <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-2xl p-8 md:p-12 text-white">
               <div className="max-w-3xl mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-6">Nevíte, kterou službu zvolit?</h2>
+                <h2 className="text-3xl font-bold mb-6">{t.cta.title}</h2>
                 <p className="text-zinc-300 mb-8">
-                  Každá situace je jedinečná a vyžaduje individuální přístup. Kontaktujte nás a naši specialisté vám
-                  pomohou vybrat nejvhodnější řešení pro vaši konkrétní situaci.
+                  {t.cta.description}
                 </p>
                 <div className="flex justify-center">
                   <Button
@@ -184,7 +163,7 @@ export default function NaseSluzbyPage() {
                         className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                         aria-hidden="true"
                       />
-                      <span className="relative z-10">Kontaktujte nás</span>
+                      <span className="relative z-10">{t.cta.button}</span>
                     </a>
                   </Button>
                 </div>
@@ -201,37 +180,16 @@ export default function NaseSluzbyPage() {
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
                 <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                  Proč nás zvolit
+                  {t.whyChooseUs.badge}
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">Výhody spolupráce s námi</h2>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.whyChooseUs.title}</h2>
                 <p className="text-gray-600 max-w-2xl mx-auto">
-                  Naše společnost se specializuje na komplexní řešení pohledávek již řadu let. Díky našim zkušenostem a
-                  profesionálnímu přístupu vám můžeme nabídnout řadu výhod.
+                  {t.whyChooseUs.description}
                 </p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
-                {[
-                  {
-                    title: "Profesionální přístup",
-                    description:
-                      "Naši specialisté mají dlouholeté zkušenosti v oboru a poskytují profesionální služby na nejvyšší úrovni.",
-                  },
-                  {
-                    title: "Individuální řešení",
-                    description:
-                      "Ke každému případu přistupujeme individuálně a navrhujeme řešení na míru vašim potřebám.",
-                  },
-                  {
-                    title: "Transparentní podmínky",
-                    description: "Veškeré naše služby poskytujeme za jasně stanovených a transparentních podmínek.",
-                  },
-                  {
-                    title: "Rychlé jednání",
-                    description:
-                      "Uvědomujeme si hodnotu času, proto jednáme rychle a efektivně, abychom vám pomohli co nejdříve.",
-                  },
-                ].map((item, index) => (
+                {t.whyChooseUs.advantages.map((item: any, index: number) => (
                   <SectionWrapper key={index} animation="fade-up" delay={600 + index * 100}>
                     <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm h-full">
                       <h3 className="text-xl font-bold text-zinc-900 mb-3">{item.title}</h3>

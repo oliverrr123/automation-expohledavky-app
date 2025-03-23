@@ -6,9 +6,36 @@ import { SectionWrapper } from "@/components/section-wrapper"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useTranslations } from "@/lib/i18n"
+import { getServerTranslations } from "@/lib/server-utils"
+import csPricingPage from '@/locales/cs/pricing-page.json'
+import enPricingPage from '@/locales/en/pricing-page.json'
+import skPricingPage from '@/locales/sk/pricing-page.json'
+import dePricingPage from '@/locales/de/pricing-page.json'
+
+// Get translations based on domain for server-side rendering
+const translationsByLang = {
+  cs: csPricingPage,
+  en: enPricingPage,
+  sk: skPricingPage,
+  de: dePricingPage
+};
+
+// Server-side default translations to prevent hydration mismatch
+const serverTranslations = getServerTranslations('pricingPage', translationsByLang);
 
 export default function PricingPage() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use server translations initially, then switch to client translations after hydration
+  const t = isClient ? useTranslations('pricingPage') : serverTranslations
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   const [formData, setFormData] = useState({
     jmeno: "",
     email: "",
@@ -35,7 +62,7 @@ export default function PricingPage() {
       zprava: "",
     })
     // Show success message
-    alert("Zpráva byla odeslána. Děkujeme!")
+    alert(t.contactForm.success)
   }
 
   return (
@@ -90,61 +117,37 @@ export default function PricingPage() {
             <SectionWrapper animation="fade-up">
               <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-12">
-                  <h1 className="text-4xl font-bold tracking-tight text-zinc-900 mb-6">CENÍK</h1>
+                  <h1 className="text-4xl font-bold tracking-tight text-zinc-900 mb-6">{t.title}</h1>
                 </div>
 
-                <div className="mb-8 font-semibold text-lg text-center">Základní sazby platné od 1. 1. 2023</div>
+                <div className="mb-8 font-semibold text-lg text-center">{t.subtitle}</div>
 
                 {/* Pricing Table */}
                 <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
                   {/* Table Header */}
                   <div className="grid grid-cols-2 bg-zinc-900 text-white">
                     <div className="p-4 font-semibold border-r border-zinc-700">
-                      Specifikace jednotlivých oddělení při zpracování každé pohledávky
+                      {t.pricingTable.header.specification}
                     </div>
-                    <div className="p-4 font-semibold text-center">Sazba za úkon – zpracování jedné pohledávky</div>
+                    <div className="p-4 font-semibold text-center">{t.pricingTable.header.rate}</div>
                   </div>
 
                   {/* Table Rows */}
-                  <div className="grid grid-cols-2 border-b border-gray-200">
-                    <div className="p-4 border-r border-gray-200">Administrativa – zprocesování pohledávky</div>
-                    <div className="p-4 text-center font-medium">1 000,- Kč</div>
-                  </div>
-
-                  <div className="grid grid-cols-2 border-b border-gray-200 bg-gray-50">
-                    <div className="p-4 border-r border-gray-200">Lustrační oddělení</div>
-                    <div className="p-4 text-center font-medium">1 300,- Kč</div>
-                  </div>
-
-                  <div className="grid grid-cols-2 border-b border-gray-200">
-                    <div className="p-4 border-r border-gray-200">Vymáhání inkasními specialisty</div>
-                    <div className="p-4 text-center font-medium">2 000,- Kč</div>
-                  </div>
-
-                  <div className="grid grid-cols-2 border-b border-gray-200 bg-gray-50">
-                    <div className="p-4 border-r border-gray-200">Právní oddělení</div>
-                    <div className="p-4 text-center font-medium">3 000,- Kč</div>
-                  </div>
-
-                  <div className="grid grid-cols-2 border-b border-gray-200">
-                    <div className="p-4 border-r border-gray-200">Soudní žaloba – 15% z výše pohledávky</div>
-                    <div className="p-4 text-center font-medium">minimálně však 15 000,- Kč</div>
-                  </div>
-
-                  <div className="grid grid-cols-2 border-b border-gray-200 bg-gray-50">
-                    <div className="p-4 border-r border-gray-200">Doložka právní vykonatelnosti u notáře</div>
-                    <div className="p-4 text-center font-medium">minimálně 12 000,- Kč</div>
-                  </div>
-
-                  <div className="grid grid-cols-2 border-b border-gray-200">
-                    <div className="p-4 border-r border-gray-200">Výjezd za dlužníkem</div>
-                    <div className="p-4 text-center font-medium">30,- Kč/km + 500,- Kč/hodina</div>
-                  </div>
+                  {t.pricingTable.rows.map((row: {service: string, price: string}, index: number) => (
+                    <div 
+                      key={index} 
+                      className={`grid grid-cols-2 border-b border-gray-200 ${index % 2 !== 0 ? 'bg-gray-50' : ''}`}
+                    >
+                      <div className="p-4 border-r border-gray-200">{row.service}</div>
+                      <div className="p-4 text-center font-medium">{row.price}</div>
+                    </div>
+                  ))}
                 </div>
 
                 <div className="text-gray-600 space-y-1 mb-12">
-                  <p>Při úkonech v cizím jazyce se hodinová sazba navyšuje o 30 %.</p>
-                  <p>Ceny jsou uvedeny bez DPH.</p>
+                  {t.notes.map((note: string, index: number) => (
+                    <p key={index}>{note}</p>
+                  ))}
                 </div>
               </div>
             </SectionWrapper>
@@ -157,7 +160,7 @@ export default function PricingPage() {
             <SectionWrapper animation="fade-up">
               <div className="max-w-3xl mx-auto">
                 <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">Kontaktní formulář</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.contactForm.title}</h2>
                 </div>
 
                 <div className="bg-white rounded-xl shadow-md p-8">
@@ -165,7 +168,7 @@ export default function PricingPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="jmeno" className="block text-sm font-medium text-gray-700 mb-1">
-                          Jméno a příjmení
+                          {t.contactForm.fields.name.label}
                         </label>
                         <input
                           required
@@ -174,13 +177,13 @@ export default function PricingPage() {
                           type="text"
                           value={formData.jmeno}
                           onChange={handleChange}
-                          placeholder="Jméno a příjmení"
+                          placeholder={t.contactForm.fields.name.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                         />
                       </div>
                       <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                          Váš e-mail
+                          {t.contactForm.fields.email.label}
                         </label>
                         <input
                           required
@@ -189,13 +192,13 @@ export default function PricingPage() {
                           type="email"
                           value={formData.email}
                           onChange={handleChange}
-                          placeholder="Váš e-mail"
+                          placeholder={t.contactForm.fields.email.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                         />
                       </div>
                       <div>
                         <label htmlFor="telefon" className="block text-sm font-medium text-gray-700 mb-1">
-                          Telefonní kontakt
+                          {t.contactForm.fields.phone.label}
                         </label>
                         <input
                           required
@@ -204,13 +207,13 @@ export default function PricingPage() {
                           type="text"
                           value={formData.telefon}
                           onChange={handleChange}
-                          placeholder="Telefonní kontakt"
+                          placeholder={t.contactForm.fields.phone.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                         />
                       </div>
                       <div>
                         <label htmlFor="vyse" className="block text-sm font-medium text-gray-700 mb-1">
-                          Výše pohledávky
+                          {t.contactForm.fields.amount.label}
                         </label>
                         <input
                           required
@@ -219,14 +222,14 @@ export default function PricingPage() {
                           type="text"
                           value={formData.vyse}
                           onChange={handleChange}
-                          placeholder="Výše pohledávky"
+                          placeholder={t.contactForm.fields.amount.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                         />
                       </div>
                     </div>
                     <div>
                       <label htmlFor="zprava" className="block text-sm font-medium text-gray-700 mb-1">
-                        Vaše zpráva
+                        {t.contactForm.fields.message.label}
                       </label>
                       <textarea
                         required
@@ -235,7 +238,7 @@ export default function PricingPage() {
                         rows={5}
                         value={formData.zprava}
                         onChange={handleChange}
-                        placeholder="Vaše zpráva... uveďte všechny známé podrobnosti k Vaší pohledávce..."
+                        placeholder={t.contactForm.fields.message.placeholder}
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                       ></textarea>
                     </div>
@@ -254,7 +257,7 @@ export default function PricingPage() {
                           className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                           aria-hidden="true"
                         />
-                        <span className="relative z-10">Odeslat zprávu</span>
+                        <span className="relative z-10">{t.contactForm.submitButton}</span>
                       </Button>
                     </div>
                   </form>

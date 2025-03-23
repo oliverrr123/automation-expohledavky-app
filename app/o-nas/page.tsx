@@ -7,8 +7,44 @@ import { Footer } from "@/components/footer"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useTranslations } from "@/lib/i18n"
+import { useState, useEffect } from "react"
 
 export default function AboutUsPage() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use client translations
+  const t = useTranslations('aboutPage')
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
+  // Feature icons mapping - expanded to include all possible translation variants
+  const featureIcons = {
+    // Czech variants
+    "Osobní kontakt": Users,
+    "Bezplatná konzultace": Clock,
+    "Diskrétní přístup": Shield,
+    "Více řešení": Briefcase,
+    // English variants
+    "Personal contact": Users,
+    "Free consultation": Clock,
+    "Discreet approach": Shield,
+    "Multiple solutions": Briefcase,
+    // Slovak variants
+    "Osobný kontakt": Users,
+    "Bezplatná konzultácia": Clock,
+    "Diskrétny prístup": Shield,
+    "Viac riešení": Briefcase,
+    // German variants
+    "Persönlicher Kontakt": Users,
+    "Kostenlose Beratung": Clock,
+    "Diskreter Ansatz": Shield,
+    "Mehrere Lösungen": Briefcase
+  }
+  
   return (
     <div className="flex min-h-screen flex-col">
       {/* Background gradients */}
@@ -67,9 +103,9 @@ export default function AboutUsPage() {
         <div className="container relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">O společnosti EX Pohledávky</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero.title}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                Jsme specialisté na vymáhání pohledávek s mnohaletými zkušenostmi a vysokou úspěšností.
+                {t.hero.subtitle}
               </p>
               <div className="flex flex-wrap justify-center gap-4 mt-8">
                 <Button
@@ -104,7 +140,7 @@ export default function AboutUsPage() {
                       className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                       aria-hidden="true"
                     />
-                    <span className="relative z-10">Kontaktujte nás</span>
+                    <span className="relative z-10">{t.hero.buttons.contact}</span>
                   </a>
                 </Button>
                 <Button
@@ -117,7 +153,7 @@ export default function AboutUsPage() {
                       className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                       aria-hidden="true"
                     />
-                    <span className="relative z-10">Naše služby</span>
+                    <span className="relative z-10">{t.hero.buttons.services}</span>
                   </Link>
                 </Button>
               </div>
@@ -132,20 +168,20 @@ export default function AboutUsPage() {
           <SectionWrapper animation="fade-up">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="text-4xl font-bold text-orange-500 mb-2">90%</div>
-                <div className="text-sm text-gray-600">Úspěšnost vymáhání</div>
+                <div className="text-4xl font-bold text-orange-500 mb-2">{t.stats.successRate.value}</div>
+                <div className="text-sm text-gray-600">{t.stats.successRate.label}</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-orange-500 mb-2">15+</div>
-                <div className="text-sm text-gray-600">Let zkušeností</div>
+                <div className="text-4xl font-bold text-orange-500 mb-2">{t.stats.experience.value}</div>
+                <div className="text-sm text-gray-600">{t.stats.experience.label}</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-orange-500 mb-2">1000+</div>
-                <div className="text-sm text-gray-600">Spokojených klientů</div>
+                <div className="text-4xl font-bold text-orange-500 mb-2">{t.stats.clients.value}</div>
+                <div className="text-sm text-gray-600">{t.stats.clients.label}</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold text-orange-500 mb-2">24/7</div>
-                <div className="text-sm text-gray-600">Podpora klientů</div>
+                <div className="text-4xl font-bold text-orange-500 mb-2">{t.stats.support.value}</div>
+                <div className="text-sm text-gray-600">{t.stats.support.label}</div>
               </div>
             </div>
           </SectionWrapper>
@@ -159,23 +195,18 @@ export default function AboutUsPage() {
             <SectionWrapper animation="fade-right">
               <div>
                 <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                  Profesionální přístup
+                  {t.mainContent.badge}
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">
-                  Profesionální vymáhání pohledávek
+                  {t.mainContent.title}
                 </h2>
-                <p className="text-gray-600 mb-4">
-                  Naše společnost se specializuje na mimosoudní a soudní vymáhání pohledávek. Poskytujeme komplexní
-                  právní servis včetně právního posouzení každého případu a bezplatného poradenství. Pracujeme
-                  diskrétně, rychle a efektivně.
-                </p>
-                <p className="text-gray-600 mb-4">
-                  Našimi klienty jsou fyzické i právnické osoby, které chtějí zpět své peníze. Přihlížíme k odlišnostem
-                  pohledávek podle oborů podnikání konkrétního klienta. Snažíme se poskytnout komplexní služby ušité na
-                  míru právě Vašim potřebám.
-                </p>
+                {t.mainContent.paragraphs.map((paragraph: string, index: number) => (
+                  <p key={index} className="text-gray-600 mb-4">
+                    {paragraph}
+                  </p>
+                ))}
                 <div className="p-4 bg-orange-50 border border-orange-100 rounded-lg mt-6">
-                  <p className="font-semibold text-orange-800">Smluvní odměna činí 20% až 30% z vymožené částky.</p>
+                  <p className="font-semibold text-orange-800">{t.mainContent.fee}</p>
                 </div>
               </div>
             </SectionWrapper>
@@ -191,7 +222,7 @@ export default function AboutUsPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/80 to-transparent flex items-end p-6">
                   <p className="text-white text-lg font-medium">
-                    Jsme jedni z mála specialistů na pohledávky, kteří spolupracují přímo s exekutory
+                    {t.mainContent.imageCaption}
                   </p>
                 </div>
               </div>
@@ -205,44 +236,26 @@ export default function AboutUsPage() {
         <div className="container">
           <SectionWrapper animation="fade-up">
             <div className="text-center max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">Mezi naše hlavní výhody patří</h2>
-              <p className="text-gray-600">Nabízíme komplexní služby s důrazem na efektivitu a profesionalitu</p>
+              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.features.title}</h2>
+              <p className="text-gray-600">{t.features.subtitle}</p>
             </div>
           </SectionWrapper>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: Users,
-                title: "Osobní kontakt",
-                description: "Upřednotňujeme osobní kontakt s dlužníkem v místě jeho bydliště či pracoviště",
-              },
-              {
-                icon: Clock,
-                title: "Bezplatná konzultace",
-                description: "Konzultace pohledávky u nás probíhá online či telefonicky a to zdarma",
-              },
-              {
-                icon: Shield,
-                title: "Diskrétní přístup",
-                description: "K našim klientům si vždy uchováváme nejvyšší možný diskrétní přístup",
-              },
-              {
-                icon: Briefcase,
-                title: "Více řešení",
-                description: "Vždy navrhneme několik řešení vaší situace, jaké řešení zvolíte je pouze na vás",
-              },
-            ].map((feature, index) => (
-              <SectionWrapper key={feature.title} animation="zoom" delay={index * 100}>
-                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 h-full transition-all duration-300 hover:shadow-md hover:-translate-y-1">
-                  <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
-                    <feature.icon className="h-6 w-6 text-orange-600" />
+            {t.features.items.map((feature: any, index: number) => {
+              const Icon = featureIcons[feature.title as keyof typeof featureIcons] || Users; // Fallback to Users icon if not found
+              return (
+                <SectionWrapper key={feature.title} animation="zoom" delay={index * 100}>
+                  <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 h-full transition-all duration-300 hover:shadow-md hover:-translate-y-1">
+                    <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
+                      <Icon className="h-6 w-6 text-orange-600" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                    <p className="text-gray-600">{feature.description}</p>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </div>
-              </SectionWrapper>
-            ))}
+                </SectionWrapper>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -257,21 +270,18 @@ export default function AboutUsPage() {
                   <Award className="w-full h-full text-orange-500 opacity-10" />
                 </div>
                 <div className="relative">
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-2">ÚSPĚŠNOST</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-2">{t.success.title}</h2>
                   <h5 className="text-xl font-semibold text-zinc-800 mb-4">
-                    Ve vymáhání pohledávek si vedeme nadprůměrně!
+                    {t.success.subtitle}
                   </h5>
-                  <p className="text-gray-600 mb-4">
-                    Garantujeme profesionální přístup a vysokou úspěšnost ve vymáhání pohledávek.
-                  </p>
-                  <p className="text-gray-600 mb-4">
-                    Úspěšné vymáhání pohledávek tkví v časném dodání kvalitních podkladů o pohledávce a dostatečných
-                    informacích o dlužníkovi. V takovém případě máte až 90% šanci na uhrazení vašich pohledávek
-                    dlužníkem.
-                  </p>
+                  {t.success.paragraphs.map((paragraph: string, index: number) => (
+                    <p key={index} className="text-gray-600 mb-4">
+                      {paragraph}
+                    </p>
+                  ))}
                   <div className="mt-8">
                     <Button asChild className="bg-orange-500 hover:bg-orange-600">
-                      <Link href="/poptavka">Nezávazná poptávka</Link>
+                      <Link href="/poptavka">{t.success.buttonText}</Link>
                     </Button>
                   </div>
                 </div>
@@ -280,44 +290,22 @@ export default function AboutUsPage() {
 
             <SectionWrapper animation="fade-left" delay={200}>
               <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-100">
-                <h3 className="text-xl font-semibold mb-6">Rozhodčí řízení</h3>
+                <h3 className="text-xl font-semibold mb-6">{t.success.arbitration.title}</h3>
                 <p className="text-gray-600 mb-4">
-                  V naší činnosti jsme připraveni vymáhat pohledávky cestou rozhodčího řízení před rozhodci, které
-                  probíhá primárně na základě listin (např. smluvního dokumentu uznání dluhu obsahujícího rozhodčí
-                  doložku).
+                  {t.success.arbitration.description}
                 </p>
                 <div className="space-y-4 mt-6">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                      <Check className="h-5 w-5 text-green-600" />
+                  {t.success.arbitration.advantages.map((advantage: any, index: number) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                        <Check className="h-5 w-5 text-green-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium">{advantage.title}</h4>
+                        <p className="text-sm text-gray-500">{advantage.description}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-medium">Rychlejší proces</h4>
-                      <p className="text-sm text-gray-500">Mnohem rychlejší než řízení před obecnými soudy</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                      <Check className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium">Nižší náklady</h4>
-                      <p className="text-sm text-gray-500">
-                        Odměna činí 3% z hodnoty předmětu sporu, min. 3.000 Kč (plus DPH)
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                      <Check className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium">Jednorázový výdaj</h4>
-                      <p className="text-sm text-gray-500">
-                        Žádné další náklady se v průběhu rozhodčího řízení nehradí
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </SectionWrapper>
@@ -331,9 +319,9 @@ export default function AboutUsPage() {
           <SectionWrapper animation="fade-up">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">
-                Proč spolupracovat s profesionály
+                {t.comparison.title}
               </h2>
-              <p className="text-gray-600">Porovnání profesionálního přístupu a vymáhání na vlastní pěst</p>
+              <p className="text-gray-600">{t.comparison.subtitle}</p>
             </div>
           </SectionWrapper>
 
@@ -344,18 +332,10 @@ export default function AboutUsPage() {
                   <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
                     <Check className="h-6 w-6 text-green-600" />
                   </div>
-                  <h3 className="text-xl font-semibold">Spolupráce s námi</h3>
+                  <h3 className="text-xl font-semibold">{t.comparison.professional.title}</h3>
                 </div>
                 <ul className="space-y-4">
-                  {[
-                    "Máme profesionální zkušenosti",
-                    "Diskrétní přístup k našim klientům",
-                    "Bezplatná konzultace pohledávky",
-                    "Navržení případných dalších řešení",
-                    "Právní servis v rámci našich služeb",
-                    "Vysoká úspěšnost vymáhání",
-                    "Rychlé a efektivní řešení",
-                  ].map((item, index) => (
+                  {t.comparison.professional.advantages.map((item: string, index: number) => (
                     <li key={index} className="flex items-center gap-3">
                       <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
                       <span className="text-gray-600">{item}</span>
@@ -371,18 +351,10 @@ export default function AboutUsPage() {
                   <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
                     <X className="h-6 w-6 text-red-600" />
                   </div>
-                  <h3 className="text-xl font-semibold">Vymáhání na "vlastní pěst"</h3>
+                  <h3 className="text-xl font-semibold">{t.comparison.diy.title}</h3>
                 </div>
                 <ul className="space-y-4">
-                  {[
-                    "Laické posouzení pravého stavu pohledávky",
-                    "Vysoké náklady spojené s právním zastoupením",
-                    "Dlouhodobá a vleklá záležitost",
-                    "Nízká šance na úspěšné vymožení",
-                    "Stres a ztráta času",
-                    "Neznalost právních postupů",
-                    "Riziko promlčení pohledávky",
-                  ].map((item, index) => (
+                  {t.comparison.diy.disadvantages.map((item: string, index: number) => (
                     <li key={index} className="flex items-center gap-3">
                       <X className="h-5 w-5 text-red-500 flex-shrink-0" />
                       <span className="text-gray-600">{item}</span>
@@ -406,65 +378,64 @@ export default function AboutUsPage() {
                 {/* Text Content */}
                 <div className="text-center md:text-left">
                   <Scale className="h-16 w-16 mx-auto md:mx-0 text-orange-400 mb-6" />
-                  <h2 className="text-3xl font-bold text-white mb-4">Připraveni vám pomoci</h2>
+                  <h2 className="text-3xl font-bold text-white mb-4">{t.contact.title}</h2>
                   <p className="text-zinc-300 mb-8">
-                    Mimosoudní a soudní vymáhání poskytujeme po celém světě v součinnosti s našimi obchodními partnery.
-                    Nabízíme možnost odkupu pohledávek a outsourcing správy pohledávek.
+                    {t.contact.description}
                   </p>
                 </div>
 
                 {/* Contact Form */}
                 <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 shadow-xl border border-white/10">
-                  <h3 className="text-xl font-semibold text-white mb-4">Kontaktujte nás</h3>
+                  <h3 className="text-xl font-semibold text-white mb-4">{t.contact.form.title}</h3>
                   <form className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="name" className="block text-sm font-medium text-zinc-300 mb-1">
-                          Jméno
+                          {t.contact.form.fields.name.label}
                         </label>
                         <input
                           type="text"
                           id="name"
                           name="name"
                           className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50"
-                          placeholder="Vaše jméno"
+                          placeholder={t.contact.form.fields.name.placeholder}
                         />
                       </div>
                       <div>
                         <label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-1">
-                          Email
+                          {t.contact.form.fields.email.label}
                         </label>
                         <input
                           type="email"
                           id="email"
                           name="email"
                           className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50"
-                          placeholder="vas@email.cz"
+                          placeholder={t.contact.form.fields.email.placeholder}
                         />
                       </div>
                     </div>
                     <div>
                       <label htmlFor="phone" className="block text-sm font-medium text-zinc-300 mb-1">
-                        Telefon
+                        {t.contact.form.fields.phone.label}
                       </label>
                       <input
                         type="tel"
                         id="phone"
                         name="phone"
                         className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50"
-                        placeholder="+420 XXX XXX XXX"
+                        placeholder={t.contact.form.fields.phone.placeholder}
                       />
                     </div>
                     <div>
                       <label htmlFor="message" className="block text-sm font-medium text-zinc-300 mb-1">
-                        Zpráva
+                        {t.contact.form.fields.message.label}
                       </label>
                       <textarea
                         id="message"
                         name="message"
                         rows={4}
                         className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-md text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50"
-                        placeholder="Popište nám Váš případ..."
+                        placeholder={t.contact.form.fields.message.placeholder}
                       ></textarea>
                     </div>
                     <div className="pt-2">
@@ -482,7 +453,7 @@ export default function AboutUsPage() {
                           className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                           aria-hidden="true"
                         />
-                        <span className="relative z-10">Odeslat zprávu</span>
+                        <span className="relative z-10">{t.contact.form.submitButton}</span>
                       </button>
                     </div>
                   </form>

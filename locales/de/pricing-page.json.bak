@@ -1,0 +1,103 @@
+{
+  "header": {
+    "badge": "Transparente Preise",
+    "title": "Wie viel kostet die Forderungseintreibung?",
+    "subtitle": "Wir bieten faire Preise mit klaren Bedingungen und ohne versteckte Gebühren."
+  },
+  "pricingTable": {
+    "title": "Übersicht der Basispreise",
+    "subtitle": "Für eine unverbindliche Beratung und ein individuelles Angebot kontaktieren Sie uns bitte.",
+    "tableHeader": {
+      "service": "Dienstleistung",
+      "price": "Preis"
+    },
+    "tableRows": [
+      {
+        "service": "Vorbereitung der Forderungsunterlagen",
+        "price": "ab 1.000 Kč"
+      },
+      {
+        "service": "Telefonische Forderungseintreibung",
+        "price": "ab 2.000 Kč"
+      },
+      {
+        "service": "Außergerichtliche Forderungseintreibung",
+        "price": "25-30% der Forderungssumme"
+      },
+      {
+        "service": "Überwachung von Debitoren",
+        "price": "Individuelle Preisgestaltung"
+      },
+      {
+        "service": "Schuldnerlokalisierung",
+        "price": "ab 1.500 Kč"
+      },
+      {
+        "service": "Forderungsankauf",
+        "price": "15-90% des Nominalwerts"
+      },
+      {
+        "service": "Wechselankauf",
+        "price": "bis zu 90% des Nominalwerts"
+      },
+      {
+        "service": "Firmenankauf mit Schulden",
+        "price": "Individuelles Angebot"
+      }
+    ],
+    "notes": "* Alle Preise verstehen sich zuzüglich gesetzlicher MwSt."
+  },
+  "fairPricing": {
+    "title": "Faire Preis- und Geschäftsbedingungen",
+    "subtitle": "Unsere Arbeit ist fair, transparent und effektiv",
+    "features": [
+      {
+        "title": "Keine versteckten Gebühren",
+        "description": "Wir vereinbaren im Voraus die genauen Kosten für unsere Dienstleistungen. Bei uns erhalten Sie keine unerwarteten Rechnungen!",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Zahlung nur bei Erfolg",
+        "description": "Bei erfolgsabhängigen Provisionen zahlen Sie nur, wenn es uns gelingt, Ihre Forderung einzutreiben.",
+        "icon": "currency-dollar"
+      },
+      {
+        "title": "Individuelle Lösungen",
+        "description": "Jede Forderung ist anders. Wir schlagen Ihnen die optimalste und kostengünstigste Variante für Ihren konkreten Fall vor.",
+        "icon": "adjustments"
+      }
+    ]
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "questions": [
+      {
+        "question": "Wie setzen sich die Kosten für die Forderungseintreibung zusammen?",
+        "answer": "Die Kosten setzen sich in der Regel aus zwei Komponenten zusammen: einer festen Bearbeitungsgebühr und einer Erfolgsprovision, die als Prozentsatz der eingetriebenen Forderung berechnet wird. Die genaue Höhe hängt vom Alter und der Komplexität Ihrer Forderung ab."
+      },
+      {
+        "question": "Muss ich im Voraus bezahlen?",
+        "answer": "Bei außergerichtlichen Eintreibungen bieten wir in den meisten Fällen eine Bezahlung nur bei Erfolg an - Sie zahlen nur, wenn wir Ihre Forderung eintreiben. Bei bestimmten Dienstleistungen wie der Vorbereitung von Dokumenten kann jedoch eine Vorauszahlung erforderlich sein."
+      },
+      {
+        "question": "Wie hoch ist der Prozentsatz beim Forderungsankauf?",
+        "answer": "Der Ankaufspreis liegt je nach Alter, Qualität und Bonität des Schuldners zwischen 15% und 90% des Nominalwerts der Forderung. Bei erstklassigen, gut dokumentierten Forderungen gegen solvente Schuldner können wir einen sehr günstigen Preis anbieten."
+      },
+      {
+        "question": "Wie lange dauert die Forderungseintreibung?",
+        "answer": "Die Dauer der Eintreibung hängt von der Bereitschaft des Schuldners zur Zusammenarbeit ab. Manche Fälle werden innerhalb weniger Tage gelöst, andere können mehrere Monate dauern, besonders wenn rechtliche Schritte erforderlich sind."
+      }
+    ]
+  },
+  "contactForm": {
+    "title": "Benötigen Sie ein individuelles Angebot?",
+    "subtitle": "Kontaktieren Sie uns für eine unverbindliche Beratung und ein maßgeschneidertes Angebot.",
+    "emailPlaceholder": "Ihre E-Mail",
+    "namePlaceholder": "Ihr Name",
+    "messagePlaceholder": "Ihre Nachricht...",
+    "buttonText": "Nachricht senden",
+    "buttonSending": "Wird gesendet...",
+    "successMessage": "Nachricht gesendet! Wir werden uns so schnell wie möglich bei Ihnen melden.",
+    "errorMessage": "Beim Senden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+  }
+} 

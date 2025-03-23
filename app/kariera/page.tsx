@@ -8,8 +8,11 @@ import { Button } from "@/components/ui/button"
 import { Mail, Phone, MapPin, Calendar, Award, Briefcase, Users, Gift, Clock, CheckCircle, Star } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { useTranslations } from "@/lib/i18n"
+import { sanitizeHTML } from "@/lib/utils"
 
 export default function CareerPage() {
+  const t = useTranslations('careerPage')
   const [isHovered, setIsHovered] = useState(false)
 
   return (
@@ -70,9 +73,9 @@ export default function CareerPage() {
         <div className="container relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Kariéra v EX Pohledávkách</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero.title}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                Staňte se součástí našeho úspěšného týmu a rozvíjejte svou kariéru v dynamickém prostředí
+                {t.hero.subtitle}
               </p>
             </SectionWrapper>
           </div>
@@ -90,12 +93,12 @@ export default function CareerPage() {
                   <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-8 relative overflow-hidden">
                     <div className="relative z-10">
                       <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                        Aktuální pozice
+                        {t.jobListing.badge}
                       </div>
                       <h2 className="text-3xl font-bold text-white mb-2">
-                        Obchodník - Specialista telefonního vymáhání
+                        {t.jobListing.title}
                       </h2>
-                      <p className="text-white/80 text-lg">Optimálně pro muže s důrazným hlasem</p>
+                      <p className="text-white/80 text-lg">{t.jobListing.subtitle}</p>
                     </div>
                   </div>
 
@@ -108,8 +111,8 @@ export default function CareerPage() {
                           <MapPin className="h-5 w-5 text-orange-600" />
                         </div>
                         <div>
-                          <div className="text-sm text-gray-500">Lokalita</div>
-                          <div className="font-medium">Praha – Pankrác</div>
+                          <div className="text-sm text-gray-500">{t.jobListing.quickInfo.location.label}</div>
+                          <div className="font-medium">{t.jobListing.quickInfo.location.value}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -117,8 +120,8 @@ export default function CareerPage() {
                           <Calendar className="h-5 w-5 text-orange-600" />
                         </div>
                         <div>
-                          <div className="text-sm text-gray-500">Nástup</div>
-                          <div className="font-medium">Ihned</div>
+                          <div className="text-sm text-gray-500">{t.jobListing.quickInfo.startDate.label}</div>
+                          <div className="font-medium">{t.jobListing.quickInfo.startDate.value}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
@@ -126,8 +129,8 @@ export default function CareerPage() {
                           <Briefcase className="h-5 w-5 text-orange-600" />
                         </div>
                         <div>
-                          <div className="text-sm text-gray-500">Typ úvazku</div>
-                          <div className="font-medium">Plný úvazek</div>
+                          <div className="text-sm text-gray-500">{t.jobListing.quickInfo.jobType.label}</div>
+                          <div className="font-medium">{t.jobListing.quickInfo.jobType.value}</div>
                         </div>
                       </div>
                     </div>
@@ -138,15 +141,10 @@ export default function CareerPage() {
                         <div>
                           <div className="flex items-center gap-2 mb-4">
                             <Briefcase className="h-5 w-5 text-orange-500" />
-                            <h3 className="text-xl font-bold text-zinc-900">Náplň práce</h3>
+                            <h3 className="text-xl font-bold text-zinc-900">{t.jobListing.jobDescription.title}</h3>
                           </div>
                           <ul className="space-y-3">
-                            {[
-                              "Odchozí a příchozí hovory s dlužníky",
-                              "Aktivní vymáhání pohledávek",
-                              "Vyjednání úhrad či splátkových kalendářů",
-                              "Odolnost vůči stresu",
-                            ].map((item, index) => (
+                            {t.jobListing.jobDescription.items.map((item: string, index: number) => (
                               <li key={index} className="flex items-start gap-3 group">
                                 <div className="w-2 h-2 rounded-full bg-orange-500 flex-shrink-0 mt-2 group-hover:scale-110 transition-transform"></div>
                                 <span className="group-hover:translate-x-1 transition-transform">{item}</span>
@@ -158,15 +156,10 @@ export default function CareerPage() {
                         <div>
                           <div className="flex items-center gap-2 mb-4">
                             <CheckCircle className="h-5 w-5 text-orange-500" />
-                            <h3 className="text-xl font-bold text-zinc-900">Co požadujeme</h3>
+                            <h3 className="text-xl font-bold text-zinc-900">{t.jobListing.requirements.title}</h3>
                           </div>
                           <ul className="space-y-3">
-                            {[
-                              "Vyjednávací schopnost",
-                              "Zkušenosti s podobnou pozicí jsou velkou výhodou",
-                              "Velmi dobrou znalost českého jazyka",
-                              "Hlavní je mít chuť a obchodního ducha",
-                            ].map((item, index) => (
+                            {t.jobListing.requirements.items.map((item: string, index: number) => (
                               <li key={index} className="flex items-start gap-3 group">
                                 <div className="w-2 h-2 rounded-full bg-orange-500 flex-shrink-0 mt-2 group-hover:scale-110 transition-transform"></div>
                                 <span className="group-hover:translate-x-1 transition-transform">{item}</span>
@@ -179,39 +172,39 @@ export default function CareerPage() {
                       <div>
                         <div className="flex items-center gap-2 mb-4">
                           <Gift className="h-5 w-5 text-orange-500" />
-                          <h3 className="text-xl font-bold text-zinc-900">Co nabízíme?</h3>
+                          <h3 className="text-xl font-bold text-zinc-900">{t.jobListing.benefits.title}</h3>
                         </div>
                         <div className="bg-gradient-to-br from-orange-50 to-white p-6 rounded-xl border border-orange-100">
                           <ul className="space-y-4">
                             {[
                               {
                                 icon: <Star className="h-5 w-5 text-orange-500" />,
-                                text: "Nástupní plat 25 000 Kč + zajímavé osobní ohodnocení dle výsledků",
+                                text: t.jobListing.benefits.items[0].text,
                               },
                               {
                                 icon: <Calendar className="h-5 w-5 text-orange-500" />,
-                                text: "Nástup možný ihned",
+                                text: t.jobListing.benefits.items[1].text,
                               },
                               {
                                 icon: <MapPin className="h-5 w-5 text-orange-500" />,
-                                text: "Místo výkonu práce: Praha – Pankrác",
-                                bold: true,
+                                text: t.jobListing.benefits.items[2].text,
+                                bold: t.jobListing.benefits.items[2].bold,
                               },
                               {
                                 icon: <Phone className="h-5 w-5 text-orange-500" />,
-                                text: "Firemní mobilní telefon",
+                                text: t.jobListing.benefits.items[3].text,
                               },
                               {
                                 icon: <Clock className="h-5 w-5 text-orange-500" />,
-                                text: "Sick days",
+                                text: t.jobListing.benefits.items[4].text,
                               },
                               {
                                 icon: <Award className="h-5 w-5 text-orange-500" />,
-                                text: "Multisport karta",
+                                text: t.jobListing.benefits.items[5].text,
                               },
                               {
                                 icon: <Users className="h-5 w-5 text-orange-500" />,
-                                text: "Skvělý tým nápomocných kolegů",
+                                text: t.jobListing.benefits.items[6].text,
                               },
                             ].map((item, index) => (
                               <li key={index} className="flex items-start gap-3 group">
@@ -249,17 +242,15 @@ export default function CareerPage() {
                         </div>
                         <div className="relative z-10">
                           <p className="italic mb-4">
-                            "Práce v EX Pohledávky mi dala možnost rozvíjet své komunikační dovednosti a vyjednávací
-                            schopnosti. Každý den je jiný a přináší nové výzvy. Oceňuji především skvělý kolektiv a
-                            férové ohodnocení."
+                            {t.jobListing.testimonial.text}
                           </p>
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center">
-                              <span className="font-bold text-white">JN</span>
+                              <span className="font-bold text-white">{t.jobListing.testimonial.initials}</span>
                             </div>
                             <div>
-                              <div className="font-medium">Jan Novák</div>
-                              <div className="text-sm text-gray-300">Specialista vymáhání, 3 roky v týmu</div>
+                              <div className="font-medium">{t.jobListing.testimonial.author}</div>
+                              <div className="text-sm text-gray-300">{t.jobListing.testimonial.position}</div>
                             </div>
                           </div>
                         </div>
@@ -270,13 +261,8 @@ export default function CareerPage() {
                     <div className="bg-gradient-to-br from-gray-50 to-white p-8 rounded-xl border border-gray-100 relative overflow-hidden">
                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(249,115,22,0.05),transparent_50%)]" />
                       <div className="relative z-10">
-                        <h3 className="text-2xl font-bold text-zinc-900 mb-4">Zaujala vás tato pozice?</h3>
-                        <p className="text-gray-600 mb-6">
-                          Stále tě to zajímá? Ozvi se nám na e-mailovou adresu{" "}
-                          <strong className="text-orange-600">pohledavky@expohledavky.cz</strong>. Potkáme se, vzájemně
-                          se představíme, probereme možnosti a hlavně se k nám podíváš. Tak se přihlas, těšíme se na
-                          tebe!
-                        </p>
+                        <h3 className="text-2xl font-bold text-zinc-900 mb-4">{t.jobListing.application.title}</h3>
+                        <p className="text-gray-600 mb-6" dangerouslySetInnerHTML={{ __html: sanitizeHTML(t.jobListing.application.description) }}></p>
 
                         <div className="flex flex-col sm:flex-row gap-8 items-center">
                           <Button
@@ -292,7 +278,7 @@ export default function CareerPage() {
                             onMouseLeave={() => setIsHovered(false)}
                           >
                             <Link
-                              href="mailto:pohledavky@expohledavky.cz"
+                              href={`mailto:${t.jobListing.application.email}`}
                               className="flex items-center justify-center gap-2 py-6 px-8"
                             >
                               <Mail
@@ -301,7 +287,7 @@ export default function CareerPage() {
                               <span
                                 className={`relative z-10 transition-transform duration-500 ${isHovered ? "translate-y-[-2px]" : ""}`}
                               >
-                                Poslat životopis
+                                {t.jobListing.application.buttonText}
                               </span>
                               <div
                                 className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
@@ -312,7 +298,7 @@ export default function CareerPage() {
 
                           <div className="flex items-center gap-2 text-orange-600 font-bold text-lg">
                             <div className="w-3 h-3 bg-orange-600 rounded-full animate-pulse" />
-                            Nástup ihned!
+                            {t.jobListing.application.urgentText}
                           </div>
                         </div>
                       </div>

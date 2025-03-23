@@ -1,0 +1,38 @@
+{
+  "badge": "Profesionálne služby",
+  "title": "Naše služby",
+  "subtitle": "Využite profesionálne služby bez rizík!",
+  "linkText": "Detail služby",
+  "services": [
+    {
+      "title": "Vymáhanie pohľadávok",
+      "description": "Ponúkame vymáhanie pohľadávok v širokom spektre oblastí vrátane účtovnej evidencie alebo nezaplatených faktúr.",
+      "href": "/nase-sluzby/vymahani-pohledavek"
+    },
+    {
+      "title": "Správa firemných pohľadávok",
+      "description": "Ponúkame outsourcing správy pohľadávok, vďaka ktorému bude o vaše pohľadávky riadne a hlavne úspešne postarané.",
+      "href": "/nase-sluzby/sprava-firemnich-pohledavek"
+    },
+    {
+      "title": "Odkúp a predaj pohľadávok",
+      "description": "Ak už s dlžníkom nemáte trpezlivosť a nevadí vám, že prídete o časť svojich peňazí, je táto služba určená práve vám.",
+      "href": "/nase-sluzby/odkup-prodej-pohledavek"
+    },
+    {
+      "title": "Odkúp firiem",
+      "description": "Ponúkame odkúpenie firiem za najlepšiu cenu. Každému vyhotovíme analýzu, na základe ktorej predložíme individuálnu ponuku.",
+      "href": "/nase-sluzby/odkup-firem"
+    },
+    {
+      "title": "Odkúp zmeniek",
+      "description": "Ponuka služieb odkúpu zmenky vás môže zbaviť starostí s upomínaním dlžníkov a výdavkov na úhradu právnych služieb.",
+      "href": "/nase-sluzby/odkup-smenek"
+    },
+    {
+      "title": "Právne služby",
+      "description": "Poskytneme vám právny servis v rámci našich služieb. Náš tím advokátov je pripravený poskytnúť vám kvalitné riešenie vrátane právneho zastúpenia.",
+      "href": "#"
+    }
+  ]
+} 

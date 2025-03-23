@@ -1,0 +1,51 @@
+{
+  "hero": {
+    "badge": "Spezialisierte Dienstleistung",
+    "title": "Wechselankauf",
+    "subtitle": "Schnelle Liquidität durch den Verkauf Ihrer Wechsel"
+  },
+  "introduction": {
+    "badge": "Umfassende Lösung",
+    "title": "Wechselankauf",
+    "description": "Wir kaufen Wechsel aller Art und bieten Ihnen schnelle Liquidität ohne komplizierte Genehmigungsverfahren. Bei uns können Sie mit einer fairen Bewertung und einer schnellen Abwicklung rechnen.",
+    "button": "Angebot anfordern"
+  },
+  "transferByEndorsement": {
+    "badge": "Methode A",
+    "title": "Übertragung durch Indossament",
+    "description": "Das Indossament ist ein Vermerk auf der Rückseite des Wechsels, mit dem der Indossant (Verkäufer) seine Rechte auf den Indossatar (Käufer) überträgt. Der Wechsel kann mehrfach indossiert werden. Der aktuelle Inhaber des Wechsels muss sich identifizieren und nachweisen, dass er berechtigt ist, den Wechsel zu übertragen. Der Verkäufer indossiert den Wechsel auf der Rückseite mit seinem Vor- und Nachnamen, Datum und seiner Unterschrift. Nach der Indossierung wird der Wechsel dem neuen Eigentümer übergeben, der dann alle damit verbundenen Rechte erhält.",
+    "icon": "PenTool"
+  },
+  "transferByAssignment": {
+    "badge": "Methode B",
+    "title": "Übertragung durch Abtretung",
+    "paragraphs": [
+      "Die Abtretung ist eine alternative Methode zur Übertragung von Wechseln, die verwendet wird, wenn eine Indossierung nicht möglich ist. Sie erfolgt durch einen separaten schriftlichen Vertrag. Es wird ein Abtretungsvertrag erstellt, in dem der Zedent (Verkäufer) seine Rechte aus dem Wechsel an den Zessionar (Käufer) abtritt.",
+      "Beide Parteien unterzeichnen den Abtretungsvertrag, der die Bedingungen der Übertragung festlegt. Der Wechsel wird dem neuen Eigentümer physisch übergeben, zusammen mit dem unterzeichneten Abtretungsvertrag. Der Preis (Gegenleistung, Vertragsgebühr) bewegt sich zwischen 50 und 80 Prozent des Nennwerts des Kaufobjekts und hängt vom Nennwert der Forderung oder des Wechsels und deren Qualität ab.",
+      "Wenn die Abtretung des Wechsels gegen eine Vergütung ausgehandelt wurde, haftet der Zedent gegenüber dem Zessionar bis zur Höhe der erhaltenen Vergütung mit Zinsen dafür, dass die Forderung zum Zeitpunkt der Abtretung bestand, und kann gemäß der Vereinbarung mit dem Zessionar auch für deren Einziehbarkeit garantieren."
+    ],
+    "icon": "ScrollText"
+  },
+  "benefits": {
+    "badge": "Vorteile des Wechselverkaufs",
+    "title": "Warum den Wechselankauf-Service nutzen?",
+    "description": "Das Angebot des Wechselankauf-Services kann Sie von den Sorgen um die Mahnung von Schuldnern und Ausgaben für Rechtsdienstleistungen befreien",
+    "items": [
+      {
+        "icon": "FileText",
+        "title": "Sofortige Liquidität",
+        "description": "Der Verkauf Ihres Wechsels ermöglicht Ihnen sofortigen Zugang zu Bargeld, ohne auf die Fälligkeit des Wechsels warten zu müssen."
+      },
+      {
+        "icon": "Repeat",
+        "title": "Risikoübertragung",
+        "description": "Mit dem Verkauf des Wechsels übertragen Sie auch das Risiko der Nichtzahlung durch den Schuldner auf den Käufer."
+      },
+      {
+        "icon": "ScrollText",
+        "title": "Rechtssicherheit",
+        "description": "Der gesamte Prozess ist durch einen rechtlich bindenden Vertrag über die Abtretung einer Forderung abgesichert."
+      }
+    ]
+  }
+} 

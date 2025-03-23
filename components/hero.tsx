@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { Montserrat } from "next/font/google"
 import Image from "next/image"
+import { useTranslations } from "@/lib/i18n"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -14,8 +15,13 @@ const montserrat = Montserrat({
 export function Hero() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
+  const [isClient, setIsClient] = useState(false)
+  
+  const t = useTranslations('hero')
 
   useEffect(() => {
+    setIsClient(true)
+    
     const script = document.createElement("script")
     script.src = "https://player.vimeo.com/api/player.js"
     script.async = true
@@ -80,6 +86,7 @@ export function Hero() {
                 frameBorder="0"
                 allow="autoplay; fullscreen; picture-in-picture"
                 title="expohledavky"
+                sandbox="allow-scripts allow-same-origin"
               />
             </div>
           </div>
@@ -102,7 +109,7 @@ export function Hero() {
                   }}
                 >
                   <span className="absolute -inset-1.5 bg-orange-500/10 blur-xl" aria-hidden="true" />
-                  KOMPLEXNÍ ŘEŠENÍ
+                  {t.headline1}
                 </span>
                 <br />
                 <span
@@ -115,7 +122,7 @@ export function Hero() {
                   }}
                 >
                   <span className="absolute -inset-1.5 bg-orange-500/10 blur-xl" aria-hidden="true" />
-                  VAŠICH POHLEDÁVEK
+                  {t.headline2}
                 </span>
               </h1>
               <p
@@ -123,14 +130,14 @@ export function Hero() {
                 style={{ animationDelay: "400ms" }}
               >
                 <span className="relative z-10">
-                  Konec dluhům! Vymáháme směnky, faktury, půjčky, nájemné a další...
+                  {t.description}
                 </span>
               </p>
               <p
                 className="mt-4 text-lg font-medium italic text-orange-400 opacity-0 animate-fade-in-up relative"
                 style={{ animationDelay: "600ms" }}
               >
-                <span className="relative z-10">„I z vašich pohledávek uděláme EX!"</span>
+                <span className="relative z-10">{t.quote}</span>
               </p>
               <div
                 className="mt-10 flex flex-col gap-4 sm:flex-row justify-center opacity-0 animate-fade-in-up"
@@ -151,7 +158,7 @@ export function Hero() {
                       className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                       aria-hidden="true"
                     />
-                    <span className="relative z-10">Chci VYMÁHAT</span>
+                    <span className="relative z-10">{t.buttons.collect}</span>
                   </Link>
                 </Button>
                 <Button
@@ -159,7 +166,7 @@ export function Hero() {
                   size="lg"
                   className="relative overflow-hidden border-2 border-white text-white bg-white/5 backdrop-blur-sm font-semibold transition-all duration-500 hover:scale-[1.04] hover:bg-white/20 shadow-xl shadow-black/20"
                 >
-                  <Link href="/poptavka">Chci PRODAT</Link>
+                  <Link href="/poptavka">{t.buttons.sell}</Link>
                 </Button>
               </div>
             </div>

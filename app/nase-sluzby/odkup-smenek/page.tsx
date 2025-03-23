@@ -1,9 +1,54 @@
+"use client"
+
 import Image from "next/image"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, FileText, Repeat, PenTool, ScrollText } from "lucide-react"
+import { ArrowRight, FileText, Repeat, PenTool, ScrollText, Zap, TrendingUp, Microscope, Scale, Shield, LockKeyhole, Check } from "lucide-react"
+import { useTranslations } from "@/lib/i18n"
+import { useState, useEffect } from "react"
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+
+// Define type for icon mapping
+type IconComponent = typeof FileText;
+
+// Icon mapping for benefit icons
+const iconMap: Record<string, IconComponent> = {
+  FileText,
+  Repeat,
+  ScrollText,
+  PenTool,
+  Zap,
+  TrendingUp,
+  Microscope,
+  Scale,
+  Shield,
+  LockKeyhole,
+  Check
+}
 
 export default function OdkupSmenekPage() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  
+  // Use translations with proper namespace
+  const t = useTranslations('promissoryNotesPage')
+  
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  // Only render content when client-side rendering is complete
+  if (!isClient) {
+    return <div className="min-h-screen bg-white"></div>; // Loading placeholder
+  }
+
+  // Handle the case where German translation has steps instead of paragraphs
+  const assignmentParagraphs = t.transferByAssignment?.paragraphs || 
+    // Convert steps to paragraphs if available (for German)
+    t.transferByAssignment?.steps?.map((step: any) => 
+      `${step.title}: ${step.description}`
+    );
+
   return (
     <>
       {/* Hero Section */}
@@ -11,7 +56,7 @@ export default function OdkupSmenekPage() {
         <div className="absolute inset-0 bg-zinc-900/90 z-0">
           <Image
             src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1470&auto=format&fit=crop"
-            alt="Odkup směnek"
+            alt="Promissory Notes Purchase"
             fill
             className="object-cover opacity-60 mix-blend-overlay"
           />
@@ -20,12 +65,14 @@ export default function OdkupSmenekPage() {
         <div className="container relative z-10">
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
-              <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                Naše služby
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Odkup směnek</h1>
+              {t.hero?.badge && (
+                <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
+                  {t.hero.badge}
+                </div>
+              )}
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero?.title}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                Profesionální řešení pro majitele směnek, kteří chtějí získat finanční prostředky
+                {t.hero?.subtitle}
               </p>
             </SectionWrapper>
           </div>
@@ -39,15 +86,26 @@ export default function OdkupSmenekPage() {
             <div className="p-8 md:p-12">
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
-                  <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    Komplexní řešení
-                  </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">Odkup směnek</h2>
+                  {t.introduction?.badge && (
+                    <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
+                      {t.introduction.badge}
+                    </div>
+                  )}
+                  {t.introduction?.title && (
+                    <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.introduction.title}</h2>
+                  )}
                   <p className="text-gray-600 mb-8">
-                    Služba odkup směnek funguje tak, že společnosti Expohledávky s.r.o., prostřednictvím emailu, zašlete
-                    Vaši poptávku této služby a společnost Vás bude obratem kontaktovat a informovat o podmínkách odkupu
-                    směnky. Směnka se převádí rubopisem nebo postoupením.
+                    {t.introduction?.description}
                   </p>
+
+                  {/* Render advantage list if available (for German) */}
+                  {t.introduction?.advantages && (
+                    <ul className="list-disc pl-5 mb-8 text-gray-600">
+                      {t.introduction.advantages.map((advantage: string, idx: number) => (
+                        <li key={idx} className="mb-2">{advantage}</li>
+                      ))}
+                    </ul>
+                  )}
 
                   <div className="mt-8">
                     <Button
@@ -55,7 +113,7 @@ export default function OdkupSmenekPage() {
                       className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
                     >
                       <a href="#contact-form" className="flex items-center">
-                        Nezávazná poptávka <ArrowRight className="ml-2 h-4 w-4" />
+                        {t.introduction?.button} <ArrowRight className="ml-2 h-4 w-4" />
                       </a>
                     </Button>
                   </div>
@@ -78,18 +136,27 @@ export default function OdkupSmenekPage() {
                       <PenTool className="h-8 w-8 text-orange-500" />
                     </div>
                     <div>
-                      <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                        Způsob A
-                      </div>
-                      <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">Převod směnky rubopisem</h2>
+                      {t.transferByEndorsement?.badge && (
+                        <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
+                          {t.transferByEndorsement.badge}
+                        </div>
+                      )}
+                      <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.transferByEndorsement?.title}</h2>
                       <p className="text-gray-600 mb-8">
-                        Směnka je cenný papír a základním typem jejího převodu je rubopis, indosament, který umožňuje
-                        rychlý a jednoduchý převod práv vyplývajících ze směnky. Indosamentem lze převádět všechny
-                        směnky, kromě rekta směnek, tedy směnek s doložkou „nikoli na řad". Podstata převodu rubopisem
-                        spočívá v tom, že dosavadní majitel směnky (remitent), vyznačí na rubu směnky nebo na jejím
-                        přívěsku indosační doložku a předá směnku novému majiteli (indosantovi), na něhož tím přejdou
-                        všechna práva ze směnky, která jsou obsahem převáděné směnky.
+                        {t.transferByEndorsement?.description}
                       </p>
+                      
+                      {/* Render steps if available (for German) */}
+                      {t.transferByEndorsement?.steps && (
+                        <div className="space-y-4">
+                          {t.transferByEndorsement.steps.map((step: any, idx: number) => (
+                            <div key={idx} className="rounded-lg bg-orange-50 p-4 border border-orange-100">
+                              <h4 className="font-semibold text-orange-800 mb-1">{step.title}</h4>
+                              <p className="text-gray-600">{step.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -111,36 +178,33 @@ export default function OdkupSmenekPage() {
                       <ScrollText className="h-8 w-8 text-orange-500" />
                     </div>
                     <div>
-                      <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                        Způsob B
-                      </div>
+                      {t.transferByAssignment?.badge && (
+                        <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
+                          {t.transferByAssignment.badge}
+                        </div>
+                      )}
                       <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">
-                        Převod směnky postoupením (odkup)
+                        {t.transferByAssignment?.title}
                       </h2>
-                      <p className="text-gray-600 mb-4">
-                        Je-li směnka na jméno opatřena doložkou „nikoli na řad", může být převedena pouze cesí, tedy
-                        postoupením pohledávky smlouvou podle § 1879 a násl. zák. č. 89/2012 Sb., občanský zákoník, ve
-                        znění pozdějších předpisů. Postupník (ten kdo nabývá směnku) vstupuje na základě smlouvy o
-                        postoupení pohledávky do všech práv postupitele (toho kdo směnku postupuje) spojených s
-                        pohledávkou, tj. nedochází pouze k převodu práv ze směnky jako v případě rubopisu. Odkoupení
-                        směnky je tedy realizováno na základě smlouvy o postoupení pohledávky.
-                      </p>
-                      <p className="text-gray-600 mb-4">
-                        Cena (úplata, smluvní odměna) se pohybuje v rozmezí od 50 do 80 procent nominální hodnoty
-                        předmětu odkupu a závisí na nominální výši pohledávky nebo směnky a jejich kvalitě. Určuje se
-                        individuálně a s konečnou platností je stanovena v návrhu smlouvy. Bylo-li sjednáno postoupení
-                        směnky za úplatu, odpovídá postupitel postupníkovi až do výše přijaté úplaty s úroky za to, že
-                        pohledávka v době postoupení trvala, a podle dohody s postupníkem, může ručit i za její
-                        dobytnost.
-                      </p>
-                      <p className="text-gray-600 mb-4">
-                        V případě dohody o úhradě hotových výdajů postupníka, účelně vynaložených v souvislosti se
-                        zajištěním právních služeb, zejména na soudní a jiné poplatky, cestovní výdaje, poštovné,
-                        telekomunikační poplatky, znalecké posudky a odborná vyjádření, překlady, opisy a fotokopie,
-                        spojených s vymáháním pohledávky mimosoudní i soudní cestou, je zohledňována zejména složitost a
-                        skutková a právní náročnost věci, časové požadavky a nároky postupitele na vyřízení věci, jakož
-                        i bonita dlužníka.
-                      </p>
+                      
+                      {/* Use assignmentParagraphs with fallback to either paragraphs or converted steps */}
+                      {assignmentParagraphs?.map((paragraph: string, index: number) => (
+                        <p key={index} className="text-gray-600 mb-4">
+                          {paragraph}
+                        </p>
+                      ))}
+                      
+                      {/* Only show steps UI if steps exist AND paragraphs weren't created from steps */}
+                      {t.transferByAssignment?.steps && !assignmentParagraphs && (
+                        <div className="space-y-4 mt-4">
+                          {t.transferByAssignment.steps.map((step: any, idx: number) => (
+                            <div key={idx} className="rounded-lg bg-orange-50 p-4 border border-orange-100">
+                              <h4 className="font-semibold text-orange-800 mb-1">{step.title}</h4>
+                              <p className="text-gray-600">{step.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -155,50 +219,85 @@ export default function OdkupSmenekPage() {
         <div className="container mx-auto px-4 max-w-5xl">
           <SectionWrapper animation="fade-up">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                Výhody odkupu směnek
-              </div>
+              {t.benefits?.badge && (
+                <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
+                  {t.benefits.badge}
+                </div>
+              )}
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">
-                Proč využít službu odkupu směnek?
+                {t.benefits?.title}
               </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Nabídka služby odkupu směnky vás může zbavit starostí s upomínáním dlužníků a výdajů na úhradu právních
-                služeb
-              </p>
+              {t.benefits?.description && (
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  {t.benefits.description}
+                </p>
+              )}
             </div>
           </SectionWrapper>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: FileText,
-                title: "Okamžitá likvidita",
-                description: "Získáte finanční prostředky ihned, bez čekání na splatnost směnky.",
-              },
-              {
-                icon: Repeat,
-                title: "Přenos rizika",
-                description: "Riziko nezaplacení směnky přechází na naši společnost.",
-              },
-              {
-                icon: ScrollText,
-                title: "Právní jistota",
-                description: "Celý proces je zajištěn právně závaznou smlouvou o postoupení pohledávky.",
-              },
-            ].map((benefit, index) => (
-              <SectionWrapper key={index} animation="zoom" delay={index * 100}>
-                <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 h-full transition-all duration-300 hover:shadow-md hover:-translate-y-1">
-                  <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
-                    <benefit.icon className="h-6 w-6 text-orange-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600">{benefit.description}</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+            {t.benefits?.items?.map((benefit: any, index: number) => {
+              // Safely get the icon component
+              const IconComponent = benefit.icon && iconMap[benefit.icon] 
+                ? iconMap[benefit.icon] 
+                : Check;
+              
+              return (
+                <div
+                  key={index}
+                  className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <SectionWrapper animation="fade-up" delay={index * 0.1}>
+                    <div className="rounded-full bg-orange-100 w-12 h-12 flex items-center justify-center mb-4">
+                      <IconComponent className="h-6 w-6 text-orange-500" />
+                    </div>
+                    <h3 className="text-xl font-bold text-zinc-900 mb-2">{benefit.title}</h3>
+                    <p className="text-gray-600">{benefit.description}</p>
+                  </SectionWrapper>
                 </div>
-              </SectionWrapper>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      {t.faq?.items?.length > 0 && (
+        <section className="py-16">
+          <div className="container mx-auto px-4 max-w-5xl">
+            <SectionWrapper animation="fade-up">
+              <div className="text-center mb-12">
+                {t.faq?.badge && (
+                  <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
+                    {t.faq.badge}
+                  </div>
+                )}
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">
+                  {t.faq?.title}
+                </h2>
+                {t.faq?.description && (
+                  <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+                    {t.faq.description}
+                  </p>
+                )}
+              </div>
+            </SectionWrapper>
+
+            <div className="max-w-3xl mx-auto">
+              <Accordion type="single" collapsible className="w-full">
+                {t.faq?.items?.map((item: any, index: number) => (
+                  <AccordionItem key={index} value={`item-${index}`}>
+                    <AccordionTrigger className="text-left font-semibold">
+                      {item.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-gray-600">{item.answer}</AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </section>
+      )}
     </>
   )
 }

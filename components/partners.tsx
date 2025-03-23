@@ -1,36 +1,46 @@
 "use client"
 
 import { SectionWrapper } from "./section-wrapper"
-
-const partners = [
-  { name: "Partner 1", logo: "https://www.expohledavky.cz/assets/images/klienti/logo-01.png" },
-  { name: "Partner 2", logo: "https://www.expohledavky.cz/assets/images/klienti/logo-02.png" },
-  { name: "Partner 3", logo: "https://www.expohledavky.cz/assets/images/klienti/logo-03.png" },
-  { name: "Partner 4", logo: "https://www.expohledavky.cz/assets/images/klienti/logo-04.png" },
-  { name: "Partner 5", logo: "https://www.expohledavky.cz/assets/images/klienti/logo-05.png" },
-  { name: "Partner 6", logo: "https://www.expohledavky.cz/assets/images/klienti/logo-06.png" },
-  { name: "Partner 7", logo: "https://www.expohledavky.cz/assets/images/klienti/logo-07.png" },
-  { name: "Partner 8", logo: "https://www.expohledavky.cz/assets/images/klienti/logo-08.png" },
-  { name: "Partner 9", logo: "https://www.expohledavky.cz/assets/images/klienti/benefit.png" },
-]
+import { useTranslations } from "@/lib/i18n"
+import { Fragment, useState, useEffect } from "react"
 
 export function Partners() {
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  // Use client translations
+  const t = useTranslations('partners')
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  
+  // Render the text with the link properly inserted
+  const renderRankingText = () => {
+    const parts = t.rankingText.split('{entuzioLink}')
+    return (
+      <>
+        {parts[0]}
+        <a
+          href={t.entuzioUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-semibold text-orange-500 hover:text-orange-600"
+        >
+          {t.entuzioLinkText}
+        </a>
+        {parts[1]}
+      </>
+    )
+  }
+  
   return (
     <section className="py-24">
       <div className="container">
         <SectionWrapper animation="fade-up">
           <div className="text-center">
             <p className="text-lg text-gray-600">
-              Podle nezávislého testu recenzního portálu{" "}
-              <a
-                href="https://entuzio.cz/agentury-na-vymahani-pohledavek-a-dluhu/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-orange-500 hover:text-orange-600"
-              >
-                Entuzio.cz
-              </a>{" "}
-              patříme mezi nejlepší firmy na vymáhání pohledávek.
+              {renderRankingText()}
             </p>
           </div>
         </SectionWrapper>
@@ -69,7 +79,7 @@ export function Partners() {
 
           <div className="logos-slide">
             {/* First set of partners */}
-            {partners.map((partner) => (
+            {t.partners.map((partner: any) => (
               <div key={partner.name} className="logo-item flex items-center justify-center">
                 <img 
                   src={partner.logo || "/placeholder.svg"} 
@@ -80,7 +90,7 @@ export function Partners() {
               </div>
             ))}
             {/* Second set of partners (duplicate) */}
-            {partners.map((partner) => (
+            {t.partners.map((partner: any) => (
               <div key={`${partner.name}-duplicate`} className="logo-item flex items-center justify-center">
                 <img 
                   src={partner.logo || "/placeholder.svg"} 

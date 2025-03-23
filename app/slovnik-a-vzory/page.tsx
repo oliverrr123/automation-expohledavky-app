@@ -54,6 +54,18 @@ interface DictionaryItem {
   };
 }
 
+// Function to convert Tailwind color classes to hex colors
+const getTailwindColor = (colorClass: string): string => {
+  const colorMap: Record<string, string> = {
+    'text-blue-700': '#1d4ed8',   // Blue 700
+    'text-orange-700': '#c2410c', // Orange 700
+    'text-green-700': '#15803d',  // Green 700
+    // Add more colors as needed
+  };
+  
+  return colorMap[colorClass] || '';
+};
+
 type SearchableItem = TemplateItem | DictionaryItem;
 
 export default function SlovnikAVzoryPage() {
@@ -510,7 +522,7 @@ export default function SlovnikAVzoryPage() {
               <div className="space-y-8">
                 {t.dictionaryTerms.map((term: any, index: number) => (
                   <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
-                    <CardHeader className={`bg-gradient-to-r ${term.background} border-b`}>
+                    <CardHeader className={`bg-${term.background} border-b`}>
                       <div className="flex justify-between items-center">
                         <div>
                           <CardTitle className={`text-2xl ${term.textColor}`}>{term.title}</CardTitle>
@@ -590,7 +602,10 @@ export default function SlovnikAVzoryPage() {
                   className="bg-white rounded-lg shadow-md p-8 mb-8"
                 >
                   <div className="flex items-center mb-6">
-                    <div className={`${term.detailLetter.background} ${term.detailLetter.textColor} text-3xl font-bold w-12 h-12 rounded-full flex items-center justify-center mr-4`}>
+                    <div 
+                      className={`${term.detailLetter.background} text-3xl font-bold w-12 h-12 rounded-full flex items-center justify-center mr-4`}
+                      style={{ color: getTailwindColor(term.detailLetter.textColor) }}
+                    >
                       {term.letter}
                     </div>
                     <h3 className="text-2xl font-bold">{term.title}</h3>

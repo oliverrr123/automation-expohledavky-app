@@ -1,0 +1,41 @@
+import { headers } from 'next/headers'
+
+/**
+ * Get the locale from the server using headers.
+ * Safe to use in Server Components.
+ * @returns The detected locale code
+ */
+export function getServerLocale(defaultLocale: string = 'cs'): string {
+  let locale = defaultLocale
+  
+  try {
+    const headersList = headers()
+    const host = headersList.get('host') || ''
+    const domain = host.split(':')[0] // Remove port if exists
+    
+    // Determine locale from domain
+    if (domain.includes('expohledavky.com') || domain.startsWith('en.')) locale = 'en'
+    else if (domain.includes('expohledavky.sk') || domain.startsWith('sk.')) locale = 'sk'
+    else if (domain.includes('expohledavky.de') || domain.startsWith('de.')) locale = 'de'
+    else if (domain.includes('expohledavky.cz') || domain.startsWith('cs.')) locale = 'cs'
+  } catch (error) {
+    // If headers are not available, return the default locale
+    console.error("Error detecting locale from headers:", error)
+  }
+  
+  return locale
+}
+
+/**
+ * Server-compatible loading component utility for internationalized loading screens
+ * @param translations Object containing translations for each locale
+ * @param defaultLocale Default locale to use if detection fails
+ * @returns The translated string for the current locale
+ */
+export function getServerLoadingMessage(
+  translations: Record<string, string>,
+  defaultLocale: string = 'cs'
+): string {
+  const locale = getServerLocale(defaultLocale)
+  return translations[locale] || translations[defaultLocale] || ''
+} 

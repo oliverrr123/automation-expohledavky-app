@@ -1,5 +1,5 @@
+import "@/app/globals.css"
 import type React from "react"
-import "@/styles/globals.css"
 import { Montserrat } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -54,13 +54,32 @@ export const generateMetadata = (): Metadata => {
   
   // Only get metadata if we could determine the locale
   if (!serverLocale) {
-    // Return minimal metadata if locale is unknown
+    // Return minimal metadata if locale is unknown - only essential branding
     return {
       title: 'ExPohledavky',
       generator: 'v0.dev',
+      icons: {
+        icon: [
+          { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+          { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+        ],
+        shortcut: '/favicon/favicon.ico',
+        apple: '/favicon/apple-touch-icon.png',
+        other: [
+          {
+            rel: 'apple-touch-icon',
+            url: '/favicon/apple-touch-icon.png',
+          },
+          {
+            rel: 'manifest',
+            url: '/favicon/site.webmanifest',
+          }
+        ],
+      },
     };
   }
   
+  // Get locale-specific metadata only if we have a valid locale
   const meta = getLocaleMetadata(serverLocale);
   
   return {
@@ -98,17 +117,17 @@ export default function RootLayout({
   const serverLocale = getServerLocale();
   
   // Only proceed with locale-specific metadata if we could determine the locale
-  const meta = serverLocale ? getLocaleMetadata(serverLocale) : { language: 'en' };
+  const meta = serverLocale ? getLocaleMetadata(serverLocale) : { language: '' };
   
   return (
-    <html lang={meta.language} className={`scroll-smooth ${montserrat.variable}`}>
+    <html lang={meta.language || ''} className={`scroll-smooth ${montserrat.variable}`}>
       <head>
         <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon/favicon-16x16.png" type="image/png" sizes="16x16" />
         <link rel="icon" href="/favicon/favicon-32x32.png" type="image/png" sizes="32x32" />
         <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
         <link rel="manifest" href="/favicon/site.webmanifest" />
-        {/* Force locale to match domain during server-side rendering */}
+        {/* Only set locale if it was explicitly detected from the domain */}
         {serverLocale && (
           <script dangerouslySetInnerHTML={{
             __html: `
@@ -132,5 +151,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-import './globals.css'

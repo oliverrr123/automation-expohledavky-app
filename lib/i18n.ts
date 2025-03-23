@@ -21,6 +21,7 @@ import csHeader from '@/locales/cs/header.json';
 import csFooter from '@/locales/cs/footer.json';
 import csMetadata from '@/locales/cs/metadata.json';
 import csServicesLayout from '@/locales/cs/services-layout.json';
+import csLoading from '@/locales/cs/loading.json';
 
 // English translations
 import enHero from '@/locales/en/hero.json';
@@ -46,6 +47,7 @@ import enHeader from '@/locales/en/header.json';
 import enFooter from '@/locales/en/footer.json';
 import enMetadata from '@/locales/en/metadata.json';
 import enServicesLayout from '@/locales/en/services-layout.json';
+import enLoading from '@/locales/en/loading.json';
 
 // German translations
 import deHero from '@/locales/de/hero.json';
@@ -71,6 +73,7 @@ import deHeader from '@/locales/de/header.json';
 import deFooter from '@/locales/de/footer.json';
 import deMetadata from '@/locales/de/metadata.json';
 import deServicesLayout from '@/locales/de/services-layout.json';
+import deLoading from '@/locales/de/loading.json';
 
 // Slovak translations
 import skHero from '@/locales/sk/hero.json';
@@ -96,6 +99,7 @@ import skHeader from '@/locales/sk/header.json';
 import skFooter from '@/locales/sk/footer.json';
 import skMetadata from '@/locales/sk/metadata.json';
 import skServicesLayout from '@/locales/sk/services-layout.json';
+import skLoading from '@/locales/sk/loading.json';
 
 import { getLanguageFromHostname } from './domain-mapping';
 import Cookies from 'js-cookie';
@@ -132,7 +136,8 @@ const translations: Record<string, Record<string, any>> = {
     header: csHeader,
     footer: csFooter,
     metadata: csMetadata,
-    servicesLayout: csServicesLayout
+    servicesLayout: csServicesLayout,
+    loading: csLoading
   },
   en: {
     hero: enHero,
@@ -157,7 +162,8 @@ const translations: Record<string, Record<string, any>> = {
     header: enHeader,
     footer: enFooter,
     metadata: enMetadata,
-    servicesLayout: enServicesLayout
+    servicesLayout: enServicesLayout,
+    loading: enLoading
   },
   de: {
     hero: deHero,
@@ -182,7 +188,8 @@ const translations: Record<string, Record<string, any>> = {
     header: deHeader,
     footer: deFooter,
     metadata: deMetadata,
-    servicesLayout: deServicesLayout
+    servicesLayout: deServicesLayout,
+    loading: deLoading
   },
   sk: {
     hero: skHero,
@@ -207,7 +214,8 @@ const translations: Record<string, Record<string, any>> = {
     header: skHeader,
     footer: skFooter,
     metadata: skMetadata,
-    servicesLayout: skServicesLayout
+    servicesLayout: skServicesLayout,
+    loading: skLoading
   }
 };
 

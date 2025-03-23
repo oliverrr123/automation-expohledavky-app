@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MDXRemote } from 'next-mdx-remote';
+import { MDXClient } from 'next-mdx-remote-client/csr';
 
 // Vlastní komponenty pro MDX
 const components = {
@@ -51,6 +51,6 @@ export default function MDXContent({ source }: MDXContentProps) {
     return <div className="animate-pulse bg-orange-50 h-64 rounded-md" />;
   }
 
-  // Jinak vrátíme MDXRemote komponentu s obsahem a vlastními komponentami
-  return <MDXRemote {...source} components={components} />;
+  // Jinak vrátíme MDXClient komponentu s obsahem a vlastními komponentami
+  return <MDXClient {...source} components={components} />;
 } 

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { serialize } from 'next-mdx-remote/serialize';
+import { serialize } from 'next-mdx-remote-client/serialize';
 
 export interface PostData {
   slug: string;
@@ -81,12 +81,15 @@ export async function getPostBySlug(slug: string): Promise<PostData | null> {
 
     const source = fs.readFileSync(filePath, 'utf8');
     const { content, data } = matter(source);
-    const mdxSource = await serialize(content, {
-      mdxOptions: {
-        remarkPlugins: [],
-        rehypePlugins: [],
-      },
-      scope: data,
+    const mdxSource = await serialize({
+      source: content,
+      options: {
+        mdxOptions: {
+          remarkPlugins: [],
+          rehypePlugins: [],
+        },
+        scope: data,
+      }
     });
     
     // Zajistíme, že frontMatter obsahuje povinné vlastnosti

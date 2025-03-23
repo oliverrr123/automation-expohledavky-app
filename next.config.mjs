@@ -71,58 +71,12 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  transpilePackages: ['next-mdx-remote'],
   reactStrictMode: true,
   poweredByHeader: false,
   
-  // Configure internationalization
-  i18n: {
-    // All locales supported
-    locales: ['cs', 'sk', 'de', 'en'],
-    // Default locale used when the locale is not specific in hostname
-    defaultLocale: 'cs',
-    // No locale-prefixed paths (as we'll use domains)
-    localeDetection: false,
-    // Domain-specific configurations
-    domains: process.env.NODE_ENV === 'production' ? [
-      {
-        domain: 'expohledavky.cz',
-        defaultLocale: 'cs',
-      },
-      {
-        domain: 'expohledavky.sk',
-        defaultLocale: 'sk',
-      },
-      {
-        domain: 'expohledavky.de',
-        defaultLocale: 'de',
-      },
-      {
-        domain: 'expohledavky.com',
-        defaultLocale: 'en',
-      },
-      {
-        domain: 'expohledavky.cz',
-        defaultLocale: 'cs',
-      },
-    ] : [
-      {
-        domain: 'cs.localhost',
-        defaultLocale: 'cs',
-      },
-      {
-        domain: 'sk.localhost',
-        defaultLocale: 'sk',
-      },
-      {
-        domain: 'de.localhost', 
-        defaultLocale: 'de',
-      },
-      {
-        domain: 'en.localhost',
-        defaultLocale: 'en',
-      },
-    ],
-  },
+  // App Router internationalization - removed i18n config from here
+  // as it's handled through middleware and client code
   
   // Configure Content Security Policy headers
   async headers() {

@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { toast } from "sonner"
 import { LanguageSwitcher } from "./language-switcher"
+import { getLanguageFromHostname } from "@/lib/domain-mapping"
 
 // Define types for navigation items and translations
 interface SubmenuItem {
@@ -56,59 +57,45 @@ interface HeaderTranslations {
   countries: CountryItem[];
 }
 
-// Update the default translations to include basic navigation items
-const defaultTranslations: HeaderTranslations = {
+// Create an empty translations object structure without default values
+const emptyTranslations: HeaderTranslations = {
   phone: {
-    number: "+420 777 123 456",
-    display: "+420 777 123 456",
-    successMessage: "Číslo zkopírováno do schránky",
-    errorMessage: "Nepodařilo se zkopírovat číslo"
+    number: "",
+    display: "",
+    successMessage: "",
+    errorMessage: ""
   },
   topBar: {
-    hours: "Po-Pá: 9:00 - 17:00",
-    country: "Česká republika"
+    hours: "",
+    country: ""
   },
   company: {
     prefix: "EX",
     name: "POHLEDÁVKY"
   },
   mobileMenu: {
-    openMenu: "Otevřít menu",
-    menuTitle: "Menu"
+    openMenu: "",
+    menuTitle: ""
   },
-  navigation: [
-    { name: "Úvod", href: "/" },
-    { name: "O nás", href: "/o-nas" },
-    { name: "Naše služby", href: "/nase-sluzby", hasDropdown: true, submenu: [
-      { name: "Vymáhání pohledávek", href: "/nase-sluzby/vymahani-pohledavek" },
-      { name: "Správa firemních pohledávek", href: "/nase-sluzby/sprava-firemnich-pohledavek" },
-      { name: "Odkup a prodej pohledávek", href: "/nase-sluzby/odkup-a-prodej-pohledavek" },
-      { name: "Odkup firem", href: "/nase-sluzby/odkup-firem" },
-      { name: "Odkup směnek", href: "/nase-sluzby/odkup-smenek" },
-      { name: "Partner v Lichtenštejnsku", href: "https://expohledavky.cz/firstAdvisoryGroup.pdf" }
-    ] },
-    { name: "Ceník", href: "/cenik" },
-    { name: "Slovník a vzory", href: "/slovniky-a-vzory" },
-    { name: "Blog", href: "/blog" },
-    { name: "Kariéra", href: "/kariera" },
-    { name: "Kontakt", href: "/kontakt" }
-  ],
+  navigation: [],
   buttons: {
-    clientZone: "Klientská zóna",
-    clientLogin: "/klient"
+    clientZone: "",
+    clientLogin: ""
   },
   countries: []
 };
 
 export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
-  const { locale } = useParams() || { locale: "cs" }
+  const { locale } = useParams() || { locale: "" }
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-  // Start with default translations to avoid hydration mismatch
-  const [translations, setTranslations] = useState<HeaderTranslations>(defaultTranslations)
+  // Start with empty translations to avoid wrong language display
+  const [translations, setTranslations] = useState<HeaderTranslations>(emptyTranslations)
   const [isLoaded, setIsLoaded] = useState(false)
+  // Track if first load is complete, used to avoid initial flash
+  const [initialRenderComplete, setInitialRenderComplete] = useState(false)
   
   const handleCopy = async (text: string) => {
     try {
@@ -136,37 +123,28 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
     }, 100) // Small delay to allow moving to dropdown
   }
 
+  // Effect to mark when first client render is complete
+  useEffect(() => {
+    setInitialRenderComplete(true);
+  }, []);
+  
   // Load translations based on locale
   useEffect(() => {
     const loadTranslations = async () => {
       try {
-        // Detect locale from hostname directly
-        const detectLocale = (): string => {
-          const hostname = window.location.hostname;
-          
-          if (hostname.includes('expohledavky.cz')) return 'cs';
-          if (hostname.includes('expohledavky.sk')) return 'sk';
-          if (hostname.includes('expohledavky.de')) return 'de';
-          if (hostname.includes('expohledavky.com')) return 'en';
-          
-          // Localhost development
-          if (hostname.includes('cs.localhost')) return 'cs';
-          if (hostname.includes('sk.localhost')) return 'sk';
-          if (hostname.includes('de.localhost')) return 'de';
-          if (hostname.includes('en.localhost')) return 'en';
-          
-          return 'cs'; // Default fallback
-        };
+        // Detect locale from hostname using the utility function
+        const hostname = window.location.hostname;
+        const detectedLocale = getLanguageFromHostname(hostname);
         
-        const detectedLocale = typeof window !== 'undefined' ? detectLocale() : 'cs';
-        const headerTranslations = await import(`@/locales/${detectedLocale}/header.json`);
-        setTranslations(headerTranslations.default);
+        if (detectedLocale) {
+          const headerTranslations = await import(`@/locales/${detectedLocale}/header.json`);
+          setTranslations(headerTranslations.default);
+        } else {
+          console.error("No locale detected from hostname:", hostname);
+        }
         setIsLoaded(true);
       } catch (error) {
         console.error("Failed to load header translations:", error);
-        // Fallback to Czech if translations fail to load
-        const fallbackTranslations = await import(`@/locales/cs/header.json`);
-        setTranslations(fallbackTranslations.default);
         setIsLoaded(true);
       }
     }
@@ -197,28 +175,56 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
     }
   }, [])
 
-  // Always render with default translations first, then update with real translations
+  // Don't render anything on first server render to prevent flash of default content
+  // Only show content after client-side hydration and locale detection
+  if (!initialRenderComplete) {
+    // Return a minimal header with the same layout structure but no content
+    return (
+      <header className="fixed inset-x-0 top-0 z-40 transition-colors duration-500">
+        <div className="bg-zinc-900 text-zinc-200">
+          <div className="container mx-auto flex items-center justify-between px-4 py-2">
+            <div className="flex items-center gap-6"></div>
+            <div></div> {/* Placeholder for language switcher */}
+          </div>
+        </div>
+        <div className={`${isScrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"} transition-all duration-500`}>
+          <div className="container mx-auto px-4">
+            <nav className="flex h-16 items-center justify-between">
+              <div className="flex lg:flex-1"></div>
+              <div className="flex lg:hidden"></div>
+            </nav>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
+  // Only render content when we have translations loaded for a smoother experience
   return (
     <header className="fixed inset-x-0 top-0 z-40 transition-colors duration-500">
       <div className="bg-zinc-900 text-zinc-200">
         <div className="container mx-auto flex items-center justify-between px-4 py-2">
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <Phone className="h-4 w-4" />
-              <a 
-                href={`tel:${translations.phone.number}`}
-                className="text-sm hover:text-white cursor-pointer transition-opacity duration-300"
-                onClick={(e) => {
-                  e.preventDefault()
-                  handleCopy(translations.phone.number)
-                }}
-              >
-                {translations.phone.display}
-              </a>
-            </div>
-            <span className="hidden text-sm text-zinc-400 sm:block transition-opacity duration-300">
-              {translations.topBar.hours}
-            </span>
+            {translations.phone.number && (
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4" />
+                <a 
+                  href={`tel:${translations.phone.number}`}
+                  className="text-sm hover:text-white cursor-pointer transition-opacity duration-300"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    handleCopy(translations.phone.number)
+                  }}
+                >
+                  {translations.phone.display}
+                </a>
+              </div>
+            )}
+            {translations.topBar.hours && (
+              <span className="hidden text-sm text-zinc-400 sm:block transition-opacity duration-300">
+                {translations.topBar.hours}
+              </span>
+            )}
           </div>
           <LanguageSwitcher />
         </div>

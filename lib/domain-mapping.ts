@@ -9,7 +9,11 @@ export const DOMAIN_LANG_MAP: Record<string, string> = {
   'cs.localhost:3000': 'cs',
   'sk.localhost:3000': 'sk',
   'de.localhost:3000': 'de',
-  // No default for localhost
+  // Add mappings without port for dev environment
+  'en.localhost': 'en',
+  'cs.localhost': 'cs',
+  'sk.localhost': 'sk',
+  'de.localhost': 'de',
 }
 
 // Check if we're in development environment
@@ -21,7 +25,7 @@ const isDev = typeof window !== 'undefined' ?
 /**
  * Get language code based on the hostname
  * This is used for client-side hostname detection
- * Each domain STRICTLY serves its own language
+ * Each domain STRICTLY serves its own language with NO DEFAULTS
  */
 export function getLanguageFromHostname(hostname: string): string {
   // Exact hostname match (including port)
@@ -48,24 +52,22 @@ export function getLanguageFromHostname(hostname: string): string {
   return '';
 }
 
-// Map domain to URL
+/**
+ * Get the appropriate domain for a language
+ * Used for language switching
+ */
 export function getDomainForLanguage(lang: string): string {
   // Special handling for development environment
   if (isDev) {
     return `${lang}.localhost${typeof window !== 'undefined' ? `:${window.location.port}` : ':3000'}`;
   }
   
-  // Production environment
-  // Reverse lookup from DOMAIN_LANG_MAP
-  for (const [domain, langCode] of Object.entries(DOMAIN_LANG_MAP)) {
-    // Skip development entries
-    if (domain.includes('localhost')) continue;
-    
-    if (langCode === lang) {
-      return domain;
-    }
+  // Production environment - direct mapping with no defaults
+  switch (lang) {
+    case 'en': return 'expohledavky.com';
+    case 'cs': return 'expohledavky.cz';
+    case 'sk': return 'expohledavky.sk';
+    case 'de': return 'expohledavky.de';
+    default: return '';
   }
-  
-  // Default to .com
-  return 'expohledavky.com';
 } 

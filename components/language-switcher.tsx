@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Globe } from 'lucide-react'
 import { locales } from '@/lib/i18n'
-import { getDomainForLanguage } from '@/lib/domain-mapping'
+import { getDomainForLanguage, getLanguageFromHostname } from '@/lib/domain-mapping'
 
 // Language display names
 const languageNames: Record<string, string> = {
@@ -38,34 +38,30 @@ const isDev = typeof window !== 'undefined' ?
 export function LanguageSwitcher() {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
-  // Always start with Czech to match server-side render
-  const [currentLocale, setCurrentLocale] = useState<string>('cs')
+  // Don't set any default language
+  const [currentLocale, setCurrentLocale] = useState<string>('')
   // Track if we're client-side rendered
   const [isClient, setIsClient] = useState(false)
+  // Track initial render completion to prevent flash
+  const [initialRenderComplete, setInitialRenderComplete] = useState(false)
+  
+  // Mark first render complete
+  useEffect(() => {
+    setInitialRenderComplete(true);
+  }, []);
   
   // Update locale and set client flag after hydration
   useEffect(() => {
     setIsClient(true)
     
     // Get current locale from hostname
-    const detectLocale = (): string => {
-      const hostname = window.location.hostname
-      
-      if (hostname.includes('expohledavky.cz')) return 'cs'
-      if (hostname.includes('expohledavky.sk')) return 'sk'
-      if (hostname.includes('expohledavky.de')) return 'de'
-      if (hostname.includes('expohledavky.com')) return 'en'
-      
-      // Localhost development
-      if (hostname.includes('cs.localhost')) return 'cs'
-      if (hostname.includes('sk.localhost')) return 'sk'
-      if (hostname.includes('de.localhost')) return 'de'
-      if (hostname.includes('en.localhost')) return 'en'
-      
-      return 'cs' // Default fallback
-    }
+    const hostname = window.location.hostname
+    const detectedLocale = getLanguageFromHostname(hostname)
     
-    setCurrentLocale(detectLocale())
+    // Only set locale if one was detected
+    if (detectedLocale) {
+      setCurrentLocale(detectedLocale)
+    }
   }, [])
   
   const switchLanguage = (locale: string) => {
@@ -94,14 +90,23 @@ export function LanguageSwitcher() {
     window.location.href = targetUrl
   }
   
+  // Only render the language name if we have detected a valid locale
+  const displayName = currentLocale ? languageNames[currentLocale] : ''
+  const displayFlag = currentLocale ? languageFlags[currentLocale] : ''
+  
+  // Return minimal structure during first render to prevent flash
+  if (!initialRenderComplete) {
+    return <div className="w-8 h-8"></div>;
+  }
+  
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="px-2">
           <Globe className="h-4 w-4 mr-1" />
-          <span className="mr-1">{languageFlags[currentLocale]}</span>
+          {displayFlag && <span className="mr-1">{displayFlag}</span>}
           <span className="sr-only sm:not-sr-only sm:inline-block">
-            {languageNames[currentLocale]}
+            {displayName}
           </span>
         </Button>
       </DropdownMenuTrigger>

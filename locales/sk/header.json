@@ -9,25 +9,25 @@
   },
   "navigation": [
     { "name": "Úvod", "href": "/" },
-    { "name": "O nás", "href": "/o-nas" },
+    { "name": "O nás", "href": "o-nas" },
     {
       "name": "Naše služby",
-      "href": "/nase-sluzby",
+      "href": "nase-sluzby",
       "hasDropdown": true,
       "submenu": [
-        { "name": "Vymáhanie pohľadávok", "href": "/nase-sluzby/vymahani-pohledavek" },
-        { "name": "Správa firemných pohľadávok", "href": "/nase-sluzby/sprava-firemnich-pohledavek" },
-        { "name": "Odkúp a predaj pohľadávok", "href": "/nase-sluzby/odkup-prodej-pohledavek" },
-        { "name": "Odkúp firiem", "href": "/nase-sluzby/odkup-firem" },
-        { "name": "Odkúp zmeniek", "href": "/nase-sluzby/odkup-smenek" },
+        { "name": "Vymáhanie pohľadávok", "href": "nase-sluzby/vymahanie-pohladavok" },
+        { "name": "Správa firemných pohľadávok", "href": "nase-sluzby/sprava-firemnych-pohladavok" },
+        { "name": "Odkúp a predaj pohľadávok", "href": "nase-sluzby/odkup-predaj-pohladavok" },
+        { "name": "Odkúp firiem", "href": "nase-sluzby/odkup-firiem" },
+        { "name": "Odkúp zmeniek", "href": "nase-sluzby/odkup-zmeniek" },
         { "name": "Partner v Lichtenštajnsku", "href": "https://expohledavky.cz/firstAdvisoryGroup.pdf", "target": "_blank" }
       ]
     },
-    { "name": "Cenník", "href": "/cenik" },
-    { "name": "Slovník a vzory", "href": "/slovnik-a-vzory" },
-    { "name": "Blog", "href": "/blog" },
-    { "name": "Kariéra", "href": "/kariera" },
-    { "name": "Kontakt", "href": "/kontakt" }
+    { "name": "Cenník", "href": "cennik" },
+    { "name": "Slovník a vzory", "href": "slovnik-a-vzory" },
+    { "name": "Blog", "href": "blog" },
+    { "name": "Kariéra", "href": "kariera" },
+    { "name": "Kontakt", "href": "kontakt" }
   ],
   "countries": [
     { "name": "United Kingdom", "href": "https://exreceivables.com/" },
@@ -36,7 +36,7 @@
   ],
   "buttons": {
     "clientZone": "Klientska zóna",
-    "clientLogin": "/klient-prihlaseni"
+    "clientLogin": "klient-prihlasenie"
   },
   "mobileMenu": {
     "openMenu": "Otvoriť menu",

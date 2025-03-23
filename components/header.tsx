@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { toast } from "sonner"
 import { LanguageSwitcher } from "./language-switcher"
 import { getLanguageFromHostname } from "@/lib/domain-mapping"
+import { LocalizedLink } from "./ui/localized-link"
 
 // Define types for navigation items and translations
 interface SubmenuItem {
@@ -260,36 +261,46 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                     <SheetTitle>{translations.mobileMenu.menuTitle}</SheetTitle>
                   </SheetHeader>
                   <nav className="mt-6">
-                    {translations.navigation.map((item: any) => (
+                    {translations.navigation.map((item) => (
                       <div key={item.name}>
                         {item.hasDropdown ? (
-                          <>
-                            <Link
+                          <div className="relative">
+                            <LocalizedLink
                               href={item.href}
-                              className="block py-3 text-lg font-semibold text-zinc-900 hover:text-orange-500"
+                              className="block py-3 text-base font-medium text-zinc-700"
+                              onClick={() => setIsOpen(false)}
                             >
                               {item.name}
-                            </Link>
-                            <div className="pl-4 border-l border-gray-200">
-                              {item.submenu?.map((subItem: any) => (
-                                <Link
-                                  key={subItem.name}
-                                  href={subItem.href}
-                                  target={subItem.target}
-                                  className="block py-2 text-base text-zinc-700 hover:text-orange-500"
-                                >
-                                  {subItem.name}
-                                </Link>
-                              ))}
-                            </div>
-                          </>
+                            </LocalizedLink>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <button className="absolute right-0 top-3">
+                                  <ChevronDown className="h-4 w-4" />
+                                </button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="start" className="w-56">
+                                {item.submenu?.map((subitem) => (
+                                  <DropdownMenuItem key={subitem.name} asChild>
+                                    <LocalizedLink
+                                      href={subitem.href}
+                                      target={subitem.target}
+                                      className="cursor-pointer"
+                                    >
+                                      {subitem.name}
+                                    </LocalizedLink>
+                                  </DropdownMenuItem>
+                                ))}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
                         ) : (
-                          <Link
+                          <LocalizedLink
                             href={item.href}
-                            className="block py-3 text-lg font-semibold text-zinc-900 hover:text-orange-500"
+                            className="block py-3 text-base font-medium text-zinc-700"
+                            onClick={() => setIsOpen(false)}
                           >
                             {item.name}
-                          </Link>
+                          </LocalizedLink>
                         )}
                       </div>
                     ))}
@@ -302,55 +313,54 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
             </div>
 
             <div className="hidden lg:flex lg:gap-x-8">
-              {translations.navigation.map((item: any) =>
-                item.hasDropdown ? (
-                  <div
-                    key={item.name}
-                    className="relative h-full flex items-center"
-                    onMouseEnter={() => handleMouseEnter(item.name)}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    <Link
+              {translations.navigation.map((item) => (
+                <div key={item.name} className="relative">
+                  {item.hasDropdown ? (
+                    <div
+                      className="group"
+                      onMouseEnter={() => handleMouseEnter(item.name)}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <LocalizedLink
+                        href={item.href}
+                        className={`flex items-center gap-1 text-sm font-semibold transition-colors duration-200 ${
+                          isScrolled ? "text-zinc-700 hover:text-zinc-900" : "text-white hover:text-orange-50"
+                        }`}
+                      >
+                        {item.name}
+                        <ChevronDown className="h-4 w-4" />
+                      </LocalizedLink>
+                      {activeDropdown === item.name && (
+                        <div
+                          className="absolute left-0 top-full z-10 mt-1 w-60 rounded-md bg-white p-2 shadow-lg ring-1 ring-black/5 transition-opacity duration-200 group-hover:opacity-100"
+                          onMouseEnter={() => handleMouseEnter(item.name)}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          {item.submenu?.map((subitem) => (
+                            <LocalizedLink
+                              key={subitem.name}
+                              href={subitem.href}
+                              target={subitem.target}
+                              className="block rounded-md px-3 py-2 text-sm text-zinc-700 hover:bg-orange-50 transition-colors duration-200"
+                            >
+                              {subitem.name}
+                            </LocalizedLink>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <LocalizedLink
                       href={item.href}
-                      className={`flex items-center text-sm font-semibold leading-6 transition-colors duration-500 opacity-100 ${
-                        isScrolled ? "text-zinc-900 hover:text-orange-500" : "text-white hover:text-orange-300"
+                      className={`text-sm font-semibold transition-colors duration-300 ${
+                        isScrolled ? "text-zinc-700 hover:text-zinc-900" : "text-white hover:text-orange-50"
                       }`}
                     >
                       {item.name}
-                      <ChevronDown className="ml-1 h-4 w-4" />
-                    </Link>
-
-                    {activeDropdown === item.name && (
-                      <div
-                        className="dropdown-menu absolute left-0 top-full z-[100] mt-1 w-64 overflow-visible rounded-lg border border-gray-100 bg-white p-2 shadow-lg"
-                        onMouseEnter={() => handleMouseEnter(item.name)}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        {item.submenu?.map((subItem: any) => (
-                          <Link
-                            key={subItem.name}
-                            href={subItem.href}
-                            target={subItem.target}
-                            className="block rounded-md px-3.5 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-orange-500"
-                          >
-                            {subItem.name}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`text-sm font-semibold leading-6 transition-colors duration-500 ${
-                      isScrolled ? "text-zinc-900 hover:text-orange-500" : "text-white hover:text-orange-300"
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                ),
-              )}
+                    </LocalizedLink>
+                  )}
+                </div>
+              ))}
             </div>
 
             <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -361,7 +371,9 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                     : "bg-zinc-900 text-white hover:bg-zinc-900/90"
                 }`}
               >
-                <Link href={translations.buttons.clientLogin}>{translations.buttons.clientZone}</Link>
+                <LocalizedLink href={translations.buttons.clientLogin}>
+                  {translations.buttons.clientZone}
+                </LocalizedLink>
               </Button>
             </div>
           </nav>

@@ -48,6 +48,18 @@ export function getLanguageFromHostname(hostname: string): string {
   if (domain.startsWith('de.')) return 'de';
   if (domain.startsWith('cs.')) return 'cs';
   
+  // Development fallback: Check for locale in URL
+  if (isDev) {
+    // For localhost without subdomain, check if there's a _locale parameter in the URL
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const localeParam = urlParams.get('_locale');
+      if (localeParam && ['en', 'cs', 'sk', 'de'].includes(localeParam)) {
+        return localeParam;
+      }
+    }
+  }
+  
   // If domain not recognized, return empty string - NO DEFAULT
   return '';
 }
@@ -59,7 +71,17 @@ export function getLanguageFromHostname(hostname: string): string {
 export function getDomainForLanguage(lang: string): string {
   // Special handling for development environment
   if (isDev) {
-    return `${lang}.localhost${typeof window !== 'undefined' ? `:${window.location.port}` : ':3000'}`;
+    // Check if we're already using subdomains in development
+    if (typeof window !== 'undefined' && 
+        (window.location.hostname === 'localhost' || 
+         window.location.hostname.endsWith('.localhost'))) {
+      return `${lang}.localhost${typeof window !== 'undefined' ? `:${window.location.port}` : ':3000'}`;
+    }
+    
+    // Alternative development approach: maintain the current URL but change the locale parameter
+    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+      return 'localhost';
+    }
   }
   
   // Production environment - direct mapping with no defaults

@@ -9,25 +9,25 @@
   },
   "navigation": [
     { "name": "Úvod", "href": "/" },
-    { "name": "O nás", "href": "/o-nas" },
+    { "name": "O nás", "href": "o-nas" },
     {
       "name": "Naše služby",
-      "href": "/nase-sluzby",
+      "href": "nase-sluzby",
       "hasDropdown": true,
       "submenu": [
-        { "name": "Vymáhání pohledávek", "href": "/nase-sluzby/vymahani-pohledavek" },
-        { "name": "Správa firemních pohledávek", "href": "/nase-sluzby/sprava-firemnich-pohledavek" },
-        { "name": "Odkup a prodej pohledávek", "href": "/nase-sluzby/odkup-prodej-pohledavek" },
-        { "name": "Odkup firem", "href": "/nase-sluzby/odkup-firem" },
-        { "name": "Odkup směnek", "href": "/nase-sluzby/odkup-smenek" },
+        { "name": "Vymáhání pohledávek", "href": "nase-sluzby/vymahani-pohledavek" },
+        { "name": "Správa firemních pohledávek", "href": "nase-sluzby/sprava-firemnich-pohledavek" },
+        { "name": "Odkup a prodej pohledávek", "href": "nase-sluzby/odkup-prodej-pohledavek" },
+        { "name": "Odkup firem", "href": "nase-sluzby/odkup-firem" },
+        { "name": "Odkup směnek", "href": "nase-sluzby/odkup-smenek" },
         { "name": "Partner v Lichtenštejnsku", "href": "https://expohledavky.cz/firstAdvisoryGroup.pdf", "target": "_blank" }
       ]
     },
-    { "name": "Ceník", "href": "/cenik" },
-    { "name": "Slovník a vzory", "href": "/slovnik-a-vzory" },
-    { "name": "Blog", "href": "/blog" },
-    { "name": "Kariéra", "href": "/kariera" },
-    { "name": "Kontakt", "href": "/kontakt" }
+    { "name": "Ceník", "href": "cenik" },
+    { "name": "Slovník a vzory", "href": "slovnik-a-vzory" },
+    { "name": "Blog", "href": "blog" },
+    { "name": "Kariéra", "href": "kariera" },
+    { "name": "Kontakt", "href": "kontakt" }
   ],
   "countries": [
     { "name": "United Kingdom", "href": "https://exreceivables.com/" },
@@ -36,7 +36,7 @@
   ],
   "buttons": {
     "clientZone": "Klientská zóna",
-    "clientLogin": "/klient-prihlaseni"
+    "clientLogin": "klient-prihlaseni"
   },
   "mobileMenu": {
     "openMenu": "Otevřít menu",

@@ -9,25 +9,25 @@
   },
   "navigation": [
     { "name": "Home", "href": "/" },
-    { "name": "About Us", "href": "/o-nas" },
+    { "name": "About Us", "href": "about-us" },
     {
       "name": "Our Services",
-      "href": "/nase-sluzby",
+      "href": "services",
       "hasDropdown": true,
       "submenu": [
-        { "name": "Debt Collection", "href": "/nase-sluzby/vymahani-pohledavek" },
-        { "name": "Corporate Receivables Management", "href": "/nase-sluzby/sprava-firemnich-pohledavek" },
-        { "name": "Purchase & Sale of Receivables", "href": "/nase-sluzby/odkup-prodej-pohledavek" },
-        { "name": "Company Acquisition", "href": "/nase-sluzby/odkup-firem" },
-        { "name": "Promissory Notes Purchase", "href": "/nase-sluzby/odkup-smenek" },
+        { "name": "Debt Collection", "href": "services/debt-collection" },
+        { "name": "Corporate Receivables Management", "href": "services/corporate-receivables" },
+        { "name": "Purchase & Sale of Receivables", "href": "services/receivables-purchase" },
+        { "name": "Company Acquisition", "href": "services/company-purchase" },
+        { "name": "Promissory Notes Purchase", "href": "services/promissory-notes" },
         { "name": "Partner in Liechtenstein", "href": "https://expohledavky.cz/firstAdvisoryGroup.pdf", "target": "_blank" }
       ]
     },
-    { "name": "Pricing", "href": "/cenik" },
-    { "name": "Dictionary & Templates", "href": "/slovnik-a-vzory" },
-    { "name": "Blog", "href": "/blog" },
-    { "name": "Careers", "href": "/kariera" },
-    { "name": "Contact", "href": "/kontakt" }
+    { "name": "Pricing", "href": "pricing" },
+    { "name": "Dictionary & Templates", "href": "dictionary-templates" },
+    { "name": "Blog", "href": "blog" },
+    { "name": "Careers", "href": "careers" },
+    { "name": "Contact", "href": "contact" }
   ],
   "countries": [
     { "name": "United Kingdom", "href": "https://exreceivables.com/" },
@@ -36,7 +36,7 @@
   ],
   "buttons": {
     "clientZone": "Client Zone",
-    "clientLogin": "/klient-prihlaseni"
+    "clientLogin": "client-login"
   },
   "mobileMenu": {
     "openMenu": "Open Menu",

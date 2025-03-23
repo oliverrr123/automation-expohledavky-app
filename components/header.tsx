@@ -86,6 +86,8 @@ const emptyTranslations: HeaderTranslations = {
   countries: []
 };
 
+const navItemBaseClass = "flex items-center py-0 text-sm font-semibold transition-colors duration-200"
+
 export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
   const { locale } = useParams() || { locale: "" }
   const [isOpen, setIsOpen] = useState(false)
@@ -312,18 +314,18 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
               </Sheet>
             </div>
 
-            <div className="hidden lg:flex lg:gap-x-8">
+            <div className="hidden lg:flex lg:gap-x-8 items-center h-16">
               {translations.navigation.map((item) => (
-                <div key={item.name} className="relative">
+                <div key={item.name} className="relative flex items-center h-full">
                   {item.hasDropdown ? (
                     <div
-                      className="group"
+                      className="group flex items-center h-full"
                       onMouseEnter={() => handleMouseEnter(item.name)}
                       onMouseLeave={handleMouseLeave}
                     >
                       <LocalizedLink
                         href={item.href}
-                        className={`flex items-center gap-1 text-sm font-semibold transition-colors duration-200 ${
+                        className={`${navItemBaseClass} gap-1 ${
                           isScrolled ? "text-zinc-700 hover:text-zinc-900" : "text-white hover:text-orange-50"
                         }`}
                       >
@@ -352,7 +354,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                   ) : (
                     <LocalizedLink
                       href={item.href}
-                      className={`text-sm font-semibold transition-colors duration-300 ${
+                      className={`${navItemBaseClass} ${
                         isScrolled ? "text-zinc-700 hover:text-zinc-900" : "text-white hover:text-orange-50"
                       }`}
                     >

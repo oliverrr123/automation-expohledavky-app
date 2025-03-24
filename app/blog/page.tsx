@@ -47,6 +47,21 @@ const categoryDefinitions: Category[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "efektivni-komunikace-s-dluzniky-v-insolvenci",
+    title: "Efektivní komunikace s dlužníky v insolvenci",
+    subtitle: "Naučte se vést úspěšná jednání o pohledávkách v krizi",
+    date: "24. 3. 2025",
+    author: "Ing. Petra Svobodová",
+    authorPosition: "Finanční analytik",
+    authorImage: "/placeholder.svg?height=120&width=120",
+    readTime: "6 minut čtení",
+    category: "Insolvence",
+    tags: ["insolvence","dlužníci","vyjednávání","pohledávky","právo","finance","komunikace"],
+    image: "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDI4MDA1ODV8&ixlib=rb-4.0.3&q=80&w=1080",
+    excerpt: "Objevte strategie pro efektivní vyjednávání během insolvenčního procesu v ČR.",
+  },
+
+  {
     id: "mediace-klic-k-uspesnemu-vymahani-pohledavek",
     slug: "mediace-klic-k-uspesnemu-vymahani-pohledavek",
     title: "Mediace: Klíč k úspěšnému vymáhání pohledávek",

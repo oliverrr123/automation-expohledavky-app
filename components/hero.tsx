@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react"
 import { Montserrat } from "next/font/google"
 import Image from "next/image"
 import { useTranslations } from "@/lib/i18n"
+import { getLocalizedPath } from "@/lib/route-mapping"
+import { getLanguageFromHostname } from "@/lib/domain-mapping"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -16,11 +18,30 @@ export function Hero() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [isClient, setIsClient] = useState(false)
+  const [locale, setLocale] = useState('cs')
   
   const t = useTranslations('hero')
-
+  
+  // Get the localized inquiry path based on current locale
+  const inquiryPath = isClient ? getLocalizedPath(locale, 'inquiry') : 'poptavka'
+  
   useEffect(() => {
     setIsClient(true)
+    
+    // Detect the current language
+    const hostname = window.location.hostname
+    const detectedLocale = getLanguageFromHostname(hostname)
+    
+    if (detectedLocale) {
+      setLocale(detectedLocale)
+    } else {
+      // Check URL parameters for locale
+      const urlParams = new URLSearchParams(window.location.search)
+      const localeParam = urlParams.get('_locale')
+      if (localeParam && ['en', 'cs', 'sk', 'de'].includes(localeParam)) {
+        setLocale(localeParam)
+      }
+    }
     
     const script = document.createElement("script")
     script.src = "https://player.vimeo.com/api/player.js"
@@ -153,7 +174,7 @@ export function Hero() {
                     backgroundSize: "150% 100%",
                   }}
                 >
-                  <Link href="/poptavka" className="relative">
+                  <Link href={`/${inquiryPath}`} className="relative">
                     <div
                       className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                       aria-hidden="true"
@@ -182,7 +203,7 @@ export function Hero() {
                   variant="outline"
                   className="text-white border-white/30 hover:border-white/60 bg-white/5 backdrop-blur-sm font-semibold transition-all duration-500 hover:scale-[1.04] group"
                 >
-                  <Link href="/nase-sluzby/odkup-prodej-pohledavek" className="flex items-center">
+                  <Link href={`/${inquiryPath}`} className="flex items-center">
                     {(t.buttons && t.buttons.sell) || ''}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

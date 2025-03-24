@@ -14,7 +14,7 @@
       },
       "phone": {
         "label": "Phone number",
-        "placeholder": "+420 XXX XXX XXX"
+        "placeholder": "+44 XXX XXX XXX"
       },
       "amount": {
         "label": "Receivable amount",
@@ -41,8 +41,8 @@
     ],
     "contact": {
       "title": "Have questions? Contact us:",
-      "phone": "+420 735 500 003",
-      "email": "info@expohledavky.cz"
+      "phone": "+44 7451 206573",
+      "email": "info@exreceivables.com"
     },
     "toast": {
       "emailCopied": "Email copied",

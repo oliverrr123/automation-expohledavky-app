@@ -10,11 +10,11 @@
       },
       "email": {
         "label": "Email",
-        "placeholder": "vas@email.com"
+        "placeholder": "vas@email.sk"
       },
       "phone": {
         "label": "Telefónne číslo",
-        "placeholder": "+420 XXX XXX XXX"
+        "placeholder": "+421 XXX XXX XXX"
       },
       "amount": {
         "label": "Výška pohľadávky",
@@ -41,8 +41,8 @@
     ],
     "contact": {
       "title": "Máte otázky? Kontaktujte nás:",
-      "phone": "+420 735 500 003",
-      "email": "info@expohledavky.cz"
+      "phone": "+421 911 696 596",
+      "email": "info@expohladavky.sk"
     },
     "toast": {
       "emailCopied": "Email skopírovaný",

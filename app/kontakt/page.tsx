@@ -74,7 +74,7 @@ export default function ContactPage() {
       setCopyStatus({ ...copyStatus, [index]: true })
       
       // Determine the type of content being copied
-      if (text.startsWith("+420")) {
+      if (text.startsWith("+420") || text.startsWith("+421") || text.startsWith("+44") || text.startsWith("+49")) {
         toast.success(t?.contactInfo?.copySuccess?.phone)
       } else if (text.includes("@")) {
         toast.success(t?.contactInfo?.copySuccess?.email)
@@ -237,7 +237,7 @@ export default function ContactPage() {
                   size="lg"
                   className="relative overflow-hidden border-2 border-white text-white bg-white/5 backdrop-blur-sm font-semibold transition-all duration-500 hover:scale-[1.04] hover:bg-white/20 shadow-xl shadow-black/20"
                 >
-                  <a href="tel:+420735500003" className="relative">
+                  <a href={`tel:${t.contactInfo?.items?.[0]?.content?.[0]?.replace(/\s/g, '')}`} className="relative">
                     <div
                       className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                       aria-hidden="true"
@@ -275,7 +275,7 @@ export default function ContactPage() {
                     <div className="space-y-2">
                       <p>
                         <a 
-                          href={`tel:${t.contactInfo?.items?.[0]?.content?.[0]}`}
+                          href={`tel:${t.contactInfo?.items?.[0]?.content?.[0]?.replace(/\s/g, '')}`}
                           className="text-white hover:text-orange-300 transition-colors cursor-pointer"
                           onClick={(e) => {
                             e.preventDefault()
@@ -585,14 +585,14 @@ export default function ContactPage() {
                         <Phone className="h-5 w-5 text-orange-500" />
                       </div>
                       <a 
-                        href="tel:+420735500003" 
+                        href={`tel:${t.contactInfo?.items?.[0]?.content?.[0]?.replace(/\s/g, '')}`}
                         className="text-white hover:text-orange-300 transition-colors cursor-pointer"
                         onClick={(e) => {
                           e.preventDefault()
-                          handleCopy("+420735500003", 10)
+                          handleCopy(t.contactInfo?.items?.[0]?.content?.[0], 10)
                         }}
                       >
-                        +420 735 500 003
+                        {t.contactInfo?.items?.[0]?.content?.[0]}
                       </a>
                     </div>
 
@@ -601,14 +601,14 @@ export default function ContactPage() {
                         <Mail className="h-5 w-5 text-orange-500" />
                       </div>
                       <a
-                        href="mailto:info@expohledavky.cz"
+                        href={`mailto:${t.contactInfo?.items?.[1]?.content?.[0]}`}
                         className="text-white hover:text-orange-300 transition-colors cursor-pointer"
                         onClick={(e) => {
                           e.preventDefault()
-                          handleCopy("info@expohledavky.cz", 11)
+                          handleCopy(t.contactInfo?.items?.[1]?.content?.[0], 11)
                         }}
                       >
-                        info@expohledavky.cz
+                        {t.contactInfo?.items?.[1]?.content?.[0]}
                       </a>
                     </div>
                   </div>

@@ -74,9 +74,9 @@
     },
     "application": {
       "title": "Interessiert Sie diese Position?",
-      "description": "Sind Sie immer noch interessiert? Kontaktieren Sie uns unter der E-Mail-Adresse <strong className=\"text-orange-600\">pohledavky@expohledavky.cz</strong>. Wir treffen uns, stellen uns gegenseitig vor, besprechen die Möglichkeiten und vor allem besuchen Sie uns. Bewerben Sie sich also, wir freuen uns auf Sie!",
+      "description": "Sind Sie immer noch interessiert? Kontaktieren Sie uns unter der E-Mail-Adresse <strong className=\"text-orange-600\">info@exforderungen.de</strong>. Wir treffen uns, stellen uns gegenseitig vor, besprechen die Möglichkeiten und vor allem besuchen Sie uns. Bewerben Sie sich also, wir freuen uns auf Sie!",
       "buttonText": "Lebenslauf senden",
-      "email": "pohledavky@expohledavky.cz",
+      "email": "info@exforderungen.de",
       "urgentText": "Eintritt sofort!"
     }
   }

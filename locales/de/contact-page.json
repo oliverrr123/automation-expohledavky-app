@@ -14,15 +14,15 @@
     "items": [
       {
         "title": "Telefon",
-        "content": ["+420 735 500 003", "+420 266 710 318"]
+        "content": ["+49 1517 0283999"]
       },
       {
         "title": "E-Mail",
-        "content": ["info@expohledavky.cz"]
+        "content": ["info@exforderungen.de"]
       },
       {
-        "title": "City Empiria",
-        "content": ["Na strži 1702/65, 140 00 Praha 4-Nusle"]
+        "title": "Bayerisch Eisenstein",
+        "content": ["Sonnenhof 3, 94252 Bayerisch Eisenstein, Deutschland"]
       },
       {
         "title": "Geschäftszeiten",
@@ -78,8 +78,8 @@
       "description": "Unser Team wird Ihnen innerhalb von 24 Stunden an Werktagen antworten. Für dringende Fälle zögern Sie nicht, uns telefonisch zu kontaktieren."
     },
     "map": {
-      "title": "City Empiria, Prag 4",
-      "address": "Na strži 1702/65, 140 00"
+      "title": "Bayerisch Eisenstein, Deutschland",
+      "address": "Sonnenhof 3, 94252"
     }
   },
   "faq": {

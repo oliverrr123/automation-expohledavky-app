@@ -14,15 +14,15 @@
     "items": [
       {
         "title": "Phone",
-        "content": ["+420 735 500 003", "+420 266 710 318"]
+        "content": ["+44 7451 206573"]
       },
       {
         "title": "E-mail",
-        "content": ["info@expohledavky.cz"]
+        "content": ["info@exreceivables.com"]
       },
       {
-        "title": "City Empiria",
-        "content": ["Na strži 1702/65, 140 00 Prague 4-Nusle"]
+        "title": "London Office",
+        "content": ["71-75 Shelton Street, Covent Garden, London, WC2H 9JQ"]
       },
       {
         "title": "Working hours",
@@ -78,8 +78,8 @@
       "description": "Our team will respond within 24 hours on business days. For urgent cases, do not hesitate to contact us by phone."
     },
     "map": {
-      "title": "City Empiria, Prague 4",
-      "address": "Na strži 1702/65, 140 00"
+      "title": "London, Covent Garden",
+      "address": "71-75 Shelton Street, WC2H 9JQ"
     }
   },
   "faq": {

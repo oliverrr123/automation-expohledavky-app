@@ -10,7 +10,7 @@
     "quickInfo": {
       "location": {
         "label": "Location",
-        "value": "Prague – Pankrác"
+        "value": "London – Covent Garden"
       },
       "startDate": {
         "label": "Start date",
@@ -40,16 +40,16 @@
       ]
     },
     "benefits": {
-      "title": "What we offer?",
+      "title": "What do we offer?",
       "items": [
         {
           "text": "Starting salary of 25,000 CZK + interesting personal evaluation based on results"
         },
         {
-          "text": "Immediate start possible"
+          "text": "Start immediately"
         },
         {
-          "text": "Place of work: Prague – Pankrác",
+          "text": "Place of work: London – Covent Garden",
           "bold": true
         },
         {
@@ -74,9 +74,9 @@
     },
     "application": {
       "title": "Are you interested in this position?",
-      "description": "Still interested? Contact us at <strong className=\"text-orange-600\">pohledavky@expohledavky.cz</strong>. We'll meet, introduce ourselves, discuss opportunities, and most importantly, you'll get to see our workplace. So apply, we're looking forward to meeting you!",
+      "description": "Still interested? Contact us at <strong className=\"text-orange-600\">info@exreceivables.com</strong>. We'll meet, introduce ourselves, discuss opportunities, and most importantly, you'll get to see our workplace. So apply, we're looking forward to meeting you!",
       "buttonText": "Send resume",
-      "email": "pohledavky@expohledavky.cz",
+      "email": "info@exreceivables.com",
       "urgentText": "Start immediately!"
     }
   }

@@ -4,11 +4,20 @@ import { SectionWrapper } from "./section-wrapper"
 import { useTranslations } from "@/lib/i18n"
 import { Fragment, useState, useEffect } from "react"
 
+// Default partners to use as fallback
+const defaultPartners = [
+  { name: "Partner 1", logo: "/placeholder.svg" },
+  { name: "Partner 2", logo: "/placeholder.svg" }
+];
+
 export function Partners() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
   // Use client translations
   const t = useTranslations('partners')
+  
+  // Safely access partners with fallback
+  const partners = t?.partners || defaultPartners
   
   // Set isClient to true after hydration is complete
   useEffect(() => {
@@ -17,20 +26,34 @@ export function Partners() {
   
   // Render the text with the link properly inserted
   const renderRankingText = () => {
+    if (!t || !t.rankingText) return "";
+    
     const parts = t.rankingText.split('{entuzioLink}')
     return (
       <>
         {parts[0]}
         <a
-          href={t.entuzioUrl}
+          href={t.entuzioUrl || "#"}
           target="_blank"
           rel="noopener noreferrer"
           className="font-semibold text-orange-500 hover:text-orange-600"
         >
-          {t.entuzioLinkText}
+          {t.entuzioLinkText || "Entuzio"}
         </a>
-        {parts[1]}
+        {parts[1] || ""}
       </>
+    )
+  }
+  
+  // If translations aren't loaded yet, show minimal UI
+  if (!t || !partners || partners.length === 0) {
+    return (
+      <section className="py-24">
+        <div className="container">
+          <div className="animate-pulse bg-gray-200 h-4 w-96 mx-auto rounded"></div>
+          <div className="animate-pulse bg-gray-200 h-16 w-full max-w-4xl mx-auto mt-16 rounded"></div>
+        </div>
+      </section>
     )
   }
   
@@ -79,7 +102,7 @@ export function Partners() {
 
           <div className="logos-slide">
             {/* First set of partners */}
-            {t.partners.map((partner: any) => (
+            {partners.map((partner: any) => (
               <div key={partner.name} className="logo-item flex items-center justify-center">
                 <img 
                   src={partner.logo || "/placeholder.svg"} 
@@ -90,7 +113,7 @@ export function Partners() {
               </div>
             ))}
             {/* Second set of partners (duplicate) */}
-            {t.partners.map((partner: any) => (
+            {partners.map((partner: any) => (
               <div key={`${partner.name}-duplicate`} className="logo-item flex items-center justify-center">
                 <img 
                   src={partner.logo || "/placeholder.svg"} 

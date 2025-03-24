@@ -14,11 +14,62 @@ const iconMap = {
   Building
 }
 
+// Default translations as fallback
+const defaultTranslations = {
+  hero: {
+    badge: "Naše služby",
+    title: "Odkup firem",
+    subtitle: "Profesionální řešení pro majitele, kteří chtějí prodat svou společnost"
+  },
+  mainSection: {
+    badge: "Komplexní řešení",
+    title: "Odkup firem",
+    paragraphs: [
+      "Vlastníte firmu, kterou již nepotřebujete a rádi byste ji prodali?",
+      "Pak neváhejte a kontaktuje nás, připravíme vám nabídku šitou na míru na odkup společnosti."
+    ],
+    button: "Nezávazná poptávka"
+  },
+  requirements: {
+    badge: "Naše požadavky",
+    title: "Máme zájem o firmy, které:",
+    items: [
+      "byly založeny, ale nedošlo k uskutečnění podnikatelského záměru",
+      "mají jasnou a bezproblémovou historii",
+      "firmy jsou bez závazků"
+    ],
+    note: "Spolupracujeme rovněž se soukromými exekutory po celé ČR, tudíž jsme schopni realizovat vymáhání ve zkrácené době."
+  },
+  documents: {
+    badge: "Potřebné dokumenty",
+    title: "V případě odkupu budeme vyžadovat tyto podklady:",
+    items: [
+      {
+        icon: "FileText",
+        title: "Potvrzení o bezdlužnosti",
+        description: "Potvrzení o bezdlužnosti ze strany finančního úřadu a dalších institucí"
+      },
+      {
+        icon: "ClipboardCheck",
+        title: "Prohlášení o bezdlužnosti",
+        description: "Prohlášení o bezdlužnosti od stávajícího majitele"
+      },
+      {
+        icon: "Building",
+        title: "Kompletní účetnictví",
+        description: "Kompletní účetnictví společnosti"
+      }
+    ]
+  }
+};
+
 export default function OdkupFiremPage() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
   // Use client translations after hydration
-  const t = useTranslations('companyPurchasePage')
+  const translationsRaw = useTranslations('companyPurchasePage')
+  // Merge with fallback values
+  const t = { ...defaultTranslations, ...translationsRaw }
   
   // Set isClient to true after hydration is complete
   useEffect(() => {
@@ -42,11 +93,11 @@ export default function OdkupFiremPage() {
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
               <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                {t.hero.badge}
+                {t.hero?.badge || defaultTranslations.hero.badge}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero.title}</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero?.title || defaultTranslations.hero.title}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                {t.hero.subtitle}
+                {t.hero?.subtitle || defaultTranslations.hero.subtitle}
               </p>
             </SectionWrapper>
           </div>
@@ -65,11 +116,13 @@ export default function OdkupFiremPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {t.mainSection.badge}
+                    {t.mainSection?.badge || defaultTranslations.mainSection.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.mainSection.title}</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">
+                    {t.mainSection?.title || defaultTranslations.mainSection.title}
+                  </h2>
                   
-                  {t.mainSection.paragraphs.map((paragraph: string, index: number) => (
+                  {(t.mainSection?.paragraphs || defaultTranslations.mainSection.paragraphs).map((paragraph: string, index: number) => (
                     <p key={index} className={`text-gray-600 ${index === 0 ? 'mb-4 text-lg' : 'mb-8'}`}>
                       {paragraph}
                     </p>
@@ -81,7 +134,7 @@ export default function OdkupFiremPage() {
                       className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
                     >
                       <a href="#contact-form" className="flex items-center">
-                        {t.mainSection.button} <ArrowRight className="ml-2 h-4 w-4" />
+                        {t.mainSection?.button || defaultTranslations.mainSection.button} <ArrowRight className="ml-2 h-4 w-4" />
                       </a>
                     </Button>
                   </div>
@@ -100,12 +153,14 @@ export default function OdkupFiremPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {t.requirements.badge}
+                    {t.requirements?.badge || defaultTranslations.requirements.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.requirements.title}</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">
+                    {t.requirements?.title || defaultTranslations.requirements.title}
+                  </h2>
 
                   <ul className="space-y-4 mb-8">
-                    {t.requirements.items.map((item: string, index: number) => (
+                    {(t.requirements?.items || defaultTranslations.requirements.items).map((item: string, index: number) => (
                       <li key={index} className="flex items-start gap-3 group">
                         <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-1 shadow-sm group-hover:shadow transition-shadow">
                           <CheckCircle className="h-4 w-4 text-orange-500" />
@@ -121,7 +176,7 @@ export default function OdkupFiremPage() {
                         <Building className="h-5 w-5 text-orange-400" />
                       </div>
                       <p className="text-lg">
-                        {t.requirements.note}
+                        {t.requirements?.note || defaultTranslations.requirements.note}
                       </p>
                     </div>
                   </div>
@@ -140,14 +195,14 @@ export default function OdkupFiremPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {t.documents.badge}
+                    {t.documents?.badge || defaultTranslations.documents.badge}
                   </div>
                   <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">
-                    {t.documents.title}
+                    {t.documents?.title || defaultTranslations.documents.title}
                   </h2>
 
                   <div className="grid md:grid-cols-1 gap-6 mt-8">
-                    {t.documents.items.map((item: any, index: number) => {
+                    {(t.documents?.items || defaultTranslations.documents.items).map((item: any, index: number) => {
                       const Icon = iconMap[item.icon as keyof typeof iconMap];
                       
                       return (

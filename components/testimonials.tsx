@@ -6,12 +6,29 @@ import { cn } from "@/lib/utils"
 import { SectionWrapper } from "./section-wrapper"
 import { useTranslations } from "@/lib/i18n"
 
+// Default testimonials to use as fallback
+const defaultTestimonials = [
+  {
+    text: "...",
+    author: "...",
+    company: "..."
+  },
+  {
+    text: "...",
+    author: "...",
+    company: "..."
+  }
+];
+
 export function Testimonials() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
   // Use client translations
   const t = useTranslations('testimonials')
   const [activeIndex, setActiveIndex] = useState(0)
+  
+  // Safely access testimonials with fallback
+  const testimonials = t?.testimonials || defaultTestimonials
 
   // Set isClient to true after hydration
   useEffect(() => {
@@ -19,18 +36,35 @@ export function Testimonials() {
   }, [])
 
   useEffect(() => {
+    if (!testimonials || testimonials.length === 0) return;
+    
     const timer = setInterval(() => {
-      setActiveIndex((current) => (current === t.testimonials.length - 1 ? 0 : current + 1))
+      setActiveIndex((current) => (current === testimonials.length - 1 ? 0 : current + 1))
     }, 5000)
     return () => clearInterval(timer)
-  }, [t.testimonials.length])
+  }, [testimonials])
 
   const goToPrevious = () => {
-    setActiveIndex((current) => (current === 0 ? t.testimonials.length - 1 : current - 1))
+    if (!testimonials || testimonials.length === 0) return;
+    setActiveIndex((current) => (current === 0 ? testimonials.length - 1 : current - 1))
   }
 
   const goToNext = () => {
-    setActiveIndex((current) => (current === t.testimonials.length - 1 ? 0 : current + 1))
+    if (!testimonials || testimonials.length === 0) return;
+    setActiveIndex((current) => (current === testimonials.length - 1 ? 0 : current + 1))
+  }
+
+  // If translations aren't loaded yet, show minimal UI
+  if (!t || !testimonials || testimonials.length === 0) {
+    return (
+      <section className="py-24 sm:py-32 bg-gray-50">
+        <div className="container">
+          <div className="animate-pulse bg-gray-200 h-8 w-48 mx-auto rounded"></div>
+          <div className="animate-pulse bg-gray-200 h-4 w-96 mx-auto mt-4 rounded"></div>
+          <div className="animate-pulse bg-gray-200 h-64 w-full max-w-2xl mx-auto mt-16 rounded-2xl"></div>
+        </div>
+      </section>
+    )
   }
 
   return (
@@ -38,8 +72,8 @@ export function Testimonials() {
       <div className="container">
         <SectionWrapper animation="fade-up">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.title}</h2>
-            <p className="mt-4 text-lg text-gray-600">{t.subtitle}</p>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.title || "Testimonials"}</h2>
+            <p className="mt-4 text-lg text-gray-600">{t.subtitle || "What our clients say about us"}</p>
           </div>
         </SectionWrapper>
 
@@ -48,7 +82,7 @@ export function Testimonials() {
           <button
             onClick={goToPrevious}
             className="absolute left-0 md:left-4 lg:left-24 xl:left-32 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-zinc-700 hover:text-orange-500 rounded-full p-2 shadow-md transition-all duration-300 hover:scale-110"
-            aria-label={t.ariaLabels.previousTestimonial}
+            aria-label={t.ariaLabels?.previousTestimonial || "Previous testimonial"}
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
@@ -57,13 +91,13 @@ export function Testimonials() {
           <button
             onClick={goToNext}
             className="absolute right-0 md:right-4 lg:right-24 xl:right-32 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-zinc-700 hover:text-orange-500 rounded-full p-2 shadow-md transition-all duration-300 hover:scale-110"
-            aria-label={t.ariaLabels.nextTestimonial}
+            aria-label={t.ariaLabels?.nextTestimonial || "Next testimonial"}
           >
             <ChevronRight className="h-6 w-6" />
           </button>
 
           <div className="relative h-[400px]">
-            {t.testimonials.map((testimonial: any, idx: number) => (
+            {testimonials.map((testimonial: any, idx: number) => (
               <div
                 key={idx}
                 className={cn(
@@ -86,7 +120,7 @@ export function Testimonials() {
           </div>
 
           <div className="mt-8 flex justify-center gap-3">
-            {t.testimonials.map((_: any, idx: number) => (
+            {testimonials.map((_: any, idx: number) => (
               <button
                 key={idx}
                 onClick={() => setActiveIndex(idx)}
@@ -95,7 +129,7 @@ export function Testimonials() {
                   idx === activeIndex ? "bg-orange-500" : "bg-gray-300 hover:bg-gray-400",
                 )}
               >
-                <span className="sr-only">{t.ariaLabels.goToSlide} {idx + 1}</span>
+                <span className="sr-only">{t.ariaLabels?.goToSlide || "Go to slide"} {idx + 1}</span>
               </button>
             ))}
           </div>

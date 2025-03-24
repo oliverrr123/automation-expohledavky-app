@@ -147,6 +147,310 @@ export function getServerTranslations(
   // Use hostname-based locale detection
   const locale = getInitialLocale();
   
-  // Return only the translations for the detected locale, NO FALLBACKS
-  return locale && translationsByLang[locale] ? translationsByLang[locale] : {};
+  // Return only the translations for the detected locale, provide empty structured object if not found
+  if (locale && translationsByLang[locale]) {
+    return translationsByLang[locale];
+  }
+  
+  // If we can't find translations or locale, return structured empty object
+  return createEmptyTranslationStructure(namespace);
+}
+
+/**
+ * Create an empty translation structure based on namespace to avoid undefined errors
+ */
+function createEmptyTranslationStructure(namespace: string): any {
+  // Normalize namespace to match our internal naming conventions
+  const normalizedNamespace = namespace.replace(/-/g, '').toLowerCase();
+  
+  // Standard structures for common namespaces
+  switch(normalizedNamespace) {
+    case 'header':
+      return { 
+        navigation: [{
+          label: '',
+          href: '',
+          items: []
+        }], 
+        buttons: {
+          contact: '',
+          language: ''
+        },
+        mobileMenu: {
+          close: ''
+        }
+      };
+    case 'footer':
+      return { 
+        sections: [{
+          title: '',
+          links: [{
+            label: '',
+            href: ''
+          }]
+        }],
+        copyrightText: '',
+        buttons: {
+          backToTop: ''
+        }
+      };
+    case 'hero':
+      return {
+        headline1: '',
+        headline2: '',
+        description: '',
+        quote: '',
+        buttons: {
+          collect: '',
+          sell: ''
+        }
+      };
+    case 'blogpage':
+      return {
+        pageTitle: '',
+        search: {
+          placeholder: '',
+          button: '',
+          noResults: '',
+          resultsCount: ''
+        },
+        featured: '',
+        readMore: '',
+        allArticles: '',
+        categories: '',
+        recentPosts: '',
+        relatedPosts: ''
+      };
+    case 'pricingpage':
+      return {
+        title: '',
+        subtitle: '',
+        pricingTable: {
+          header: {
+            specification: '',
+            rate: ''
+          },
+          rows: []
+        },
+        notes: [],
+        contactForm: {
+          title: '',
+          success: '',
+          fields: {
+            name: {
+              label: '',
+              placeholder: ''
+            },
+            email: {
+              label: '',
+              placeholder: ''
+            },
+            phone: {
+              label: '',
+              placeholder: ''
+            },
+            amount: {
+              label: '',
+              placeholder: ''
+            },
+            message: {
+              label: '',
+              placeholder: ''
+            }
+          },
+          submit: ''
+        }
+      };
+    case 'servicepage':
+    case 'debtcollectionpage':
+    case 'corporatereceivablespage':
+    case 'receivablespurchasepage':
+    case 'companypurchasepage':
+    case 'promissorynotespage':
+      return {
+        hero: {
+          badge: '',
+          title: '',
+          subtitle: ''
+        },
+        mainSection: {
+          badge: '',
+          title: '',
+          paragraphs: [],
+          button: '',
+          specialization: {
+            title: '',
+            items: []
+          }
+        },
+        badge: '',
+        title: '',
+        subtitle: '',
+        description: '',
+        features: [],
+        cta: {
+          title: '',
+          description: '',
+          button: ''
+        },
+        steps: [],
+        benefits: {
+          title: '',
+          items: []
+        },
+        faq: {
+          title: '',
+          items: []
+        }
+      };
+    case 'serviceslayout':
+      return {
+        pageTitle: '',
+        services: []
+      };
+    case 'privacypolicypage':
+      return {
+        title: '',
+        introduction: '',
+        importantNote: '',
+        personalData: {
+          title: '',
+          content: ''
+        },
+        dataProcessor: {
+          title: '',
+          content: ''
+        },
+        dataProcessed: {
+          title: '',
+          customerIntro: '',
+          customerItems: [],
+          visitorIntro: '',
+          visitorItems: [],
+          partnerIntro: '',
+          partnerItems: []
+        },
+        dataProcessingPurpose: {
+          title: '',
+          intro: '',
+          tableHeaders: {
+            subject: '',
+            purpose: '',
+            legalBasis: ''
+          },
+          client: {
+            subject: '',
+            row1: {
+              purpose: '',
+              legalBasis: ''
+            },
+            row2: {
+              purpose: '',
+              legalBasis: ''
+            },
+            row3: {
+              purpose: '',
+              legalBasis: ''
+            },
+            row4: {
+              purpose: '',
+              legalBasis: ''
+            }
+          },
+          visitor: {
+            subject: '',
+            row1: {
+              purpose: '',
+              legalBasis: ''
+            },
+            row2: {
+              purpose: '',
+              legalBasis: ''
+            }
+          }
+        },
+        dataSources: {
+          title: '',
+          paragraph1: '',
+          paragraph2: ''
+        },
+        dataProvision: {
+          title: '',
+          paragraph1: '',
+          paragraph2: ''
+        },
+        dataAccess: {
+          title: '',
+          paragraph1: '',
+          paragraph2: '',
+          processorInfo: '',
+          paragraph3: '',
+          paragraph4: ''
+        },
+        thirdCountries: {
+          title: '',
+          content: ''
+        },
+        dataRetention: {
+          title: '',
+          intro: '',
+          criteria: []
+        },
+        dataSecurity: {
+          title: '',
+          paragraph1: '',
+          paragraph2: ''
+        },
+        dataRights: {
+          title: '',
+          intro: '',
+          rights: {
+            info: {
+              title: '',
+              description: ''
+            },
+            access: {
+              title: '',
+              description: ''
+            },
+            correction: {
+              title: '',
+              description: ''
+            },
+            deletion: {
+              title: '',
+              description: ''
+            },
+            restriction: {
+              title: '',
+              description: ''
+            },
+            portability: {
+              title: '',
+              description: ''
+            },
+            withdrawal: {
+              title: '',
+              description: ''
+            },
+            objection: {
+              title: '',
+              description: ''
+            },
+            complaint: {
+              title: '',
+              description: ''
+            }
+          }
+        },
+        contact: {
+          title: '',
+          paragraph1: '',
+          paragraph2: ''
+        }
+      };
+    default:
+      // Generic empty structure
+      return {};
+  }
 } 

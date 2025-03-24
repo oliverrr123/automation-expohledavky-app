@@ -7,29 +7,24 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { useState, useEffect } from "react"
-import { useTranslations } from "@/lib/i18n"
-import { getServerTranslations } from "@/lib/server-utils"
+import { useTranslations, getServerTranslations } from "@/lib/i18n"
 import csPricingPage from '@/locales/cs/pricing-page.json'
 import enPricingPage from '@/locales/en/pricing-page.json'
 import skPricingPage from '@/locales/sk/pricing-page.json'
 import dePricingPage from '@/locales/de/pricing-page.json'
 
-// Get translations based on domain for server-side rendering
-const translationsByLang = {
-  cs: csPricingPage,
-  en: enPricingPage,
-  sk: skPricingPage,
-  de: dePricingPage
-};
-
-// Server-side default translations to prevent hydration mismatch
-const serverTranslations = getServerTranslations('pricingPage', translationsByLang);
+// Default translations for client-side rendering
+const defaultTranslations = csPricingPage;
 
 export default function PricingPage() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
-  // Use server translations initially, then switch to client translations after hydration
-  const t = isClient ? useTranslations('pricingPage') : serverTranslations
+  
+  // Always call hooks unconditionally
+  const clientTranslations = useTranslations('pricingPage')
+  
+  // Use client translations or default translations based on client state
+  const t = isClient ? clientTranslations : defaultTranslations
   
   // Set isClient to true after hydration is complete
   useEffect(() => {
@@ -62,7 +57,7 @@ export default function PricingPage() {
       zprava: "",
     })
     // Show success message
-    alert(t.contactForm.success)
+    alert(t?.contactForm?.success)
   }
 
   return (
@@ -117,35 +112,35 @@ export default function PricingPage() {
             <SectionWrapper animation="fade-up">
               <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-12">
-                  <h1 className="text-4xl font-bold tracking-tight text-zinc-900 mb-6">{t.title}</h1>
+                  <h1 className="text-4xl font-bold tracking-tight text-zinc-900 mb-6">{t?.title}</h1>
                 </div>
 
-                <div className="mb-8 font-semibold text-lg text-center">{t.subtitle}</div>
+                <div className="mb-8 font-semibold text-lg text-center">{t?.subtitle}</div>
 
                 {/* Pricing Table */}
                 <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
                   {/* Table Header */}
                   <div className="grid grid-cols-2 bg-zinc-900 text-white">
                     <div className="p-4 font-semibold border-r border-zinc-700">
-                      {t.pricingTable.header.specification}
+                      {t?.pricingTable?.header?.specification}
                     </div>
-                    <div className="p-4 font-semibold text-center">{t.pricingTable.header.rate}</div>
+                    <div className="p-4 font-semibold text-center">{t?.pricingTable?.header?.rate}</div>
                   </div>
 
                   {/* Table Rows */}
-                  {t.pricingTable.rows.map((row: {service: string, price: string}, index: number) => (
+                  {(t?.pricingTable?.rows || []).map((row: {service: string, price: string}, index: number) => (
                     <div 
                       key={index} 
                       className={`grid grid-cols-2 border-b border-gray-200 ${index % 2 !== 0 ? 'bg-gray-50' : ''}`}
                     >
-                      <div className="p-4 border-r border-gray-200">{row.service}</div>
-                      <div className="p-4 text-center font-medium">{row.price}</div>
+                      <div className="p-4 border-r border-gray-200">{row?.service}</div>
+                      <div className="p-4 text-center font-medium">{row?.price}</div>
                     </div>
                   ))}
                 </div>
 
                 <div className="text-gray-600 space-y-1 mb-12">
-                  {t.notes.map((note: string, index: number) => (
+                  {(t?.notes || []).map((note: string, index: number) => (
                     <p key={index}>{note}</p>
                   ))}
                 </div>
@@ -160,7 +155,7 @@ export default function PricingPage() {
             <SectionWrapper animation="fade-up">
               <div className="max-w-3xl mx-auto">
                 <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.contactForm.title}</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t?.contactForm?.title}</h2>
                 </div>
 
                 <div className="bg-white rounded-xl shadow-md p-8">
@@ -168,7 +163,7 @@ export default function PricingPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="jmeno" className="block text-sm font-medium text-gray-700 mb-1">
-                          {t.contactForm.fields.name.label}
+                          {t?.contactForm?.fields?.name?.label}
                         </label>
                         <input
                           required
@@ -177,13 +172,13 @@ export default function PricingPage() {
                           type="text"
                           value={formData.jmeno}
                           onChange={handleChange}
-                          placeholder={t.contactForm.fields.name.placeholder}
+                          placeholder={t?.contactForm?.fields?.name?.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                         />
                       </div>
                       <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                          {t.contactForm.fields.email.label}
+                          {t?.contactForm?.fields?.email?.label}
                         </label>
                         <input
                           required
@@ -192,13 +187,13 @@ export default function PricingPage() {
                           type="email"
                           value={formData.email}
                           onChange={handleChange}
-                          placeholder={t.contactForm.fields.email.placeholder}
+                          placeholder={t?.contactForm?.fields?.email?.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                         />
                       </div>
                       <div>
                         <label htmlFor="telefon" className="block text-sm font-medium text-gray-700 mb-1">
-                          {t.contactForm.fields.phone.label}
+                          {t?.contactForm?.fields?.phone?.label}
                         </label>
                         <input
                           required
@@ -207,13 +202,13 @@ export default function PricingPage() {
                           type="text"
                           value={formData.telefon}
                           onChange={handleChange}
-                          placeholder={t.contactForm.fields.phone.placeholder}
+                          placeholder={t?.contactForm?.fields?.phone?.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                         />
                       </div>
                       <div>
                         <label htmlFor="vyse" className="block text-sm font-medium text-gray-700 mb-1">
-                          {t.contactForm.fields.amount.label}
+                          {t?.contactForm?.fields?.amount?.label}
                         </label>
                         <input
                           required
@@ -222,14 +217,14 @@ export default function PricingPage() {
                           type="text"
                           value={formData.vyse}
                           onChange={handleChange}
-                          placeholder={t.contactForm.fields.amount.placeholder}
+                          placeholder={t?.contactForm?.fields?.amount?.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                         />
                       </div>
                     </div>
                     <div>
                       <label htmlFor="zprava" className="block text-sm font-medium text-gray-700 mb-1">
-                        {t.contactForm.fields.message.label}
+                        {t?.contactForm?.fields?.message?.label}
                       </label>
                       <textarea
                         required
@@ -238,7 +233,7 @@ export default function PricingPage() {
                         rows={5}
                         value={formData.zprava}
                         onChange={handleChange}
-                        placeholder={t.contactForm.fields.message.placeholder}
+                        placeholder={t?.contactForm?.fields?.message?.placeholder}
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                       ></textarea>
                     </div>
@@ -257,7 +252,7 @@ export default function PricingPage() {
                           className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                           aria-hidden="true"
                         />
-                        <span className="relative z-10">{t.contactForm.submitButton}</span>
+                        <span className="relative z-10">{t?.contactForm?.fields?.submit || t?.contactForm?.submitButton}</span>
                       </Button>
                     </div>
                   </form>

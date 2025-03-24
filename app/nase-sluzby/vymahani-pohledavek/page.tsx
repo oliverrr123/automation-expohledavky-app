@@ -28,7 +28,11 @@ const serverTranslations = getServerTranslations('debtCollectionPage', translati
 
 export default function VymahaniPohledavekPage() {
   const [isClient, setIsClient] = useState(false)
-  const t = isClient ? useTranslations('debtCollectionPage') : serverTranslations
+  // Always call hooks unconditionally
+  const clientTranslations = useTranslations('debtCollectionPage')
+  
+  // Use client translations or server translations based on client state  
+  const t = isClient ? clientTranslations : serverTranslations
   
   // Set isClient to true after hydration is complete
   useEffect(() => {

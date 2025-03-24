@@ -102,14 +102,14 @@ export function Hero() {
                 <span
                   className="relative inline-block"
                   style={{
-                    background: "-webkit-linear-gradient(#fff, #bbb)",
+                    background: "-webkit-linear-gradient(#fff, #ddd)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
                   }}
                 >
                   <span className="absolute -inset-1.5 bg-orange-500/10 blur-xl" aria-hidden="true" />
-                  {t.headline1}
+                  {t.headline1 || ''}
                 </span>
                 <br />
                 <span
@@ -122,7 +122,7 @@ export function Hero() {
                   }}
                 >
                   <span className="absolute -inset-1.5 bg-orange-500/10 blur-xl" aria-hidden="true" />
-                  {t.headline2}
+                  {t.headline2 || ''}
                 </span>
               </h1>
               <p
@@ -130,14 +130,14 @@ export function Hero() {
                 style={{ animationDelay: "400ms" }}
               >
                 <span className="relative z-10">
-                  {t.description}
+                  {t.description || ''}
                 </span>
               </p>
               <p
                 className="mt-4 text-lg font-medium italic text-orange-400 opacity-0 animate-fade-in-up relative"
                 style={{ animationDelay: "600ms" }}
               >
-                <span className="relative z-10">{t.quote}</span>
+                <span className="relative z-10">{t.quote || ''}</span>
               </p>
               <div
                 className="mt-10 flex flex-col gap-4 sm:flex-row justify-center opacity-0 animate-fade-in-up"
@@ -158,15 +158,46 @@ export function Hero() {
                       className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                       aria-hidden="true"
                     />
-                    <span className="relative z-10">{t.buttons.collect}</span>
+                    <span className="flex items-center">
+                      {(t.buttons && t.buttons.collect) || ''}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        className="ml-2 h-5 w-5 stroke-[3] transition-transform duration-500 group-hover:translate-x-0.5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                        />
+                      </svg>
+                    </span>
                   </Link>
                 </Button>
                 <Button
                   asChild
                   size="lg"
-                  className="relative overflow-hidden border-2 border-white text-white bg-white/5 backdrop-blur-sm font-semibold transition-all duration-500 hover:scale-[1.04] hover:bg-white/20 shadow-xl shadow-black/20"
+                  variant="outline"
+                  className="text-white border-white/30 hover:border-white/60 bg-white/5 backdrop-blur-sm font-semibold transition-all duration-500 hover:scale-[1.04] group"
                 >
-                  <Link href="/poptavka">{t.buttons.sell}</Link>
+                  <Link href="/nase-sluzby/odkup-prodej-pohledavek" className="flex items-center">
+                    {(t.buttons && t.buttons.sell) || ''}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      className="ml-2 h-4 w-4 stroke-[3] transition-transform duration-500 group-hover:translate-x-0.5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </Link>
                 </Button>
               </div>
             </div>

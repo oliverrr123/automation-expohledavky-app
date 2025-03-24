@@ -60,12 +60,12 @@ export default function ServiceLayout({
     try {
       await navigator.clipboard.writeText(text)
       if (text.includes("@")) {
-        toast.success(t.contactSidebar.toast.emailCopied)
+        toast.success(t?.contactSidebar?.toast?.emailCopied)
       } else {
-        toast.success(t.contactSidebar.toast.phoneCopied)
+        toast.success(t?.contactSidebar?.toast?.phoneCopied)
       }
     } catch (err) {
-      toast.error(t.contactSidebar.toast.copyFailed)
+      toast.error(t?.contactSidebar?.toast?.copyFailed)
     }
   }
 
@@ -124,11 +124,11 @@ export default function ServiceLayout({
               <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-12">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {t.contactForm.badge}
+                    {t?.contactForm?.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.contactForm.title}</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t?.contactForm?.title}</h2>
                   <p className="text-gray-600 max-w-2xl mx-auto">
-                    {t.contactForm.description}
+                    {t?.contactForm?.description}
                   </p>
                 </div>
 
@@ -140,7 +140,7 @@ export default function ServiceLayout({
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
                             <label htmlFor="jmeno" className="block text-sm font-medium text-gray-700 mb-1">
-                              {t.contactForm.form.name.label}
+                              {t?.contactForm?.form?.name?.label}
                             </label>
                             <input
                               required
@@ -149,14 +149,14 @@ export default function ServiceLayout({
                               type="text"
                               value={formData.jmeno}
                               onChange={handleChange}
-                              placeholder={t.contactForm.form.name.placeholder}
+                              placeholder={t?.contactForm?.form?.name?.placeholder}
                               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
                               disabled={formStatus === "submitting" || formStatus === "success"}
                             />
                           </div>
                           <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                              {t.contactForm.form.email.label}
+                              {t?.contactForm?.form?.email?.label}
                             </label>
                             <input
                               required
@@ -165,14 +165,14 @@ export default function ServiceLayout({
                               type="email"
                               value={formData.email}
                               onChange={handleChange}
-                              placeholder={t.contactForm.form.email.placeholder}
+                              placeholder={t?.contactForm?.form?.email?.placeholder}
                               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
                               disabled={formStatus === "submitting" || formStatus === "success"}
                             />
                           </div>
                           <div>
                             <label htmlFor="telefon" className="block text-sm font-medium text-gray-700 mb-1">
-                              {t.contactForm.form.phone.label}
+                              {t?.contactForm?.form?.phone?.label}
                             </label>
                             <input
                               required
@@ -181,14 +181,14 @@ export default function ServiceLayout({
                               type="text"
                               value={formData.telefon}
                               onChange={handleChange}
-                              placeholder={t.contactForm.form.phone.placeholder}
+                              placeholder={t?.contactForm?.form?.phone?.placeholder}
                               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
                               disabled={formStatus === "submitting" || formStatus === "success"}
                             />
                           </div>
                           <div>
                             <label htmlFor="vyse" className="block text-sm font-medium text-gray-700 mb-1">
-                              {t.contactForm.form.amount.label}
+                              {t?.contactForm?.form?.amount?.label}
                             </label>
                             <input
                               required
@@ -197,7 +197,7 @@ export default function ServiceLayout({
                               type="text"
                               value={formData.vyse}
                               onChange={handleChange}
-                              placeholder={t.contactForm.form.amount.placeholder}
+                              placeholder={t?.contactForm?.form?.amount?.placeholder}
                               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
                               disabled={formStatus === "submitting" || formStatus === "success"}
                             />
@@ -205,7 +205,7 @@ export default function ServiceLayout({
                         </div>
                         <div>
                           <label htmlFor="zprava" className="block text-sm font-medium text-gray-700 mb-1">
-                            {t.contactForm.form.message.label}
+                            {t?.contactForm?.form?.message?.label}
                           </label>
                           <textarea
                             required
@@ -214,7 +214,7 @@ export default function ServiceLayout({
                             rows={5}
                             value={formData.zprava}
                             onChange={handleChange}
-                            placeholder={t.contactForm.form.message.placeholder}
+                            placeholder={t?.contactForm?.form?.message?.placeholder}
                             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all resize-none"
                             disabled={formStatus === "submitting" || formStatus === "success"}
                           ></textarea>
@@ -245,7 +245,7 @@ export default function ServiceLayout({
 
                             {formStatus === "idle" && (
                               <span className="relative z-10 flex items-center justify-center">
-                                {t.contactForm.form.submitButton} <Send className="ml-2 h-4 w-4" />
+                                {t?.contactForm?.form?.submitButton} <Send className="ml-2 h-4 w-4" />
                               </span>
                             )}
 
@@ -271,18 +271,18 @@ export default function ServiceLayout({
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                   ></path>
                                 </svg>
-                                {t.contactForm.form.submitting}
+                                {t?.contactForm?.form?.submitting}
                               </span>
                             )}
 
                             {formStatus === "success" && (
                               <span className="relative z-10 flex items-center justify-center">
-                                <CheckCircle className="mr-2 h-5 w-5" /> {t.contactForm.form.success}
+                                <CheckCircle className="mr-2 h-5 w-5" /> {t?.contactForm?.form?.success}
                               </span>
                             )}
 
                             {formStatus === "error" && (
-                              <span className="relative z-10">{t.contactForm.form.error}</span>
+                              <span className="relative z-10">{t?.contactForm?.form?.error}</span>
                             )}
                           </Button>
                         </div>
@@ -291,9 +291,9 @@ export default function ServiceLayout({
 
                     {/* Right side - info */}
                     <div className="md:col-span-4 bg-gradient-to-br from-zinc-900 to-zinc-800 text-white p-8">
-                      <h3 className="text-xl font-semibold mb-6">{t.contactSidebar.title}</h3>
+                      <h3 className="text-xl font-semibold mb-6">{t?.contactSidebar?.title}</h3>
                       <ul className="space-y-4">
-                        {t.contactSidebar.reasons.map((reason: string, index: number) => (
+                        {(t?.contactSidebar?.reasons || []).map((reason: string, index: number) => (
                           <li key={index} className="flex items-start gap-3">
                             <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                               <CheckCircle className="h-4 w-4 text-orange-400" />
@@ -304,21 +304,21 @@ export default function ServiceLayout({
                       </ul>
 
                       <div className="mt-8 pt-8 border-t border-zinc-700">
-                        <p className="text-zinc-300 mb-4">{t.contactSidebar.contact.title}</p>
+                        <p className="text-zinc-300 mb-4">{t?.contactSidebar?.contact?.title}</p>
                         <div className="space-y-3">
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
                               <Phone className="h-4 w-4 text-orange-400" />
                             </div>
                             <a 
-                              href={`tel:${t.contactSidebar.contact.phone}`}
+                              href={`tel:${t?.contactSidebar?.contact?.phone}`}
                               className="hover:text-orange-300 transition-colors cursor-pointer"
                               onClick={(e) => {
                                 e.preventDefault()
-                                handleCopy(t.contactSidebar.contact.phone)
+                                handleCopy(t?.contactSidebar?.contact?.phone)
                               }}
                             >
-                              {t.contactSidebar.contact.phone}
+                              {t?.contactSidebar?.contact?.phone}
                             </a>
                           </div>
                           <div className="flex items-center gap-3">
@@ -326,14 +326,14 @@ export default function ServiceLayout({
                               <Send className="h-4 w-4 text-orange-400" />
                             </div>
                             <a 
-                              href={`mailto:${t.contactSidebar.contact.email}`}
+                              href={`mailto:${t?.contactSidebar?.contact?.email}`}
                               className="hover:text-orange-300 transition-colors cursor-pointer"
                               onClick={(e) => {
                                 e.preventDefault()
-                                handleCopy(t.contactSidebar.contact.email)
+                                handleCopy(t?.contactSidebar?.contact?.email)
                               }}
                             >
-                              {t.contactSidebar.contact.email}
+                              {t?.contactSidebar?.contact?.email}
                             </a>
                           </div>
                         </div>
@@ -352,11 +352,11 @@ export default function ServiceLayout({
             <SectionWrapper animation="fade-up">
               <div className="text-center mb-12">
                 <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                  {t.process.badge}
+                  {t?.process?.badge}
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900">{t.process.title}</h2>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900">{t?.process?.title}</h2>
                 <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-                  {t.process.description}
+                  {t?.process?.description}
                 </p>
               </div>
             </SectionWrapper>
@@ -367,31 +367,31 @@ export default function ServiceLayout({
                   {/* Tab Content */}
                   <div className="min-h-[220px] relative">
                     {/* Process steps */}
-                    {t.process.steps.map((step: any) => (
+                    {(t?.process?.steps || []).map((step: any) => (
                       <div
-                        key={step.key}
-                        className={`transition-all duration-500 absolute inset-0 ${activeTab === step.key ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"}`}
+                        key={step?.key || 'default'}
+                        className={`transition-all duration-500 absolute inset-0 ${activeTab === step?.key ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"}`}
                       >
                         <div className="flex items-start gap-6">
                           <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                            {step.key === "kontrola" && <Eye className="h-8 w-8 text-orange-500" />}
-                            {step.key === "zastoupeni" && <User className="h-8 w-8 text-orange-500" />}
-                            {step.key === "vyzva" && <FileText className="h-8 w-8 text-orange-500" />}
-                            {step.key === "zaloba" && <Gavel className="h-8 w-8 text-orange-500" />}
-                            {step.key === "exekuce" && <CreditCard className="h-8 w-8 text-orange-500" />}
+                            {step?.key === "kontrola" && <Eye className="h-8 w-8 text-orange-500" />}
+                            {step?.key === "zastoupeni" && <User className="h-8 w-8 text-orange-500" />}
+                            {step?.key === "vyzva" && <FileText className="h-8 w-8 text-orange-500" />}
+                            {step?.key === "zaloba" && <Gavel className="h-8 w-8 text-orange-500" />}
+                            {step?.key === "exekuce" && <CreditCard className="h-8 w-8 text-orange-500" />}
                           </div>
                           <div>
-                            <h3 className="text-2xl font-bold mb-4 text-zinc-900">{step.title}</h3>
-                            <p className="text-gray-600 mb-4">{step.description}</p>
-                            {step.additionalText && <p className="text-gray-600">{step.additionalText}</p>}
+                            <h3 className="text-2xl font-bold mb-4 text-zinc-900">{step?.title ?? ""}</h3>
+                            <p className="text-gray-600 mb-4">{step?.description ?? ""}</p>
+                            {step?.additionalText && <p className="text-gray-600">{step.additionalText}</p>}
                             
-                            {step.fee && (
+                            {step?.fee && (
                               <div className="p-4 bg-orange-50 border border-orange-100 rounded-lg mt-4">
                                 <p className="font-medium text-orange-800">{step.fee}</p>
                               </div>
                             )}
                             
-                            {step.success && (
+                            {step?.success && (
                               <div className="p-4 bg-green-50 border border-green-100 rounded-lg mt-4">
                                 <p className="font-medium text-green-800">{step.success}</p>
                               </div>
@@ -405,13 +405,13 @@ export default function ServiceLayout({
                   {/* Tab Navigation */}
                   <div className="mt-16 border-t pt-8">
                     <div className="flex flex-wrap lg:flex-nowrap items-center justify-center gap-2">
-                      {t.process.steps.map((step: any, index: number, array: any[]) => {
-                        const isActive = activeTab === step.key;
+                      {(t?.process?.steps || []).map((step: any, index: number, array: any[]) => {
+                        const isActive = activeTab === step?.key;
                         const isLast = index === array.length - 1;
                         
                         // Map step key to icon
                         let Icon;
-                        switch(step.key) {
+                        switch(step?.key) {
                           case "kontrola": Icon = Eye; break;
                           case "zastoupeni": Icon = User; break;
                           case "vyzva": Icon = FileText; break;
@@ -421,9 +421,9 @@ export default function ServiceLayout({
                         }
 
                         return (
-                          <React.Fragment key={step.key}>
+                          <React.Fragment key={step?.key || index}>
                             <button
-                              onClick={() => setActiveTab(step.key)}
+                              onClick={() => setActiveTab(step?.key || 'default')}
                               className={cn(
                                 "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-300 shadow-sm hover:shadow w-full lg:w-auto justify-center",
                                 isActive
@@ -432,7 +432,7 @@ export default function ServiceLayout({
                               )}
                             >
                               <Icon className="h-5 w-5" />
-                              {step.title}
+                              {step?.title ?? ""}
                             </button>
 
                             {/* Arrow between items */}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -10,10 +10,26 @@ import Link from "next/link"
 import Image from "next/image"
 import { useTranslations } from "@/lib/i18n"
 import { sanitizeHTML } from "@/lib/utils"
+import csCareerPage from '@/locales/cs/career-page.json'
+
+// Default translations for the career page
+const defaultTranslations = csCareerPage;
 
 export default function CareerPage() {
-  const t = useTranslations('careerPage')
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
+  
+  // Always call hooks unconditionally
+  const clientTranslations = useTranslations('careerPage')
+  
+  // Use client translations or default translations based on client state
+  const t = isClient ? clientTranslations : defaultTranslations
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   return (
     <div className="flex min-h-screen flex-col">

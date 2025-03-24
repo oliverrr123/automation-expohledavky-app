@@ -75,8 +75,11 @@ export function Services() {
   const [isClient, setIsClient] = useState(false)
   // Track if initial render is complete
   const [initialRenderComplete, setInitialRenderComplete] = useState(false)
-  // Use server translations initially, then switch to client translations after hydration
-  const t = isClient ? useTranslations('services') as ServicesTranslations : serverTranslations
+  
+  // Always call hooks unconditionally
+  const clientTranslations = useTranslations('services') as ServicesTranslations
+  // Use server or client translations based on state
+  const t = isClient ? clientTranslations : serverTranslations
   
   // Set isClient to true after hydration is complete
   useEffect(() => {

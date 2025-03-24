@@ -84,11 +84,11 @@ export default function NaseSluzbyPage() {
           <SectionWrapper animation="fade-up">
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                {t.hero.badge}
+                {t?.hero?.badge}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 mb-6">{t.hero.title}</h1>
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 mb-6">{t?.hero?.title}</h1>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                {t.hero.description}
+                {t?.hero?.description}
               </p>
             </div>
           </SectionWrapper>
@@ -100,14 +100,14 @@ export default function NaseSluzbyPage() {
         <div className="container mx-auto px-4">
           <SectionWrapper animation="fade-up" delay={200}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {t.services.map((service: any, index: number) => {
-                const colors = colorVariants[service.color as keyof typeof colorVariants]
-                const Icon = iconMap[service.icon as keyof typeof iconMap]
+              {(t?.services || []).map((service: any, index: number) => {
+                const colors = colorVariants[service?.color as keyof typeof colorVariants] || colorVariants.orange;
+                const Icon = iconMap[service?.icon as keyof typeof iconMap] || FileText;
 
                 return (
                   <Link
-                    href={`/nase-sluzby/${service.id}`}
-                    key={service.id}
+                    href={`/nase-sluzby/${service?.id}`}
+                    key={service?.id || index}
                     className={cn(
                       "group flex flex-col h-full rounded-xl border bg-white p-6 shadow-sm transition-all duration-200",
                       colors.border,
@@ -121,11 +121,11 @@ export default function NaseSluzbyPage() {
                         >
                           <Icon className={cn("h-6 w-6", colors.icon)} />
                         </div>
-                        <h3 className="text-xl font-bold text-zinc-900 mb-3">{service.title}</h3>
-                        <p className="text-gray-600 mb-6">{service.description}</p>
+                        <h3 className="text-xl font-bold text-zinc-900 mb-3">{service?.title}</h3>
+                        <p className="text-gray-600 mb-6">{service?.description}</p>
                       </div>
                       <div className="flex items-center text-sm font-medium mt-2 group-hover:translate-x-1 transition-transform">
-                        <span className={colors.icon}>{service.cta}</span>
+                        <span className={colors.icon}>{service?.cta}</span>
                         <ArrowRight className={cn("ml-1 h-4 w-4", colors.icon)} />
                       </div>
                     </SectionWrapper>
@@ -143,9 +143,9 @@ export default function NaseSluzbyPage() {
           <SectionWrapper animation="fade-up" delay={400}>
             <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-2xl p-8 md:p-12 text-white">
               <div className="max-w-3xl mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-6">{t.cta.title}</h2>
+                <h2 className="text-3xl font-bold mb-6">{t?.cta?.title}</h2>
                 <p className="text-zinc-300 mb-8">
-                  {t.cta.description}
+                  {t?.cta?.description}
                 </p>
                 <div className="flex justify-center">
                   <Button
@@ -163,7 +163,7 @@ export default function NaseSluzbyPage() {
                         className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                         aria-hidden="true"
                       />
-                      <span className="relative z-10">{t.cta.button}</span>
+                      <span className="relative z-10">{t?.cta?.button}</span>
                     </a>
                   </Button>
                 </div>
@@ -180,20 +180,20 @@ export default function NaseSluzbyPage() {
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-12">
                 <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                  {t.whyChooseUs.badge}
+                  {t?.whyChooseUs?.badge}
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.whyChooseUs.title}</h2>
+                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t?.whyChooseUs?.title}</h2>
                 <p className="text-gray-600 max-w-2xl mx-auto">
-                  {t.whyChooseUs.description}
+                  {t?.whyChooseUs?.description}
                 </p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
-                {t.whyChooseUs.advantages.map((item: any, index: number) => (
+                {(t?.whyChooseUs?.advantages || []).map((item: any, index: number) => (
                   <SectionWrapper key={index} animation="fade-up" delay={600 + index * 100}>
                     <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm h-full">
-                      <h3 className="text-xl font-bold text-zinc-900 mb-3">{item.title}</h3>
-                      <p className="text-gray-600">{item.description}</p>
+                      <h3 className="text-xl font-bold text-zinc-900 mb-3">{item?.title}</h3>
+                      <p className="text-gray-600">{item?.description}</p>
                     </div>
                   </SectionWrapper>
                 ))}

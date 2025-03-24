@@ -7,6 +7,9 @@ import { Testimonials } from "@/components/testimonials"
 import { Partners } from "@/components/partners"
 import { Footer } from "@/components/footer"
 
+// Note: In Next.js App Router, we don't need to export static props
+// Components can directly import their required translation files
+
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">

@@ -19,64 +19,24 @@ import { generateCSRFToken } from "@/lib/csrf"
 import { headers } from 'next/headers'
 import { useParams } from "next/navigation"
 
-// Get translations based on domain for server-side rendering
-const translationsByLang: Record<string, typeof csContactPage> = {
-  cs: csContactPage,
-  en: enContactPage,
-  sk: skContactPage,
-  de: deContactPage
-};
-
-// Function to detect locale from hostname (for client-side use)
-const getLocaleFromHostname = (hostname: string) => {
-  const domain = hostname.split(':')[0];
-  
-  // Determine locale from domain
-  let locale = '';
-  
-  // Production domains
-  if (domain.includes('expohledavky.com')) locale = 'en';
-  else if (domain.includes('expohledavky.sk')) locale = 'sk';
-  else if (domain.includes('expohledavky.de')) locale = 'de';
-  else if (domain.includes('expohledavky.cz')) locale = 'cs';
-  
-  // Development environment subdomains
-  else if (domain.startsWith('en.')) locale = 'en';
-  else if (domain.startsWith('sk.')) locale = 'sk';
-  else if (domain.startsWith('de.')) locale = 'de';
-  else if (domain.startsWith('cs.')) locale = 'cs';
-  
-  // If still no locale is set, we must be on an unknown domain
-  // We'll use the hostname to make a best guess
-  if (!locale) {
-    if (domain.includes('en') || domain.includes('com')) locale = 'en';
-    else if (domain.includes('sk')) locale = 'sk';
-    else if (domain.includes('de')) locale = 'de';
-    else if (domain.includes('cz') || domain.includes('cs')) locale = 'cs';
-    else locale = 'en'; // Last resort - English for international users
-  }
-  
-  return locale;
-};
+// Default translations for the contact page
+const defaultTranslations = csContactPage;
 
 export default function ContactPage() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
-  const [serverLocale, setServerLocale] = useState('en') // Default to EN
   
-  // Use server translations initially, then switch to client translations after hydration
-  const t = isClient ? useTranslations('contactPage') : translationsByLang[serverLocale] || translationsByLang['en']
+  // Always call hooks unconditionally
+  const clientTranslations = useTranslations('contactPage')
+  
+  // Use client translations or default translations based on client state
+  const t = isClient ? clientTranslations : defaultTranslations
   
   // Set isClient to true after hydration is complete
   useEffect(() => {
     setIsClient(true)
     // Generate CSRF token when component mounts
     setCsrfToken(generateCSRFToken())
-    
-    // Detect locale from hostname on client-side
-    const hostname = window.location.hostname;
-    const detectedLocale = getLocaleFromHostname(hostname);
-    setServerLocale(detectedLocale);
   }, [])
   
   const [formData, setFormData] = useState({
@@ -108,13 +68,6 @@ export default function ContactPage() {
     fetchCSRFToken();
   }, []);
 
-  // Debug information - can be removed in production
-  useEffect(() => {
-    if (isClient) {
-      console.log("Detected locale on client:", serverLocale);
-    }
-  }, [isClient, serverLocale]);
-
   const handleCopy = async (text: string, index: number) => {
     try {
       await navigator.clipboard.writeText(text)
@@ -122,13 +75,13 @@ export default function ContactPage() {
       
       // Determine the type of content being copied
       if (text.startsWith("+420")) {
-        toast.success(t.contactInfo?.copySuccess?.phone)
+        toast.success(t?.contactInfo?.copySuccess?.phone)
       } else if (text.includes("@")) {
-        toast.success(t.contactInfo?.copySuccess?.email)
+        toast.success(t?.contactInfo?.copySuccess?.email)
       } else if (text.includes("Praha")) {
-        toast.success(t.contactInfo?.copySuccess?.address)
+        toast.success(t?.contactInfo?.copySuccess?.address)
       } else {
-        toast.success(t.contactInfo?.copySuccess?.generic)
+        toast.success(t?.contactInfo?.copySuccess?.generic)
       }
       
       // Reset the copy status after 2 seconds
@@ -136,7 +89,7 @@ export default function ContactPage() {
         setCopyStatus((prev) => ({ ...prev, [index]: false }))
       }, 2000)
     } catch (err) {
-      toast.error(t.contactInfo?.copyError)
+      toast.error(t?.contactInfo?.copyError)
     }
   }
 
@@ -169,7 +122,7 @@ export default function ContactPage() {
 
       // Success
       setFormStatus("success");
-      toast.success(t.contactForm?.form?.success);
+      toast.success(t?.contactForm?.form?.success);
 
       // Generate a new CSRF token
       const newToken = generateCSRFToken();
@@ -188,7 +141,7 @@ export default function ContactPage() {
     } catch (error) {
       console.error('Error submitting form:', error);
       setFormStatus("error");
-      toast.error(error instanceof Error ? error.message : t.contactForm?.form?.error);
+      toast.error(error instanceof Error ? error.message : t?.contactForm?.form?.error);
     }
   }
 

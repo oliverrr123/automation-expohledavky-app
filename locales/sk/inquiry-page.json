@@ -1,0 +1,31 @@
+{
+  "title": "Podrobná požiadavka",
+  "subtitle": "ZADAJTE PODROBNÚ POŽIADAVKU NA POSÚDENIE",
+  "form": {
+    "name": {
+      "label": "Meno a priezvisko",
+      "placeholder": "Meno a priezvisko"
+    },
+    "email": {
+      "label": "Váš e-mail",
+      "placeholder": "Váš e-mail"
+    },
+    "phone": {
+      "label": "Telefónny kontakt",
+      "placeholder": "Váš telefónny kontakt"
+    },
+    "amount": {
+      "label": "Výška pohľadávky",
+      "placeholder": "Výška pohľadávky"
+    },
+    "message": {
+      "label": "Vaša správa",
+      "placeholder": "Vaša správa... uveďte všetky známe podrobnosti k Vašej pohľadávke..."
+    },
+    "submit": "Odoslať správu",
+    "sending": "Odosielanie...",
+    "captchaError": "Prosím potvrďte, že nie ste robot.",
+    "generalError": "Došlo k chybe pri odosielaní formulára. Skúste to prosím znova.",
+    "success": "Vaša správa bola úspešne odoslaná. Budeme vás kontaktovať čo najskôr."
+  }
+} 

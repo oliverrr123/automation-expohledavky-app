@@ -5,8 +5,8 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import type { Metadata, Viewport } from "next"
 import { Toaster } from "sonner"
-import { getLocaleMetadata } from "@/lib/i18n"
 import { headers } from "next/headers"
+import { getLocaleMetadata } from "@/lib/server-metadata"
 
 const montserrat = Montserrat({
   subsets: ["latin"],

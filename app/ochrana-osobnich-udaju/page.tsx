@@ -1,11 +1,37 @@
+"use client"
+
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { useTranslations } from "@/lib/i18n"
 import { sanitizeHTML } from "@/lib/utils"
+import { useState, useEffect } from "react"
+import { getServerTranslations } from "@/lib/server-utils"
+import csPrivacyPolicyPage from '@/locales/cs/privacy-policy-page.json'
+import enPrivacyPolicyPage from '@/locales/en/privacy-policy-page.json'
+import skPrivacyPolicyPage from '@/locales/sk/privacy-policy-page.json'
+import dePrivacyPolicyPage from '@/locales/de/privacy-policy-page.json'
+
+// Get translations based on domain for server-side rendering
+const translationsByLang = {
+  cs: csPrivacyPolicyPage,
+  en: enPrivacyPolicyPage,
+  sk: skPrivacyPolicyPage,
+  de: dePrivacyPolicyPage
+};
+
+// Server-side default translations to prevent hydration mismatch
+const serverTranslations = getServerTranslations('privacyPolicyPage', translationsByLang);
 
 export default function OchranaOsobnichUdajuPage() {
-  const t = useTranslations('privacyPolicyPage');
+  const [isClient, setIsClient] = useState(false)
+  // Use server translations initially, then switch to client translations after hydration
+  const t = isClient ? useTranslations('privacyPolicyPage') : serverTranslations
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   return (
     <>

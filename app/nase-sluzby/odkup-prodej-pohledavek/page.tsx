@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle, DollarSign, FileText, BarChart } from "lucide-react"
 import { useTranslations } from "@/lib/i18n"
 import { useState, useEffect } from "react"
+import csReceivablesPurchasePage from '@/locales/cs/receivables-purchase-page.json'
+import enReceivablesPurchasePage from '@/locales/en/receivables-purchase-page.json'
+import skReceivablesPurchasePage from '@/locales/sk/receivables-purchase-page.json'
+import deReceivablesPurchasePage from '@/locales/de/receivables-purchase-page.json'
 
 // Icon mapping for process steps icons
 const iconMap = {
@@ -15,11 +19,18 @@ const iconMap = {
   BarChart
 }
 
+// Default translations to use before client-side hydration
+const defaultTranslations = csReceivablesPurchasePage;
+
 export default function OdkupProdejPohledavekPage() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
-  // Use server translations initially, then switch to client translations after hydration
-  const t = useTranslations('receivablesPurchasePage')
+  
+  // Always call hooks unconditionally
+  const clientTranslations = useTranslations('receivablesPurchasePage')
+  
+  // Use client translations or default translations based on client state
+  const t = isClient ? clientTranslations : defaultTranslations
   
   // Set isClient to true after hydration is complete
   useEffect(() => {
@@ -43,11 +54,11 @@ export default function OdkupProdejPohledavekPage() {
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
               <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                {t.hero.badge}
+                {t?.hero?.badge || "Naše služby"}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero.title}</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t?.hero?.title || "Odkup a prodej pohledávek"}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                {t.hero.subtitle}
+                {t?.hero?.subtitle || "Rychlé a efektivní řešení pro věřitele, kteří chtějí své pohledávky prodat"}
               </p>
             </SectionWrapper>
           </div>
@@ -62,11 +73,11 @@ export default function OdkupProdejPohledavekPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {t.mainSection.badge}
+                    {t?.mainSection?.badge || "Komplexní řešení"}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.mainSection.title}</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t?.mainSection?.title || "Odkup a prodej pohledávek"}</h2>
                   
-                  {t.mainSection.paragraphs.map((paragraph: string, index: number) => (
+                  {(t?.mainSection?.paragraphs || []).map((paragraph: string, index: number) => (
                     <p key={index} className={`text-gray-600 ${index === 0 ? 'mb-4 text-lg' : 'mb-8'}`}>
                       {paragraph}
                     </p>
@@ -78,7 +89,7 @@ export default function OdkupProdejPohledavekPage() {
                       className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
                     >
                       <a href="#contact-form" className="flex items-center">
-                        {t.mainSection.button} <ArrowRight className="ml-2 h-4 w-4" />
+                        {t?.mainSection?.button || "Nezávazná poptávka"} <ArrowRight className="ml-2 h-4 w-4" />
                       </a>
                     </Button>
                   </div>
@@ -97,15 +108,15 @@ export default function OdkupProdejPohledavekPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {t.process.badge}
+                    {t?.process?.badge || "Proces odkupu"}
                   </div>
                   <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">
-                    {t.process.title}
+                    {t?.process?.title || "Odkupu pohledávek předchází jejich prověření zahrnující:"}
                   </h2>
 
                   <div className="grid md:grid-cols-3 gap-8 mt-8">
-                    {t.process.steps.map((step: any, index: number) => {
-                      const Icon = iconMap[step.icon as keyof typeof iconMap];
+                    {(t?.process?.steps || []).map((step: any, index: number) => {
+                      const Icon = iconMap[step?.icon as keyof typeof iconMap] || CheckCircle;
                       
                       return (
                         <SectionWrapper key={index} animation="zoom" delay={index * 100}>
@@ -113,8 +124,8 @@ export default function OdkupProdejPohledavekPage() {
                             <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
                               <Icon className="h-6 w-6 text-orange-600" />
                             </div>
-                            <h3 className="text-xl font-semibold mb-2 hyphens-auto">{step.title}</h3>
-                            <p className="text-gray-600 hyphens-auto">{step.description}</p>
+                            <h3 className="text-xl font-semibold mb-2 hyphens-auto">{step?.title || ""}</h3>
+                            <p className="text-gray-600 hyphens-auto">{step?.description || ""}</p>
                           </div>
                         </SectionWrapper>
                       );
@@ -127,7 +138,7 @@ export default function OdkupProdejPohledavekPage() {
                         <BarChart className="h-5 w-5 text-orange-400" />
                       </div>
                       <p className="text-lg">
-                        {t.process.note}
+                        {t?.process?.note || ""}
                       </p>
                     </div>
                   </div>
@@ -144,24 +155,24 @@ export default function OdkupProdejPohledavekPage() {
           <SectionWrapper animation="fade-up">
             <div className="text-center mb-12">
               <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                {t.benefits.badge}
+                {t?.benefits?.badge || "Výhody prodeje pohledávek"}
               </div>
-              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.benefits.title}</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t?.benefits?.title || "Proč prodat své pohledávky?"}</h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                {t.benefits.description}
+                {t?.benefits?.description || ""}
               </p>
             </div>
           </SectionWrapper>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {t.benefits.items.map((benefit: any, index: number) => (
+            {(t?.benefits?.items || []).map((benefit: any, index: number) => (
               <SectionWrapper key={index} animation="zoom" delay={index * 100}>
                 <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 h-full transition-all duration-300 hover:shadow-md hover:-translate-y-1">
                   <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
                     <CheckCircle className="h-6 w-6 text-orange-600" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2 hyphens-auto">{benefit.title}</h3>
-                  <p className="text-gray-600 hyphens-auto">{benefit.description}</p>
+                  <h3 className="text-xl font-semibold mb-2 hyphens-auto">{benefit?.title || ""}</h3>
+                  <p className="text-gray-600 hyphens-auto">{benefit?.description || ""}</p>
                 </div>
               </SectionWrapper>
             ))}

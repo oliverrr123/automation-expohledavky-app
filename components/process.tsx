@@ -15,12 +15,24 @@ const iconMap = {
   exekuce: CreditCard,
 }
 
+// Default steps to use as fallback when translations aren't loaded yet
+const defaultSteps = [
+  { key: "kontrola", title: "Kontrola", description: "..." },
+  { key: "zastoupeni", title: "Zastoupení", description: "..." },
+  { key: "vyzva", title: "Výzva", description: "..." },
+  { key: "zaloba", title: "Žaloba", description: "..." },
+  { key: "exekuce", title: "Exekuce", description: "..." },
+]
+
 export function Process() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
   // Use client translations
   const t = useTranslations('process')
   const [activeStep, setActiveStep] = useState("kontrola")
+
+  // Safely access steps with fallback to prevent errors
+  const steps = t?.steps || defaultSteps
 
   // Set isClient to true after hydration
   useEffect(() => {
@@ -29,16 +41,31 @@ export function Process() {
 
   // Add auto-scrolling effect
   useEffect(() => {
+    if (!steps || steps.length === 0) return // Guard against missing steps
+    
     const interval = setInterval(() => {
       setActiveStep((current) => {
-        const currentIndex = t.steps.findIndex((step: any) => step.key === current)
-        const nextIndex = (currentIndex + 1) % t.steps.length
-        return t.steps[nextIndex].key
+        const currentIndex = steps.findIndex((step: any) => step.key === current)
+        const nextIndex = (currentIndex + 1) % steps.length
+        return steps[nextIndex].key
       })
     }, 5000) // Change step every 5 seconds
 
     return () => clearInterval(interval)
-  }, [t.steps])
+  }, [steps])
+
+  // If translations aren't loaded yet, show minimal UI
+  if (!t || !steps || steps.length === 0) {
+    return (
+      <section className="relative py-24 sm:py-32 overflow-hidden">
+        <div className="container relative z-10">
+          <div className="animate-pulse bg-gray-200 h-8 w-48 mx-auto rounded"></div>
+          <div className="animate-pulse bg-gray-200 h-4 w-96 mx-auto mt-4 rounded"></div>
+          <div className="animate-pulse bg-gray-200 h-64 w-full mx-auto mt-8 rounded-2xl"></div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="relative py-24 sm:py-32 overflow-hidden">
@@ -51,9 +78,9 @@ export function Process() {
         <SectionWrapper animation="fade-up">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl bg-clip-text text-transparent bg-gradient-to-b from-zinc-900 to-zinc-500">
-              {t.title}
+              {t.title || "Proces"}
             </h2>
-            <p className="mt-4">{t.subtitle}</p>
+            <p className="mt-4">{t.subtitle || "Jak probíhá zpracování pohledávek"}</p>
           </div>
         </SectionWrapper>
 
@@ -61,10 +88,10 @@ export function Process() {
           <div className="flex flex-col gap-8">
             <SectionWrapper animation="zoom" delay={200}>
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 min-h-[300px] sm:min-h-[200px] relative overflow-hidden">
-                {t.steps.map((step: any) => {
+                {steps.map((step: any) => {
                   const isActive = step.key === activeStep
-                  const currentIndex = t.steps.findIndex((s: any) => s.key === activeStep)
-                  const stepIndex = t.steps.findIndex((s: any) => s.key === step.key)
+                  const currentIndex = steps.findIndex((s: any) => s.key === activeStep)
+                  const stepIndex = steps.findIndex((s: any) => s.key === step.key)
                   const shouldEnterFromTop = stepIndex > currentIndex
 
                   return (
@@ -89,9 +116,9 @@ export function Process() {
 
             <SectionWrapper animation="fade-up" delay={400}>
               <div className="flex flex-col lg:flex-row items-center justify-center gap-4">
-                {t.steps.map((step: any, index: number) => {
+                {steps.map((step: any, index: number) => {
                   const Icon = iconMap[step.key as keyof typeof iconMap]
-                  const isLast = index === t.steps.length - 1
+                  const isLast = index === steps.length - 1
                   return (
                     <div key={step.key} className="flex items-center">
                       <button

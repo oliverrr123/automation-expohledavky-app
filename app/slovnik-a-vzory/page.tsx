@@ -10,6 +10,10 @@ import Link from "next/link"
 import { useEffect, useState, useRef, useMemo } from "react"
 import { useTranslations } from "@/lib/i18n"
 import { sanitizeHTML } from "@/lib/utils"
+import csDictionaryTemplatesPage from '@/locales/cs/dictionary-templates-page.json'
+
+// Default translations for client-side rendering
+const defaultTranslations = csDictionaryTemplatesPage;
 
 // Define types for templates and dictionary items
 interface TemplateItem {
@@ -69,7 +73,19 @@ const getTailwindColor = (colorClass: string): string => {
 type SearchableItem = TemplateItem | DictionaryItem;
 
 export default function SlovnikAVzoryPage() {
-  const t = useTranslations('dictionaryTemplatesPage')
+  // Add state to track if client-side rendered
+  const [isClient, setIsClient] = useState(false)
+  
+  // Always call hooks unconditionally
+  const clientTranslations = useTranslations('dictionaryTemplatesPage')
+  
+  // Use client translations or default translations based on client state
+  const t = isClient ? clientTranslations : defaultTranslations
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   const [searchTerm, setSearchTerm] = useState("")
   const [activeTab, setActiveTab] = useState("vzory")
@@ -84,19 +100,19 @@ export default function SlovnikAVzoryPage() {
 
   // Memoize document templates data
   const documents = useMemo<TemplateItem[]>(() => {
-    return t.templates.map((template: any) => ({
+    return (t?.templates || []).map((template: any) => ({
       ...template,
       type: "document"
     }));
-  }, [t.templates]);
+  }, [t?.templates]);
 
   // Memoize dictionary terms data
   const dictionaryTerms = useMemo<DictionaryItem[]>(() => {
-    return t.dictionaryTerms.map((term: any) => ({
+    return (t?.dictionaryTerms || []).map((term: any) => ({
       ...term,
       id: `detail-${term.id}`
     }));
-  }, [t.dictionaryTerms]);
+  }, [t?.dictionaryTerms]);
 
   // Memoize all searchable items
   const allItems = useMemo<SearchableItem[]>(() => {

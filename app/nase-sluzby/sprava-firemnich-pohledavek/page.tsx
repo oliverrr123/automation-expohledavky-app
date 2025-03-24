@@ -35,10 +35,10 @@ export default function SpravaFiremnichPohledavekPage() {
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
               <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                {t.hero.badge}
+                {t?.hero?.badge}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero.title}</h1>
-              <p className="text-xl text-zinc-300 mb-8">{t.hero.subtitle}</p>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t?.hero?.title}</h1>
+              <p className="text-xl text-zinc-300 mb-8">{t?.hero?.subtitle}</p>
             </SectionWrapper>
           </div>
         </div>
@@ -52,11 +52,11 @@ export default function SpravaFiremnichPohledavekPage() {
               <SectionWrapper animation="fade-right" className="md:col-span-7">
                 <div>
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {t.mainSection.badge}
+                    {t?.mainSection?.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.mainSection.title}</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t?.mainSection?.title}</h2>
                   
-                  {t.mainSection.paragraphs.map((paragraph: string, index: number) => (
+                  {(t?.mainSection?.paragraphs || []).map((paragraph: string, index: number) => (
                     <p key={index} className={`text-gray-600 ${index === 0 ? 'mb-4 text-lg' : 'mb-6'}`}>
                       {paragraph}
                     </p>
@@ -68,7 +68,7 @@ export default function SpravaFiremnichPohledavekPage() {
                       className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
                     >
                       <a href="#contact-form" className="flex items-center">
-                        {t.mainSection.button} <ArrowRight className="ml-2 h-4 w-4" />
+                        {t?.mainSection?.button} <ArrowRight className="ml-2 h-4 w-4" />
                       </a>
                     </Button>
                   </div>
@@ -77,9 +77,9 @@ export default function SpravaFiremnichPohledavekPage() {
 
               <SectionWrapper animation="fade-left" delay={200} className="md:col-span-5">
                 <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-8 shadow-sm border border-orange-100">
-                  <h3 className="text-xl font-semibold mb-6 text-zinc-900">{t.mainSection.services.title}</h3>
+                  <h3 className="text-xl font-semibold mb-6 text-zinc-900">{t?.mainSection?.services?.title}</h3>
                   <ul className="space-y-4">
-                    {t.mainSection.services.items.map((item: string, index: number) => (
+                    {(t?.mainSection?.services?.items || []).map((item: string, index: number) => (
                       <li key={index} className="flex items-start gap-3 group">
                         <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm group-hover:shadow transition-shadow">
                           <CheckCircle className="h-4 w-4 text-orange-500" />
@@ -101,26 +101,26 @@ export default function SpravaFiremnichPohledavekPage() {
           <SectionWrapper animation="fade-up">
             <div className="text-center mb-12">
               <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                {t.benefits.badge}
+                {t?.benefits?.badge}
               </div>
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">
-                {t.benefits.title}
+                {t?.benefits?.title}
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                {t.benefits.description}
+                {t?.benefits?.description}
               </p>
             </div>
           </SectionWrapper>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {t.benefits.items.map((benefit: any, index: number) => (
+            {(t?.benefits?.items || []).map((benefit: any, index: number) => (
               <SectionWrapper key={index} animation="zoom" delay={index * 100}>
                 <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 h-full transition-all duration-300 hover:shadow-md hover:-translate-y-1">
                   <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
                     <CheckCircle className="h-6 w-6 text-orange-600" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600">{benefit.description}</p>
+                  <h3 className="text-xl font-semibold mb-2">{benefit?.title}</h3>
+                  <p className="text-gray-600">{benefit?.description}</p>
                 </div>
               </SectionWrapper>
             ))}

@@ -1,3 +1,5 @@
+"use client";
+
 import csHero from '@/locales/cs/hero.json';
 import csAboutUs from '@/locales/cs/about-us.json';
 import csProcess from '@/locales/cs/process.json';
@@ -22,6 +24,7 @@ import csFooter from '@/locales/cs/footer.json';
 import csMetadata from '@/locales/cs/metadata.json';
 import csServicesLayout from '@/locales/cs/services-layout.json';
 import csLoading from '@/locales/cs/loading.json';
+import csInquiryPage from '@/locales/cs/inquiry-page.json';
 
 // English translations
 import enHero from '@/locales/en/hero.json';
@@ -48,6 +51,7 @@ import enFooter from '@/locales/en/footer.json';
 import enMetadata from '@/locales/en/metadata.json';
 import enServicesLayout from '@/locales/en/services-layout.json';
 import enLoading from '@/locales/en/loading.json';
+import enInquiryPage from '@/locales/en/inquiry-page.json';
 
 // German translations
 import deHero from '@/locales/de/hero.json';
@@ -74,6 +78,7 @@ import deFooter from '@/locales/de/footer.json';
 import deMetadata from '@/locales/de/metadata.json';
 import deServicesLayout from '@/locales/de/services-layout.json';
 import deLoading from '@/locales/de/loading.json';
+import deInquiryPage from '@/locales/de/inquiry-page.json';
 
 // Slovak translations
 import skHero from '@/locales/sk/hero.json';
@@ -100,10 +105,21 @@ import skFooter from '@/locales/sk/footer.json';
 import skMetadata from '@/locales/sk/metadata.json';
 import skServicesLayout from '@/locales/sk/services-layout.json';
 import skLoading from '@/locales/sk/loading.json';
+import skInquiryPage from '@/locales/sk/inquiry-page.json';
 
 import { getLanguageFromHostname } from './domain-mapping';
 import Cookies from 'js-cookie';
 import { getInitialLocale } from './server-utils';
+import { useState, useEffect, useMemo } from 'react';
+import * as React from 'react';
+
+// Add the custom __LOCALE__ property to Window
+declare global {
+  interface Window {
+    __LOCALE__?: string;
+    __TRANSLATIONS__?: Record<string, Record<string, any>>;
+  }
+}
 
 // Cookie name for storing the locale (keep in sync with middleware.ts)
 const LOCALE_COOKIE = 'NEXT_LOCALE';
@@ -137,7 +153,8 @@ const translations: Record<string, Record<string, any>> = {
     footer: csFooter,
     metadata: csMetadata,
     servicesLayout: csServicesLayout,
-    loading: csLoading
+    loading: csLoading,
+    inquiryPage: csInquiryPage
   },
   en: {
     hero: enHero,
@@ -163,7 +180,8 @@ const translations: Record<string, Record<string, any>> = {
     footer: enFooter,
     metadata: enMetadata,
     servicesLayout: enServicesLayout,
-    loading: enLoading
+    loading: enLoading,
+    inquiryPage: enInquiryPage
   },
   de: {
     hero: deHero,
@@ -189,7 +207,8 @@ const translations: Record<string, Record<string, any>> = {
     footer: deFooter,
     metadata: deMetadata,
     servicesLayout: deServicesLayout,
-    loading: deLoading
+    loading: deLoading,
+    inquiryPage: deInquiryPage
   },
   sk: {
     hero: skHero,
@@ -215,9 +234,23 @@ const translations: Record<string, Record<string, any>> = {
     footer: skFooter,
     metadata: skMetadata,
     servicesLayout: skServicesLayout,
-    loading: skLoading
+    loading: skLoading,
+    inquiryPage: skInquiryPage
   }
 };
+
+// Define a global cache for empty translation structures
+const emptyStructuresCache: Record<string, any> = {};
+
+/**
+ * Get an empty translation structure with memoization
+ */
+function getEmptyStructure(namespace: string): any {
+  if (!emptyStructuresCache[namespace]) {
+    emptyStructuresCache[namespace] = createEmptyTranslationStructure(namespace);
+  }
+  return emptyStructuresCache[namespace];
+}
 
 /**
  * Get current locale from cookies, browser settings, or window global 
@@ -276,40 +309,295 @@ export function setLocale(locale: string) {
  * Get translations for a namespace in a specific locale
  */
 export function getTranslations(namespace: string, locale?: string) {
-  // Determine locale to use
-  const localeToUse = locale || getCurrentLocale();
+  // For server-side rendering, default to cs (but never return undefined)
+  const defaultLocale = 'cs';
+  const currentLocale = locale || (typeof window !== 'undefined' ? getCurrentLocale() : defaultLocale);
   
-  // Return only the translations for the requested locale, no fallbacks
-  if (localeToUse && translations[localeToUse]?.[namespace]) {
-    return translations[localeToUse][namespace];
+  try {
+    // Get translations namespace key
+    const fixedNamespace = namespace.replace(/-/g, ''); // Convert dashed names to camelCase
+    const nsKey = fixedNamespace as keyof typeof translations.cs;
+    
+    // Get the locale dictionary without fallback
+    const localeDict = translations[currentLocale as keyof typeof translations];
+    if (!localeDict) {
+      // Instead of returning empty object, return empty objects for each possible key
+      // to avoid "cannot read property of undefined" errors
+      return createEmptyTranslationStructure(namespace);
+    }
+    
+    // Get the translation or empty object with structure preservation
+    const translation = localeDict[nsKey];
+    if (!translation) {
+      return createEmptyTranslationStructure(namespace);
+    }
+    
+    return translation;
+  } catch (error) {
+    console.error(`Translation error for namespace ${namespace} in locale ${currentLocale}:`, error);
+    // Return structured empty object instead of undefined
+    return createEmptyTranslationStructure(namespace);
   }
+}
+
+/**
+ * Create an empty translation structure based on namespace to avoid undefined errors
+ */
+function createEmptyTranslationStructure(namespace: string): any {
+  // Normalize namespace to match our internal naming
+  const normalizedNamespace = namespace.replace(/-/g, '');
   
-  // If translations aren't available for this locale/namespace, return empty object
-  // NO FALLBACKS to other languages
-  return {};
+  // Standard structures for common namespaces
+  switch(normalizedNamespace) {
+    case 'header':
+      return { 
+        navigation: [{
+          label: '',
+          href: '',
+          items: []
+        }], 
+        buttons: {
+          contact: '',
+          language: ''
+        },
+        mobileMenu: {
+          close: ''
+        }
+      };
+    case 'footer':
+      return { 
+        sections: [{
+          title: '',
+          links: [{
+            label: '',
+            href: ''
+          }]
+        }],
+        copyrightText: '',
+        buttons: {
+          backToTop: ''
+        }
+      };
+    case 'hero':
+      return {
+        headline1: '',
+        headline2: '',
+        description: '',
+        quote: '',
+        buttons: {
+          collect: '',
+          sell: ''
+        }
+      };
+    case 'blogpage':
+      return {
+        pageTitle: '',
+        search: {
+          placeholder: '',
+          button: '',
+          noResults: '',
+          resultsCount: ''
+        },
+        featured: '',
+        readMore: '',
+        allArticles: '',
+        categories: '',
+        recentPosts: '',
+        relatedPosts: ''
+      };
+    case 'pricing':
+    case 'pricingpage':
+    case 'cenik':
+      return {
+        header: {
+          title: '',
+          subtitle: ''
+        },
+        plans: [],
+        comparison: {
+          title: '',
+          subtitle: '',
+          features: []
+        },
+        faq: {
+          title: '',
+          items: []
+        },
+        cta: {
+          title: '',
+          description: '',
+          button: ''
+        }
+      };
+    case 'debtcollectionpage':
+    case 'corporatereceivablespage':
+    case 'receivablespurchasepage':
+    case 'companypurchasepage':
+    case 'promissorynotespage':
+    case 'vymahanipohledavek':
+    case 'pohledavkypravnickychosob':
+    case 'odkupprodejpohledavek':
+    case 'odkupfirmy':
+    case 'smenky':
+      return {
+        badge: '',
+        title: '',
+        subtitle: '',
+        description: '',
+        features: [],
+        cta: {
+          title: '',
+          description: '',
+          button: ''
+        },
+        steps: [],
+        benefits: {
+          title: '',
+          items: []
+        },
+        faq: {
+          title: '',
+          items: []
+        }
+      };
+    case 'serviceslayout':
+      return {
+        pageTitle: '',
+        services: []
+      };
+    case 'process':
+      return {
+        title: '',
+        subtitle: '',
+        steps: [
+          { key: "kontrola", title: "", description: "" },
+          { key: "zastoupeni", title: "", description: "" },
+          { key: "vyzva", title: "", description: "" },
+          { key: "zaloba", title: "", description: "" },
+          { key: "exekuce", title: "", description: "" }
+        ]
+      };
+    case 'testimonials':
+      return {
+        title: '',
+        subtitle: '',
+        ariaLabels: {
+          previousTestimonial: '',
+          nextTestimonial: '',
+          goToSlide: ''
+        },
+        testimonials: [
+          {
+            text: '',
+            author: '',
+            company: ''
+          }
+        ]
+      };
+    case 'partners':
+      return {
+        rankingText: '',
+        entuzioUrl: '',
+        entuzioLinkText: '',
+        partners: [
+          {
+            name: '',
+            logo: ''
+          }
+        ]
+      };
+    case 'services':
+      return {
+        badge: '',
+        title: '',
+        subtitle: '',
+        linkText: '',
+        services: [
+          {
+            title: '',
+            description: '',
+            href: ''
+          }
+        ]
+      };
+    case 'aboutpage':
+      return {
+        hero: {
+          title: '',
+          subtitle: ''
+        },
+        mainContent: {
+          paragraphs: []
+        },
+        features: {
+          title: '',
+          items: []
+        },
+        success: {
+          title: '',
+          paragraphs: [],
+          arbitration: {
+            title: '',
+            advantages: []
+          }
+        },
+        comparison: {
+          title: '',
+          professional: {
+            title: '',
+            advantages: []
+          },
+          diy: {
+            title: '',
+            disadvantages: []
+          }
+        }
+      };
+    default:
+      // Generic empty structure
+      return {};
+  }
 }
 
 /**
  * Hook for accessing translations within components
  */
 export function useTranslations(namespace: string, locale?: string): any {
-  const localeToUse = locale || getCurrentLocale();
+  // Check if we're in the browser environment
+  const isBrowser = typeof window !== 'undefined';
   
-  // Return only the translations for the requested locale, no fallbacks
-  if (localeToUse && translations[localeToUse]?.[namespace]) {
-    return translations[localeToUse][namespace];
-  }
+  // Initialize with an empty object
+  const [translationState, setTranslationState] = useState({});
   
-  // If translations aren't available, return empty object
-  // NO FALLBACKS to other languages
-  return {};
+  useEffect(() => {
+    // Only run on client
+    if (!isBrowser) return;
+    
+    // Get translations directly
+    const currentLocale = locale || getCurrentLocale();
+    const fixedNamespace = namespace.replace(/-/g, '');
+    
+    try {
+      // Get the locale dictionary
+      const localeDict = translations[currentLocale as keyof typeof translations] || {};
+      const nsKey = fixedNamespace as keyof typeof localeDict;
+      
+      // Safely set the translation object - always return at least an empty object
+      setTranslationState(localeDict[nsKey] || {});
+    } catch (error) {
+      console.error(`Translation error for namespace ${namespace} in locale ${currentLocale}:`, error);
+      setTranslationState({});
+    }
+  }, [namespace, locale, isBrowser]);
+  
+  return translationState;
 }
 
 /**
  * Get metadata for a specific locale
  */
 export function getLocaleMetadata(locale?: string) {
-  const localeToUse = locale || getCurrentLocale();
+  const localeToUse = locale || (typeof window !== 'undefined' ? getCurrentLocale() : 'cs');
   
   // Return only the metadata for the requested locale, no fallbacks
   if (localeToUse && translations[localeToUse]?.metadata) {
@@ -317,7 +605,6 @@ export function getLocaleMetadata(locale?: string) {
   }
   
   // If metadata isn't available for this locale, return empty object
-  // NO FALLBACKS to other languages
   return {};
 }
 
@@ -325,4 +612,28 @@ export function getLocaleMetadata(locale?: string) {
  * Alias for getLocaleMetadata for backward compatibility
  * @deprecated Use getLocaleMetadata instead
  */
-export const getMetadata = getLocaleMetadata; 
+export const getMetadata = getLocaleMetadata;
+
+/**
+ * Server-side safe function to get translations
+ * This function doesn't use React hooks and is safe to use in Server Components
+ */
+export function getServerTranslations(namespace: string, locale?: string): any {
+  // Ensure we have a locale
+  const currentLocale = locale || 'cs'; // Default to Czech if no locale provided
+  
+  // Normalize namespace to match our internal naming
+  const fixedNamespace = namespace.replace(/-/g, '');
+  
+  try {
+    // Get the locale dictionary
+    const localeDict = translations[currentLocale as keyof typeof translations] || {};
+    const nsKey = fixedNamespace as keyof typeof localeDict;
+    
+    // Return the translations or empty object if not found
+    return localeDict[nsKey] || {};
+  } catch (error) {
+    console.error(`Translation error for namespace ${namespace} in locale ${currentLocale}:`, error);
+    return {}; // Return empty object on error
+  }
+} 

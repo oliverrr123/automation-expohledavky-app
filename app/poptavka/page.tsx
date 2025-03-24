@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, type FormEvent } from "react"
+import { useState, useEffect, type FormEvent } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { SectionWrapper } from "@/components/section-wrapper"
@@ -11,8 +11,10 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Send } from "lucide-react"
 import Script from "next/script"
+import { useTranslations } from "@/lib/i18n"
 
 export default function PoptavkaPage() {
+  const [isClient, setIsClient] = useState(false)
   const [formData, setFormData] = useState({
     jmeno: "",
     email: "",
@@ -23,6 +25,14 @@ export default function PoptavkaPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState("")
+  
+  // Get translations
+  const t = useTranslations('inquiryPage')
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -40,7 +50,7 @@ export default function PoptavkaPage() {
       const token = await window.grecaptcha?.getResponse()
 
       if (!token) {
-        setErrorMessage("Prosím potvrďte, že nejste robot.")
+        setErrorMessage(t?.form?.captchaError || "Prosím potvrďte, že nejste robot.")
         setSubmitStatus("error")
         setIsSubmitting(false)
         return
@@ -68,10 +78,42 @@ export default function PoptavkaPage() {
       }, 1500)
     } catch (error) {
       console.error("Error submitting form:", error)
-      setErrorMessage("Došlo k chybě při odesílání formuláře. Zkuste to prosím znovu.")
+      setErrorMessage(t?.form?.generalError || "Došlo k chybě při odesílání formuláře. Zkuste to prosím znovu.")
       setSubmitStatus("error")
       setIsSubmitting(false)
     }
+  }
+
+  // If translations aren't loaded yet, show loading UI - this condition could be improved
+  if (!isClient || !t) {
+    return (
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <main className="flex-1 pt-48 pb-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="animate-pulse">
+                <div className="h-10 bg-gray-200 rounded w-1/3 mx-auto mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto mb-16"></div>
+                <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="h-10 bg-gray-200 rounded"></div>
+                      <div className="h-10 bg-gray-200 rounded"></div>
+                      <div className="h-10 bg-gray-200 rounded"></div>
+                      <div className="h-10 bg-gray-200 rounded"></div>
+                    </div>
+                    <div className="h-32 bg-gray-200 rounded"></div>
+                    <div className="h-12 bg-gray-200 rounded w-full md:w-40"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    )
   }
 
   return (
@@ -124,8 +166,8 @@ export default function PoptavkaPage() {
           <SectionWrapper animation="fade-up">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-8">
-                <h1 className="text-3xl md:text-4xl font-bold mb-4 text-zinc-900">Podrobná poptávka</h1>
-                <p className="text-orange-500 font-medium">ZADEJTE PODROBNOU POPTÁVKU K POSOUZENÍ</p>
+                <h1 className="text-3xl md:text-4xl font-bold mb-4 text-zinc-900">{t.title}</h1>
+                <p className="text-orange-500 font-medium">{t.subtitle}</p>
               </div>
 
               <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
@@ -133,7 +175,7 @@ export default function PoptavkaPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label htmlFor="jmeno" className="text-sm font-medium text-gray-700">
-                        Jméno a příjmení
+                        {t.form.name.label}
                       </label>
                       <Input
                         required
@@ -141,14 +183,14 @@ export default function PoptavkaPage() {
                         name="jmeno"
                         value={formData.jmeno}
                         onChange={handleChange}
-                        placeholder="Jméno a příjmení"
+                        placeholder={t.form.name.placeholder}
                         className="w-full"
                         disabled={isSubmitting}
                       />
                     </div>
                     <div className="space-y-2">
                       <label htmlFor="email" className="text-sm font-medium text-gray-700">
-                        Váš e-mail
+                        {t.form.email.label}
                       </label>
                       <Input
                         required
@@ -157,14 +199,14 @@ export default function PoptavkaPage() {
                         type="email"
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="Váš e-mail"
+                        placeholder={t.form.email.placeholder}
                         className="w-full"
                         disabled={isSubmitting}
                       />
                     </div>
                     <div className="space-y-2">
                       <label htmlFor="telefon" className="text-sm font-medium text-gray-700">
-                        Telefonní kontakt
+                        {t.form.phone.label}
                       </label>
                       <Input
                         required
@@ -172,14 +214,14 @@ export default function PoptavkaPage() {
                         name="telefon"
                         value={formData.telefon}
                         onChange={handleChange}
-                        placeholder="Telefonní kontakt"
+                        placeholder={t.form.phone.placeholder}
                         className="w-full"
                         disabled={isSubmitting}
                       />
                     </div>
                     <div className="space-y-2">
                       <label htmlFor="vyse" className="text-sm font-medium text-gray-700">
-                        Výše pohledávky
+                        {t.form.amount.label}
                       </label>
                       <Input
                         required
@@ -187,7 +229,7 @@ export default function PoptavkaPage() {
                         name="vyse"
                         value={formData.vyse}
                         onChange={handleChange}
-                        placeholder="Výše pohledávky"
+                        placeholder={t.form.amount.placeholder}
                         className="w-full"
                         disabled={isSubmitting}
                       />
@@ -196,7 +238,7 @@ export default function PoptavkaPage() {
 
                   <div className="space-y-2">
                     <label htmlFor="zprava" className="text-sm font-medium text-gray-700">
-                      Vaše zpráva
+                      {t.form.message.label}
                     </label>
                     <Textarea
                       required
@@ -204,7 +246,7 @@ export default function PoptavkaPage() {
                       name="zprava"
                       value={formData.zprava}
                       onChange={handleChange}
-                      placeholder="Vaše zpráva... uveďte všechny známé podrobnosti k Vaší pohledávce..."
+                      placeholder={t.form.message.placeholder}
                       className="w-full min-h-[150px]"
                       disabled={isSubmitting}
                     />
@@ -252,11 +294,11 @@ export default function PoptavkaPage() {
                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                             ></path>
                           </svg>
-                          Odesílání...
+                          {t.form.sending}
                         </span>
                       ) : (
                         <span className="relative z-10 flex items-center justify-center">
-                          Odeslat zprávu <Send className="ml-2 h-4 w-4" />
+                          {t.form.submit} <Send className="ml-2 h-4 w-4" />
                         </span>
                       )}
                     </Button>
@@ -265,7 +307,7 @@ export default function PoptavkaPage() {
                   {/* Status messages */}
                   {submitStatus === "success" && (
                     <div className="p-4 bg-green-50 text-green-700 rounded-md mt-4">
-                      Vaše zpráva byla úspěšně odeslána. Budeme vás kontaktovat co nejdříve.
+                      {t.form.success}
                     </div>
                   )}
 

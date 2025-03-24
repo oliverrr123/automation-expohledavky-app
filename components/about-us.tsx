@@ -5,58 +5,55 @@ import { SectionWrapper } from "./section-wrapper"
 import { useTranslations } from "@/lib/i18n"
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { getServerTranslations } from "@/lib/server-utils"
-import csAboutUs from '@/locales/cs/about-us.json'
-import enAboutUs from '@/locales/en/about-us.json'
-import skAboutUs from '@/locales/sk/about-us.json'
-import deAboutUs from '@/locales/de/about-us.json'
 
-// Get translations based on domain for server-side rendering
-const translationsByLang = {
-  cs: csAboutUs,
-  en: enAboutUs,
-  sk: skAboutUs,
-  de: deAboutUs
-};
-
-// Server-side default translations to prevent hydration mismatch
-const serverTranslations = getServerTranslations('about-us', translationsByLang);
+// Default content structure without actual text
+const defaultFeatures = [
+  "...",
+  "...",
+  "...",
+  "..."
+]
 
 export function AboutUs() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
-  // Use server translations initially, then switch to client translations after hydration
-  const t = isClient ? useTranslations('about-us') : serverTranslations
   
-  // Track if initial render is complete
-  const [initialRenderComplete, setInitialRenderComplete] = useState(false)
-
+  // Get translations - NOTE: The namespace is 'aboutUs' not 'about-us'
+  const t = useTranslations('aboutUs')
+  
+  // Safely access features with fallback to prevent errors
+  const features = t?.features || defaultFeatures
+  
   // Set isClient to true after hydration is complete
   useEffect(() => {
     setIsClient(true)
-    // Mark initial render as complete
-    setInitialRenderComplete(true)
   }, [])
-
-  // Return minimal structure during server-side rendering to prevent hydration mismatch
-  if (!initialRenderComplete) {
+  
+  // If translations aren't loaded yet, show minimal UI
+  if (!t || Object.keys(t).length === 0) {
     return (
       <section className="relative py-24 sm:py-32 overflow-hidden">
         <div className="container relative">
           <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
-            <div></div>
-            <div></div>
+            <div className="animate-pulse">
+              <div className="h-10 bg-gray-200 rounded w-3/4 mb-4"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+              <div className="h-24 bg-gray-200 rounded w-full"></div>
+            </div>
+            <div className="animate-pulse">
+              <div className="h-12 bg-gray-200 rounded w-full mb-4"></div>
+              <div className="h-12 bg-gray-200 rounded w-full mb-4"></div>
+              <div className="h-12 bg-gray-200 rounded w-full mb-4"></div>
+              <div className="h-12 bg-gray-200 rounded w-full"></div>
+            </div>
           </div>
         </div>
       </section>
     )
   }
-
-  // Safely access translations, providing fallbacks
-  const title = t?.title || '';
-  const subtitle = t?.subtitle || '';
-  const description = t?.description || '';
-  const features = t?.features || [];
+  
+  // Log to help debug
+  console.log("AboutUs translations:", t);
 
   return (
     <section className="relative py-24 sm:py-32 overflow-hidden">
@@ -74,14 +71,14 @@ export function AboutUs() {
               <div className="relative">
                 <div className="absolute -left-8 -top-6 w-16 h-16 bg-orange-500/10 rounded-full blur-2xl" />
                 <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-zinc-900">
-                  {title}
+                  {t.title}
                 </h2>
                 <div className="mt-2 inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20">
-                  {subtitle}
+                  {t.subtitle}
                 </div>
               </div>
               <p className="mt-6 text-lg leading-8 text-gray-600 [text-wrap:balance]">
-                {description}
+                {t.description}
               </p>
             </div>
           </SectionWrapper>
@@ -89,7 +86,7 @@ export function AboutUs() {
           <div className="flex flex-col justify-center">
             <div className="space-y-6">
               {features.map((feature: string, index: number) => (
-                <SectionWrapper key={feature} animation="fade-left" delay={index * 100}>
+                <SectionWrapper key={index} animation="fade-left" delay={index * 100}>
                   <div className="flex items-start gap-3 p-4 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm shadow-orange-500/5 border border-orange-500/10 transition-all duration-300 hover:scale-[1.02] hover:bg-white">
                     <CheckCircle className="h-6 w-6 flex-none text-orange-500" />
                     <span className="text-gray-600">{feature}</span>

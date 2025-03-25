@@ -5,22 +5,32 @@ import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { Montserrat } from "next/font/google"
 import Image from "next/image"
-import { useTranslations } from "@/lib/i18n"
 import { getLocalizedPath } from "@/lib/route-mapping"
 import { getLanguageFromHostname } from "@/lib/domain-mapping"
+import csHero from '@/locales/cs/hero.json'
+import enHero from '@/locales/en/hero.json'
+import skHero from '@/locales/sk/hero.json'
+import deHero from '@/locales/de/hero.json'
 
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["900"],
 })
 
+// Define available translations
+const translations = {
+  cs: csHero,
+  en: enHero,
+  sk: skHero,
+  de: deHero
+}
+
 export function Hero() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [isClient, setIsClient] = useState(false)
   const [locale, setLocale] = useState('cs')
-  
-  const t = useTranslations('hero')
+  const [t, setTranslations] = useState(csHero) // Always start with CS to avoid hydration mismatch
   
   // Get the localized inquiry path based on current locale
   const inquiryPath = isClient ? getLocalizedPath(locale, 'inquiry') : 'poptavka'
@@ -31,16 +41,24 @@ export function Hero() {
     // Detect the current language
     const hostname = window.location.hostname
     const detectedLocale = getLanguageFromHostname(hostname)
+    let newLocale = 'cs'
     
     if (detectedLocale) {
+      newLocale = detectedLocale
       setLocale(detectedLocale)
     } else {
       // Check URL parameters for locale
       const urlParams = new URLSearchParams(window.location.search)
       const localeParam = urlParams.get('_locale')
       if (localeParam && ['en', 'cs', 'sk', 'de'].includes(localeParam)) {
+        newLocale = localeParam
         setLocale(localeParam)
       }
+    }
+    
+    // Update translations based on detected locale
+    if (newLocale && translations[newLocale as keyof typeof translations]) {
+      setTranslations(translations[newLocale as keyof typeof translations])
     }
     
     const script = document.createElement("script")

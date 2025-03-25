@@ -49,10 +49,10 @@ function getRandomElement(array) {
 // Function to check if text contains AI references
 function containsAIReference(text) {
   const lowerText = text.toLowerCase();
+  // Redukovaný seznam základních termínů
   const forbiddenTerms = [
-    'ai', 'umělá inteligence', 'strojové učení', 'automatizace', 
-    'robot', 'algoritmus', 'digitalizace', 'software', 'automatické', 
-    'automatizované', 'big data', 'chatbot'
+    'ai', 'umělá inteligence', 'strojové učení',
+    'robot', 'automatizované'
   ];
   
   return forbiddenTerms.some(term => lowerText.includes(term));
@@ -61,10 +61,10 @@ function containsAIReference(text) {
 // Function to count AI references in text
 function countAIReferences(text) {
   const lowerText = text.toLowerCase();
+  // Redukovaný seznam základních termínů
   const forbiddenTerms = [
-    'ai', 'umělá inteligence', 'strojové učení', 'automatizace', 
-    'robot', 'algoritmus', 'digitalizace', 'software', 'automatické', 
-    'automatizované', 'big data', 'chatbot'
+    'ai', 'umělá inteligence', 'strojové učení',
+    'robot', 'automatizované'
   ];
   
   let count = 0;
@@ -84,31 +84,23 @@ async function generateRandomTopic(category) {
   try {
     console.log(`Generuji náhodné téma pro kategorii: ${category}...`);
     
-    const prompt = `Vygeneruj originální, specifické a zajímavé téma pro odborný článek o pohledávkách v kategorii "${category}".
+    const prompt = `Vygeneruj originální téma pro odborný článek o pohledávkách v kategorii "${category}".
     
 Téma by mělo být:
 1. Relevantní pro český právní rámec
 2. Zaměřené na praktické aspekty správy a vymáhání pohledávek pro firmy
-3. Specifické (ne obecné jako "Vymáhání pohledávek", ale spíše "Strategie vymáhání pohledávek pro malé a střední podniky během ekonomické recese")
-4. Aktuální a odrážející současné podnikatelské trendy a ekonomickou situaci
-5. Zajímavé pro majitele firem a podnikatele
-6. Vhodné pro odborný článek o délce 800-1200 slov
+3. Zajímavé pro majitele firem a podnikatele
+4. Vhodné pro odborný článek o délce 800-1200 slov
 
-DŮLEŽITÁ OMEZENÍ:
-- ZCELA SE VYHNI tématům souvisejícím s AI, umělou inteligencí, strojovým učením nebo automatizací
-- NIKDY nezmiňuj AI nebo automatizaci v názvu nebo jako hlavní téma
-- Zaměř se VÝHRADNĚ na tradiční finanční, právní, procesní a vztahové aspekty pohledávek
-- Téma musí být relevantní pro běžné podnikatele bez znalosti pokročilých technologií
-- Preferuj témata o konkrétních postupech, právních aspektech, vyjednávání a finančních strategiích
-
-Vrať pouze název tématu bez dalších komentářů nebo vysvětlení. Téma musí být v češtině.`;
+Vyhni se tématům souvisejícím s umělou inteligencí nebo technologiemi.
+Vrať pouze název tématu bez dalších komentářů.`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { 
           role: "system", 
-          content: "Jsi specialista na pohledávky, právní aspekty jejich správy a vymáhání. Tvým úkolem je generovat originální a specifická témata pro odborné články zaměřené na podnikání, finance a právo. Vyhýbáš se VŠEM tématům souvisejícím s technologiemi a AI. Zaměřuješ se na praktické aspekty vymáhání pohledávek z právního, finančního a mezilidského hlediska." 
+          content: "Jsi specialista na pohledávky a právní aspekty jejich správy. Generuj praktická témata pro odborné články zaměřené na podnikání a finance." 
         },
         { role: "user", content: prompt }
       ],
@@ -118,12 +110,6 @@ Vrať pouze název tématu bez dalších komentářů nebo vysvětlení. Téma m
     
     const topic = completion.choices[0].message.content.trim();
     console.log(`Vygenerované téma: ${topic}`);
-    
-    // Check if the topic contains AI references
-    if (containsAIReference(topic)) {
-      console.log("Téma obsahuje zmínku o AI nebo automatizaci, generuji nové téma...");
-      return generateRandomTopic(category); // Recursively generate a new topic
-    }
     
     // Get a unique approach to the topic
     const approach = await generateUniqueApproach(topic, category);
@@ -167,19 +153,14 @@ async function generateUniqueApproach(topic, category) {
   try {
     console.log("Generuji unikátní přístup k tématu...");
     
-    const prompt = `Pro téma "${topic}" v kategorii "${category}" navrhni unikátní úhel nebo přístup, který by článek odlišil od běžných textů na toto téma.
+    const prompt = `Pro téma "${topic}" v kategorii "${category}" navrhni přístup pro odborný článek.
 
 Navrhni:
-1. Hlavní tezi nebo argument článku
+1. Hlavní tezi článku
 2. 3-4 klíčové body, které by měl článek pokrýt
 3. Unikátní perspektivu nebo přístup k tématu
 
-DŮLEŽITÁ OMEZENÍ:
-- Vyhni se JAKÝMKOLIV zmínkám o technologiích, AI, automatizaci nebo digitalizaci
-- Zaměř se na lidský faktor, právní aspekty, finanční strategie, mezilidské vztahy a komunikaci
-- Zdůrazni praktické aspekty, které nevyžadují pokročilé technologie
-- Preferuj tradiční podnikatelské, právní a finanční úhly pohledu
-
+Zaměř se na právní, finanční a obchodní aspekty.
 Odpověz ve formátu JSON s klíči "mainThesis", "keyPoints" a "uniquePerspective".`;
 
     const completion = await openai.chat.completions.create({
@@ -187,7 +168,7 @@ Odpověz ve formátu JSON s klíči "mainThesis", "keyPoints" a "uniquePerspecti
       messages: [
         { 
           role: "system", 
-          content: "Jsi kreativní obsahový stratég specializující se na finanční a právní témata. Vyhýbáš se tématům souvisejícím s technologiemi a AI." 
+          content: "Jsi kreativní obsahový stratég specializující se na finanční a právní témata." 
         },
         { role: "user", content: prompt }
       ],
@@ -197,12 +178,6 @@ Odpověz ve formátu JSON s klíči "mainThesis", "keyPoints" a "uniquePerspecti
     });
     
     const approach = JSON.parse(completion.choices[0].message.content);
-    
-    // Check if the approach contains AI references
-    if (containsAIReference(JSON.stringify(approach))) {
-      console.log("Přístup obsahuje zmínku o AI nebo technologiích, generuji nový přístup...");
-      return generateUniqueApproach(topic, category); // Recursively generate a new approach
-    }
     
     return approach;
   } catch (error) {
@@ -255,30 +230,21 @@ async function generateArticleContent(topic, category, uniquePerspective) {
   try {
     console.log("Generuji obsah článku...");
     
-    const prompt = `Napiš odborný článek v češtině na téma "${topic}" v kategorii "${category}" s unikátním přístupem: "${uniquePerspective.uniquePerspective}".
+    const prompt = `Napiš odborný článek v češtině na téma "${topic}" v kategorii "${category}".
 
 Hlavní teze článku: "${uniquePerspective.mainThesis}"
 
 Klíčové body k pokrytí:
 ${uniquePerspective.keyPoints.map(point => `- ${point}`).join('\n')}
 
-Důležité pokyny:
-1. Piš profesionálně, ale čtivě, pro publikum složené z podnikatelů, manažerů a odborníků v oblasti financí
-2. Zaměř se na český právní a obchodní kontext
-3. Používej praktické příklady, případové studie nebo ilustrativní situace
-4. Poskytni konkrétní postupy a doporučení, které čtenáři mohou přímo aplikovat
-5. Článek strukturuj s úvodem, hlavní částí (několik oddílů) a závěrem
-6. Délka: přibližně 800-1200 slov
-7. Vyhni se akademickému stylu, piš obchodně a prakticky
-8. Používej odstavce, podnadpisy a odrážky pro lepší čitelnost
+Unikátní perspektiva: "${uniquePerspective.uniquePerspective}"
 
-DŮLEŽITÁ OMEZENÍ:
-- VYHNI SE JAKÝMKOLIV zmínkám o umělé inteligenci, AI, automatizaci, digitalizaci a technologiích
-- Zaměř se na mezilidské, právní, finanční a procesní aspekty bez technologických řešení
-- NIKDY nezmiňuj digitální nástroje, software nebo automatizační řešení
-- Piš o tradičních, osvědčených, na člověka zaměřených přístupech k řešení problémů
-- Text musí být relevantní pro běžné podnikatele bez pokročilých technologických znalostí
+Piš pro publikum složené z podnikatelů, manažerů a odborníků v oblasti financí.
+Zaměř se na český právní a obchodní kontext.
+Poskytni praktické příklady a konkrétní postupy.
+Článek by měl mít délku přibližně 800-1200 slov.
 
+Vyhni se zmínkám o umělé inteligenci a automatizaci.
 Formátuj text v Markdown, používej ## pro hlavní nadpisy a ### pro podnadpisy.`;
 
     const completion = await openai.chat.completions.create({
@@ -286,7 +252,7 @@ Formátuj text v Markdown, používej ## pro hlavní nadpisy a ### pro podnadpis
       messages: [
         { 
           role: "system", 
-          content: "Jsi odborník na pohledávky, finance a obchodní právo v českém právním prostředí. Píšeš praktické odborné články pro podnikatele a manažery." 
+          content: "Jsi odborník na pohledávky, finance a obchodní právo v českém právním prostředí. Píšeš praktické odborné články pro podnikatele." 
         },
         { role: "user", content: prompt }
       ],
@@ -296,8 +262,8 @@ Formátuj text v Markdown, používej ## pro hlavní nadpisy a ### pro podnadpis
     
     let articleContent = completion.choices[0].message.content;
     
-    // Check if the content contains AI references
-    if (countAIReferences(articleContent) > 2) {
+    // Check if the content contains too many AI references - more tolerant threshold
+    if (countAIReferences(articleContent) > 3) {
       console.log("Obsah článku obsahuje příliš mnoho zmínek o AI nebo technologiích, generuji nový obsah...");
       return generateArticleContent(topic, category, uniquePerspective); // Recursively generate new content
     }
@@ -339,14 +305,11 @@ async function generateMetadata(topic, category, articleContent) {
     
     const prompt = `Pro následující článek s názvem "${topic}" v kategorii "${category}" vygeneruj:
 
-1. Poutavý titulek (max 70 znaků)
-2. Podnázev/subtitle (max 120 znaků)
-3. Krátký popis/excerpt (max 160 znaků)
+1. Titulek (max 70 znaků)
+2. Podnázev (max 120 znaků)
+3. Krátký popis (max 160 znaků)
 4. 5-8 relevantních tagů oddělených čárkami
-5. Přibližný čas čtení v minutách (odhadni na základě délky obsahu)
-
-Článek začíná takto:
-${articleContent.substring(0, 300)}...
+5. Přibližný čas čtení v minutách
 
 Odpověz ve formátu JSON s klíči: "title", "subtitle", "excerpt", "tags", "readTime".`;
 

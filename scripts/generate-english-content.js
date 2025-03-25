@@ -49,14 +49,10 @@ function getRandomElement(array) {
 // Function to check if text contains AI references
 function containsAIReference(text) {
   const lowerText = text.toLowerCase();
+  // Redukovaný seznam základních termínů
   const forbiddenTerms = [
-    'ai', 'artificial intelligence', 'machine learning', 'automation', 
-    'robot', 'algorithm', 'digitalization', 'software', 'automatic', 
-    'automated', 'big data', 'chatbot', 'digital transformation', 
-    'technology', 'digital', 'tech', 'technological', 'smart', 'intelligent', 
-    'ml', 'data science', 'predictive analytics', 'digital solution',
-    'online platform', 'saas', 'cloud-based', 'neural', 'computer', 
-    'digital tool', 'analytics', 'virtual', 'algorithm-based'
+    'ai', 'artificial intelligence', 'machine learning', 
+    'robot', 'automated', 'digital transformation'
   ];
   
   return forbiddenTerms.some(term => lowerText.includes(term));
@@ -65,19 +61,15 @@ function containsAIReference(text) {
 // Function to count AI references in text
 function countAIReferences(text) {
   const lowerText = text.toLowerCase();
+  // Redukovaný seznam základních termínů
   const forbiddenTerms = [
-    'ai', 'artificial intelligence', 'machine learning', 'automation', 
-    'robot', 'algorithm', 'digitalization', 'software', 'automatic', 
-    'automated', 'big data', 'chatbot', 'digital transformation', 
-    'technology', 'digital', 'tech', 'technological', 'smart', 'intelligent', 
-    'ml', 'data science', 'predictive analytics', 'digital solution',
-    'online platform', 'saas', 'cloud-based', 'neural', 'computer', 
-    'digital tool', 'analytics', 'virtual', 'algorithm-based'
+    'ai', 'artificial intelligence', 'machine learning', 
+    'robot', 'automated', 'digital transformation'
   ];
   
   let count = 0;
   forbiddenTerms.forEach(term => {
-    const regex = new RegExp(`\\b${term}\\b`, 'gi');
+    const regex = new RegExp(term, 'gi');
     const matches = lowerText.match(regex);
     if (matches) {
       count += matches.length;
@@ -92,34 +84,22 @@ async function generateRandomTopic(category) {
   try {
     console.log(`Generating random topic for category: ${category}...`);
     
-    const prompt = `Generate an original, specific, and interesting topic for an expert article about receivables in the category "${category}".
+    const prompt = `Generate an original and interesting topic for an expert article about receivables in the category "${category}".
     
 The topic should be:
-1. Relevant for the UK and international legal frameworks
-2. Focused on practical aspects of receivables management and collection for businesses
-3. Specific (not general like "Debt Collection", but rather "Strategies for Receivables Collection for SMEs During Economic Recession")
-4. Current and reflecting contemporary business trends and economic situation
-5. Interesting for business owners and entrepreneurs
-6. Suitable for an expert article of 800-1200 words
+1. Relevant for international business contexts
+2. Focused on practical aspects of receivables management and collection
+3. Suitable for an expert article of 800-1200 words
 
-IMPORTANT CONSTRAINTS:
-- COMPLETELY AVOID topics related to AI, artificial intelligence, machine learning, or automation
-- NEVER mention AI, technology, software, digital tools, or automation in the title or as the main topic
-- Focus EXCLUSIVELY on traditional financial, legal, procedural, and relational aspects of receivables
-- The topic must be relevant for regular entrepreneurs without knowledge of advanced technologies
-- Prefer topics about specific procedures, legal aspects, negotiation, and financial strategies
-- NO mention of technology-driven solutions or digital transformation
-- Avoid terms like "smart", "intelligent", "digital", or "automated" solutions
-- Focus on HUMAN-CENTERED approaches and traditional business practices
-
-Return only the topic name without additional comments or explanations. The topic must be in English.`;
+Please avoid topics related to AI, artificial intelligence, or machine learning.
+Return only the topic name without additional comments.`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { 
           role: "system", 
-          content: "You are a specialist in receivables, legal aspects of their management and collection. Your task is to generate original and specific topics for expert articles focused on business, finance, and law. You avoid ALL topics related to technologies and AI. You focus on practical aspects of receivables collection from legal, financial, and interpersonal perspectives." 
+          content: "You are a specialist in receivables management and business finance. Generate practical topic ideas for expert articles." 
         },
         { role: "user", content: prompt }
       ],
@@ -129,12 +109,6 @@ Return only the topic name without additional comments or explanations. The topi
     
     const topic = completion.choices[0].message.content.trim();
     console.log(`Generated topic: ${topic}`);
-    
-    // Check if the topic contains AI references
-    if (containsAIReference(topic)) {
-      console.log("Topic contains mention of AI or automation, generating new topic...");
-      return generateRandomTopic(category); // Recursively generate a new topic
-    }
     
     // Get a unique approach to the topic
     const approach = await generateUniqueApproach(topic, category);
@@ -178,22 +152,14 @@ async function generateUniqueApproach(topic, category) {
   try {
     console.log("Generating unique approach to the topic...");
     
-    const prompt = `For the topic "${topic}" in the category "${category}", suggest a unique angle or approach that would differentiate the article from common texts on this topic.
+    const prompt = `For the topic "${topic}" in the category "${category}", suggest a unique angle or approach for the article.
 
 Suggest:
-1. The main thesis or argument of the article
-2. 3-4 key points that the article should cover
-3. A unique perspective or approach to the topic
+1. The main thesis of the article
+2. 3-4 key points to cover
+3. A unique perspective on the topic
 
-IMPORTANT CONSTRAINTS:
-- Avoid ANY mentions of technologies, AI, automation, digitalization, software, platforms, or tools
-- Do NOT suggest any technology-based solutions or digital transformation approaches
-- Focus on human factor, legal aspects, financial strategies, interpersonal relationships, and communication
-- Emphasize practical aspects that don't require technology
-- Prefer traditionally business, legal, and financial angles
-- Focus on human expertise, manual processes, and traditional business practices
-- Avoid terms like "smart", "intelligent", "digital", or "automated" solutions
-
+Focus on business, legal, and financial perspectives.
 Respond in JSON format with keys "mainThesis", "keyPoints", and "uniquePerspective".`;
 
     const completion = await openai.chat.completions.create({
@@ -201,7 +167,7 @@ Respond in JSON format with keys "mainThesis", "keyPoints", and "uniquePerspecti
       messages: [
         { 
           role: "system", 
-          content: "You are a creative content strategist specializing in financial and legal topics. You avoid topics related to technologies and AI." 
+          content: "You are a creative content strategist specializing in financial and legal topics." 
         },
         { role: "user", content: prompt }
       ],
@@ -211,14 +177,6 @@ Respond in JSON format with keys "mainThesis", "keyPoints", and "uniquePerspecti
     });
     
     const approach = JSON.parse(completion.choices[0].message.content);
-    
-    // Check if the approach contains AI references
-    if (containsAIReference(approach.mainThesis) || 
-        approach.keyPoints.some(point => containsAIReference(point)) || 
-        containsAIReference(approach.uniquePerspective)) {
-      console.log("Generated approach contains mentions of AI or technologies, generating new approach...");
-      return generateUniqueApproach(topic, category); 
-    }
     
     return approach;
   } catch (error) {
@@ -317,46 +275,31 @@ async function generateArticleContent(topic, category, uniquePerspective) {
   try {
     console.log(`Generating article content for topic: ${topic}...`);
     
-    const prompt = `Create a professional and informative article on the topic "${topic}" in the category "${category}". 
+    const prompt = `Create a professional article on "${topic}" in the category "${category}". 
     
-The article should have this unique angle: "${uniquePerspective.uniquePerspective}"
+Main thesis: "${uniquePerspective.mainThesis}"
 
-Follow these specifications:
-1. Write the article in English, in a professional but accessible language for business owners and entrepreneurs
-2. Focus on practical information relevant for international business contexts
-3. Use Markdown for formatting
-4. Don't use H1 heading (it will be automatically generated from the title)
-5. Use H2 headings (##) for main sections and H3 (###) for subsections
-6. Format important terms in bold (**term**) and key phrases in italics (*phrase*)
-7. Split text into short paragraphs (3-4 sentences)
-8. Use bullet points for lists and numbered lists for processes
-9. Include 1-2 practical examples or quotes, formatted as block quotes (> quote)
-10. The article length should be 800-1200 words
-11. Include a summary of key points at the end
+Key points to cover:
+${uniquePerspective.keyPoints.map(point => `- ${point}`).join('\n')}
 
-IMPORTANT CONSTRAINTS:
-- COMPLETELY AVOID topics related to AI, artificial intelligence, machine learning, or automation
-- The article MUST NOT mention technological solutions or digitalization as solutions to problems
-- AVOID ALL terminology related to software, digital tools, platforms, or automation
-- Focus on traditional business approaches, human expertise, legal aspects, negotiation, and strategy
-- Emphasize practical aspects that rely on human skills and traditional business processes
-- Do not use terms like "smart", "intelligent", "digital", "automated", "technological", or "online"
-- Present solutions that are accessible to all businesses without requiring technology
+Unique perspective: "${uniquePerspective.uniquePerspective}"
 
-The article should contain:
-- An introduction explaining the importance of the topic
-- 3-4 main sections discussing different aspects of the topic
-- Practical tips or recommendations
-- A concluding summary
+Write the article in English for business owners and entrepreneurs.
+Use Markdown formatting:
+- H2 headings (##) for main sections
+- H3 (###) for subsections
+- Bullet points for lists
+- Include 1-2 quotes as block quotes (> quote)
+- The article length should be 800-1200 words
 
-The content must be current, factually correct, and relevant for international businesses and entrepreneurs.`;
+Please avoid mentioning artificial intelligence or automation technologies.`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { 
           role: "system", 
-          content: "You are an expert on receivables, financial management, and international business law. You write professional, factually accurate, and practically focused articles for entrepreneurs without emphasis on technologies. You always use quality text structuring, headings, bullet points, and other elements for better readability." 
+          content: "You are an expert on receivables, financial management, and international business law. Write practical articles for entrepreneurs." 
         },
         { role: "user", content: prompt }
       ],
@@ -366,9 +309,9 @@ The content must be current, factually correct, and relevant for international b
     
     const content = completion.choices[0].message.content.trim();
     
-    // Check if the content contains too many AI references
-    if (countAIReferences(content) > 0) { // Changed from 2 to 0 for zero tolerance
-      console.log("Article content contains mentions of AI or technologies, generating new content...");
+    // Check if the content contains too many AI references - more tolerant threshold
+    if (countAIReferences(content) > 3) {
+      console.log("Article content contains too many AI references, generating new content...");
       return generateArticleContent(topic, category, uniquePerspective);
     }
     
@@ -383,7 +326,7 @@ In today's business environment, the topic of "${topic}" is increasingly importa
 
 ## Legal Framework
 
-International and UK laws in this area define several important rules that businesses must follow.
+International laws in this area define several important rules that businesses must follow.
 
 ## Practical Procedures
 
@@ -409,31 +352,22 @@ async function generateMetadata(topic, category, articleContent) {
   try {
     console.log("Generating article metadata...");
     
-    const prompt = `Based on this article on the topic "${topic}" in the category "${category}", generate the following metadata:
+    const prompt = `Based on this article about "${topic}" in the category "${category}", generate:
 
-1. Catchy title (max 60 characters)
-2. Engaging subtitle (max 100 characters)
-3. Short SEO description (max 160 characters)
+1. Title (max 60 characters)
+2. Subtitle (max 100 characters)
+3. Short description (max 160 characters)
 4. 5-7 relevant tags separated by commas
 5. Estimated reading time in the format "X minute read"
 
-IMPORTANT CONSTRAINTS:
-- Avoid ANY mentions of AI, technologies, automation, software, digital tools, or platforms
-- Do not use words like "smart", "intelligent", "digital", "automated", "technological", or "online"
-- Prefer tags focused on finance, law, business relationships, and practical aspects
-- Focus on traditional business concepts and human expertise
-
-Respond in JSON format with keys "title", "subtitle", "description", "tags", and "readTime".
-
-Article content:
-${articleContent.substring(0, 1500)}...`;
+Respond in JSON format with keys "title", "subtitle", "description", "tags", and "readTime".`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { 
           role: "system", 
-          content: "You are a specialist in SEO and metadata creation for expert articles. Your task is to create catchy but professional titles and descriptions without emphasis on technologies."
+          content: "You are a specialist in SEO and metadata creation for expert articles."
         },
         { role: "user", content: prompt }
       ],
@@ -443,14 +377,6 @@ ${articleContent.substring(0, 1500)}...`;
     });
     
     const metadata = JSON.parse(completion.choices[0].message.content);
-    
-    // Check if the metadata contains AI references
-    if (containsAIReference(metadata.title) || 
-        containsAIReference(metadata.subtitle) || 
-        (metadata.tags && containsAIReference(metadata.tags))) {
-      console.log("Metadata contains mentions of AI or technologies, generating new metadata...");
-      return generateMetadata(topic, category, articleContent);
-    }
     
     return metadata;
   } catch (error) {

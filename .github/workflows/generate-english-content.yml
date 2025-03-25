@@ -1,0 +1,46 @@
+name: Generate English Content
+
+on:
+  workflow_dispatch:  # Manual trigger
+  schedule:
+    - cron: '0 9 * * 3,6'  # 9 AM BST/GMT, Wednesdays and Saturdays
+
+permissions:
+  contents: write  # Permission to write to the repository
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+      
+      - name: Install Dependencies
+        run: npm ci
+      
+      - name: Ensure directories exist
+        run: mkdir -p content/posts-en
+      
+      - name: Generate English Content
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/generate-english-content.js
+      
+      - name: Commit changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add content/posts-en
+          git commit -m "chore: auto-generated English article [skip ci]" || echo "No changes to commit"
+      
+      - name: Push changes
+        run: git push 

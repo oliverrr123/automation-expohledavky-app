@@ -109,7 +109,7 @@ import skInquiryPage from '@/locales/sk/inquiry-page.json';
 
 import { getLanguageFromHostname } from './domain-mapping';
 import Cookies from 'js-cookie';
-import { getInitialLocale } from './server-utils';
+import { getInitialLocale } from './server-utils-client';
 import { useState, useEffect, useMemo } from 'react';
 import * as React from 'react';
 
@@ -566,29 +566,11 @@ export function useTranslations(namespace: string, locale?: string): any {
   // Check if we're in the browser environment
   const isBrowser = typeof window !== 'undefined';
   
-  // For server-side rendering, return empty structure without using hooks
-  // This prevents the "Should have a queue" React error
-  if (!isBrowser) {
-    return getEmptyStructure(namespace);
-  }
-  
-  // For client-side only, use React state hooks
-  // Using lazy initialization to avoid calling the function during render
-  const [translationState, setTranslationState] = useState<Record<string, any>>(() => {
-    try {
-      const currentLocale = locale || getCurrentLocale();
-      const fixedNamespace = namespace.replace(/-/g, '');
-      const localeDict = translations[currentLocale as keyof typeof translations] || {};
-      const nsKey = fixedNamespace as keyof typeof localeDict;
-      return localeDict[nsKey] || getEmptyStructure(namespace);
-    } catch (error) {
-      console.error(`Translation initialization error for ${namespace}:`, error);
-      return getEmptyStructure(namespace);
-    }
-  });
+  // Initialize with an empty object
+  const [translationState, setTranslationState] = useState({});
   
   useEffect(() => {
-    // Only run on client and when the locale changes
+    // Only run on client
     if (!isBrowser) return;
     
     // Get translations directly
@@ -601,11 +583,10 @@ export function useTranslations(namespace: string, locale?: string): any {
       const nsKey = fixedNamespace as keyof typeof localeDict;
       
       // Safely set the translation object - always return at least an empty object
-      const newTranslations = localeDict[nsKey] || getEmptyStructure(namespace);
-      setTranslationState(newTranslations);
+      setTranslationState(localeDict[nsKey] || {});
     } catch (error) {
       console.error(`Translation error for namespace ${namespace} in locale ${currentLocale}:`, error);
-      setTranslationState(getEmptyStructure(namespace));
+      setTranslationState({});
     }
   }, [namespace, locale, isBrowser]);
   

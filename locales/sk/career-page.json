@@ -10,7 +10,7 @@
     "quickInfo": {
       "location": {
         "label": "Lokalita",
-        "value": "Praha – Pankrác"
+        "value": "Bratislava – Petržalka"
       },
       "startDate": {
         "label": "Nástup",
@@ -49,7 +49,7 @@
           "text": "Nástup možný ihneď"
         },
         {
-          "text": "Miesto výkonu práce: Praha – Pankrác",
+          "text": "Miesto výkonu práce: Bratislava – Petržalka",
           "bold": true
         },
         {
@@ -74,9 +74,9 @@
     },
     "application": {
       "title": "Zaujala vás táto pozícia?",
-      "description": "Stále ťa to zaujíma? Ozvi sa nám na e-mailovú adresu <strong className=\"text-orange-600\">pohledavky@expohledavky.cz</strong>. Stretneme sa, vzájomne sa predstavíme, preberieme možnosti a hlavne sa k nám pozrieš. Tak sa prihláš, tešíme sa na teba!",
+      "description": "Stále ťa to zaujíma? Ozvi sa nám na e-mailovú adresu <strong className=\"text-orange-600\">info@expohladavky.sk</strong>. Stretneme sa, vzájomne sa predstavíme, preberieme možnosti a hlavne sa k nám pozrieš. Tak sa prihláš, tešíme sa na teba!",
       "buttonText": "Poslať životopis",
-      "email": "pohledavky@expohledavky.cz",
+      "email": "info@expohladavky.sk",
       "urgentText": "Nástup ihneď!"
     }
   }

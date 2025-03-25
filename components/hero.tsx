@@ -5,22 +5,61 @@ import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { Montserrat } from "next/font/google"
 import Image from "next/image"
-import { useTranslations } from "@/lib/i18n"
+import { getLocalizedPath } from "@/lib/route-mapping"
+import { getLanguageFromHostname } from "@/lib/domain-mapping"
+import csHero from '@/locales/cs/hero.json'
+import enHero from '@/locales/en/hero.json'
+import skHero from '@/locales/sk/hero.json'
+import deHero from '@/locales/de/hero.json'
 
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["900"],
 })
 
+// Define available translations
+const translations = {
+  cs: csHero,
+  en: enHero,
+  sk: skHero,
+  de: deHero
+}
+
 export function Hero() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [isClient, setIsClient] = useState(false)
+  const [locale, setLocale] = useState('cs')
+  const [t, setTranslations] = useState(csHero) // Always start with CS to avoid hydration mismatch
   
-  const t = useTranslations('hero')
-
+  // Get the localized inquiry path based on current locale
+  const inquiryPath = isClient ? getLocalizedPath(locale, 'inquiry') : 'poptavka'
+  
   useEffect(() => {
     setIsClient(true)
+    
+    // Detect the current language
+    const hostname = window.location.hostname
+    const detectedLocale = getLanguageFromHostname(hostname)
+    let newLocale = 'cs'
+    
+    if (detectedLocale) {
+      newLocale = detectedLocale
+      setLocale(detectedLocale)
+    } else {
+      // Check URL parameters for locale
+      const urlParams = new URLSearchParams(window.location.search)
+      const localeParam = urlParams.get('_locale')
+      if (localeParam && ['en', 'cs', 'sk', 'de'].includes(localeParam)) {
+        newLocale = localeParam
+        setLocale(localeParam)
+      }
+    }
+    
+    // Update translations based on detected locale
+    if (newLocale && translations[newLocale as keyof typeof translations]) {
+      setTranslations(translations[newLocale as keyof typeof translations])
+    }
     
     const script = document.createElement("script")
     script.src = "https://player.vimeo.com/api/player.js"
@@ -153,7 +192,7 @@ export function Hero() {
                     backgroundSize: "150% 100%",
                   }}
                 >
-                  <Link href="/poptavka" className="relative">
+                  <Link href={`/${inquiryPath}`} className="relative">
                     <div
                       className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                       aria-hidden="true"
@@ -182,7 +221,7 @@ export function Hero() {
                   variant="outline"
                   className="text-white border-white/30 hover:border-white/60 bg-white/5 backdrop-blur-sm font-semibold transition-all duration-500 hover:scale-[1.04] group"
                 >
-                  <Link href="/nase-sluzby/odkup-prodej-pohledavek" className="flex items-center">
+                  <Link href={`/${inquiryPath}`} className="flex items-center">
                     {(t.buttons && t.buttons.sell) || ''}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

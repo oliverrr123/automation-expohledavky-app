@@ -2,9 +2,21 @@
 
 import { CheckCircle } from "lucide-react"
 import { SectionWrapper } from "./section-wrapper"
-import { useTranslations } from "@/lib/i18n"
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import { getLanguageFromHostname } from "@/lib/domain-mapping"
+import csAboutUs from '@/locales/cs/about-us.json'
+import enAboutUs from '@/locales/en/about-us.json'
+import skAboutUs from '@/locales/sk/about-us.json'
+import deAboutUs from '@/locales/de/about-us.json'
+
+// Define available translations
+const translations = {
+  cs: csAboutUs,
+  en: enAboutUs,
+  sk: skAboutUs,
+  de: deAboutUs
+};
 
 // Default content structure without actual text
 const defaultFeatures = [
@@ -17,44 +29,27 @@ const defaultFeatures = [
 export function AboutUs() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
-  
-  // Get translations - NOTE: The namespace is 'aboutUs' not 'about-us'
-  const t = useTranslations('aboutUs')
+  const [currentTranslation, setCurrentTranslation] = useState(csAboutUs)
   
   // Safely access features with fallback to prevent errors
-  const features = t?.features || defaultFeatures
+  const features = currentTranslation?.features || defaultFeatures
   
-  // Set isClient to true after hydration is complete
+  // Set isClient to true after hydration is complete and update translations
   useEffect(() => {
     setIsClient(true)
+    
+    // Detect the current language after client-side hydration
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname
+      const detectedLocale = getLanguageFromHostname(hostname)
+      
+      if (detectedLocale && translations[detectedLocale as keyof typeof translations]) {
+        setCurrentTranslation(translations[detectedLocale as keyof typeof translations])
+      }
+    }
   }, [])
   
-  // If translations aren't loaded yet, show minimal UI
-  if (!t || Object.keys(t).length === 0) {
-    return (
-      <section className="relative py-24 sm:py-32 overflow-hidden">
-        <div className="container relative">
-          <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
-            <div className="animate-pulse">
-              <div className="h-10 bg-gray-200 rounded w-3/4 mb-4"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
-              <div className="h-24 bg-gray-200 rounded w-full"></div>
-            </div>
-            <div className="animate-pulse">
-              <div className="h-12 bg-gray-200 rounded w-full mb-4"></div>
-              <div className="h-12 bg-gray-200 rounded w-full mb-4"></div>
-              <div className="h-12 bg-gray-200 rounded w-full mb-4"></div>
-              <div className="h-12 bg-gray-200 rounded w-full"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
-  
-  // Log to help debug
-  console.log("AboutUs translations:", t);
-
+  // Always return consistent structure for server-side and initial client-side render
   return (
     <section className="relative py-24 sm:py-32 overflow-hidden">
       {/* Section-specific background effects */}
@@ -71,14 +66,14 @@ export function AboutUs() {
               <div className="relative">
                 <div className="absolute -left-8 -top-6 w-16 h-16 bg-orange-500/10 rounded-full blur-2xl" />
                 <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-zinc-900">
-                  {t.title}
+                  {currentTranslation.title || ''}
                 </h2>
                 <div className="mt-2 inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20">
-                  {t.subtitle}
+                  {currentTranslation.subtitle || ''}
                 </div>
               </div>
               <p className="mt-6 text-lg leading-8 text-gray-600 [text-wrap:balance]">
-                {t.description}
+                {currentTranslation.description || ''}
               </p>
             </div>
           </SectionWrapper>

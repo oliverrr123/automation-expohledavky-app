@@ -7,21 +7,21 @@
   },
   "contact": {
     "address": {
-      "text": "Na strži 1702/65, 140 00, Prag 4-Nusle",
+      "text": "Sonnenhof 3, 94252 Bayerisch Eisenstein, Deutschland",
       "successMessage": "Adresse kopiert"
     },
     "email": {
-      "text": "info@expohledavky.cz",
+      "text": "info@exforderungen.de",
       "successMessage": "E-Mail kopiert"
     },
     "phones": [
       {
-        "number": "+420266710318",
-        "display": "+420 266 710 318"
+        "number": "+4915170283999",
+        "display": "+49 1517 0283999"
       },
       {
-        "number": "+420735500003",
-        "display": "+420 735 500 003"
+        "number": "+4915170283999",
+        "display": "+49 1517 0283999"
       }
     ],
     "successMessage": {
@@ -53,12 +53,8 @@
     "title": "Zahlungsinformationen",
     "accounts": [
       {
-        "bank": "Raiffeisenbank, a.s.",
-        "account": "777 7777 355 / 5500"
-      },
-      {
-        "bank": "Fio banka, a.s.",
-        "account": "250 2040 263 / 2010"
+        "bank": "Sparkasse Oberlausitz-Niederschlesien",
+        "account": "IBAN: DE03 8505 0300 0221 2822 70"
       }
     ]
   },

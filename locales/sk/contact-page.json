@@ -14,15 +14,15 @@
     "items": [
       {
         "title": "Telefón",
-        "content": ["+420 735 500 003", "+420 266 710 318"]
+        "content": ["+421 911 696 596"]
       },
       {
         "title": "E-mail",
-        "content": ["info@expohledavky.cz"]
+        "content": ["info@expohladavky.sk"]
       },
       {
-        "title": "City Empiria",
-        "content": ["Na strži 1702/65, 140 00 Praha 4-Nusle"]
+        "title": "Bratislava",
+        "content": ["Betliarska 22, 851 07, Bratislava"]
       },
       {
         "title": "Pracovné hodiny",
@@ -78,8 +78,8 @@
       "description": "Náš tím vám odpovie do 24 hodín v pracovné dni. Pre urgentné prípady nás neváhajte kontaktovať telefonicky."
     },
     "map": {
-      "title": "City Empiria, Praha 4",
-      "address": "Na strži 1702/65, 140 00"
+      "title": "Bratislava, Petržalka",
+      "address": "Betliarska 22, 851 07"
     }
   },
   "faq": {

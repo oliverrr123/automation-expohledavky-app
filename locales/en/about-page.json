@@ -128,7 +128,7 @@
         },
         "phone": {
           "label": "Phone",
-          "placeholder": "+420 XXX XXX XXX"
+          "placeholder": "+44 XXX XXX XXX"
         },
         "message": {
           "label": "Message",

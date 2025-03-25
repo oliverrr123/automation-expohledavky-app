@@ -4,7 +4,19 @@ import { useState, useEffect } from "react"
 import { Eye, User, FileText, Gavel, CreditCard } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SectionWrapper } from "./section-wrapper"
-import { useTranslations } from "@/lib/i18n"
+import { getLanguageFromHostname } from "@/lib/domain-mapping"
+import csProcess from '@/locales/cs/process.json'
+import enProcess from '@/locales/en/process.json'
+import skProcess from '@/locales/sk/process.json'
+import deProcess from '@/locales/de/process.json'
+
+// Define available translations
+const translations = {
+  cs: csProcess,
+  en: enProcess,
+  sk: skProcess,
+  de: deProcess
+};
 
 // Icon mapping to maintain the icons with translated content
 const iconMap = {
@@ -15,57 +27,46 @@ const iconMap = {
   exekuce: CreditCard,
 }
 
-// Default steps to use as fallback when translations aren't loaded yet
-const defaultSteps = [
-  { key: "kontrola", title: "Kontrola", description: "..." },
-  { key: "zastoupeni", title: "Zastoupení", description: "..." },
-  { key: "vyzva", title: "Výzva", description: "..." },
-  { key: "zaloba", title: "Žaloba", description: "..." },
-  { key: "exekuce", title: "Exekuce", description: "..." },
-]
-
 export function Process() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
-  // Use client translations
-  const t = useTranslations('process')
+  
+  // Always start with Czech version to ensure server/client match
+  const [currentTranslation, setCurrentTranslation] = useState(csProcess)
   const [activeStep, setActiveStep] = useState("kontrola")
 
-  // Safely access steps with fallback to prevent errors
-  const steps = t?.steps || defaultSteps
-
-  // Set isClient to true after hydration
+  // Set isClient to true after hydration and update translations if needed
   useEffect(() => {
     setIsClient(true)
+    
+    // Detect the current language after client-side hydration
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname
+      const detectedLocale = getLanguageFromHostname(hostname)
+      
+      if (detectedLocale && translations[detectedLocale as keyof typeof translations]) {
+        setCurrentTranslation(translations[detectedLocale as keyof typeof translations])
+      }
+    }
   }, [])
 
   // Add auto-scrolling effect
   useEffect(() => {
-    if (!steps || steps.length === 0) return // Guard against missing steps
+    if (!currentTranslation?.steps || currentTranslation.steps.length === 0) return
     
     const interval = setInterval(() => {
       setActiveStep((current) => {
-        const currentIndex = steps.findIndex((step: any) => step.key === current)
-        const nextIndex = (currentIndex + 1) % steps.length
-        return steps[nextIndex].key
+        const currentIndex = currentTranslation.steps.findIndex((step: any) => step.key === current)
+        const nextIndex = (currentIndex + 1) % currentTranslation.steps.length
+        return currentTranslation.steps[nextIndex].key
       })
     }, 5000) // Change step every 5 seconds
 
     return () => clearInterval(interval)
-  }, [steps])
+  }, [currentTranslation])
 
-  // If translations aren't loaded yet, show minimal UI
-  if (!t || !steps || steps.length === 0) {
-    return (
-      <section className="relative py-24 sm:py-32 overflow-hidden">
-        <div className="container relative z-10">
-          <div className="animate-pulse bg-gray-200 h-8 w-48 mx-auto rounded"></div>
-          <div className="animate-pulse bg-gray-200 h-4 w-96 mx-auto mt-4 rounded"></div>
-          <div className="animate-pulse bg-gray-200 h-64 w-full mx-auto mt-8 rounded-2xl"></div>
-        </div>
-      </section>
-    )
-  }
+  // Ensure we have steps
+  const steps = currentTranslation?.steps || []
 
   return (
     <section className="relative py-24 sm:py-32 overflow-hidden">
@@ -78,9 +79,9 @@ export function Process() {
         <SectionWrapper animation="fade-up">
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl bg-clip-text text-transparent bg-gradient-to-b from-zinc-900 to-zinc-500">
-              {t.title || "Proces"}
+              {currentTranslation.title || "Proces"}
             </h2>
-            <p className="mt-4">{t.subtitle || "Jak probíhá zpracování pohledávek"}</p>
+            <p className="mt-4">{currentTranslation.subtitle || ""}</p>
           </div>
         </SectionWrapper>
 

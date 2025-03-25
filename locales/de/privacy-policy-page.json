@@ -9,7 +9,7 @@
     },
     "whoProcessesData": {
       "title": "2. Wer verarbeitet Ihre personenbezogenen Daten?",
-      "content": "Der Verantwortliche für die Verarbeitung Ihrer personenbezogenen Daten ist:\n\nEX Pohledávky s.r.o.\nID: 09394117\nSteuerid.: CZ09394117\nSitz: Na strži 1702/65, 140 00 Praha 4-Nusle\n\nEingetragen im Handelsregister beim Stadtgericht Prag, Abteilung C, Einlage 335686"
+      "content": "Der Verantwortliche für die Verarbeitung Ihrer personenbezogenen Daten ist:\n\nEX Forderungen GmbH\nSitz: Sonnenhof 3, 94252 Bayerisch Eisenstein, Deutschland"
     },
     "whatDataWeProcess": {
       "title": "3. Welche personenbezogenen Daten verarbeiten wir?",
@@ -127,7 +127,7 @@
     },
     "contact": {
       "title": "12. Wie können Sie uns kontaktieren?",
-      "content1": "Bei Fragen zum Datenschutz oder zum Widerruf Ihrer Einwilligung zur weiteren Verarbeitung Ihrer personenbezogenen Daten nutzen Sie bitte das Kontaktformular im Bereich personenbezogene Daten <a href=\"oou-formular/\" className=\"text-orange-500 hover:text-orange-600\">HIER</a> oder schriftlich an unsere Adresse: Expohledávky s.r.o., Na strži 1702/65, Nusle, 140 00 Praha 4, zu Händen des Datenschutzbeauftragten. Sie können uns auch über die E-Mail-Adresse des Datenschutzbeauftragten: oou@expohledavky.cz kontaktieren.",
+      "content1": "Bei Fragen zum Datenschutz oder zum Widerruf Ihrer Einwilligung zur weiteren Verarbeitung Ihrer personenbezogenen Daten nutzen Sie bitte das Kontaktformular im Bereich personenbezogene Daten <a href=\"oou-formular/\" className=\"text-orange-500 hover:text-orange-600\">HIER</a> oder schriftlich an unsere Adresse: EX Forderungen GmbH, Sonnenhof 3, 94252 Bayerisch Eisenstein, Deutschland, zu Händen des Datenschutzbeauftragten. Sie können uns auch über die E-Mail-Adresse des Datenschutzbeauftragten: info@exforderungen.de kontaktieren.",
       "content2": "In diesem Zusammenhang möchten wir Sie darauf hinweisen, dass wir von Ihnen verlangen können, dass Sie Ihre Identität in geeigneter Weise nachweisen, damit wir Ihre Identität überprüfen können. Dies ist eine vorbeugende Sicherheitsmaßnahme, um den Zugriff unbefugter Personen auf Ihre personenbezogenen Daten zu verhindern."
     }
   }

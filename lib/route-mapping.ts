@@ -29,7 +29,8 @@ export const ROUTES: RouteMap = {
     "kontakt": "contact",
     "blog": "blog",
     "ochrana-osobnich-udaju": "privacy-policy",
-    "klient-prihlaseni": "client-login"
+    "klient-prihlaseni": "client-login",
+    "poptavka": "inquiry"
   },
   
   // Slovak routes (sk)
@@ -47,7 +48,8 @@ export const ROUTES: RouteMap = {
     "kontakt": "contact",
     "blog": "blog",
     "ochrana-osobnych-udajov": "privacy-policy",
-    "klient-prihlasenie": "client-login"
+    "klient-prihlasenie": "client-login",
+    "poziadavka": "inquiry"
   },
   
   // German routes (de)
@@ -65,7 +67,8 @@ export const ROUTES: RouteMap = {
     "kontakt": "contact",
     "blog": "blog",
     "datenschutz": "privacy-policy",
-    "kunden-login": "client-login"
+    "kunden-login": "client-login",
+    "anfrage": "inquiry"
   },
   
   // English routes (en) - canonical routes
@@ -83,7 +86,8 @@ export const ROUTES: RouteMap = {
     "contact": "contact",
     "blog": "blog",
     "privacy-policy": "privacy-policy",
-    "client-login": "client-login"
+    "client-login": "client-login",
+    "inquiry": "inquiry"
   }
 };
 
@@ -131,7 +135,8 @@ export const CS_TO_EN: Record<string, string> = {
   'kontakt': 'contact',
   'blog': 'blog',
   'ochrana-osobnich-udaju': 'privacy-policy',
-  'klient-prihlaseni': 'client-login'
+  'klient-prihlaseni': 'client-login',
+  'poptavka': 'inquiry'
 };
 
 // Route mapping for Czech to German
@@ -149,7 +154,8 @@ export const CS_TO_DE: Record<string, string> = {
   'kontakt': 'kontakt',
   'blog': 'blog',
   'ochrana-osobnich-udaju': 'datenschutz',
-  'klient-prihlaseni': 'kunden-login'
+  'klient-prihlaseni': 'kunden-login',
+  'poptavka': 'anfrage'
 };
 
 // Route mapping for Czech to Slovak
@@ -167,7 +173,8 @@ export const CS_TO_SK: Record<string, string> = {
   'kontakt': 'kontakt',
   'blog': 'blog',
   'ochrana-osobnich-udaju': 'ochrana-osobnych-udajov',
-  'klient-prihlaseni': 'klient-prihlasenie'
+  'klient-prihlaseni': 'klient-prihlasenie',
+  'poptavka': 'poziadavka'
 };
 
 // Create reverse mappings

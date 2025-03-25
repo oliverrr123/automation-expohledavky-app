@@ -566,11 +566,29 @@ export function useTranslations(namespace: string, locale?: string): any {
   // Check if we're in the browser environment
   const isBrowser = typeof window !== 'undefined';
   
-  // Initialize with an empty object
-  const [translationState, setTranslationState] = useState({});
+  // For server-side rendering, return empty structure without using hooks
+  // This prevents the "Should have a queue" React error
+  if (!isBrowser) {
+    return getEmptyStructure(namespace);
+  }
+  
+  // For client-side only, use React state hooks
+  // Using lazy initialization to avoid calling the function during render
+  const [translationState, setTranslationState] = useState<Record<string, any>>(() => {
+    try {
+      const currentLocale = locale || getCurrentLocale();
+      const fixedNamespace = namespace.replace(/-/g, '');
+      const localeDict = translations[currentLocale as keyof typeof translations] || {};
+      const nsKey = fixedNamespace as keyof typeof localeDict;
+      return localeDict[nsKey] || getEmptyStructure(namespace);
+    } catch (error) {
+      console.error(`Translation initialization error for ${namespace}:`, error);
+      return getEmptyStructure(namespace);
+    }
+  });
   
   useEffect(() => {
-    // Only run on client
+    // Only run on client and when the locale changes
     if (!isBrowser) return;
     
     // Get translations directly
@@ -583,10 +601,11 @@ export function useTranslations(namespace: string, locale?: string): any {
       const nsKey = fixedNamespace as keyof typeof localeDict;
       
       // Safely set the translation object - always return at least an empty object
-      setTranslationState(localeDict[nsKey] || {});
+      const newTranslations = localeDict[nsKey] || getEmptyStructure(namespace);
+      setTranslationState(newTranslations);
     } catch (error) {
       console.error(`Translation error for namespace ${namespace} in locale ${currentLocale}:`, error);
-      setTranslationState({});
+      setTranslationState(getEmptyStructure(namespace));
     }
   }, [namespace, locale, isBrowser]);
   

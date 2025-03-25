@@ -5,6 +5,40 @@ import { Quote, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SectionWrapper } from "./section-wrapper"
 import { useTranslations } from "@/lib/i18n"
+import { getServerTranslations } from "@/lib/server-utils"
+import csTestimonials from '@/locales/cs/testimonials.json'
+import enTestimonials from '@/locales/en/testimonials.json'
+import skTestimonials from '@/locales/sk/testimonials.json'
+import deTestimonials from '@/locales/de/testimonials.json'
+
+// Define types for testimonial data
+interface Testimonial {
+  text: string;
+  author: string;
+  company?: string;
+}
+
+interface TestimonialsTranslations {
+  title: string;
+  subtitle: string;
+  testimonials: Testimonial[];
+  ariaLabels: {
+    previousTestimonial: string;
+    nextTestimonial: string;
+    goToSlide: string;
+  };
+}
+
+// Get translations based on domain for server-side rendering
+const translationsByLang = {
+  cs: csTestimonials,
+  en: enTestimonials,
+  sk: skTestimonials,
+  de: deTestimonials
+};
+
+// Server-side default translations to prevent hydration mismatch
+const serverTranslations = getServerTranslations('testimonials', translationsByLang);
 
 // Default testimonials to use as fallback
 const defaultTestimonials = [
@@ -23,18 +57,33 @@ const defaultTestimonials = [
 export function Testimonials() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
-  // Use client translations
-  const t = useTranslations('testimonials')
+  // Track if initial render is complete
+  const [initialRenderComplete, setInitialRenderComplete] = useState(false)
+  // Always call hooks unconditionally
+  const clientTranslations = useTranslations('testimonials')
+  // Use server or client translations based on state
+  const t = isClient ? clientTranslations : serverTranslations
+  
   const [activeIndex, setActiveIndex] = useState(0)
   
-  // Safely access testimonials with fallback
-  const testimonials = t?.testimonials || defaultTestimonials
-
-  // Set isClient to true after hydration
+  // Safely access translations, providing fallbacks
+  const title = t?.title || 'Testimonials';
+  const subtitle = t?.subtitle || 'What our clients say about us';
+  const testimonials = t?.testimonials || defaultTestimonials;
+  const ariaLabels = t?.ariaLabels || {
+    previousTestimonial: 'Previous testimonial',
+    nextTestimonial: 'Next testimonial',
+    goToSlide: 'Go to slide'
+  };
+  
+  // Set isClient to true after hydration is complete
   useEffect(() => {
     setIsClient(true)
+    // Mark initial render as complete
+    setInitialRenderComplete(true)
   }, [])
-
+  
+  // Auto-advance testimonial slides - must be defined unconditionally
   useEffect(() => {
     if (!testimonials || testimonials.length === 0) return;
     
@@ -54,14 +103,18 @@ export function Testimonials() {
     setActiveIndex((current) => (current === testimonials.length - 1 ? 0 : current + 1))
   }
 
-  // If translations aren't loaded yet, show minimal UI
-  if (!t || !testimonials || testimonials.length === 0) {
+  // Return minimal structure during server-side rendering to prevent hydration mismatch
+  if (!initialRenderComplete) {
     return (
       <section className="py-24 sm:py-32 bg-gray-50">
         <div className="container">
-          <div className="animate-pulse bg-gray-200 h-8 w-48 mx-auto rounded"></div>
-          <div className="animate-pulse bg-gray-200 h-4 w-96 mx-auto mt-4 rounded"></div>
-          <div className="animate-pulse bg-gray-200 h-64 w-full max-w-2xl mx-auto mt-16 rounded-2xl"></div>
+          <div className="text-center">
+            <div className="h-10"></div>
+            <div className="h-6 mt-4"></div>
+          </div>
+          <div className="relative mt-16">
+            <div className="h-[400px]"></div>
+          </div>
         </div>
       </section>
     )
@@ -72,8 +125,8 @@ export function Testimonials() {
       <div className="container">
         <SectionWrapper animation="fade-up">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.title || "Testimonials"}</h2>
-            <p className="mt-4 text-lg text-gray-600">{t.subtitle || "What our clients say about us"}</p>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
+            <p className="mt-4 text-lg text-gray-600">{subtitle}</p>
           </div>
         </SectionWrapper>
 
@@ -82,7 +135,7 @@ export function Testimonials() {
           <button
             onClick={goToPrevious}
             className="absolute left-0 md:left-4 lg:left-24 xl:left-32 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-zinc-700 hover:text-orange-500 rounded-full p-2 shadow-md transition-all duration-300 hover:scale-110"
-            aria-label={t.ariaLabels?.previousTestimonial || "Previous testimonial"}
+            aria-label={ariaLabels.previousTestimonial}
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
@@ -91,13 +144,13 @@ export function Testimonials() {
           <button
             onClick={goToNext}
             className="absolute right-0 md:right-4 lg:right-24 xl:right-32 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-zinc-700 hover:text-orange-500 rounded-full p-2 shadow-md transition-all duration-300 hover:scale-110"
-            aria-label={t.ariaLabels?.nextTestimonial || "Next testimonial"}
+            aria-label={ariaLabels.nextTestimonial}
           >
             <ChevronRight className="h-6 w-6" />
           </button>
 
           <div className="relative h-[400px]">
-            {testimonials.map((testimonial: any, idx: number) => (
+            {testimonials.map((testimonial: Testimonial, idx: number) => (
               <div
                 key={idx}
                 className={cn(
@@ -129,7 +182,7 @@ export function Testimonials() {
                   idx === activeIndex ? "bg-orange-500" : "bg-gray-300 hover:bg-gray-400",
                 )}
               >
-                <span className="sr-only">{t.ariaLabels?.goToSlide || "Go to slide"} {idx + 1}</span>
+                <span className="sr-only">{ariaLabels.goToSlide} {idx + 1}</span>
               </button>
             ))}
           </div>

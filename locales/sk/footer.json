@@ -7,21 +7,21 @@
   },
   "contact": {
     "address": {
-      "text": "Na strži 1702/65, 140 00, Praha 4-Nusle",
+      "text": "Betliarska 22, 851 07, Bratislava",
       "successMessage": "Adresa skopírovaná"
     },
     "email": {
-      "text": "info@expohledavky.cz",
+      "text": "info@expohladavky.sk",
       "successMessage": "Email skopírovaný"
     },
     "phones": [
       {
-        "number": "+420266710318",
-        "display": "+420 266 710 318"
+        "number": "+421911696596",
+        "display": "+421 911 696 596"
       },
       {
-        "number": "+420735500003",
-        "display": "+420 735 500 003"
+        "number": "+421911696596",
+        "display": "+421 911 696 596"
       }
     ],
     "successMessage": {
@@ -53,12 +53,8 @@
     "title": "Platobné údaje",
     "accounts": [
       {
-        "bank": "Raiffeisenbank, a.s.",
-        "account": "777 7777 355 / 5500"
-      },
-      {
-        "bank": "Fio banka, a.s.",
-        "account": "250 2040 263 / 2010"
+        "bank": "Číslo účtu pre dlžníkov vedený u Slovenská sporiteľňa, a.s.",
+        "account": "SK70 0900 0000 0051 9178 8234"
       }
     ]
   },

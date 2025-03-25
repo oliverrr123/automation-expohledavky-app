@@ -9,7 +9,7 @@
     },
     "whoProcessesData": {
       "title": "2. Who processes your data?",
-      "content": "We are Expohledávky s.r.o., ID: 069 53 204, with registered office at Na strži 1702/65, Nusle, 140 00 Prague 4, registered in the Commercial Register kept by the Municipal Court in Prague, Section C, File 291445. We are a collection agency providing debt collection services including legal representation and consulting, and as a controller, we will process your personal data according to the conditions stated below."
+      "content": "We are EX Receivables Ltd, with registered office at 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ, United Kingdom. We are a collection agency providing debt collection services including legal representation and consulting, and as a controller, we will process your personal data according to the conditions stated below."
     },
     "whatDataWeProcess": {
       "title": "3. What personal data do we process?",
@@ -70,7 +70,7 @@
     },
     "dataRetention": {
       "title": "9. How long do we process your data?",
-      "content": "We will process your personal data only for the time that is necessary with regard to the purpose of its processing. If personal data is used simultaneously for several different purposes of processing, we will process it until the purpose with a longer processing time disappears. However, we will stop using it for the purpose with a shorter processing time as soon as this time expires. Expohledávky s.r.o. uses the following criteria to determine the processing time:",
+      "content": "We will process your personal data only for the time that is necessary with regard to the purpose of its processing. If personal data is used simultaneously for several different purposes of processing, we will process it until the purpose with a longer processing time disappears. However, we will stop using it for the purpose with a shorter processing time as soon as this time expires. EX Receivables Ltd uses the following criteria to determine the processing time:",
       "list": [
         "in the case of contract fulfillment, we process your personal data for the duration of the contractual relationship between us;",
         "in the case of fulfilling our legal obligations, we process your personal data for the period specified by the relevant legal regulations;",
@@ -127,7 +127,7 @@
     },
     "contact": {
       "title": "12. How can you contact us?",
-      "content1": "In case of any query regarding personal data protection or withdrawal of consent for further processing of your personal data, please use the contact form available in the personal data section <a href=\"oou-formular/\" className=\"text-orange-500 hover:text-orange-600\">HERE</a> or in writing at our address: Expohledávky s.r.o., Na strži 1702/65, Nusle, 140 00 Prague 4, for the attention of the personal data protection officer. You can also contact us at the email address of the personal data protection officer: oou@expohledavky.cz",
+      "content1": "In case of any query regarding personal data protection or withdrawal of consent for further processing of your personal data, please use the contact form available in the personal data section <a href=\"oou-formular/\" className=\"text-orange-500 hover:text-orange-600\">HERE</a> or in writing at our address: EX Receivables Ltd, 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ, United Kingdom, for the attention of the personal data protection officer. You can also contact us at the email address of the personal data protection officer: info@exreceivables.com",
       "content2": "In this context, we would like to draw your attention to the fact that we may want you to prove your identity in an appropriate way so that we can verify your identity. This is a preventive security measure to prevent unauthorized persons from accessing your personal data."
     }
   }

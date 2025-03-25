@@ -10,15 +10,15 @@
       },
       "email": {
         "label": "E-Mail",
-        "placeholder": "ihre@email.com"
+        "placeholder": "ihre@email.de"
       },
       "phone": {
         "label": "Telefonnummer",
-        "placeholder": "+420 XXX XXX XXX"
+        "placeholder": "+49 XXX XXX XXX"
       },
       "amount": {
         "label": "Forderungsbetrag",
-        "placeholder": "Betrag in CZK"
+        "placeholder": "Betrag in EUR"
       },
       "message": {
         "label": "Ihre Nachricht",
@@ -41,8 +41,8 @@
     ],
     "contact": {
       "title": "Haben Sie Fragen? Kontaktieren Sie uns:",
-      "phone": "+420 735 500 003",
-      "email": "info@expohledavky.cz"
+      "phone": "+49 1517 0283999",
+      "email": "info@exforderungen.de"
     },
     "toast": {
       "emailCopied": "E-Mail kopiert",

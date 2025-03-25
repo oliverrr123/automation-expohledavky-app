@@ -46,13 +46,12 @@ function getRandomElement(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-// Function to check if text contains AI references - localized for German
+// Function to check if text contains AI references
 function containsAIReference(text) {
   const lowerText = text.toLowerCase();
+  // Redukovaný seznam základních termínů
   const forbiddenTerms = [
-    'ai', 'ki', 'künstliche intelligenz', 'maschinelles lernen', 'automatisierung', 
-    'roboter', 'algorithmus', 'digitalisierung', 'software', 'automatisch', 
-    'automatisiert', 'big data', 'machine learning', 'chatbot'
+    'ai', 'künstliche intelligenz'
   ];
   
   return forbiddenTerms.some(term => lowerText.includes(term));
@@ -61,10 +60,9 @@ function containsAIReference(text) {
 // Function to count AI references in text
 function countAIReferences(text) {
   const lowerText = text.toLowerCase();
+  // Redukovaný seznam základních termínů
   const forbiddenTerms = [
-    'ai', 'ki', 'künstliche intelligenz', 'maschinelles lernen', 'automatisierung', 
-    'roboter', 'algorithmus', 'digitalisierung', 'software', 'automatisch', 
-    'automatisiert', 'big data', 'machine learning', 'chatbot'
+    'ai', 'künstliche intelligenz'
   ];
   
   let count = 0;
@@ -167,27 +165,23 @@ async function generateUniqueApproach(topic, category) {
   try {
     console.log("Generiere einzigartigen Ansatz zum Thema...");
     
-    const prompt = `Für das Thema "${topic}" in der Kategorie "${category}" schlagen Sie einen einzigartigen Blickwinkel oder Ansatz vor, der den Artikel von üblichen Texten zu diesem Thema unterscheiden würde.
+    const prompt = `Für das Thema "${topic}" in der Kategorie "${category}" schlage einen Ansatz für einen Fachartikel vor.
 
-Vorschlagen Sie:
-1. Die Hauptthese oder das Hauptargument des Artikels
-2. 3-4 Schlüsselpunkte, die der Artikel abdecken sollte
+Schlage vor:
+1. Die Hauptthese des Artikels
+2. 3-4 Kernpunkte, die der Artikel abdecken sollte
 3. Eine einzigartige Perspektive oder einen Ansatz zum Thema
 
-WICHTIGE EINSCHRÄNKUNGEN:
-- Vermeiden Sie JEGLICHE Erwähnungen von Technologien, KI, Automatisierung oder Digitalisierung
-- Konzentrieren Sie sich auf den menschlichen Faktor, rechtliche Aspekte, Finanzstrategien, zwischenmenschliche Beziehungen und Kommunikation
-- Betonen Sie praktische Aspekte, die keine fortschrittlichen Technologien erfordern
-- Bevorzugen Sie traditionell geschäftliche, rechtliche und finanzielle Blickwinkel
-
-Antworten Sie im JSON-Format mit den Schlüsseln "mainThesis", "keyPoints" und "uniquePerspective".`;
+Konzentriere dich auf rechtliche, finanzielle und geschäftliche Aspekte.
+Vermeide Erwähnungen von KI und Technologie.
+Antworte im JSON-Format mit den Schlüsseln "mainThesis", "keyPoints" und "uniquePerspective".`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { 
           role: "system", 
-          content: "Sie sind ein kreativer Content-Stratege, der sich auf finanzielle und rechtliche Themen spezialisiert hat. Sie vermeiden Themen im Zusammenhang mit Technologien und KI." 
+          content: "Du bist ein kreativer Content-Stratege, der sich auf Finanz- und Rechtsthemen spezialisiert hat." 
         },
         { role: "user", content: prompt }
       ],
@@ -198,27 +192,24 @@ Antworten Sie im JSON-Format mit den Schlüsseln "mainThesis", "keyPoints" und "
     
     const approach = JSON.parse(completion.choices[0].message.content);
     
-    // Check if the approach contains AI references
-    if (containsAIReference(approach.mainThesis) || 
-        approach.keyPoints.some(point => containsAIReference(point)) || 
-        containsAIReference(approach.uniquePerspective)) {
+    // Zjednodušená kontrola AI zmínek
+    if (containsAIReference(JSON.stringify(approach))) {
       console.log("Generierter Ansatz enthält Erwähnungen von KI oder Technologien, generiere neuen Ansatz...");
-      return generateUniqueApproach(topic, category); 
+      return generateUniqueApproach(topic, category);
     }
     
     return approach;
   } catch (error) {
-    console.error("Fehler bei der Generierung des Ansatzes zum Thema:", error);
-    // Fallback approach without technology mentions
+    console.error("Fehler beim Generieren des Ansatzes:", error);
     return {
-      mainThesis: `Es ist wichtig, praktische und rechtliche Aspekte von ${topic} zu verstehen.`,
+      mainThesis: `Der Schlüssel zu einer erfolgreichen Lösung im Bereich ${category.toLowerCase()} ist ein strukturierter und systematischer Ansatz mit Fokus auf Ergebnisse.`,
       keyPoints: [
-        "Rechtsrahmen und aktuelle Änderungen",
-        "Finanzielle Auswirkungen und Risiken",
-        "Effektive Kommunikationsverfahren",
-        "Strategische und präventive Maßnahmen"
+        "Rechtlicher Rahmen und seine praktischen Auswirkungen",
+        "Effektive Kommunikation und Verhandlung",
+        "Finanzielle Perspektive und Planung",
+        "Prävention von Problemen und Risiken"
       ],
-      uniquePerspective: `Eine Perspektive des Gleichgewichts zwischen rechtlichen Ansprüchen und der Aufrechterhaltung von Geschäftsbeziehungen im Bereich ${category.toLowerCase()}.`
+      uniquePerspective: `Fokus auf Beziehungsmanagement als Schlüsselfaktor für den Erfolg bei der Forderungsabwicklung.`
     };
   }
 }
@@ -251,40 +242,14 @@ async function getUnsplashImage(category) {
     // Add the category as a supplement to the main professional prompt
     const searchQuery = `${randomPrompt} ${category}`;
     
-    const response = await fetch(
-      `https://api.unsplash.com/photos/random?query=${encodeURIComponent(searchQuery)}&orientation=landscape&content_filter=high&client_id=${process.env.UNSPLASH_ACCESS_KEY}`,
-      { method: 'GET' }
-    );
-    
-    if (response.ok) {
-      const data = await response.json();
-      return {
-        url: data.urls.regular,
-        credit: {
-          name: data.user.name,
-          link: data.user.links.html
-        }
-      };
-    } else {
-      // If the first attempt fails, try a purely professional prompt without the category
-      const fallbackResponse = await fetch(
-        `https://api.unsplash.com/photos/random?query=${encodeURIComponent(randomPrompt)}&orientation=landscape&content_filter=high&client_id=${process.env.UNSPLASH_ACCESS_KEY}`,
-        { method: 'GET' }
-      );
-      
-      if (fallbackResponse.ok) {
-        const fallbackData = await fallbackResponse.json();
-        return {
-          url: fallbackData.urls.regular,
-          credit: {
-            name: fallbackData.user.name,
-            link: fallbackData.user.links.html
-          }
-        };
+    // Použijeme výchozí obrázek místo volání API
+    return {
+      url: '/images/default-business.jpg',
+      credit: {
+        name: 'Default Image',
+        link: 'https://expohledavky.cz'
       }
-    }
-    
-    throw new Error('Fehler beim Abrufen des Bildes von Unsplash');
+    };
   } catch (error) {
     console.error('Fehler beim Abrufen des Bildes von Unsplash:', error);
     // Fallback to a default image

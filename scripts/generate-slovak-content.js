@@ -46,13 +46,12 @@ function getRandomElement(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-// Function to check if text contains AI references - localized for Slovak
+// Function to check if text contains AI references
 function containsAIReference(text) {
   const lowerText = text.toLowerCase();
+  // Redukovaný seznam základních termínů
   const forbiddenTerms = [
-    'ai', 'umelá inteligencia', 'strojové učenie', 'automatizácia', 
-    'robot', 'algoritmus', 'digitalizácia', 'softvér', 'automatický', 
-    'automatizovaný', 'big data', 'machine learning', 'chatbot'
+    'ai', 'umelá inteligencia'
   ];
   
   return forbiddenTerms.some(term => lowerText.includes(term));
@@ -61,10 +60,9 @@ function containsAIReference(text) {
 // Function to count AI references in text
 function countAIReferences(text) {
   const lowerText = text.toLowerCase();
+  // Redukovaný seznam základních termínů
   const forbiddenTerms = [
-    'ai', 'umelá inteligencia', 'strojové učenie', 'automatizácia', 
-    'robot', 'algoritmus', 'digitalizácia', 'softvér', 'automatický', 
-    'automatizovaný', 'big data', 'machine learning', 'chatbot'
+    'ai', 'umelá inteligencia'
   ];
   
   let count = 0;
@@ -167,19 +165,15 @@ async function generateUniqueApproach(topic, category) {
   try {
     console.log("Generujem unikátny prístup k téme...");
     
-    const prompt = `Pre tému "${topic}" v kategórii "${category}" navrhni unikátny uhol pohľadu alebo prístup, ktorý by odlíšil článok od bežných textov na túto tému.
+    const prompt = `Pre tému "${topic}" v kategórii "${category}" navrhni prístup pre odborný článok.
 
 Navrhni:
-1. Hlavnú tézu alebo argument článku
+1. Hlavnú tézu článku
 2. 3-4 kľúčové body, ktoré by mal článok pokryť
-3. Unikátnu perspektívu alebo prístup k téme 
+3. Unikátnu perspektívu alebo prístup k téme
 
-DÔLEŽITÉ OBMEDZENIA:
-- Vyhni sa AKÝMKOĽVEK zmienkam o technológiách, AI, automatizácii alebo digitalizácii
-- Zameraj sa na ľudský faktor, právne aspekty, finančné stratégie, medziľudské vzťahy a komunikáciu
-- Zdôrazni praktické aspekty, ktoré nevyžadujú pokročilé technológie
-- Preferuj tradične biznisové, právne a finančné uhly pohľadu
-
+Zameraj sa na právne, finančné a obchodné aspekty.
+Vyhni sa zmienkam o technológiách a umelej inteligencii.
 Odpovedz vo formáte JSON s kľúčmi "mainThesis", "keyPoints" a "uniquePerspective".`;
 
     const completion = await openai.chat.completions.create({
@@ -187,7 +181,7 @@ Odpovedz vo formáte JSON s kľúčmi "mainThesis", "keyPoints" a "uniquePerspec
       messages: [
         { 
           role: "system", 
-          content: "Si kreatívny stratég obsahu špecializujúci sa na finančné a právne témy. Vyhýbaš sa témam súvisiacim s technológiami a AI." 
+          content: "Si kreatívny obsahový stratég špecializujúci sa na finančné a právne témy." 
         },
         { role: "user", content: prompt }
       ],
@@ -198,27 +192,24 @@ Odpovedz vo formáte JSON s kľúčmi "mainThesis", "keyPoints" a "uniquePerspec
     
     const approach = JSON.parse(completion.choices[0].message.content);
     
-    // Check if the approach contains AI references
-    if (containsAIReference(approach.mainThesis) || 
-        approach.keyPoints.some(point => containsAIReference(point)) || 
-        containsAIReference(approach.uniquePerspective)) {
+    // Zjednodušená kontrola AI zmínek
+    if (containsAIReference(JSON.stringify(approach))) {
       console.log("Vygenerovaný prístup obsahuje zmienky o AI alebo technológiách, generujem nový prístup...");
-      return generateUniqueApproach(topic, category); 
+      return generateUniqueApproach(topic, category);
     }
     
     return approach;
   } catch (error) {
-    console.error("Chyba pri generovaní prístupu k téme:", error);
-    // Fallback approach without technology mentions
+    console.error("Chyba pri generovaní prístupu:", error);
     return {
-      mainThesis: `Je dôležité porozumieť praktickým a právnym aspektom témy ${topic}.`,
+      mainThesis: `Kľúčom k úspešnému riešeniu v oblasti ${category.toLowerCase()} je štruktúrovaný a systematický prístup zameraný na výsledky.`,
       keyPoints: [
-        "Legislatívny rámec a aktuálne zmeny",
-        "Finančné dopady a riziká",
-        "Efektívne komunikačné postupy",
-        "Strategické a preventívne opatrenia"
+        "Právny rámec a jeho praktické dopady",
+        "Efektívna komunikácia a vyjednávanie",
+        "Finančná perspektíva a plánovanie",
+        "Prevencia problémov a rizík"
       ],
-      uniquePerspective: `Pohľad z perspektívy vyváženosti medzi právnymi nárokmi a zachovaním obchodných vzťahov v oblasti ${category.toLowerCase()}.`
+      uniquePerspective: `Zameranie na vzťahový manažment ako kľúčový faktor úspechu pri riešení pohľadávok.`
     };
   }
 }
@@ -251,40 +242,14 @@ async function getUnsplashImage(category) {
     // Add the category as a supplement to the main professional prompt
     const searchQuery = `${randomPrompt} ${category}`;
     
-    const response = await fetch(
-      `https://api.unsplash.com/photos/random?query=${encodeURIComponent(searchQuery)}&orientation=landscape&content_filter=high&client_id=${process.env.UNSPLASH_ACCESS_KEY}`,
-      { method: 'GET' }
-    );
-    
-    if (response.ok) {
-      const data = await response.json();
-      return {
-        url: data.urls.regular,
-        credit: {
-          name: data.user.name,
-          link: data.user.links.html
-        }
-      };
-    } else {
-      // If the first attempt fails, try a purely professional prompt without the category
-      const fallbackResponse = await fetch(
-        `https://api.unsplash.com/photos/random?query=${encodeURIComponent(randomPrompt)}&orientation=landscape&content_filter=high&client_id=${process.env.UNSPLASH_ACCESS_KEY}`,
-        { method: 'GET' }
-      );
-      
-      if (fallbackResponse.ok) {
-        const fallbackData = await fallbackResponse.json();
-        return {
-          url: fallbackData.urls.regular,
-          credit: {
-            name: fallbackData.user.name,
-            link: fallbackData.user.links.html
-          }
-        };
+    // Místo volání API použijeme přímo fallback obrázek
+    return {
+      url: '/images/default-business.jpg',
+      credit: {
+        name: 'Default Image',
+        link: 'https://expohledavky.cz'
       }
-    }
-    
-    throw new Error('Nepodarilo sa získať obrázok z Unsplash');
+    };
   } catch (error) {
     console.error('Chyba pri získavaní obrázku z Unsplash:', error);
     // Fallback to a default image

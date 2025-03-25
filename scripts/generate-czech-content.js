@@ -51,8 +51,7 @@ function containsAIReference(text) {
   const lowerText = text.toLowerCase();
   // Redukovaný seznam základních termínů
   const forbiddenTerms = [
-    'ai', 'umělá inteligence', 'strojové učení',
-    'robot', 'automatizované'
+    'ai', 'umělá inteligence'
   ];
   
   return forbiddenTerms.some(term => lowerText.includes(term));
@@ -63,8 +62,7 @@ function countAIReferences(text) {
   const lowerText = text.toLowerCase();
   // Redukovaný seznam základních termínů
   const forbiddenTerms = [
-    'ai', 'umělá inteligence', 'strojové učení',
-    'robot', 'automatizované'
+    'ai', 'umělá inteligence'
   ];
   
   let count = 0;
@@ -161,6 +159,7 @@ Navrhni:
 3. Unikátní perspektivu nebo přístup k tématu
 
 Zaměř se na právní, finanční a obchodní aspekty.
+Vyhni se zmínkám o technologiích a umělé inteligenci.
 Odpověz ve formátu JSON s klíči "mainThesis", "keyPoints" a "uniquePerspective".`;
 
     const completion = await openai.chat.completions.create({
@@ -213,12 +212,8 @@ async function getUnsplashImage(category) {
     // Default search term if category not found
     const searchTerm = categorySearchTerms[category] || 'business professional office';
     
-    // Using Unsplash API would be better, but for simplicity, we'll use a random approach
-    const randomPage = Math.floor(Math.random() * 10) + 1;
-    const imageUrl = `https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000000)}?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3MjA5MjJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDI4ODcwNjV8&ixlib=rb-4.0.3&q=80&w=1080`;
-    
-    // Use a fallback image if the fetched one fails
-    return imageUrl;
+    // Místo náhodné URL použijeme pevnou fallback URL
+    return "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
   } catch (error) {
     console.error("Chyba při získávání obrázku:", error);
     return "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
@@ -244,7 +239,7 @@ Zaměř se na český právní a obchodní kontext.
 Poskytni praktické příklady a konkrétní postupy.
 Článek by měl mít délku přibližně 800-1200 slov.
 
-Vyhni se zmínkám o umělé inteligenci a automatizaci.
+Vyhni se zmínkám o umělé inteligenci.
 Formátuj text v Markdown, používej ## pro hlavní nadpisy a ### pro podnadpisy.`;
 
     const completion = await openai.chat.completions.create({

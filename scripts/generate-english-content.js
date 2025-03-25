@@ -223,40 +223,14 @@ async function getUnsplashImage(category) {
     // Add the category as a supplement to the main professional prompt
     const searchQuery = `${randomPrompt} ${category}`;
     
-    const response = await fetch(
-      `https://api.unsplash.com/photos/random?query=${encodeURIComponent(searchQuery)}&orientation=landscape&content_filter=high&client_id=${process.env.UNSPLASH_ACCESS_KEY}`,
-      { method: 'GET' }
-    );
-    
-    if (response.ok) {
-      const data = await response.json();
-      return {
-        url: data.urls.regular,
-        credit: {
-          name: data.user.name,
-          link: data.user.links.html
-        }
-      };
-    } else {
-      // If the first attempt fails, try a purely professional prompt without the category
-      const fallbackResponse = await fetch(
-        `https://api.unsplash.com/photos/random?query=${encodeURIComponent(randomPrompt)}&orientation=landscape&content_filter=high&client_id=${process.env.UNSPLASH_ACCESS_KEY}`,
-        { method: 'GET' }
-      );
-      
-      if (fallbackResponse.ok) {
-        const fallbackData = await fallbackResponse.json();
-        return {
-          url: fallbackData.urls.regular,
-          credit: {
-            name: fallbackData.user.name,
-            link: fallbackData.user.links.html
-          }
-        };
+    // Use default image instead of API calls
+    return {
+      url: '/images/default-business.jpg',
+      credit: {
+        name: 'Default Image',
+        link: 'https://expohledavky.cz'
       }
-    }
-    
-    throw new Error('Failed to get image from Unsplash');
+    };
   } catch (error) {
     console.error('Error getting image from Unsplash:', error);
     // Fallback to a default image

@@ -265,14 +265,89 @@ Odpovedz vo formáte JSON s kľúčmi "mainThesis", "keyPoints" a "uniquePerspec
 
 // Function to get an image from Unsplash
 async function getUnsplashImage(category) {
-  console.log('Nastavujem predvolený obrázok...');
-  return {
-    url: '/images/default-business.jpg',
-    credit: {
-      name: 'Default Image',
-      link: 'https://expohledavky.cz'
+  try {
+    console.log('Získavam obrázok z Unsplash...');
+    
+    // Professional business prompts without technological focus
+    const businessPrompts = [
+      "professional business meeting",
+      "corporate office",
+      "business people handshake",
+      "modern office",
+      "business professionals",
+      "corporate team meeting",
+      "financial documents",
+      "executive desk",
+      "business contract signing",
+      "professional corporate environment",
+      "business negotiation",
+      "legal documents",
+      "handshake agreement",
+      "business consultation",
+      "office meeting room"
+    ];
+    
+    // Randomly select one of the professional prompts
+    const randomPrompt = businessPrompts[Math.floor(Math.random() * businessPrompts.length)];
+    
+    // Add the category as a supplement to the main professional prompt
+    const searchQuery = `${randomPrompt} ${category}`;
+    
+    // Access Unsplash API via proxy (or direct if you have API key setup)
+    const response = await fetch(`https://source.unsplash.com/1600x900/?${encodeURIComponent(searchQuery)}`);
+    
+    if (!response.ok) {
+      throw new Error(`Chyba pri získavaní obrázku: ${response.statusText}`);
     }
-  };
+    
+    // Get the final URL after redirects (this will be the actual image URL)
+    const imageUrl = response.url;
+    
+    // Get the image ID from the URL
+    const imageId = imageUrl.match(/photo-([^/]+)/)?.[1] || 'unknown';
+    
+    // Create directory for images if it doesn't exist
+    const imageDir = path.join(process.cwd(), 'public', 'images', 'unsplash');
+    if (!fs.existsSync(imageDir)) {
+      fs.mkdirSync(imageDir, { recursive: true });
+    }
+    
+    // Download the image
+    const imageResponse = await fetch(imageUrl);
+    if (!imageResponse.ok) {
+      throw new Error(`Chyba pri sťahovaní obrázku: ${imageResponse.statusText}`);
+    }
+    
+    // Convert the response to a buffer
+    const imageArrayBuffer = await imageResponse.arrayBuffer();
+    const imageBuffer = Buffer.from(imageArrayBuffer);
+    
+    // Save the image to the local file system
+    const localImageFilename = `unsplash-${imageId}-${Date.now()}.jpg`;
+    const localImagePath = path.join(imageDir, localImageFilename);
+    fs.writeFileSync(localImagePath, imageBuffer);
+    
+    console.log(`Obrázok úspešne stiahnutý a uložený ako: ${localImagePath}`);
+    
+    // Return the image URL and credit for use in the article
+    return {
+      url: `/images/unsplash/${localImageFilename}`,
+      credit: {
+        name: 'Unsplash',
+        link: 'https://unsplash.com'
+      }
+    };
+  } catch (error) {
+    console.error('Chyba pri získavaní obrázku z Unsplash:', error);
+    // Fallback to a default image
+    return {
+      url: '/images/default-business.jpg',
+      credit: {
+        name: 'Default Image',
+        link: 'https://expohledavky.cz'
+      }
+    };
+  }
 }
 
 // Function to generate article content

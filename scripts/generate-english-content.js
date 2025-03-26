@@ -198,6 +198,8 @@ Respond in JSON format with keys "mainThesis", "keyPoints", and "uniquePerspecti
 // Function to get an image from Unsplash
 async function getUnsplashImage(category) {
   try {
+    console.log('Fetching image from Unsplash...');
+    
     // Professional business prompts without technological focus
     const businessPrompts = [
       "professional business meeting",
@@ -223,12 +225,48 @@ async function getUnsplashImage(category) {
     // Add the category as a supplement to the main professional prompt
     const searchQuery = `${randomPrompt} ${category}`;
     
-    // Use default image instead of API calls
+    // Access Unsplash API via proxy (or direct if you have API key setup)
+    const response = await fetch(`https://source.unsplash.com/1600x900/?${encodeURIComponent(searchQuery)}`);
+    
+    if (!response.ok) {
+      throw new Error(`Error fetching image: ${response.statusText}`);
+    }
+    
+    // Get the final URL after redirects (this will be the actual image URL)
+    const imageUrl = response.url;
+    
+    // Get the image ID from the URL
+    const imageId = imageUrl.match(/photo-([^/]+)/)?.[1] || 'unknown';
+    
+    // Create directory for images if it doesn't exist
+    const imageDir = path.join(process.cwd(), 'public', 'images', 'unsplash');
+    if (!fs.existsSync(imageDir)) {
+      fs.mkdirSync(imageDir, { recursive: true });
+    }
+    
+    // Download the image
+    const imageResponse = await fetch(imageUrl);
+    if (!imageResponse.ok) {
+      throw new Error(`Error downloading image: ${imageResponse.statusText}`);
+    }
+    
+    // Convert the response to a buffer
+    const imageArrayBuffer = await imageResponse.arrayBuffer();
+    const imageBuffer = Buffer.from(imageArrayBuffer);
+    
+    // Save the image to the local file system
+    const localImageFilename = `unsplash-${imageId}-${Date.now()}.jpg`;
+    const localImagePath = path.join(imageDir, localImageFilename);
+    fs.writeFileSync(localImagePath, imageBuffer);
+    
+    console.log(`Image successfully downloaded and saved as: ${localImagePath}`);
+    
+    // Return the image URL and credit for use in the article
     return {
-      url: '/images/default-business.jpg',
+      url: `/images/unsplash/${localImageFilename}`,
       credit: {
-        name: 'Default Image',
-        link: 'https://expohledavky.cz'
+        name: 'Unsplash',
+        link: 'https://unsplash.com'
       }
     };
   } catch (error) {

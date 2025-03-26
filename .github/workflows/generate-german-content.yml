@@ -1,12 +1,15 @@
 name: Generate German Content
 
 on:
-  workflow_dispatch:  # Manual trigger
+  # Manual trigger
+  workflow_dispatch:
+  
+  # Scheduled trigger - every day at 10 AM UTC
   schedule:
-    - cron: '0 9 * * *'  # 9 AM CET/CEST, every day
+    - cron: '0 10 * * *'
 
 permissions:
-  contents: write  # Permission to write to the repository
+  contents: write
 
 jobs:
   generate-content:
@@ -16,40 +19,36 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
       
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: npm
-      
-      - name: Install Dependencies
+          node-version: '18'
+          
+      - name: Install dependencies
         run: npm ci
       
-      - name: Ensure directories exist
-        run: mkdir -p content/posts-de
+      - name: Ensure directory existence
+        run: |
+          mkdir -p content/posts-de
+          mkdir -p public/images/unsplash
+          mkdir -p public/images/authors/de
       
-      - name: Generate German Content
+      - name: Generate German content
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: node scripts/generate-german-content.js
       
       - name: Sync with remote
-        run: |
-          git fetch origin
-          git pull --rebase origin main
+        run: git pull origin main --rebase
       
       - name: Commit changes
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add content/posts-de
-          git commit -m "chore: auto-generated German article [skip ci]" || echo "No changes to commit"
-      
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main 
+          commit_message: "feat: add new German article [skip ci]"
+          commit_user_name: "GitHub Actions"
+          commit_user_email: "actions@github.com"
+          commit_author: "GitHub Actions <actions@github.com>"
+          push_options: "--force" 

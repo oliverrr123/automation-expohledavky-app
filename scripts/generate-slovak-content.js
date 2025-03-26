@@ -4,6 +4,14 @@ const { OpenAI } = require('openai');
 const fetch = require('node-fetch');
 const matter = require('gray-matter');
 
+// Import shared utilities
+const { 
+  generateArticleContent, 
+  getArticleImage, 
+  getAuthorProfileImage,
+  containsAIReference 
+} = require('./article-generation-utils');
+
 // Configure OpenAI API
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -19,25 +27,25 @@ const categories = [
   'Prevencia'
 ];
 
-// Authors for Slovak articles
+// Authors for Slovak articles with gender specification for profile images
 const authors = [
   {
-    name: "Ján Novák",
+    name: "Juraj Kováč",
     position: "Špecialista na pohľadávky",
-    image: "/placeholder.svg?height=120&width=120",
-    bio: "Špecialista na správu a vymáhanie pohľadávok s viac ako 10 rokmi skúseností v obore."
+    bio: "Špecialista na správu a vymáhanie pohľadávok s viac ako 10 rokmi skúseností v odbore.",
+    gender: "male"
   },
   {
-    name: "Mgr. Martin Kováč",
+    name: "Mgr. Martin Novotný",
     position: "Právny špecialista",
-    image: "/placeholder.svg?height=120&width=120",
-    bio: "Právnik špecializujúci sa na oblasť obchodného práva a vymáhania pohľadávok s praxou v advokácii."
+    bio: "Právnik špecializujúci sa na obchodné právo a vymáhanie pohľadávok s rozsiahlou praxou v právnom poradenstve.",
+    gender: "male"
   },
   {
-    name: "Ing. Petra Svobodová",
+    name: "Ing. Jana Svobodová",
     position: "Finančný analytik",
-    image: "/placeholder.svg?height=120&width=120",
-    bio: "Finančná analytička zameriavajúca sa na riadenie cash flow a prevenciu platobnej neschopnosti."
+    bio: "Finančná analytička zameriavajúca sa na riadenie cash flow a prevenciu platobnej neschopnosti.",
+    gender: "female"
   }
 ];
 
@@ -46,101 +54,29 @@ function getRandomElement(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-// Function to check if text contains AI references
-function containsAIReference(text) {
-  const lowerText = text.toLowerCase();
-  // Simplified list of basic terms
-  const forbiddenTerms = [
-    'ai', 'umelá inteligencia'
-  ];
-  
-  // More permissive check - only flag if multiple terms appear
-  let count = 0;
-  forbiddenTerms.forEach(term => {
-    if (lowerText.includes(term)) count++;
-  });
-  
-  return count > 1; // Only consider it AI reference if multiple terms appear
-}
-
-// Function to count AI references in text
-function countAIReferences(text) {
-  const lowerText = text.toLowerCase();
-  // Redukovaný seznam základních termínů
-  const forbiddenTerms = [
-    'ai', 'umelá inteligencia'
-  ];
-  
-  let count = 0;
-  forbiddenTerms.forEach(term => {
-    const regex = new RegExp(term, 'gi');
-    const matches = lowerText.match(regex);
-    if (matches) {
-      count += matches.length;
-    }
-  });
-  
-  return count;
-}
-
 // Function to generate random topic based on category
-async function generateRandomTopic(category, retryCount = 0) {
+async function generateRandomTopic(category) {
   try {
-    // Add retry limit to prevent infinite recursion
-    if (retryCount > 3) {
-      console.log("Dosiahnutý maximálny počet pokusov pri generovaní témy, použijem záložné riešenie...");
-      // Return fallback topic
-      const fallbackTopic = getRandomElement([
-        `Aktuálne trendy v ${category.toLowerCase()}`,
-        `Praktický sprievodca: ${category}`,
-        `Ako optimalizovať ${category.toLowerCase()} v roku ${new Date().getFullYear()}`,
-        `Najčastejšie chyby pri ${category.toLowerCase()}`,
-        `Budúcnosť ${category.toLowerCase()} v meniacom sa ekonomickom prostredí`,
-        `Právne aspekty ${category.toLowerCase()} po novelizácii zákonov`,
-        `Finančné dopady správneho riadenia ${category.toLowerCase()}`,
-        `Strategický prístup k ${category.toLowerCase()} pre malé podniky`
-      ]);
-      
-      return {
-        topic: fallbackTopic,
-        mainThesis: `Je dôležité porozumieť aspektom témy ${fallbackTopic}.`,
-        keyPoints: [
-          "Legislatívny rámec a aktuálne zmeny",
-          "Praktické postupy a odporúčania",
-          "Prípadové štúdie a príklady z praxe",
-          "Finančné a právne aspekty témy"
-        ],
-        uniquePerspective: `Pohľad z perspektívy efektivity a optimalizácie procesov v oblasti ${category.toLowerCase()}.`
-      };
-    }
-    
     console.log(`Generujem náhodnú tému pre kategóriu: ${category}...`);
     
-    const prompt = `Vygeneruj originálnu, špecifickú a zaujímavú tému pre odborný článok o pohľadávkach v kategórii "${category}".
+    const prompt = `Vygeneruj originálnu, zaujímavú a podnetnou tému pre odborný článok o pohľadávkach v kategórii "${category}".
     
 Téma by mala byť:
-1. Relevantná pre slovenský trh a právny systém
-2. Zameraná na praktické aspekty správy a vymáhania pohľadávok pre firmy
-3. Špecifická (nie všeobecná ako "Vymáhanie pohľadávok", ale skôr "Stratégie vymáhania pohľadávok u malých a stredných podnikov v čase ekonomickej recesie")
-4. Aktuálna a reflektujúca súčasné obchodné trendy a ekonomickú situáciu
-5. Zaujímavá pre podnikateľov a firmy
-6. Vhodná pre odborný článok s dĺžkou 800-1200 slov
+1. Relevantná pre slovenský právny rámec a atraktívna pre obchodných profesionálov
+2. Zameraná na praktické a strategické aspekty správy a vymáhania pohľadávok
+3. Vhodná pre komplexný odborný článok s dĺžkou 1500-2000 slov
+4. Dostatočne špecifická, aby poskytovala hodnotné poznatky skôr než všeobecný prehľad
+5. Inovatívna a skúmajúca nové perspektívy alebo nové trendy
 
-DÔLEŽITÉ OBMEDZENIA:
-- ÚPLNE SA VYHÝBAJ témam týkajúcim sa AI, umelej inteligencie, strojového učenia alebo automatizácie
-- NIKDY nespomínaj AI alebo automatizáciu v názve alebo ako hlavnú tému
-- Zameraj sa VÝHRADNE na tradičné finančné, právne, procesné a vzťahové aspekty pohľadávok 
-- Téma musí byť relevantná pre bežných podnikateľov bez znalostí pokročilých technológií
-- Preferuj témy o konkrétnych postupoch, právnych aspektoch, vyjednávaní a finančných stratégiách
-
-Vráť iba názov témy bez ďalších komentárov alebo vysvetlení. Téma musí byť v slovenskom jazyku.`;
+Vyhni sa témam súvisiacim s umelou inteligenciou, automatizáciou alebo technológiami.
+Vráť iba názov témy bez ďalších komentárov.`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { 
           role: "system", 
-          content: "Si špecialista na pohľadávky, právne aspekty ich správy a vymáhania. Tvojou úlohou je generovať originálne a špecifické témy pre odborné články zamerané na biznis, financie a právo. Vyhýbaš sa VŠETKÝM témam súvisiacim s technológiami a AI. Zameriavaš sa na praktické aspekty vymáhania pohľadávok z právneho, finančného a medziľudského hľadiska." 
+          content: "Si špecialista na pohľadávky a právne aspekty ich správy s rozsiahlymi skúsenosťami v tvorbe obsahu pre profesionálov. Generuj praktické, špecifické a inovatívne témy pre odborné články." 
         },
         { role: "user", content: prompt }
       ],
@@ -150,12 +86,6 @@ Vráť iba názov témy bez ďalších komentárov alebo vysvetlení. Téma mus�
     
     const topic = completion.choices[0].message.content.trim();
     console.log(`Vygenerovaná téma: ${topic}`);
-    
-    // Check if the topic contains AI references
-    if (containsAIReference(topic)) {
-      console.log("Téma obsahuje zmienku o AI alebo automatizácii, generujem novú tému...");
-      return generateRandomTopic(category, retryCount + 1); // Pass retry count
-    }
     
     // Get a unique approach to the topic
     const approach = await generateUniqueApproach(topic, category);
@@ -170,82 +100,61 @@ Vráť iba názov témy bez ďalších komentárov alebo vysvetlení. Téma mus�
     console.error("Chyba pri generovaní témy:", error);
     // Fallback topics in case of API failure
     const fallbackTopic = getRandomElement([
-      `Aktuálne trendy v ${category.toLowerCase()}`,
+      `Aktuálne trendy v oblasti ${category.toLowerCase()}`,
       `Praktický sprievodca: ${category}`,
       `Ako optimalizovať ${category.toLowerCase()} v roku ${new Date().getFullYear()}`,
-      `Najčastejšie chyby pri ${category.toLowerCase()}`,
+      `Časté chyby v ${category.toLowerCase()}`,
       `Budúcnosť ${category.toLowerCase()} v meniacom sa ekonomickom prostredí`,
-      `Právne aspekty ${category.toLowerCase()} po novelizácii zákonov`,
+      `Právne aspekty ${category.toLowerCase()} po novelách zákonov`,
       `Finančné dopady správneho riadenia ${category.toLowerCase()}`,
-      `Strategický prístup k ${category.toLowerCase()} pre malé podniky`
+      `Strategický prístup k ${category.toLowerCase()} pre malé firmy`
     ]);
     
     return {
       topic: fallbackTopic,
-      mainThesis: `Je dôležité porozumieť aspektom témy ${fallbackTopic}.`,
+      mainThesis: `Je dôležité porozumieť aspektom ${fallbackTopic}.`,
       keyPoints: [
-        "Legislatívny rámec a aktuálne zmeny",
+        "Právny rámec a aktuálne zmeny",
         "Praktické postupy a odporúčania",
-        "Prípadové štúdie a príklady z praxe",
+        "Prípadové štúdie a praktické príklady",
         "Finančné a právne aspekty témy"
       ],
-      uniquePerspective: `Pohľad z perspektívy efektivity a optimalizácie procesov v oblasti ${category.toLowerCase()}.`
+      uniquePerspective: `Pohľad z hľadiska efektivity a optimalizácie procesov v oblasti ${category.toLowerCase()}.`
     };
   }
 }
 
 // Function to generate a unique approach to a topic
-async function generateUniqueApproach(topic, category, retryCount = 0) {
+async function generateUniqueApproach(topic, category) {
   try {
-    // Add retry limit to prevent infinite recursion
-    if (retryCount > 3) {
-      console.log("Dosiahnutý maximálny počet pokusov pri generovaní prístupu, použijem záložné riešenie...");
-      return {
-        mainThesis: `Kľúčom k úspešnému riešeniu v oblasti ${category.toLowerCase()} je štruktúrovaný a systematický prístup zameraný na výsledky.`,
-        keyPoints: [
-          "Právny rámec a jeho praktické dopady",
-          "Efektívna komunikácia a vyjednávanie",
-          "Finančná perspektíva a plánovanie",
-          "Prevencia problémov a rizík"
-        ],
-        uniquePerspective: `Zameranie na vzťahový manažment ako kľúčový faktor úspechu pri riešení pohľadávok.`
-      };
-    }
-    
     console.log("Generujem unikátny prístup k téme...");
     
-    const prompt = `Pre tému "${topic}" v kategórii "${category}" navrhni prístup pre odborný článok.
+    const prompt = `Pre tému "${topic}" v kategórii "${category}" navrhni prepracovaný a jedinečný prístup pre odborný článok.
 
 Navrhni:
-1. Hlavnú tézu článku
-2. 3-4 kľúčové body, ktoré by mal článok pokryť
-3. Unikátnu perspektívu alebo prístup k téme
+1. Presvedčivú hlavnú tézu, ktorá ponúka jasný smer pre článok s dĺžkou 1500-2000 slov
+2. 5-6 kľúčových bodov, ktoré poskytnú hĺbku a komplexné pokrytie témy
+3. Skutočne unikátnu perspektívu, ktorá odlišuje článok od štandardných pojednávaní
+4. Špecifikáciu cieľovej skupiny a ako tento prístup bude práve pre ňu prínosný
 
-Zameraj sa na právne, finančné a obchodné aspekty.
-Vyhni sa zmienkam o technológiách a umelej inteligencii.
-Odpovedz vo formáte JSON s kľúčmi "mainThesis", "keyPoints" a "uniquePerspective".`;
+Zameraj sa na právne, finančné a obchodné aspekty, pričom zaisti, aby prístup kombinoval teoretické znalosti s praktickou aplikáciou.
+Odpovedz vo formáte JSON s kľúčmi "mainThesis", "keyPoints", "uniquePerspective" a "targetAudience".`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { 
           role: "system", 
-          content: "Si kreatívny obsahový stratég špecializujúci sa na finančné a právne témy." 
+          content: "Si kreatívny obsahový stratég špecializujúci sa na finančné a právne témy s odbornými znalosťami v tvorbe vysoko hodnotného obsahu pre obchodných profesionálov." 
         },
         { role: "user", content: prompt }
       ],
       temperature: 0.8,
-      max_tokens: 500,
+      max_tokens: 800,
       response_format: { type: "json_object" }
     });
     
     const approach = JSON.parse(completion.choices[0].message.content);
-    
-    // Simplified AI reference check
-    if (containsAIReference(JSON.stringify(approach))) {
-      console.log("Vygenerovaný prístup obsahuje zmienky o AI alebo technológiách, generujem nový prístup...");
-      return generateUniqueApproach(topic, category, retryCount + 1); // Pass retry count
-    }
     
     return approach;
   } catch (error) {
@@ -256,262 +165,37 @@ Odpovedz vo formáte JSON s kľúčmi "mainThesis", "keyPoints" a "uniquePerspec
         "Právny rámec a jeho praktické dopady",
         "Efektívna komunikácia a vyjednávanie",
         "Finančná perspektíva a plánovanie",
-        "Prevencia problémov a rizík"
+        "Prevencia problémov a rizík",
+        "Dlhodobá stratégia udržateľnosti vzťahov"
       ],
-      uniquePerspective: `Zameranie na vzťahový manažment ako kľúčový faktor úspechu pri riešení pohľadávok.`
+      uniquePerspective: `Zameranie na vzťahový manažment ako kľúčový faktor úspechu v riešení pohľadávok.`,
+      targetAudience: "Finanční manažéri a riaditelia malých a stredných podnikov"
     };
   }
 }
 
-// Function to get an image from Unsplash
-async function getUnsplashImage(category) {
+// Function to generate metadata for the article
+async function generateMetadata(topic, category, articleContent) {
   try {
-    console.log('Získavam obrázok z Unsplash...');
+    console.log('Generujem metadáta článku...');
     
-    // Professional business prompts without technological focus
-    const businessPrompts = [
-      "professional business meeting",
-      "corporate office",
-      "business people handshake",
-      "modern office",
-      "business professionals",
-      "corporate team meeting",
-      "financial documents",
-      "executive desk",
-      "business contract signing",
-      "professional corporate environment",
-      "business negotiation",
-      "legal documents",
-      "handshake agreement",
-      "business consultation",
-      "office meeting room"
-    ];
-    
-    // Randomly select one of the professional prompts
-    const randomPrompt = businessPrompts[Math.floor(Math.random() * businessPrompts.length)];
-    
-    // Add the category as a supplement to the main professional prompt
-    const searchQuery = `${randomPrompt} ${category}`;
-    
-    // Access Unsplash API via proxy (or direct if you have API key setup)
-    const response = await fetch(`https://source.unsplash.com/1600x900/?${encodeURIComponent(searchQuery)}`);
-    
-    if (!response.ok) {
-      throw new Error(`Chyba pri získavaní obrázku: ${response.statusText}`);
-    }
-    
-    // Get the final URL after redirects (this will be the actual image URL)
-    const imageUrl = response.url;
-    
-    // Get the image ID from the URL
-    const imageId = imageUrl.match(/photo-([^/]+)/)?.[1] || 'unknown';
-    
-    // Create directory for images if it doesn't exist
-    const imageDir = path.join(process.cwd(), 'public', 'images', 'unsplash');
-    if (!fs.existsSync(imageDir)) {
-      fs.mkdirSync(imageDir, { recursive: true });
-    }
-    
-    // Download the image
-    const imageResponse = await fetch(imageUrl);
-    if (!imageResponse.ok) {
-      throw new Error(`Chyba pri sťahovaní obrázku: ${imageResponse.statusText}`);
-    }
-    
-    // Convert the response to a buffer
-    const imageArrayBuffer = await imageResponse.arrayBuffer();
-    const imageBuffer = Buffer.from(imageArrayBuffer);
-    
-    // Save the image to the local file system
-    const localImageFilename = `unsplash-${imageId}-${Date.now()}.jpg`;
-    const localImagePath = path.join(imageDir, localImageFilename);
-    fs.writeFileSync(localImagePath, imageBuffer);
-    
-    console.log(`Obrázok úspešne stiahnutý a uložený ako: ${localImagePath}`);
-    
-    // Return the image URL and credit for use in the article
-    return {
-      url: `/images/unsplash/${localImageFilename}`,
-      credit: {
-        name: 'Unsplash',
-        link: 'https://unsplash.com'
-      }
-    };
-  } catch (error) {
-    console.error('Chyba pri získavaní obrázku z Unsplash:', error);
-    // Fallback to a default image
-    return {
-      url: '/images/default-business.jpg',
-      credit: {
-        name: 'Default Image',
-        link: 'https://expohledavky.cz'
-      }
-    };
-  }
-}
+    const prompt = `Pre článok na tému "${topic}" v kategórii "${category}" vytvor metadáta.
 
-// Function to generate article content
-async function generateArticleContent(topic, category, uniquePerspective, retryCount = 0) {
-  try {
-    // Add retry limit to prevent infinite recursion
-    if (retryCount > 3) {
-      console.log("Dosiahnutý maximálny počet pokusov pri generovaní obsahu, použijem záložné riešenie...");
-      // Return fallback content
-      return `
-## Úvod k téme ${topic}
+Vygeneruj:
+1. Chytľavý titulok: max 70 znakov
+2. Podtitulok: stručné zhrnutie hlavnej témy
+3. Popis: max 150 znakov sumarizujúcich o čom článok je
+4. Kľúčové slová: 4-7 relevantných tagov oddelených čiarkou
+5. Čas čítania: odhadovaný čas čítania v minútach
 
-V dnešnom podnikateľskom prostredí je téma "${topic}" stále dôležitejšia. Tento článok sa zameriava na kľúčové aspekty z perspektívy "${uniquePerspective}".
-
-## Legislatívny rámec
-
-Slovenské zákony v tejto oblasti definujú niekoľko dôležitých pravidiel, ktoré musia podniky dodržiavať.
-
-## Praktické postupy
-
-Pre efektívne riešenie tejto problematiky odporúčame nasledovať tieto kroky:
-
-1. Analyzujte súčasnú situáciu
-2. Konzultujte s odborníkom
-3. Implementujte preventívne opatrenia
-
-## Prípadové štúdie
-
-> "V našej spoločnosti sme zaviedli nový systém komunikácie s dlžníkmi, ktorý zlepšil úspešnosť vymáhania o 35%." - Skúsený podnikateľ
-
-## Záverečné zhrnutie
-
-Téma "${topic}" vyžaduje strategický prístup a znalosť aktuálnej legislatívy. Implementáciou odporúčaných postupov môžete výrazne zlepšiť svoje výsledky.
-`;
-    }
-    
-    console.log(`Generujem obsah článku pre tému: ${topic}...`);
-    
-    const prompt = `Vytvorte odborný článok na tému "${topic}" v kategórii "${category}".
-
-Hlavná téza: "${uniquePerspective.mainThesis}"
-
-Kľúčové body:
-${uniquePerspective.keyPoints.map(point => `- ${point}`).join('\n')}
-
-Jedinečná perspektíva: "${uniquePerspective.uniquePerspective}"
-
-DÔLEŽITÉ OBMEDZENIA:
-- ABSOLÚTNE SA VYHNITE akýmkoľvek zmienkam o technológiách, automatizácii, digitalizácii alebo umelej inteligencii
-- Zamerajte sa na tradičné obchodné prístupy, medziľudské vzťahy, právne aspekty a stratégiu
-- Zdôraznite praktické aspekty, ktoré nevyžadujú pokročilé technológie
-
-Píšte pre publikum zložené z podnikateľov, manažérov a odborníkov v oblasti financií.
-Zamerajte sa na slovenský právny a obchodný kontext.
-Poskytnite praktické príklady a konkrétne postupy.
-Článok by mal mať približne 800-1200 slov.
-
-Formátujte text v Markdown:
-- Používajte ## pre hlavné nadpisy
-- ### pre podnadpisy
-- Odrážky pre zoznamy
-- > pre citácie
-- **tučný text** pre dôležité pojmy
-- *kurzíva* pre zdôraznenie`;
+Vráť odpoveď vo formáte JSON s kľúčmi "title", "subtitle", "description", "tags", "readTime".`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { 
           role: "system", 
-          content: "Si odborník na pohľadávky, finančné riadenie a slovenské obchodné právo. Píšeš profesionálne, fakticky presné a prakticky zamerané články pre podnikateľov bez dôrazu na technológie. Vždy používaš kvalitné štruktúrovanie textu, nadpisy, odrážky a ďalšie prvky pre lepšiu čitateľnosť." 
-        },
-        { role: "user", content: prompt }
-      ],
-      temperature: 0.7,
-      max_tokens: 2500,
-    });
-    
-    const content = completion.choices[0].message.content.trim();
-    
-    // More permissive check for AI references
-    if (countAIReferences(content) > 3) { // Increased threshold to 3
-      console.log("Obsah článku obsahuje príliš veľa zmienok o AI alebo technológiách, generujem nový obsah...");
-      return generateArticleContent(topic, category, uniquePerspective, retryCount + 1);
-    }
-    
-    return content;
-  } catch (error) {
-    console.error("Chyba pri generovaní obsahu článku:", error);
-    // Fallback content without technology mentions
-    return `
-## Úvod k téme ${topic}
-
-V dnešnom podnikateľskom prostredí je téma "${topic}" stále dôležitejšia. Tento článok sa zameriava na kľúčové aspekty z perspektívy "${uniquePerspective}".
-
-## Legislatívny rámec
-
-Slovenské zákony v tejto oblasti definujú niekoľko dôležitých pravidiel, ktoré musia podniky dodržiavať.
-
-## Praktické postupy
-
-Pre efektívne riešenie tejto problematiky odporúčame nasledovať tieto kroky:
-
-1. Analyzujte súčasnú situáciu
-2. Konzultujte s odborníkom
-3. Implementujte preventívne opatrenia
-
-## Prípadové štúdie
-
-> "V našej spoločnosti sme zaviedli nový systém komunikácie s dlžníkmi, ktorý zlepšil úspešnosť vymáhania o 35%." - Skúsený podnikateľ
-
-## Záverečné zhrnutie
-
-Téma "${topic}" vyžaduje strategický prístup a znalosť aktuálnej legislatívy. Implementáciou odporúčaných postupov môžete výrazne zlepšiť svoje výsledky.
-`;
-  }
-}
-
-// Function to generate article metadata
-async function generateMetadata(topic, category, articleContent, retryCount = 0) {
-  try {
-    // Add retry limit to prevent infinite recursion
-    if (retryCount > 3) {
-      console.log("Dosiahnutý maximálny počet pokusov pri generovaní metadát, použijem záložné riešenie...");
-      
-      // Create estimated reading time
-      const wordCount = articleContent.split(/\s+/).length;
-      const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
-      
-      // Return fallback metadata
-      return {
-        title: topic,
-        subtitle: `Praktické informácie o ${topic} pre slovenských podnikateľov`,
-        description: `Odborný článok na tému ${topic} v kategórii ${category}. Praktické rady a tipy pre podnikateľov.`,
-        tags: `${category.toLowerCase()}, pohľadávky, správa pohľadávok, slovenské firmy, podnikanie, právne aspekty`,
-        readTime: `${readTimeMinutes} minút čítania`
-      };
-    }
-    
-    console.log("Generujem metadáta článku...");
-    
-    const prompt = `Na základe tohto článku na tému "${topic}" v kategórii "${category}" vygeneruj následujúce metadáta:
-
-1. Chytľavý titulok (max 60 znakov)
-2. Pútavý podtitulok (max 100 znakov)
-3. Krátky popis pre SEO (max 160 znakov)
-4. 5-7 relevantných tagov oddelených čiarkou
-5. Odhadovaný čas čítania vo formáte "X minút čítania"
-
-DÔLEŽITÉ OBMEDZENIA:
-- Vyhni sa AKÝMKOĽVEK zmienkam o AI, technológiách alebo automatizácii v titulku a podtitulku
-- Preferuj tagy zamerané na financie, právo, obchodné vzťahy a praktické aspekty
-
-Odpovedz vo formáte JSON s kľúčmi "title", "subtitle", "description", "tags" a "readTime".
-
-Obsah článku:
-${articleContent.substring(0, 1500)}...`;
-
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        { 
-          role: "system", 
-          content: "Si špecialista na SEO a tvorbu metadát pre odborné články. Tvojou úlohou je vytvárať chytľavé, ale profesionálne titulky a popisy bez dôrazu na technológie."
+          content: "Si odborník na SEO a tvorbu obsahu. Vytváraš presné a pútavé metadáta pre odborné články." 
         },
         { role: "user", content: prompt }
       ],
@@ -520,150 +204,134 @@ ${articleContent.substring(0, 1500)}...`;
       response_format: { type: "json_object" }
     });
     
-    const metadata = JSON.parse(completion.choices[0].message.content);
-    
-    // More permissive check for AI references
-    if (containsAIReference(metadata.title) && containsAIReference(metadata.subtitle)) {
-      console.log("Metadáta obsahujú zmienky o AI alebo technológiách, generujem nové metadáta...");
-      return generateMetadata(topic, category, articleContent, retryCount + 1);
-    }
-    
-    return metadata;
+    const metaData = JSON.parse(completion.choices[0].message.content);
+    return metaData;
   } catch (error) {
-    console.error("Chyba pri generovaní metadát:", error);
-    
-    // Create estimated reading time (assuming an average reading speed of 200 words per minute)
-    const wordCount = articleContent.split(/\s+/).length;
-    const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
-    
-    // Fallback metadata without technology mentions
+    console.error('Chyba pri generovaní metadát:', error);
+    // Default metadata if the API call fails
     return {
       title: topic,
-      subtitle: `Praktické informácie o ${topic} pre slovenských podnikateľov`,
-      description: `Odborný článok na tému ${topic} v kategórii ${category}. Praktické rady a tipy pre podnikateľov.`,
-      tags: `${category.toLowerCase()}, pohľadávky, správa pohľadávok, slovenské firmy, podnikanie, právne aspekty`,
-      readTime: `${readTimeMinutes} minút čítania`
+      subtitle: `Praktický sprievodca v oblasti ${category}`,
+      description: `Komplexný prehľad témy ${topic} s praktickými radami a postupmi pre slovenských podnikateľov`,
+      tags: `pohľadávky, ${category.toLowerCase()}, financie, právo, podnikanie`,
+      readTime: '8 min'
     };
   }
 }
 
-// Create a slug from a title
+// Function to create a slug from a title
 function createSlug(title) {
   return title
-    .toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 }
 
-// Main function to control the article generation process
+// Main function to generate Slovak content
 async function generateSlovakContent() {
   try {
-    // 1. Randomly select a category from the predefined list
-    console.log("Vyberám kategóriu...");
+    console.log('Spúšťam generovanie slovenského obsahu...');
+    
+    // 1. Select category
+    console.log('Vyberám kategóriu...');
     const category = getRandomElement(categories);
     console.log(`Vybraná kategória: ${category}`);
     
-    // 2. Generate a random topic within the selected category
-    console.log("Generujem tému pomocou OpenAI...");
+    // 2. Generate topic using OpenAI
+    console.log('Generujem tému pomocou OpenAI...');
     const topicResult = await generateRandomTopic(category);
     const topic = topicResult.topic;
-    console.log(`Vygenerovaná téma: ${topic}`);
     
-    // 3. Randomly select an author
-    console.log("Vyberám autora...");
+    // 3. Select author
+    console.log('Vyberám autora...');
     const author = getRandomElement(authors);
     console.log(`Vybraný autor: ${author.name}, ${author.position}`);
     
-    // 4. Generate article content
-    console.log("Generujem obsah článku pomocou OpenAI...");
-    const articleContent = await generateArticleContent(topic, category, topicResult.uniquePerspective);
+    // 4. Generate author profile image
+    const authorImagePath = await getAuthorProfileImage(author, 'sk');
     
-    // 5. Generate metadata (title, subtitle, description, tags, reading time)
-    console.log("Generujem metadáta článku...");
+    // 5. Generate article content using OpenAI
+    console.log('Generujem obsah článku pomocou OpenAI...');
+    const articleContent = await generateArticleContent(openai, topic, category, topicResult, 'sk');
+    
+    // 6. Generate metadata
+    console.log('Generujem metadáta článku...');
     const metaData = await generateMetadata(topic, category, articleContent);
     
-    // Create SEO-friendly slug from the title
-    const slug = createSlug(metaData.title);
-    
-    // 6. Get an image from Unsplash
+    // 7. Get image from Unsplash
     console.log("Získavam obrázok z Unsplash...");
-    const imageData = await getUnsplashImage(category);
+    const imageData = await getArticleImage(category, topic);
     
-    // 7. Create MDX file
-    console.log("Vytváram MDX súbor...");
+    // 8. Create MDX file
+    console.log('Vytváram MDX súbor...');
+    
+    // Create a slug for the article
+    const slug = createSlug(topic);
+    
+    // Format the date - next day from today
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    // Format frontmatter
     const frontMatter = {
-      title: metaData.title,
+      title: metaData.title || topic,
       subtitle: metaData.subtitle,
-      date: new Date().toISOString(),
+      date: tomorrow.toISOString(),
       description: metaData.description,
-      image: imageData.url,
+      image: imageData.path,
       category: category,
       tags: metaData.tags.split(',').map(tag => tag.trim()),
       author: author.name,
       authorPosition: author.position,
-      authorImage: author.image,
+      authorImage: authorImagePath,
       authorBio: author.bio,
       readTime: metaData.readTime,
-      imageCredit: imageData.credit,
+      imageCredit: imageData.photographer,
       generatedTopic: topic,
       uniqueApproach: topicResult.uniquePerspective
     };
     
-    const mdxContent = `---
-${Object.entries(frontMatter).map(([key, value]) => {
-  if (Array.isArray(value)) {
-    return `${key}:\n  ${value.map(item => `- "${item}"`).join('\n  ')}`;
-  } else if (typeof value === 'object') {
-    return `${key}:\n  ${Object.entries(value).map(([k, v]) => `${k}: '${v}'`).join('\n  ')}`;
-  } else {
-    return `${key}: "${String(value).replace(/"/g, '\\"')}"`;
-  }
-}).join('\n')}
----
-
-${articleContent}`;
+    // Serialize frontmatter to YAML
+    const mdxContent = matter.stringify(articleContent, frontMatter);
+    
+    // Create filename with date and slug
+    const date = tomorrow.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    const fileName = `${date}-${createSlug(topic)}.mdx`;
+    const filePath = path.join(process.cwd(), 'content', 'posts-sk', fileName);
     
     // Create directory if it doesn't exist
-    const contentDir = path.join(process.cwd(), 'content', 'posts-sk');
-    if (!fs.existsSync(contentDir)) {
-      fs.mkdirSync(contentDir, { recursive: true });
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
     
-    // Format the current date for the filename (YYYY-MM-DD)
-    const today = new Date();
-    const datePrefix = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    // Write the file
+    fs.writeFileSync(filePath, mdxContent);
+    console.log(`MDX súbor vytvorený: ${filePath}`);
     
-    // Save MDX file
-    const mdxFilePath = path.join(contentDir, `${datePrefix}-${slug}.mdx`);
-    fs.writeFileSync(mdxFilePath, mdxContent);
-    console.log(`MDX súbor vytvorený: ${mdxFilePath}`);
-    
-    console.log("----------------------------------------");
-    console.log("🎉 Generovanie článku úspešne dokončené!");
-    console.log("----------------------------------------");
-    console.log(`Titulok: ${metaData.title}`);
+    console.log('----------------------------------------');
+    console.log('🎉 Generovanie článku úspešne dokončené!');
+    console.log('----------------------------------------');
+    console.log(`Titulok: ${metaData.title || topic}`);
     console.log(`Slug: ${slug}`);
     console.log(`Kategória: ${category}`);
-    console.log("----------------------------------------");
     
+    // Return basic article info for potential further use
     return {
-      success: true,
-      title: metaData.title,
+      title: metaData.title || topic,
       slug: slug,
-      imagePath: imageData.url,
+      imagePath: imageData.path,
       topic: topic,
       category: category
     };
   } catch (error) {
-    console.error("Chyba pri generovaní článku:", error);
-    return {
-      success: false,
-      error: error.message
-    };
+    console.error('Chyba pri generovaní slovenského obsahu:', error);
+    throw error;
   }
 }
 
-// Run the script
-generateSlovakContent().catch(console.error);
+// Run the function
+generateSlovakContent()
+  .then(() => console.log('Proces generovania slovenského obsahu dokončený'))
+  .catch(error => console.error('Chyba v hlavnom procese:', error)); 

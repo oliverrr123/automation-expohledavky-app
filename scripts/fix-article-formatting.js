@@ -5,199 +5,207 @@ const matter = require('gray-matter');
 // Language directories to process
 const languageDirs = ['posts-cs', 'posts-sk', 'posts-de', 'posts-en'];
 
-// Get all articles from all language directories
-const getAllArticles = () => {
-  const articles = [];
+// Get all articles from a directory
+const getArticles = (dirPath) => {
+  if (!fs.existsSync(dirPath)) {
+    console.log(`Directory ${dirPath} does not exist. Skipping.`);
+    return [];
+  }
   
-  languageDirs.forEach(langDir => {
-    const dirPath = path.join(process.cwd(), 'content', langDir);
-    
-    // Skip if directory doesn't exist
-    if (!fs.existsSync(dirPath)) {
-      console.log(`Directory ${dirPath} does not exist. Skipping.`);
+  const files = fs.readdirSync(dirPath).filter(file => file.endsWith('.mdx'));
+  return files.map(file => ({
+    filename: file,
+    path: path.join(dirPath, file)
+  }));
+};
+
+// Function to improve formatting with better headings, bold text, etc.
+const improveFormatting = (content, language) => {
+  // Check if the content already has good formatting (multiple headers and emphasis)
+  const headingCount = (content.match(/^#+\s/gm) || []).length;
+  const emphasisCount = (content.match(/\*\*([^*]+)\*\*/g) || []).length;
+  
+  // If content already has good formatting, return it unchanged
+  if (headingCount >= 3 && emphasisCount >= 5) {
+    return { content, improved: false };
+  }
+  
+  // Common keywords to emphasize based on language
+  const keywords = {
+    'cs': ['důležité', 'klíčové', 'efektivní', 'strategické', 'výhody', 'nevýhody', 'řešení', 'analýza', 'pohledávky', 'vymáhání', 'právní', 'finance'],
+    'sk': ['dôležité', 'kľúčové', 'efektívne', 'strategické', 'výhody', 'nevýhody', 'riešenie', 'analýza', 'pohľadávky', 'vymáhanie', 'právne', 'financie'],
+    'de': ['wichtig', 'Schlüssel', 'effektiv', 'strategisch', 'Vorteile', 'Nachteile', 'Lösung', 'Analyse', 'Forderungen', 'Eintreibung', 'rechtlich', 'Finanzen'],
+    'en': ['important', 'key', 'effective', 'strategic', 'advantages', 'disadvantages', 'solution', 'analysis', 'receivables', 'collection', 'legal', 'finance']
+  };
+  
+  // If language is not supported, default to English
+  const langKeywords = keywords[language] || keywords['en'];
+  
+  // Identify paragraphs
+  const paragraphs = content.split(/\n\n+/);
+  let enhancedContent = '';
+  let headingAdded = 0;
+  
+  // Process each paragraph
+  paragraphs.forEach((paragraph, index) => {
+    // Skip existing headings
+    if (paragraph.match(/^#+\s/)) {
+      enhancedContent += paragraph + '\n\n';
       return;
     }
     
-    // Get all MDX files
-    const files = fs.readdirSync(dirPath).filter(file => file.endsWith('.mdx'));
+    // Skip short paragraphs (likely not full paragraphs)
+    if (paragraph.trim().length < 40) {
+      enhancedContent += paragraph + '\n\n';
+      return;
+    }
     
-    files.forEach(file => {
-      const filePath = path.join(dirPath, file);
-      const fileContent = fs.readFileSync(filePath, 'utf8');
+    // Add headings strategically (to longer paragraphs that might be introducing sections)
+    if (headingAdded < 4 && paragraph.length > 150 && !paragraph.startsWith('#') && index > 0) {
+      // Extract the first sentence as a potential heading
+      const firstSentence = paragraph.split(/[.!?][\s\n]/)[0];
       
-      articles.push({
-        path: filePath,
-        language: langDir,
-        content: fileContent,
-        slug: file
+      if (firstSentence && firstSentence.length > 20 && firstSentence.length < 100) {
+        // Add heading before paragraph
+        enhancedContent += `## ${firstSentence.trim()}\n\n`;
+        headingAdded++;
+        
+        // Remove the first sentence from paragraph if it was used as heading
+        paragraph = paragraph.substring(firstSentence.length + 1).trim();
+      } else if (index % 3 === 0) {
+        // Create a generic heading if appropriate
+        const headings = {
+          'cs': ['Podrobná analýza', 'Praktické řešení', 'Strategický přístup', 'Klíčové faktory', 'Právní aspekty'],
+          'sk': ['Podrobná analýza', 'Praktické riešenie', 'Strategický prístup', 'Kľúčové faktory', 'Právne aspekty'],
+          'de': ['Detaillierte Analyse', 'Praktische Lösung', 'Strategischer Ansatz', 'Schlüsselfaktoren', 'Rechtliche Aspekte'],
+          'en': ['Detailed Analysis', 'Practical Solution', 'Strategic Approach', 'Key Factors', 'Legal Aspects']
+        };
+        
+        const langHeadings = headings[language] || headings['en'];
+        const headingText = langHeadings[headingAdded % langHeadings.length];
+        enhancedContent += `## ${headingText}\n\n`;
+        headingAdded++;
+      }
+    }
+    
+    // Add emphasis to important words and phrases
+    let enhancedParagraph = paragraph;
+    
+    // Emphasize keywords
+    langKeywords.forEach(keyword => {
+      // Don't add emphasis if already emphasized
+      const regex = new RegExp(`(?<!\\*)\\b${keyword}\\b(?!\\*)`, 'gi');
+      enhancedParagraph = enhancedParagraph.replace(regex, (match) => {
+        // Only add emphasis to a limited number per paragraph, and randomly (70% chance)
+        if (Math.random() < 0.7) {
+          return `**${match}**`;
+        }
+        return match;
       });
+    });
+    
+    enhancedContent += enhancedParagraph + '\n\n';
+  });
+  
+  // Add a conclusion heading if there isn't one already
+  if (!enhancedContent.match(/závěr|závěrem|souhrn|shrnutí|závery|zhrnutie|zusammenfassung|fazit|conclusion|summary/i)) {
+    const conclusionHeadings = {
+      'cs': 'Závěr',
+      'sk': 'Záver',
+      'de': 'Fazit',
+      'en': 'Conclusion'
+    };
+    
+    enhancedContent += `## ${conclusionHeadings[language] || 'Conclusion'}\n\n`;
+  }
+  
+  return { content: enhancedContent.trim(), improved: true };
+};
+
+// Process all articles
+const fixArticleFormatting = () => {
+  let improvedCount = 0;
+  let totalCount = 0;
+  
+  languageDirs.forEach(langDir => {
+    // Extract language code (e.g., 'cs' from 'posts-cs')
+    const language = langDir.replace('posts-', '') || 'en';
+    
+    const dirPath = path.join(process.cwd(), 'content', langDir);
+    const articles = getArticles(dirPath);
+    
+    console.log(`Processing ${articles.length} articles in ${langDir}...`);
+    totalCount += articles.length;
+    
+    articles.forEach(article => {
+      try {
+        const fileContent = fs.readFileSync(article.path, 'utf8');
+        let { data, content } = matter(fileContent);
+        
+        // Fix any emphasis in frontmatter fields (which can cause YAML parsing errors)
+        if (data.title && data.title.includes('**')) {
+          data.title = data.title.replace(/\*\*/g, '');
+          console.log(`Fixed emphasis in title for ${article.filename}`);
+        }
+        
+        if (data.description && data.description.includes('**')) {
+          data.description = data.description.replace(/\*\*/g, '');
+          console.log(`Fixed emphasis in description for ${article.filename}`);
+        }
+        
+        // Improve formatting
+        const { content: enhancedContent, improved } = improveFormatting(content, language);
+        
+        if (improved) {
+          // Write updated content back to file with fixed frontmatter
+          const updatedContent = matter.stringify(enhancedContent, data);
+          fs.writeFileSync(article.path, updatedContent);
+          
+          console.log(`Improved formatting for ${article.filename}`);
+          improvedCount++;
+        } else {
+          console.log(`Skipping ${article.filename} - already has good formatting`);
+          
+          // Even if we don't improve the content, still write back the fixed frontmatter
+          if (data.title.includes('**') || (data.description && data.description.includes('**'))) {
+            const updatedContent = matter.stringify(content, data);
+            fs.writeFileSync(article.path, updatedContent);
+            console.log(`Updated frontmatter for ${article.filename} (fixed emphasis)`);
+          }
+        }
+      } catch (error) {
+        console.error(`Error processing ${article.filename}:`, error.message);
+        
+        // Try to fix the file by directly handling the file as text
+        try {
+          const fileContent = fs.readFileSync(article.path, 'utf8');
+          
+          // Find and replace any ** in the frontmatter section
+          const frontmatterEndIndex = fileContent.indexOf('---', 4) + 3;
+          const frontmatter = fileContent.substring(0, frontmatterEndIndex);
+          const content = fileContent.substring(frontmatterEndIndex);
+          
+          // Remove any ** from the frontmatter
+          const fixedFrontmatter = frontmatter.replace(/\*\*/g, '');
+          
+          // Combine and write back
+          fs.writeFileSync(article.path, fixedFrontmatter + content);
+          console.log(`Fixed YAML error in ${article.filename} by manually removing emphasis from frontmatter`);
+        } catch (fixError) {
+          console.error(`Failed to fix ${article.filename}:`, fixError.message);
+        }
+      }
     });
   });
   
-  return articles;
-};
-
-// Improve formatting of articles
-const improveFormatting = (articles) => {
-  console.log(`Improving formatting for ${articles.length} articles...`);
-  
-  let improved = 0;
-  
-  articles.forEach(article => {
-    const { data, content } = matter(article.content);
-    
-    // Skip articles that already have good formatting
-    const hasGoodFormatting = 
-      content.includes('**') && // Has bold text
-      (content.match(/^#{2,3}\s/gm)?.length > 2); // Has at least 3 headings
-    
-    if (hasGoodFormatting) {
-      console.log(`Article ${article.slug} already has good formatting. Skipping.`);
-      return;
-    }
-    
-    // Extract language from directory name
-    const lang = article.language.replace('posts-', '');
-    
-    // Improve content formatting based on language
-    let improvedContent = improveContentFormatting(content, lang);
-    
-    // Create updated content with frontmatter
-    const updatedContent = matter.stringify(improvedContent, data);
-    
-    // Write updated content back to file
-    fs.writeFileSync(article.path, updatedContent);
-    
-    console.log(`Improved formatting for ${article.slug}`);
-    improved++;
-  });
-  
-  console.log(`\nImproved formatting for ${improved} out of ${articles.length} articles.`);
-};
-
-// Function to improve content formatting based on language
-const improveContentFormatting = (content, lang) => {
-  // Split content into paragraphs
-  const paragraphs = content.split(/\n\n+/);
-  
-  // Check if content already has structure of intro + headings
-  const hasHeadings = paragraphs.some(p => p.startsWith('##'));
-  
-  if (hasHeadings) {
-    // If it already has headings, just enhance formatting
-    return enhanceExistingContent(content, lang);
-  } else {
-    // If it doesn't have proper structure, create one
-    return createStructuredContent(paragraphs, lang);
-  }
-};
-
-// Enhance existing content with better formatting
-const enhanceExistingContent = (content, lang) => {
-  // Replace boring paragraph starts with bold text
-  content = content.replace(
-    /^([A-Z][^.!?]{10,60}(?:\.|\?|!))/gm, 
-    '**$1**'
-  );
-  
-  // Add more emphasis to key terms based on language
-  const keyTerms = getKeyTermsByLanguage(lang);
-  
-  keyTerms.forEach(term => {
-    const regex = new RegExp(`\\b${term}\\b`, 'gi');
-    content = content.replace(regex, `**${term}**`);
-  });
-  
-  // Add horizontal rules before major sections for better separation
-  content = content.replace(/^##\s(.+)$/gm, '\n\n---\n\n## $1');
-  
-  return content;
-};
-
-// Create structured content from paragraphs
-const createStructuredContent = (paragraphs, lang) => {
-  // Determine language-specific section headings
-  const sections = getSectionsByLanguage(lang);
-  
-  // Build the new content
-  let structuredContent = '';
-  
-  // First paragraph is typically the introduction
-  if (paragraphs.length > 0) {
-    structuredContent += `**${paragraphs[0]}**\n\n`;
-  }
-  
-  // Create main sections
-  let remainingParagraphs = paragraphs.slice(1);
-  let paraIndex = 0;
-  
-  sections.forEach((section, i) => {
-    structuredContent += `## ${section}\n\n`;
-    
-    // Number of paragraphs per section (distribute evenly)
-    const parasPerSection = Math.ceil(remainingParagraphs.length / (sections.length - i));
-    
-    // Add paragraphs to this section
-    for (let j = 0; j < parasPerSection && paraIndex < remainingParagraphs.length; j++) {
-      // Add some emphasis to the first sentence of each paragraph
-      const paragraph = remainingParagraphs[paraIndex];
-      const enhancedParagraph = enhanceParagraph(paragraph, lang);
-      
-      structuredContent += enhancedParagraph + "\n\n";
-      paraIndex++;
-    }
-    
-    // If this is not the last section, ensure we have enough paragraphs left
-    remainingParagraphs = paragraphs.slice(1 + paraIndex);
-  });
-  
-  return structuredContent;
-};
-
-// Function to enhance a paragraph with formatting
-const enhanceParagraph = (paragraph, lang) => {
-  // Bold the first sentence
-  const sentenceMatch = paragraph.match(/^([^.!?]+[.!?])\s*/);
-  
-  if (sentenceMatch) {
-    return `**${sentenceMatch[1]}** ${paragraph.substring(sentenceMatch[0].length)}`;
-  }
-  
-  return paragraph;
-};
-
-// Function to get section headings based on language
-const getSectionsByLanguage = (lang) => {
-  switch (lang) {
-    case 'cs':
-      return ['Úvod', 'Hlavní teze', 'Klíčové faktory', 'Praktická implementace', 'Příklady z praxe', 'Doporučené postupy', 'Závěr'];
-    case 'sk':
-      return ['Úvod', 'Hlavná téza', 'Kľúčové faktory', 'Praktická implementácia', 'Príklady z praxe', 'Odporúčané postupy', 'Záver'];
-    case 'de':
-      return ['Einleitung', 'Hauptthese', 'Schlüsselfaktoren', 'Praktische Umsetzung', 'Praxisbeispiele', 'Empfehlungen', 'Fazit'];
-    case 'en':
-    default:
-      return ['Introduction', 'Main Thesis', 'Key Factors', 'Practical Implementation', 'Case Studies', 'Recommendations', 'Conclusion'];
-  }
-};
-
-// Function to get key terms by language
-const getKeyTermsByLanguage = (lang) => {
-  switch (lang) {
-    case 'cs':
-      return ['pohledávka', 'pohledávek', 'vymáhání', 'dlužník', 'věřitel', 'insolvence', 'mediace', 'inkaso', 'právo', 'zákon'];
-    case 'sk':
-      return ['pohľadávka', 'pohľadávok', 'vymáhanie', 'dlžník', 'veriteľ', 'insolvencia', 'mediácia', 'inkaso', 'právo', 'zákon'];
-    case 'de':
-      return ['Forderung', 'Forderungen', 'Inkasso', 'Schuldner', 'Gläubiger', 'Insolvenz', 'Mediation', 'Recht', 'Gesetz'];
-    case 'en':
-    default:
-      return ['receivable', 'receivables', 'collection', 'debtor', 'creditor', 'insolvency', 'mediation', 'law', 'legal'];
-  }
+  console.log(`\nImproved formatting for ${improvedCount} out of ${totalCount} articles.`);
+  return { improvedCount, totalCount };
 };
 
 // Main execution
-const articles = getAllArticles();
-improveFormatting(articles);
-
-console.log('Done improving article formatting.'); 
+try {
+  const result = fixArticleFormatting();
+  console.log('Done fixing article formatting.');
+} catch (error) {
+  console.error('Error fixing article formatting:', error);
+} 

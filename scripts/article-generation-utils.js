@@ -3,6 +3,8 @@ const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
 const crypto = require('crypto');
+const axios = require('axios');
+const { createCanvas } = require('canvas');
 
 // Function to check if text contains AI-related terms
 function containsAIReference(text) {
@@ -193,102 +195,22 @@ Schreiben Sie einen vollständigen, publikationsreifen Artikel, der Fachwissen d
 }
 
 // Function to get article image from Unsplash
-async function getArticleImage(category, topic) {
+const getArticleImage = async (topic, language = 'en') => {
   try {
-    console.log(`Getting image for category: ${category}, topic: ${topic}`);
-    
-    const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY;
-    const searchQuery = `${category} ${topic}`.substring(0, 100); // Limit query length
-    const cleanedQuery = searchQuery.replace(/[^\w\s]/g, ''); // Remove special characters
-    
-    // Format filename based on category and topic
-    const hash = crypto.createHash('md5').update(`${category}-${topic}`).digest('hex').substring(0, 10);
-    const fileName = `${category.toLowerCase().replace(/\s+/g, '-')}-${hash}.jpg`;
-    const imagePath = path.join('public', 'images', 'unsplash', fileName);
-    const publicPath = `/images/unsplash/${fileName}`;
-    
-    // Create directory if it doesn't exist
-    const dir = path.dirname(path.join(process.cwd(), imagePath));
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    
-    // If file already exists, return the path
-    if (fs.existsSync(path.join(process.cwd(), imagePath))) {
-      console.log(`Image already exists: ${publicPath}`);
-      return { 
-        path: publicPath,
-        photographer: "Unsplash Photographer" 
-      };
-    }
-    
-    // Try Unsplash API if we have an access key
-    if (unsplashAccessKey) {
-      try {
-        console.log(`Using Unsplash API to search for: ${cleanedQuery}`);
-        const response = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(cleanedQuery)}&per_page=1`, {
-          headers: {
-            'Authorization': `Client-ID ${unsplashAccessKey}`
-          }
-        });
-        
-        const data = await response.json();
-        
-        if (data.results && data.results.length > 0) {
-          const imageResult = data.results[0];
-          const imageUrl = imageResult.urls.regular;
-          const photographer = imageResult.user.name || "Unsplash Photographer";
-          
-          // Download the image
-          console.log(`Downloading image from: ${imageUrl}`);
-          const imageResponse = await fetch(imageUrl);
-          const buffer = await imageResponse.buffer();
-          
-          fs.writeFileSync(path.join(process.cwd(), imagePath), buffer);
-          console.log(`Image saved to: ${imagePath}`);
-          
-          return {
-            path: publicPath,
-            photographer: `${photographer} on Unsplash`
-          };
-        }
-      } catch (error) {
-        console.error("Error using Unsplash API:", error);
-        // Fall through to the fallback method
-      }
-    }
-    
-    // Fallback to source.unsplash.com direct URL
-    console.log("Using fallback method for Unsplash image");
-    const fallbackUrl = `https://source.unsplash.com/featured/?${encodeURIComponent(cleanedQuery)}`;
-    
-    try {
-      const imageResponse = await fetch(fallbackUrl);
-      const buffer = await imageResponse.buffer();
-      
-      fs.writeFileSync(path.join(process.cwd(), imagePath), buffer);
-      console.log(`Image saved to: ${imagePath}`);
-      
-      return {
-        path: publicPath,
-        photographer: "Unsplash Photographer"
-      };
-    } catch (error) {
-      console.error("Error downloading fallback image:", error);
-      // Return a default image path if all else fails
-      return {
-        path: "/images/default-article.jpg",
-        photographer: "Default Image"
-      };
-    }
-  } catch (error) {
-    console.error("Error in getArticleImage:", error);
+    // Use our custom Unsplash image function with business keywords
+    const imageUrl = await getRandomUnsplashImage(language);
     return {
-      path: "/images/default-article.jpg",
-      photographer: "Default Image"
+      path: imageUrl,
+      photographer: "Unsplash Photographer"
+    };
+  } catch (error) {
+    console.error('Error getting article image:', error);
+    return {
+      path: 'https://source.unsplash.com/1600x900/?business',
+      photographer: "Unsplash Photographer"
     };
   }
-}
+};
 
 // Function to get author profile image
 async function getAuthorProfileImage(author, language) {
@@ -353,9 +275,98 @@ async function getAuthorProfileImage(author, language) {
   }
 }
 
+// Function to get a random Unsplash image based on business keywords
+const getRandomUnsplashImage = async (language = 'en') => {
+  // Business keywords for more relevant images
+  const businessKeywords = [
+    'business', 'skyscrapers', 'meeting', 'notebook', 'consulting', 
+    'receivables', 'activity', 'corporate', 'office', 'professional',
+    'finance', 'document', 'contract', 'handshake', 'success',
+    'strategy', 'analysis', 'growth', 'teamwork', 'leadership',
+    'technology', 'innovation', 'suit', 'briefcase', 'conference'
+  ];
+
+  // Get a random keyword
+  const randomKeyword = businessKeywords[Math.floor(Math.random() * businessKeywords.length)];
+  
+  // Use a combination of business and language-specific terms for more variety
+  let searchTerm = randomKeyword;
+  
+  // Add language-specific terms to make images more culturally relevant
+  if (language === 'cs') {
+    searchTerm += ' business prague';
+  } else if (language === 'sk') {
+    searchTerm += ' business bratislava';
+  } else if (language === 'de') {
+    searchTerm += ' business berlin';
+  } else {
+    searchTerm += ' business london';
+  }
+  
+  try {
+    const response = await axios.get(`https://source.unsplash.com/1600x900/?${encodeURIComponent(searchTerm)}`);
+    return response.request.res.responseUrl;
+  } catch (error) {
+    console.error('Error getting Unsplash image:', error);
+    return 'https://source.unsplash.com/1600x900/?business';
+  }
+};
+
+// Function to create author placeholder image with initials
+const createAuthorPlaceholderImage = async (author, language = 'en') => {
+  // Get initials from author name
+  const initials = author
+    .split(' ')
+    .map(name => name.charAt(0))
+    .join('')
+    .toUpperCase()
+    .substring(0, 2);
+
+  // Create canvas for image (circular avatar)
+  const size = 400;
+  const canvas = createCanvas(size, size);
+  const ctx = canvas.getContext('2d');
+
+  // Background color based on language
+  let bgColor = '#e6e6e6'; // Default gray
+  switch(language) {
+    case 'cs':
+      bgColor = '#f0f0f0'; // Light gray for Czech
+      break;
+    case 'sk': 
+      bgColor = '#e6e6e6'; // Gray for Slovak
+      break;
+    case 'de':
+      bgColor = '#d9d9d9'; // Darker gray for German
+      break;
+    case 'en':
+      bgColor = '#e6e6e6'; // Gray for English
+      break;
+  }
+
+  // Draw circle
+  ctx.beginPath();
+  ctx.arc(size/2, size/2, size/2, 0, Math.PI * 2, true);
+  ctx.fillStyle = bgColor;
+  ctx.fill();
+
+  // Add text
+  ctx.font = `${size/2}px Arial`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#333333';
+  ctx.fillText(initials, size/2, size/2);
+
+  // Convert to buffer
+  const buffer = canvas.toBuffer('image/png');
+  return buffer;
+};
+
 module.exports = {
   containsAIReference,
   generateArticleContent,
   getArticleImage,
-  getAuthorProfileImage
+  getAuthorProfileImage,
+  getRandomUnsplashImage,
+  createAuthorPlaceholderImage
 }; 

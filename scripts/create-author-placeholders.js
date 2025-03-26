@@ -1,128 +1,83 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
-const { createCanvas } = require('canvas');
+const { createAuthorPlaceholderImage } = require('./article-generation-utils');
 
-// Language directories to process
-const languageDirs = ['posts-cs', 'posts-sk', 'posts-de', 'posts-en'];
-
-// Generate placeholder image for an author
-const generateAuthorPlaceholder = (author, lang) => {
-  // Get initials from author name (first letter of first and last name)
-  const initials = author
-    .split(' ')
-    .map(part => part.charAt(0))
-    .join('')
-    .toUpperCase()
-    .substring(0, 2); // Limit to 2 characters
-  
-  // Create a canvas for the image (200x200 pixels)
-  const canvas = createCanvas(200, 200);
-  const ctx = canvas.getContext('2d');
-  
-  // Set background color (light gray)
-  ctx.fillStyle = '#E0E0E0';
-  ctx.fillRect(0, 0, 200, 200);
-  
-  // Set text properties
-  ctx.fillStyle = '#505050';
-  ctx.font = 'bold 80px Arial';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  
-  // Add initials to the center of the image
-  ctx.fillText(initials, 100, 100);
-  
-  // Ensure directory exists
-  const dirPath = path.join(process.cwd(), 'public', 'images', 'authors', lang);
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
-  
-  // Convert author name to slug for the filename
-  const authorSlug = author
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-    .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
-    .replace(/-+/g, '-'); // Remove consecutive hyphens
-  
-  // Save the image
-  const outputPath = path.join(dirPath, `${authorSlug}.jpg`);
-  const buffer = canvas.toBuffer('image/jpeg');
-  fs.writeFileSync(outputPath, buffer);
-  
-  // Return public path to the image
-  return `/images/authors/${lang}/${authorSlug}.jpg`;
-};
-
-// Process all articles to create author placeholders
-const processArticles = () => {
+// Create placeholders for all languages
+async function createAuthorPlaceholders() {
+  const languages = ['cs', 'sk', 'de', 'en'];
   let updatedCount = 0;
+  let skippedCount = 0;
   
-  languageDirs.forEach(langDir => {
-    const dirPath = path.join(process.cwd(), 'content', langDir);
+  for (const language of languages) {
+    const dirPath = path.join(process.cwd(), 'content', language === 'en' ? 'posts' : `posts-${language}`);
+    const publicImagesPath = path.join(process.cwd(), 'public', 'images', 'authors');
     
-    // Skip if directory doesn't exist
-    if (!fs.existsSync(dirPath)) {
-      console.log(`Directory ${dirPath} does not exist. Skipping.`);
-      return;
+    // Create directory if it doesn't exist
+    if (!fs.existsSync(publicImagesPath)) {
+      fs.mkdirSync(publicImagesPath, { recursive: true });
     }
     
-    console.log(`Processing articles in ${langDir}...`);
-    
     // Get all MDX files
+    if (!fs.existsSync(dirPath)) {
+      console.log(`Directory not found: ${dirPath}`);
+      continue;
+    }
+    
     const files = fs.readdirSync(dirPath).filter(file => file.endsWith('.mdx'));
+    console.log(`Processing ${files.length} articles in ${language} language...`);
     
-    // Extract language code (e.g., 'cs' from 'posts-cs')
-    const lang = langDir.replace('posts-', '');
-    
-    files.forEach(file => {
+    for (const file of files) {
       const filePath = path.join(dirPath, file);
       const fileContent = fs.readFileSync(filePath, 'utf8');
-      
-      // Parse frontmatter
       const { data, content } = matter(fileContent);
       
-      // Skip if no author or author image already exists
       if (!data.author) {
-        console.log(`No author found for ${file}. Skipping.`);
-        return;
+        console.log(`Skipping ${file} - no author field`);
+        continue;
       }
       
-      // Check if author image exists
-      if (data.authorImage) {
-        const imagePath = path.join(process.cwd(), 'public', data.authorImage.replace(/^\//, ''));
+      // Generate filename from author
+      const authorSlug = data.author
+        .toLowerCase()
+        .replace(/[^\w\s]/g, '')
+        .replace(/\s+/g, '-');
+      
+      const authorImagePath = path.join(publicImagesPath, `${authorSlug}.png`);
+      const publicPath = `/images/authors/${authorSlug}.png`;
+      
+      // Check if author image already exists
+      if (fs.existsSync(authorImagePath)) {
+        console.log(`Author image already exists for ${data.author}`);
+        skippedCount++;
+        continue;
+      }
+      
+      // Create placeholder image
+      try {
+        console.log(`Creating placeholder for ${data.author} (${language})`);
+        const imageBuffer = await createAuthorPlaceholderImage(data.author, language);
+        fs.writeFileSync(authorImagePath, imageBuffer);
         
-        if (fs.existsSync(imagePath)) {
-          console.log(`Author image already exists for ${data.author} in ${file}. Skipping.`);
-          return;
-        }
+        // Update the article with the new author image
+        data.authorImage = publicPath;
+        const updatedContent = matter.stringify(content, data);
+        fs.writeFileSync(filePath, updatedContent);
+        
+        updatedCount++;
+      } catch (error) {
+        console.error(`Error creating placeholder for ${data.author}:`, error);
       }
-      
-      // Generate placeholder image
-      const authorImagePath = generateAuthorPlaceholder(data.author, lang);
-      
-      // Update frontmatter
-      data.authorImage = authorImagePath;
-      
-      // Write updated content back to file
-      const updatedContent = matter.stringify(content, data);
-      fs.writeFileSync(filePath, updatedContent);
-      
-      console.log(`Updated author image for ${data.author} in ${file}.`);
-      updatedCount++;
-    });
-  });
+    }
+  }
   
-  console.log(`\nUpdated author images for ${updatedCount} articles.`);
-};
+  console.log(`Updated ${updatedCount} articles with author placeholders`);
+  console.log(`Skipped ${skippedCount} articles (already had images)`);
+  
+  return { updatedCount, skippedCount };
+}
 
-// Main execution
-try {
-  processArticles();
-  console.log('Done creating author placeholder images.');
-} catch (error) {
-  console.error('Error creating author placeholder images:', error);
-} 
+// Execute the function
+createAuthorPlaceholders()
+  .then(result => console.log('Completed successfully:', result))
+  .catch(err => console.error('Error:', err)); 

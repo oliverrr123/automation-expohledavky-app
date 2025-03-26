@@ -24,7 +24,7 @@ export interface PostData {
 
 // Get the posts directory based on locale
 function getPostsDirectory(locale: string = 'cs'): string {
-  let postsSubDir = 'posts'; // Default is Czech
+  let postsSubDir = 'posts-cs'; // Default is Czech
   
   // Map locale to the correct subdirectory
   if (locale === 'sk') {

@@ -61,9 +61,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     .filter(relatedPost => 
       relatedPost.slug !== params.slug && (
         relatedPost.frontMatter.category === post.frontMatter.category ||
-        (post.frontMatter.tags && relatedPost.frontMatter.tags && 
+        (post.frontMatter.tags && Array.isArray(post.frontMatter.tags) && 
+         relatedPost.frontMatter.tags && Array.isArray(relatedPost.frontMatter.tags) && 
           post.frontMatter.tags.some(tag => 
-            relatedPost.frontMatter.tags && relatedPost.frontMatter.tags.includes(tag)
+            relatedPost.frontMatter.tags?.includes(tag)
           ))
       )
     )

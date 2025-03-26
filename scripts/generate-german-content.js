@@ -386,36 +386,32 @@ Das Thema "${topic}" erfordert einen strategischen Ansatz und Kenntnis der aktue
     
     console.log(`Generiere Artikelinhalt für Thema: ${topic}...`);
     
-    const prompt = `Erstellen Sie einen professionellen und informativen Artikel zum Thema "${topic}" in der Kategorie "${category}". 
-    
-Der Artikel sollte diesen einzigartigen Blickwinkel haben: "${uniquePerspective}"
+    const prompt = `Erstellen Sie einen professionellen Artikel zum Thema "${topic}" in der Kategorie "${category}".
 
-Befolgen Sie diese Spezifikationen:
-1. Schreiben Sie den Artikel auf Deutsch, in einer professionellen, aber zugänglichen Sprache für Geschäftsinhaber und Unternehmer
-2. Konzentrieren Sie sich auf praktische Informationen, die für den deutschen Geschäftskontext relevant sind
-3. Verwenden Sie Markdown für die Formatierung
-4. Verwenden Sie keine H1-Überschrift (diese wird automatisch aus dem Titel generiert)
-5. Verwenden Sie H2-Überschriften (##) für Hauptabschnitte und H3 (###) für Unterabschnitte
-6. Formatieren Sie wichtige Begriffe fett (**Begriff**) und Schlüsselphrasen kursiv (*Phrase*)
-7. Teilen Sie den Text in kurze Absätze auf (3-4 Sätze)
-8. Verwenden Sie Aufzählungspunkte für Listen und nummerierte Listen für Prozesse
-9. Fügen Sie 1-2 praktische Beispiele oder Zitate ein, formatiert als Blockzitat (> Zitat)
-10. Die Artikellänge sollte 800-1200 Wörter betragen
-11. Fügen Sie am Ende eine Zusammenfassung der Schlüsselpunkte ein
+Hauptthese: "${uniquePerspective.mainThesis}"
+
+Wichtige Punkte:
+${uniquePerspective.keyPoints.map(point => `- ${point}`).join('\n')}
+
+Einzigartige Perspektive: "${uniquePerspective.uniquePerspective}"
 
 WICHTIGE EINSCHRÄNKUNGEN:
-- KOMPLETT VERMEIDEN Sie Themen im Zusammenhang mit KI, künstlicher Intelligenz, maschinellem Lernen oder Automatisierung
-- Der Artikel DARF NICHT technologische Lösungen oder Digitalisierung als Hauptlösung für Probleme propagieren
-- Konzentrieren Sie sich auf traditionelle Geschäftsansätze, menschlichen Faktor, rechtliche Aspekte, Verhandlungen und Strategie
+- ABSOLUT VERMEIDEN Sie jegliche Erwähnung von Technologie, Automatisierung, Digitalisierung oder künstlicher Intelligenz
+- Konzentrieren Sie sich auf traditionelle Geschäftsansätze, zwischenmenschliche Beziehungen, rechtliche Aspekte und Strategie
 - Betonen Sie praktische Aspekte, die keine fortschrittlichen Technologien erfordern
 
-Der Artikel sollte enthalten:
-- Eine Einführung, die die Bedeutung des Themas erklärt
-- 3-4 Hauptabschnitte, die verschiedene Aspekte des Themas diskutieren
-- Praktische Tipps oder Empfehlungen
-- Eine abschließende Zusammenfassung
+Schreiben Sie für ein Publikum aus Unternehmern, Managern und Finanzexperten.
+Konzentrieren Sie sich auf den deutschen Geschäfts- und Rechtskontext.
+Bieten Sie praktische Beispiele und konkrete Vorgehensweisen.
+Der Artikel sollte etwa 800-1200 Wörter umfassen.
 
-Der Inhalt muss aktuell, sachlich korrekt und relevant für deutsche Unternehmen und Unternehmer sein.`;
+Formatieren Sie den Text in Markdown:
+- Verwenden Sie ## für Hauptüberschriften
+- ### für Unterüberschriften
+- Aufzählungspunkte für Listen
+- > für Zitate
+- **Fettschrift** für wichtige Begriffe
+- *Kursiv* für Betonung`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",

@@ -386,36 +386,32 @@ Téma "${topic}" vyžaduje strategický prístup a znalosť aktuálnej legislat�
     
     console.log(`Generujem obsah článku pre tému: ${topic}...`);
     
-    const prompt = `Vytvor profesionálny a informatívny článok na tému "${topic}" v kategórii "${category}". 
-    
-Článok by mal mať tento unikátny uhol pohľadu: "${uniquePerspective}"
+    const prompt = `Vytvorte odborný článok na tému "${topic}" v kategórii "${category}".
 
-Dodržuj tieto špecifikácie:
-1. Článok píš v slovenčine, v profesionálnom, ale zrozumiteľnom jazyku pre majiteľov firiem a podnikateľov
-2. Zameraj sa na praktické informácie relevantné pre slovenské právne prostredie
-3. Používaj Markdown pre formátovanie
-4. Nepoužívaj hlavný nadpis H1 (ten bude automaticky generovaný z titulku)
-5. Používaj nadpisy úrovne H2 (##) pre hlavné sekcie a H3 (###) pre podsekcie
-6. Formátuj dôležité termíny tučne (**termín**) a kľúčové frázy kurzívou (*fráza*)
-7. Rozdeľ text do krátkych odsekov (3-4 vety)
-8. Používaj odrážky pre zoznamy a číslované zoznamy pre procesy
-9. Zahrň 1-2 praktické príklady alebo citácie, formátované ako bloková citácia (> citácia)
-10. Dĺžka článku by mala byť 800-1200 slov
-11. Na konci uveď zhrnutie kľúčových bodov
+Hlavná téza: "${uniquePerspective.mainThesis}"
+
+Kľúčové body:
+${uniquePerspective.keyPoints.map(point => `- ${point}`).join('\n')}
+
+Jedinečná perspektíva: "${uniquePerspective.uniquePerspective}"
 
 DÔLEŽITÉ OBMEDZENIA:
-- ÚPLNE SA VYHÝBAJ témam týkajúcim sa AI, umelej inteligencie, strojového učenia alebo automatizácie
-- Článok NESMIE propagovať technologické riešenia alebo digitalizáciu ako hlavné riešenie problémov
-- Zameraj sa na tradičné biznisové prístupy, ľudský faktor, právne aspekty, vyjednávanie a stratégiu
-- Zdôrazni praktické aspekty nevyžadujúce pokročilé technológie
+- ABSOLÚTNE SA VYHNITE akýmkoľvek zmienkam o technológiách, automatizácii, digitalizácii alebo umelej inteligencii
+- Zamerajte sa na tradičné obchodné prístupy, medziľudské vzťahy, právne aspekty a stratégiu
+- Zdôraznite praktické aspekty, ktoré nevyžadujú pokročilé technológie
 
-Článok by mal obsahovať:
-- Úvod vysvetľujúci dôležitosť témy
-- 3-4 hlavné sekcie rozoberajúce rôzne aspekty témy
-- Praktické tipy alebo odporúčania
-- Záverečné zhrnutie
+Píšte pre publikum zložené z podnikateľov, manažérov a odborníkov v oblasti financií.
+Zamerajte sa na slovenský právny a obchodný kontext.
+Poskytnite praktické príklady a konkrétne postupy.
+Článok by mal mať približne 800-1200 slov.
 
-Obsah musí byť aktuálny, fakticky správny a relevantný pre slovenské podniky a podnikateľov.`;
+Formátujte text v Markdown:
+- Používajte ## pre hlavné nadpisy
+- ### pre podnadpisy
+- Odrážky pre zoznamy
+- > pre citácie
+- **tučný text** pre dôležité pojmy
+- *kurzíva* pre zdôraznenie`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",

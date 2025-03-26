@@ -288,36 +288,32 @@ async function generateArticleContent(topic, category, uniquePerspective) {
   try {
     console.log(`Generuji obsah článku pro téma: ${topic}...`);
     
-    const prompt = `Vytvoř profesionální a informativní článek na téma "${topic}" v kategorii "${category}". 
-    
-Článek by měl mít tento unikátní úhel pohledu: "${uniquePerspective}"
+    const prompt = `Napiš odborný článek v češtině na téma "${topic}" v kategorii "${category}".
 
-Dodržuj tyto specifikace:
-1. Článek piš v češtině, v profesionálním, ale srozumitelném jazyce pro majitele firem a podnikatele
-2. Zaměř se na praktické informace relevantní pro české právní prostředí
-3. Používej Markdown pro formátování
-4. Nepoužívej hlavní nadpis H1 (ten bude automaticky generován z titulku)
-5. Používej nadpisy úrovně H2 (##) pro hlavní sekce a H3 (###) pro podsekce
-6. Formátuj důležité termíny tučně (**termín**) a klíčové fráze kurzívou (*fráze*)
-7. Rozděl text do krátkých odstavců (3-4 věty)
-8. Používej odrážky pro seznamy a číslované seznamy pro procesy
-9. Zahrň 1-2 praktické příklady nebo citace, formátované jako bloková citace (> citace)
-10. Délka článku by měla být 800-1200 slov
-11. Na konci uveď shrnutí klíčových bodů
+Hlavní teze článku: "${uniquePerspective.mainThesis}"
+
+Klíčové body k pokrytí:
+${uniquePerspective.keyPoints.map(point => `- ${point}`).join('\n')}
+
+Unikátní perspektiva: "${uniquePerspective.uniquePerspective}"
 
 DŮLEŽITÉ OMEZENÍ:
-- ZCELA SE VYHÝBEJ tématům týkajícím se AI, umělé inteligence, strojového učení nebo automatizace
-- Článek NESMÍ propagovat technologická řešení nebo digitalizaci jako hlavní řešení problémů
-- Zaměř se na tradiční byznysové přístupy, lidský faktor, právní aspekty, vyjednávání a strategii
-- Zdůrazni praktické aspekty nevyžadující pokročilé technologie
+- ABSOLUTNĚ SE VYHNI jakýmkoliv zmínkám o technologiích, automatizaci, digitalizaci nebo umělé inteligenci
+- Zaměř se na tradiční obchodní přístupy, mezilidské vztahy, právní aspekty a strategii
+- Zdůrazni praktické aspekty, které nevyžadují pokročilé technologie
 
-Článek by měl obsahovat:
-- Úvod vysvětlující důležitost tématu
-- 3-4 hlavní sekce rozebírající různé aspekty tématu
-- Praktické tipy nebo doporučení
-- Závěrečné shrnutí
+Piš pro publikum složené z podnikatelů, manažerů a odborníků v oblasti financí.
+Zaměř se na český právní a obchodní kontext.
+Poskytni praktické příklady a konkrétní postupy.
+Článek by měl mít délku přibližně 800-1200 slov.
 
-Obsah musí být aktuální, fakticky správný a relevantní pro české podniky a podnikatele.`;
+Formátuj text v Markdown:
+- Používej ## pro hlavní nadpisy
+- ### pro podnadpisy
+- Odrážky pro seznamy
+- > pro citace
+- **tučný text** pro důležité pojmy
+- *kurzíva* pro zdůraznění`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
@@ -347,7 +343,7 @@ Obsah musí být aktuální, fakticky správný a relevantní pro české podnik
     return `
 ## Úvod k tématu ${topic}
 
-V dnešním podnikatelském prostředí je téma "${topic}" stále důležitější. Tento článek se zaměřuje na klíčové aspekty z perspektivy "${uniquePerspective}".
+V dnešním podnikatelském prostředí je téma "${topic}" stále důležitější. Tento článek se zaměřuje na klíčové aspekty z perspektivy "${uniquePerspective.uniquePerspective}".
 
 ## Legislativní rámec
 
@@ -480,7 +476,7 @@ async function main() {
     
     // 4. Generujeme obsah článku
     console.log("Generuji obsah článku pomocí OpenAI...");
-    const articleContent = await generateArticleContent(topic, category, topicResult.uniquePerspective);
+    const articleContent = await generateArticleContent(topic, category, topicResult);
     
     // 5. Generujeme metadata (titulek, podtitulek, description, tagy, čas čtení)
     console.log("Generuji metadata článku...");

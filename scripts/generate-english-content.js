@@ -287,8 +287,8 @@ async function generateArticleContent(topic, category, uniquePerspective) {
   try {
     console.log(`Generating article content for topic: ${topic}...`);
     
-    const prompt = `Create a professional article on "${topic}" in the category "${category}". 
-    
+    const prompt = `Create a professional article about "${topic}" in the category "${category}".
+
 Main thesis: "${uniquePerspective.mainThesis}"
 
 Key points to cover:
@@ -296,15 +296,23 @@ ${uniquePerspective.keyPoints.map(point => `- ${point}`).join('\n')}
 
 Unique perspective: "${uniquePerspective.uniquePerspective}"
 
-Write the article in English for business owners and entrepreneurs.
-Use Markdown formatting:
-- H2 headings (##) for main sections
-- H3 (###) for subsections
-- Bullet points for lists
-- Include 1-2 quotes as block quotes (> quote)
-- The article length should be 800-1200 words
+IMPORTANT RESTRICTIONS:
+- ABSOLUTELY AVOID any mentions of technology, automation, digitalization, or artificial intelligence
+- Focus on traditional business approaches, human relationships, legal aspects, and strategy
+- Emphasize practical aspects that don't require advanced technologies
 
-Please avoid mentioning artificial intelligence or automation technologies.`;
+Write for an audience of business owners, managers, and finance professionals.
+Focus on international business context and legal frameworks.
+Provide practical examples and specific procedures.
+The article should be approximately 800-1200 words.
+
+Format the text in Markdown:
+- Use ## for main headings
+- ### for subheadings
+- Bullet points for lists
+- > for quotes
+- **bold text** for important terms
+- *italics* for emphasis`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",

@@ -3,7 +3,7 @@ name: Generate English Content
 on:
   workflow_dispatch:  # Manual trigger
   schedule:
-    - cron: '0 9 * * 3,6'  # 9 AM BST/GMT, Wednesdays and Saturdays
+    - cron: '0 9 * * *'  # 9 AM BST/GMT, every day
 
 permissions:
   contents: write  # Permission to write to the repository
@@ -41,6 +41,9 @@ jobs:
           git config --global user.email "actions@github.com"
           git add content/posts-en
           git commit -m "chore: auto-generated English article [skip ci]" || echo "No changes to commit"
+      
+      - name: Pull before push
+        run: git pull --rebase
       
       - name: Push changes
         run: git push 

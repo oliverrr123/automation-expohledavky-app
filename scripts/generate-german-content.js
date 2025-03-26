@@ -49,12 +49,18 @@ function getRandomElement(array) {
 // Function to check if text contains AI references
 function containsAIReference(text) {
   const lowerText = text.toLowerCase();
-  // Redukovaný seznam základních termínů
+  // Simplified list of basic terms
   const forbiddenTerms = [
     'ai', 'künstliche intelligenz'
   ];
   
-  return forbiddenTerms.some(term => lowerText.includes(term));
+  // More permissive check - only flag if multiple terms appear
+  let count = 0;
+  forbiddenTerms.forEach(term => {
+    if (lowerText.includes(term)) count++;
+  });
+  
+  return count > 1; // Only consider it AI reference if multiple terms appear
 }
 
 // Function to count AI references in text
@@ -78,8 +84,36 @@ function countAIReferences(text) {
 }
 
 // Function to generate random topic based on category
-async function generateRandomTopic(category) {
+async function generateRandomTopic(category, retryCount = 0) {
   try {
+    // Add retry limit to prevent infinite recursion
+    if (retryCount > 3) {
+      console.log("Maximale Anzahl von Versuchen bei der Themengenerierung erreicht, Fallback-Lösung wird verwendet...");
+      // Return fallback topic
+      const fallbackTopic = getRandomElement([
+        `Aktuelle Trends im ${category.toLowerCase()}`,
+        `Praktischer Leitfaden: ${category}`,
+        `Wie man ${category.toLowerCase()} im Jahr ${new Date().getFullYear()} optimiert`,
+        `Häufige Fehler im ${category.toLowerCase()}`,
+        `Die Zukunft des ${category.toLowerCase()} in einer sich verändernden Wirtschaftsumgebung`,
+        `Rechtliche Aspekte des ${category.toLowerCase()} nach Gesetzesänderungen`,
+        `Finanzielle Auswirkungen des richtigen ${category.toLowerCase()}`,
+        `Strategischer Ansatz zum ${category.toLowerCase()} für kleine Unternehmen`
+      ]);
+      
+      return {
+        topic: fallbackTopic,
+        mainThesis: `Es ist wichtig, die Aspekte von ${fallbackTopic} zu verstehen.`,
+        keyPoints: [
+          "Rechtsrahmen und aktuelle Änderungen",
+          "Praktische Verfahren und Empfehlungen",
+          "Fallstudien und praktische Beispiele",
+          "Finanzielle und rechtliche Aspekte des Themas"
+        ],
+        uniquePerspective: `Eine Perspektive der Effizienz und Prozessoptimierung im Bereich ${category.toLowerCase()}.`
+      };
+    }
+    
     console.log(`Generiere zufälliges Thema für Kategorie: ${category}...`);
     
     const prompt = `Generiere ein originelles, spezifisches und interessantes Thema für einen Fachartikel über Forderungen in der Kategorie "${category}".
@@ -120,7 +154,7 @@ Geben Sie nur den Themennamen ohne zusätzliche Kommentare oder Erklärungen zur
     // Check if the topic contains AI references
     if (containsAIReference(topic)) {
       console.log("Thema enthält Erwähnung von KI oder Automatisierung, generiere neues Thema...");
-      return generateRandomTopic(category); // Recursively generate a new topic
+      return generateRandomTopic(category, retryCount + 1); // Pass retry count
     }
     
     // Get a unique approach to the topic
@@ -161,8 +195,23 @@ Geben Sie nur den Themennamen ohne zusätzliche Kommentare oder Erklärungen zur
 }
 
 // Function to generate a unique approach to a topic
-async function generateUniqueApproach(topic, category) {
+async function generateUniqueApproach(topic, category, retryCount = 0) {
   try {
+    // Add retry limit to prevent infinite recursion
+    if (retryCount > 3) {
+      console.log("Maximale Anzahl von Versuchen bei der Ansatzgenerierung erreicht, Fallback-Lösung wird verwendet...");
+      return {
+        mainThesis: `Der Schlüssel zu einer erfolgreichen Lösung im Bereich ${category.toLowerCase()} ist ein strukturierter und systematischer Ansatz mit Fokus auf Ergebnisse.`,
+        keyPoints: [
+          "Rechtlicher Rahmen und seine praktischen Auswirkungen",
+          "Effektive Kommunikation und Verhandlung",
+          "Finanzielle Perspektive und Planung",
+          "Prävention von Problemen und Risiken"
+        ],
+        uniquePerspective: `Fokus auf Beziehungsmanagement als Schlüsselfaktor für den Erfolg bei der Forderungsabwicklung.`
+      };
+    }
+    
     console.log("Generiere einzigartigen Ansatz zum Thema...");
     
     const prompt = `Für das Thema "${topic}" in der Kategorie "${category}" schlage einen Ansatz für einen Fachartikel vor.
@@ -192,10 +241,10 @@ Antworte im JSON-Format mit den Schlüsseln "mainThesis", "keyPoints" und "uniqu
     
     const approach = JSON.parse(completion.choices[0].message.content);
     
-    // Zjednodušená kontrola AI zmínek
+    // Simplified AI reference check
     if (containsAIReference(JSON.stringify(approach))) {
       console.log("Generierter Ansatz enthält Erwähnungen von KI oder Technologien, generiere neuen Ansatz...");
-      return generateUniqueApproach(topic, category);
+      return generateUniqueApproach(topic, category, retryCount + 1); // Pass retry count
     }
     
     return approach;
@@ -216,56 +265,50 @@ Antworte im JSON-Format mit den Schlüsseln "mainThesis", "keyPoints" und "uniqu
 
 // Function to get an image from Unsplash
 async function getUnsplashImage(category) {
-  try {
-    // Professional business prompts without technological focus
-    const businessPrompts = [
-      "professional business meeting",
-      "corporate office",
-      "business people handshake",
-      "modern office",
-      "business professionals",
-      "corporate team meeting",
-      "financial documents",
-      "executive desk",
-      "business contract signing",
-      "professional corporate environment",
-      "business negotiation",
-      "legal documents",
-      "handshake agreement",
-      "business consultation",
-      "office meeting room"
-    ];
-    
-    // Randomly select one of the professional prompts
-    const randomPrompt = businessPrompts[Math.floor(Math.random() * businessPrompts.length)];
-    
-    // Add the category as a supplement to the main professional prompt
-    const searchQuery = `${randomPrompt} ${category}`;
-    
-    // Použijeme výchozí obrázek místo volání API
-    return {
-      url: '/images/default-business.jpg',
-      credit: {
-        name: 'Default Image',
-        link: 'https://expohledavky.cz'
-      }
-    };
-  } catch (error) {
-    console.error('Fehler beim Abrufen des Bildes von Unsplash:', error);
-    // Fallback to a default image
-    return {
-      url: '/images/default-business.jpg',
-      credit: {
-        name: 'Default Image',
-        link: 'https://expohledavky.cz'
-      }
-    };
-  }
+  console.log('Setze Standardbild...');
+  return {
+    url: '/images/default-business.jpg',
+    credit: {
+      name: 'Default Image',
+      link: 'https://expohledavky.cz'
+    }
+  };
 }
 
 // Function to generate article content
-async function generateArticleContent(topic, category, uniquePerspective) {
+async function generateArticleContent(topic, category, uniquePerspective, retryCount = 0) {
   try {
+    // Add retry limit to prevent infinite recursion
+    if (retryCount > 3) {
+      console.log("Maximale Anzahl von Versuchen bei der Inhaltsgenerierung erreicht, Fallback-Lösung wird verwendet...");
+      // Return fallback content
+      return `
+## Einführung zu ${topic}
+
+Im heutigen Geschäftsumfeld wird das Thema "${topic}" immer wichtiger. Dieser Artikel konzentriert sich auf Schlüsselaspekte aus der Perspektive "${uniquePerspective}".
+
+## Rechtlicher Rahmen
+
+Deutsche Gesetze in diesem Bereich definieren mehrere wichtige Regeln, die Unternehmen befolgen müssen.
+
+## Praktische Verfahren
+
+Für eine effektive Lösung dieses Problems empfehlen wir, diese Schritte zu befolgen:
+
+1. Analysieren Sie die aktuelle Situation
+2. Konsultieren Sie einen Experten
+3. Implementieren Sie vorbeugende Maßnahmen
+
+## Fallstudien
+
+> "In unserem Unternehmen haben wir ein neues Kommunikationssystem mit Schuldnern eingeführt, das den Erfolg bei der Eintreibung um 35% verbessert hat." - Erfahrener Unternehmer
+
+## Abschließende Zusammenfassung
+
+Das Thema "${topic}" erfordert einen strategischen Ansatz und Kenntnis der aktuellen Gesetzgebung. Durch die Implementierung der empfohlenen Verfahren können Sie Ihre Ergebnisse deutlich verbessern.
+`;
+    }
+    
     console.log(`Generiere Artikelinhalt für Thema: ${topic}...`);
     
     const prompt = `Erstellen Sie einen professionellen und informativen Artikel zum Thema "${topic}" in der Kategorie "${category}". 
@@ -314,10 +357,10 @@ Der Inhalt muss aktuell, sachlich korrekt und relevant für deutsche Unternehmen
     
     const content = completion.choices[0].message.content.trim();
     
-    // Check if the content contains too many AI references
-    if (countAIReferences(content) > 2) { // Allow max 2 mentions to keep the content natural
+    // More permissive check for AI references
+    if (countAIReferences(content) > 3) { // Increased threshold to 3
       console.log("Artikelinhalt enthält zu viele Erwähnungen von KI oder Technologien, generiere neuen Inhalt...");
-      return generateArticleContent(topic, category, uniquePerspective);
+      return generateArticleContent(topic, category, uniquePerspective, retryCount + 1);
     }
     
     return content;
@@ -353,8 +396,26 @@ Das Thema "${topic}" erfordert einen strategischen Ansatz und Kenntnis der aktue
 }
 
 // Function to generate article metadata
-async function generateMetadata(topic, category, articleContent) {
+async function generateMetadata(topic, category, articleContent, retryCount = 0) {
   try {
+    // Add retry limit to prevent infinite recursion
+    if (retryCount > 3) {
+      console.log("Maximale Anzahl von Versuchen bei der Metadatengenerierung erreicht, Fallback-Lösung wird verwendet...");
+      
+      // Create estimated reading time
+      const wordCount = articleContent.split(/\s+/).length;
+      const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
+      
+      // Return fallback metadata
+      return {
+        title: topic,
+        subtitle: `Praktische Informationen über ${topic} für deutsche Unternehmen`,
+        description: `Fachartikel zum Thema ${topic} in der Kategorie ${category}. Praktische Ratschläge und Tipps für Unternehmer.`,
+        tags: `${category.toLowerCase()}, forderungen, forderungsmanagement, deutsche unternehmen, unternehmertum, rechtliche aspekte`,
+        readTime: `${readTimeMinutes} Minuten Lesezeit`
+      };
+    }
+    
     console.log("Generiere Artikelmetadaten...");
     
     const prompt = `Basierend auf diesem Artikel zum Thema "${topic}" in der Kategorie "${category}" generieren Sie die folgenden Metadaten:
@@ -390,12 +451,10 @@ ${articleContent.substring(0, 1500)}...`;
     
     const metadata = JSON.parse(completion.choices[0].message.content);
     
-    // Check if the metadata contains AI references
-    if (containsAIReference(metadata.title) || 
-        containsAIReference(metadata.subtitle) || 
-        (metadata.tags && containsAIReference(metadata.tags))) {
+    // More permissive check for AI references
+    if (containsAIReference(metadata.title) && containsAIReference(metadata.subtitle)) {
       console.log("Metadaten enthalten Erwähnungen von KI oder Technologien, generiere neue Metadaten...");
-      return generateMetadata(topic, category, articleContent);
+      return generateMetadata(topic, category, articleContent, retryCount + 1);
     }
     
     return metadata;

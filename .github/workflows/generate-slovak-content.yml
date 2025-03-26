@@ -3,7 +3,7 @@ name: Generate Slovak Content
 on:
   workflow_dispatch:  # Manual trigger
   schedule:
-    - cron: '0 9 * * 2,5'  # 9 AM CET/CEST, Tuesdays and Fridays
+    - cron: '0 9 * * *'  # 9 AM CET/CEST, every day
 
 permissions:
   contents: write  # Permission to write to the repository
@@ -41,6 +41,9 @@ jobs:
           git config --global user.email "actions@github.com"
           git add content/posts-sk
           git commit -m "chore: auto-generated Slovak article [skip ci]" || echo "No changes to commit"
+      
+      - name: Pull before push
+        run: git pull --rebase
       
       - name: Push changes
         run: git push 

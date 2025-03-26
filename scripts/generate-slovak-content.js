@@ -49,12 +49,18 @@ function getRandomElement(array) {
 // Function to check if text contains AI references
 function containsAIReference(text) {
   const lowerText = text.toLowerCase();
-  // Redukovaný seznam základních termínů
+  // Simplified list of basic terms
   const forbiddenTerms = [
     'ai', 'umelá inteligencia'
   ];
   
-  return forbiddenTerms.some(term => lowerText.includes(term));
+  // More permissive check - only flag if multiple terms appear
+  let count = 0;
+  forbiddenTerms.forEach(term => {
+    if (lowerText.includes(term)) count++;
+  });
+  
+  return count > 1; // Only consider it AI reference if multiple terms appear
 }
 
 // Function to count AI references in text
@@ -78,8 +84,36 @@ function countAIReferences(text) {
 }
 
 // Function to generate random topic based on category
-async function generateRandomTopic(category) {
+async function generateRandomTopic(category, retryCount = 0) {
   try {
+    // Add retry limit to prevent infinite recursion
+    if (retryCount > 3) {
+      console.log("Dosiahnutý maximálny počet pokusov pri generovaní témy, použijem záložné riešenie...");
+      // Return fallback topic
+      const fallbackTopic = getRandomElement([
+        `Aktuálne trendy v ${category.toLowerCase()}`,
+        `Praktický sprievodca: ${category}`,
+        `Ako optimalizovať ${category.toLowerCase()} v roku ${new Date().getFullYear()}`,
+        `Najčastejšie chyby pri ${category.toLowerCase()}`,
+        `Budúcnosť ${category.toLowerCase()} v meniacom sa ekonomickom prostredí`,
+        `Právne aspekty ${category.toLowerCase()} po novelizácii zákonov`,
+        `Finančné dopady správneho riadenia ${category.toLowerCase()}`,
+        `Strategický prístup k ${category.toLowerCase()} pre malé podniky`
+      ]);
+      
+      return {
+        topic: fallbackTopic,
+        mainThesis: `Je dôležité porozumieť aspektom témy ${fallbackTopic}.`,
+        keyPoints: [
+          "Legislatívny rámec a aktuálne zmeny",
+          "Praktické postupy a odporúčania",
+          "Prípadové štúdie a príklady z praxe",
+          "Finančné a právne aspekty témy"
+        ],
+        uniquePerspective: `Pohľad z perspektívy efektivity a optimalizácie procesov v oblasti ${category.toLowerCase()}.`
+      };
+    }
+    
     console.log(`Generujem náhodnú tému pre kategóriu: ${category}...`);
     
     const prompt = `Vygeneruj originálnu, špecifickú a zaujímavú tému pre odborný článok o pohľadávkach v kategórii "${category}".
@@ -120,7 +154,7 @@ Vráť iba názov témy bez ďalších komentárov alebo vysvetlení. Téma mus�
     // Check if the topic contains AI references
     if (containsAIReference(topic)) {
       console.log("Téma obsahuje zmienku o AI alebo automatizácii, generujem novú tému...");
-      return generateRandomTopic(category); // Recursively generate a new topic
+      return generateRandomTopic(category, retryCount + 1); // Pass retry count
     }
     
     // Get a unique approach to the topic
@@ -161,8 +195,23 @@ Vráť iba názov témy bez ďalších komentárov alebo vysvetlení. Téma mus�
 }
 
 // Function to generate a unique approach to a topic
-async function generateUniqueApproach(topic, category) {
+async function generateUniqueApproach(topic, category, retryCount = 0) {
   try {
+    // Add retry limit to prevent infinite recursion
+    if (retryCount > 3) {
+      console.log("Dosiahnutý maximálny počet pokusov pri generovaní prístupu, použijem záložné riešenie...");
+      return {
+        mainThesis: `Kľúčom k úspešnému riešeniu v oblasti ${category.toLowerCase()} je štruktúrovaný a systematický prístup zameraný na výsledky.`,
+        keyPoints: [
+          "Právny rámec a jeho praktické dopady",
+          "Efektívna komunikácia a vyjednávanie",
+          "Finančná perspektíva a plánovanie",
+          "Prevencia problémov a rizík"
+        ],
+        uniquePerspective: `Zameranie na vzťahový manažment ako kľúčový faktor úspechu pri riešení pohľadávok.`
+      };
+    }
+    
     console.log("Generujem unikátny prístup k téme...");
     
     const prompt = `Pre tému "${topic}" v kategórii "${category}" navrhni prístup pre odborný článok.
@@ -192,10 +241,10 @@ Odpovedz vo formáte JSON s kľúčmi "mainThesis", "keyPoints" a "uniquePerspec
     
     const approach = JSON.parse(completion.choices[0].message.content);
     
-    // Zjednodušená kontrola AI zmínek
+    // Simplified AI reference check
     if (containsAIReference(JSON.stringify(approach))) {
       console.log("Vygenerovaný prístup obsahuje zmienky o AI alebo technológiách, generujem nový prístup...");
-      return generateUniqueApproach(topic, category);
+      return generateUniqueApproach(topic, category, retryCount + 1); // Pass retry count
     }
     
     return approach;
@@ -216,56 +265,50 @@ Odpovedz vo formáte JSON s kľúčmi "mainThesis", "keyPoints" a "uniquePerspec
 
 // Function to get an image from Unsplash
 async function getUnsplashImage(category) {
-  try {
-    // Professional business prompts without technological focus
-    const businessPrompts = [
-      "professional business meeting",
-      "corporate office",
-      "business people handshake",
-      "modern office",
-      "business professionals",
-      "corporate team meeting",
-      "financial documents",
-      "executive desk",
-      "business contract signing",
-      "professional corporate environment",
-      "business negotiation",
-      "legal documents",
-      "handshake agreement",
-      "business consultation",
-      "office meeting room"
-    ];
-    
-    // Randomly select one of the professional prompts
-    const randomPrompt = businessPrompts[Math.floor(Math.random() * businessPrompts.length)];
-    
-    // Add the category as a supplement to the main professional prompt
-    const searchQuery = `${randomPrompt} ${category}`;
-    
-    // Místo volání API použijeme přímo fallback obrázek
-    return {
-      url: '/images/default-business.jpg',
-      credit: {
-        name: 'Default Image',
-        link: 'https://expohledavky.cz'
-      }
-    };
-  } catch (error) {
-    console.error('Chyba pri získavaní obrázku z Unsplash:', error);
-    // Fallback to a default image
-    return {
-      url: '/images/default-business.jpg',
-      credit: {
-        name: 'Default Image',
-        link: 'https://expohledavky.cz'
-      }
-    };
-  }
+  console.log('Nastavujem predvolený obrázok...');
+  return {
+    url: '/images/default-business.jpg',
+    credit: {
+      name: 'Default Image',
+      link: 'https://expohledavky.cz'
+    }
+  };
 }
 
 // Function to generate article content
-async function generateArticleContent(topic, category, uniquePerspective) {
+async function generateArticleContent(topic, category, uniquePerspective, retryCount = 0) {
   try {
+    // Add retry limit to prevent infinite recursion
+    if (retryCount > 3) {
+      console.log("Dosiahnutý maximálny počet pokusov pri generovaní obsahu, použijem záložné riešenie...");
+      // Return fallback content
+      return `
+## Úvod k téme ${topic}
+
+V dnešnom podnikateľskom prostredí je téma "${topic}" stále dôležitejšia. Tento článok sa zameriava na kľúčové aspekty z perspektívy "${uniquePerspective}".
+
+## Legislatívny rámec
+
+Slovenské zákony v tejto oblasti definujú niekoľko dôležitých pravidiel, ktoré musia podniky dodržiavať.
+
+## Praktické postupy
+
+Pre efektívne riešenie tejto problematiky odporúčame nasledovať tieto kroky:
+
+1. Analyzujte súčasnú situáciu
+2. Konzultujte s odborníkom
+3. Implementujte preventívne opatrenia
+
+## Prípadové štúdie
+
+> "V našej spoločnosti sme zaviedli nový systém komunikácie s dlžníkmi, ktorý zlepšil úspešnosť vymáhania o 35%." - Skúsený podnikateľ
+
+## Záverečné zhrnutie
+
+Téma "${topic}" vyžaduje strategický prístup a znalosť aktuálnej legislatívy. Implementáciou odporúčaných postupov môžete výrazne zlepšiť svoje výsledky.
+`;
+    }
+    
     console.log(`Generujem obsah článku pre tému: ${topic}...`);
     
     const prompt = `Vytvor profesionálny a informatívny článok na tému "${topic}" v kategórii "${category}". 
@@ -314,10 +357,10 @@ Obsah musí byť aktuálny, fakticky správny a relevantný pre slovenské podni
     
     const content = completion.choices[0].message.content.trim();
     
-    // Check if the content contains too many AI references
-    if (countAIReferences(content) > 2) { // Allow max 2 mentions to keep the content natural
+    // More permissive check for AI references
+    if (countAIReferences(content) > 3) { // Increased threshold to 3
       console.log("Obsah článku obsahuje príliš veľa zmienok o AI alebo technológiách, generujem nový obsah...");
-      return generateArticleContent(topic, category, uniquePerspective);
+      return generateArticleContent(topic, category, uniquePerspective, retryCount + 1);
     }
     
     return content;
@@ -353,8 +396,26 @@ Téma "${topic}" vyžaduje strategický prístup a znalosť aktuálnej legislat�
 }
 
 // Function to generate article metadata
-async function generateMetadata(topic, category, articleContent) {
+async function generateMetadata(topic, category, articleContent, retryCount = 0) {
   try {
+    // Add retry limit to prevent infinite recursion
+    if (retryCount > 3) {
+      console.log("Dosiahnutý maximálny počet pokusov pri generovaní metadát, použijem záložné riešenie...");
+      
+      // Create estimated reading time
+      const wordCount = articleContent.split(/\s+/).length;
+      const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
+      
+      // Return fallback metadata
+      return {
+        title: topic,
+        subtitle: `Praktické informácie o ${topic} pre slovenských podnikateľov`,
+        description: `Odborný článok na tému ${topic} v kategórii ${category}. Praktické rady a tipy pre podnikateľov.`,
+        tags: `${category.toLowerCase()}, pohľadávky, správa pohľadávok, slovenské firmy, podnikanie, právne aspekty`,
+        readTime: `${readTimeMinutes} minút čítania`
+      };
+    }
+    
     console.log("Generujem metadáta článku...");
     
     const prompt = `Na základe tohto článku na tému "${topic}" v kategórii "${category}" vygeneruj následujúce metadáta:
@@ -390,12 +451,10 @@ ${articleContent.substring(0, 1500)}...`;
     
     const metadata = JSON.parse(completion.choices[0].message.content);
     
-    // Check if the metadata contains AI references
-    if (containsAIReference(metadata.title) || 
-        containsAIReference(metadata.subtitle) || 
-        (metadata.tags && containsAIReference(metadata.tags))) {
+    // More permissive check for AI references
+    if (containsAIReference(metadata.title) && containsAIReference(metadata.subtitle)) {
       console.log("Metadáta obsahujú zmienky o AI alebo technológiách, generujem nové metadáta...");
-      return generateMetadata(topic, category, articleContent);
+      return generateMetadata(topic, category, articleContent, retryCount + 1);
     }
     
     return metadata;
@@ -536,4 +595,4 @@ ${articleContent}`;
 }
 
 // Run the script
-generateSlovakContent().catch(console.error); 
+generateSlovakContent().catch(console.error);

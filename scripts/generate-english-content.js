@@ -84,14 +84,16 @@ async function generateRandomTopic(category) {
   try {
     console.log(`Generating random topic for category: ${category}...`);
     
-    const prompt = `Generate an original and interesting topic for an expert article about receivables in the category "${category}".
+    const prompt = `Generate an original, interesting, and thought-provoking topic for an expert article about receivables in the category "${category}".
     
 The topic should be:
-1. Relevant for international business contexts
-2. Focused on practical aspects of receivables management and collection
-3. Suitable for an expert article of 800-1200 words
+1. Relevant for international business contexts and appealing to business professionals
+2. Focused on practical and strategic aspects of receivables management and collection
+3. Suitable for an in-depth expert article of 1500-2000 words
+4. Specific enough to provide valuable insights rather than general overview
+5. Innovative and exploring new perspectives or emerging trends
 
-Please avoid topics related to AI, artificial intelligence, or machine learning.
+Please avoid topics related to AI, artificial intelligence, machine learning, or technology-driven solutions.
 Return only the topic name without additional comments.`;
 
     const completion = await openai.chat.completions.create({
@@ -99,7 +101,7 @@ Return only the topic name without additional comments.`;
       messages: [
         { 
           role: "system", 
-          content: "You are a specialist in receivables management and business finance. Generate practical topic ideas for expert articles." 
+          content: "You are a specialist in receivables management and business finance with extensive expertise in creating engaging content for professionals. Generate practical, specific, and innovative topic ideas for expert articles." 
         },
         { role: "user", content: prompt }
       ],
@@ -152,27 +154,28 @@ async function generateUniqueApproach(topic, category) {
   try {
     console.log("Generating unique approach to the topic...");
     
-    const prompt = `For the topic "${topic}" in the category "${category}", suggest a unique angle or approach for the article.
+    const prompt = `For the topic "${topic}" in the category "${category}", suggest a unique and sophisticated angle or approach for the article.
 
 Suggest:
-1. The main thesis of the article
-2. 3-4 key points to cover
-3. A unique perspective on the topic
+1. A compelling main thesis that provides a clear direction for a 1500-2000 word article
+2. 5-6 key points to cover that would provide depth and comprehensive coverage
+3. A truly unique perspective on the topic that differentiates it from standard treatments
+4. A target audience specification and how this approach will particularly benefit them
 
-Focus on business, legal, and financial perspectives.
-Respond in JSON format with keys "mainThesis", "keyPoints", and "uniquePerspective".`;
+Focus on business, legal, and financial perspectives, ensuring the approach combines theoretical knowledge with practical application.
+Respond in JSON format with keys "mainThesis", "keyPoints", "uniquePerspective", and "targetAudience".`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { 
           role: "system", 
-          content: "You are a creative content strategist specializing in financial and legal topics." 
+          content: "You are a creative content strategist specializing in financial and legal topics with expert knowledge in creating high-value content for business professionals." 
         },
         { role: "user", content: prompt }
       ],
       temperature: 0.8,
-      max_tokens: 500,
+      max_tokens: 800,
       response_format: { type: "json_object" }
     });
     
@@ -196,143 +199,166 @@ Respond in JSON format with keys "mainThesis", "keyPoints", and "uniquePerspecti
 }
 
 // Function to get an image from Unsplash
-async function getUnsplashImage(category) {
+async function getUnsplashImage(category, topic) {
   try {
     console.log('Fetching image from Unsplash...');
     
-    // Professional business prompts without technological focus
-    const businessPrompts = [
-      "professional business meeting",
-      "corporate office",
-      "business people handshake",
-      "modern office",
-      "business professionals",
-      "corporate team meeting",
-      "financial documents",
-      "executive desk",
-      "business contract signing",
-      "professional corporate environment",
-      "business negotiation",
-      "legal documents",
-      "handshake agreement",
-      "business consultation",
-      "office meeting room"
-    ];
+    // First, try to get a specific image related to the topic and category
+    const specificQuery = `${topic} ${category} business professional`;
     
-    // Randomly select one of the professional prompts
-    const randomPrompt = businessPrompts[Math.floor(Math.random() * businessPrompts.length)];
+    // Check if we have internet connectivity and valid API key
+    const testResponse = await fetch('https://api.unsplash.com/photos/random?client_id=' + process.env.UNSPLASH_ACCESS_KEY);
+    const isApiWorking = testResponse.ok;
     
-    // Add the category as a supplement to the main professional prompt
-    const searchQuery = `${randomPrompt} ${category}`;
+    let finalImagePath;
     
-    // Access Unsplash API via proxy (or direct if you have API key setup)
-    const response = await fetch(`https://source.unsplash.com/1600x900/?${encodeURIComponent(searchQuery)}`);
-    
-    if (!response.ok) {
-      throw new Error(`Error fetching image: ${response.statusText}`);
+    if (isApiWorking) {
+      // Use the Unsplash API properly with your access key
+      const response = await fetch(`https://api.unsplash.com/photos/random?query=${encodeURIComponent(specificQuery)}&orientation=landscape&client_id=${process.env.UNSPLASH_ACCESS_KEY}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        const imageUrl = data.urls.regular;
+        const photographerName = data.user.name;
+        const photographerLink = data.user.links.html;
+        
+        // Create a more specific path based on category and topic
+        const topicSlug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+        const imagePath = `/images/unsplash/${category.toLowerCase()}-${topicSlug}.jpg`;
+        const localImagePath = path.join(process.cwd(), 'public', imagePath);
+        
+        // Download and save the image
+        const imageBuffer = await fetch(imageUrl).then(res => res.buffer());
+        
+        // Ensure directory exists
+        const dir = path.dirname(localImagePath);
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+        
+        fs.writeFileSync(localImagePath, imageBuffer);
+        
+        console.log(`Saved image to: ${localImagePath}`);
+        finalImagePath = imagePath;
+        
+        return {
+          path: finalImagePath,
+          photographer: {
+            name: photographerName,
+            link: photographerLink
+          }
+        };
+      }
     }
     
-    // Get the final URL after redirects (this will be the actual image URL)
-    const imageUrl = response.url;
+    // Fallback to using source.unsplash.com if the API call failed
+    console.log('Falling back to source.unsplash.com...');
+    const fallbackCategory = category.toLowerCase();
+    const fallbackTopic = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const searchQuery = `${fallbackCategory},${fallbackTopic},business,professional`;
     
-    // Get the image ID from the URL
-    const imageId = imageUrl.match(/photo-([^/]+)/)?.[1] || 'unknown';
+    const fallbackImageUrl = `https://source.unsplash.com/1600x900/?${encodeURIComponent(searchQuery)}`;
+    const imageResponse = await fetch(fallbackImageUrl);
     
-    // Create directory for images if it doesn't exist
-    const imageDir = path.join(process.cwd(), 'public', 'images', 'unsplash');
-    if (!fs.existsSync(imageDir)) {
-      fs.mkdirSync(imageDir, { recursive: true });
+    if (imageResponse.ok) {
+      // Extract image ID from final URL after redirects
+      const finalUrl = imageResponse.url;
+      const imageId = finalUrl.split('/').pop().split('?')[0];
+      
+      // Create a specific path for this image
+      const imagePath = `/images/unsplash/${fallbackCategory}-${fallbackTopic}-${imageId}.jpg`;
+      const localImagePath = path.join(process.cwd(), 'public', imagePath);
+      
+      // Download and save the image
+      const imageBuffer = await fetch(finalUrl).then(res => res.buffer());
+      
+      // Ensure directory exists
+      const dir = path.dirname(localImagePath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      
+      fs.writeFileSync(localImagePath, imageBuffer);
+      
+      console.log(`Saved fallback image to: ${localImagePath}`);
+      finalImagePath = imagePath;
+      
+      return {
+        path: finalImagePath,
+        photographer: {
+          name: "Unsplash",
+          link: "https://unsplash.com/"
+        }
+      };
     }
     
-    // Download the image
-    const imageResponse = await fetch(imageUrl);
-    if (!imageResponse.ok) {
-      throw new Error(`Error downloading image: ${imageResponse.statusText}`);
-    }
-    
-    // Convert the response to a buffer
-    const imageArrayBuffer = await imageResponse.arrayBuffer();
-    const imageBuffer = Buffer.from(imageArrayBuffer);
-    
-    // Save the image to the local file system
-    const localImageFilename = `unsplash-${imageId}-${Date.now()}.jpg`;
-    const localImagePath = path.join(imageDir, localImageFilename);
-    fs.writeFileSync(localImagePath, imageBuffer);
-    
-    console.log(`Image successfully downloaded and saved as: ${localImagePath}`);
-    
-    // Return the image URL and credit for use in the article
+    // If all else fails, return a default path
+    console.error('Failed to get image from Unsplash, using default image');
     return {
-      url: `/images/unsplash/${localImageFilename}`,
-      credit: {
-        name: 'Unsplash',
-        link: 'https://unsplash.com'
+      path: "/images/default-business.jpg",
+      photographer: {
+        name: "Default Image",
+        link: "https://expohledavky.cz"
       }
     };
   } catch (error) {
-    console.error('Error getting image from Unsplash:', error);
-    // Fallback to a default image
+    console.error('Error getting Unsplash image:', error);
     return {
-      url: '/images/default-business.jpg',
-      credit: {
-        name: 'Default Image',
-        link: 'https://expohledavky.cz'
+      path: "/images/default-business.jpg",
+      photographer: {
+        name: "Default Image",
+        link: "https://expohledavky.cz"
       }
     };
   }
 }
 
 // Function to generate article content
-async function generateArticleContent(topic, category, uniquePerspective) {
+async function generateArticleContent(topic, category, uniqueApproach) {
   try {
     console.log(`Generating article content for topic: ${topic}...`);
-    
-    const prompt = `Create a professional article about "${topic}" in the category "${category}".
 
-Main thesis: "${uniquePerspective.mainThesis}"
+    const prompt = `Write a comprehensive, expert article on "${topic}" in the category of "${category}".
+
+Main thesis: ${uniqueApproach.mainThesis}
 
 Key points to cover:
-${uniquePerspective.keyPoints.map(point => `- ${point}`).join('\n')}
+${uniqueApproach.keyPoints.map(point => `- ${point}`).join('\n')}
 
-Unique perspective: "${uniquePerspective.uniquePerspective}"
+Unique perspective: ${uniqueApproach.uniquePerspective}
 
-IMPORTANT RESTRICTIONS:
-- ABSOLUTELY AVOID any mentions of technology, automation, digitalization, or artificial intelligence
-- Focus on traditional business approaches, human relationships, legal aspects, and strategy
-- Emphasize practical aspects that don't require advanced technologies
+The article should:
+1. Be approximately 1500-2000 words with proper structure and sections
+2. Include a compelling introduction with context and relevance
+3. Have clearly defined sections with informative headings (use ## for main headings and ### for subheadings)
+4. Include professional quotes and examples from industry experts (create realistic but fictional examples)
+5. Present practical advice, processes, or frameworks
+6. Contain relevant statistics or data points (create realistic but fictional data)
+7. End with a substantial and actionable conclusion
+8. Be written in a professional, authoritative tone suitable for business leaders and finance professionals
 
-Write for an audience of business owners, managers, and finance professionals.
-Focus on international business context and legal frameworks.
-Provide practical examples and specific procedures.
-The article should be approximately 800-1200 words.
-
-Format the text in Markdown:
-- Use ## for main headings
-- ### for subheadings
-- Bullet points for lists
-- > for quotes
-- **bold text** for important terms
-- *italics* for emphasis`;
+Do NOT include any references to AI, artificial intelligence, machine learning, robots, or automation technologies.
+Format the article in Markdown.`;
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         { 
           role: "system", 
-          content: "You are an expert on receivables, financial management, and international business law. Write practical articles for entrepreneurs." 
+          content: "You are an expert in financial management, receivables, and business operations with exceptional content creation skills. You create comprehensive, insightful articles that provide genuine value to business professionals." 
         },
         { role: "user", content: prompt }
       ],
       temperature: 0.7,
-      max_tokens: 2500,
+      max_tokens: 4000,
     });
+
+    let content = completion.choices[0].message.content.trim();
     
-    const content = completion.choices[0].message.content.trim();
-    
-    // Check if the content contains too many AI references - more tolerant threshold
-    if (countAIReferences(content) > 3) {
-      console.log("Article content contains too many AI references, generating new content...");
-      return generateArticleContent(topic, category, uniquePerspective);
+    // Check for AI references and regenerate if found
+    if (containsAIReference(content)) {
+      console.log("AI references found in content, regenerating...");
+      return generateArticleContent(topic, category, uniqueApproach);
     }
     
     return content;
@@ -342,7 +368,7 @@ Format the text in Markdown:
     return `
 ## Introduction to ${topic}
 
-In today's business environment, the topic of "${topic}" is increasingly important. This article focuses on key aspects from the perspective of "${uniquePerspective.uniquePerspective}".
+In today's business environment, the topic of "${topic}" is increasingly important. This article focuses on key aspects from the perspective of "${uniqueApproach.uniquePerspective}".
 
 ## Legal Framework
 
@@ -459,7 +485,7 @@ async function generateEnglishContent() {
     
     // 6. Get an image from Unsplash
     console.log("Getting image from Unsplash...");
-    const imageData = await getUnsplashImage(category);
+    const imageData = await getUnsplashImage(category, topic);
     
     // 7. Create MDX file
     console.log("Creating MDX file...");
@@ -468,7 +494,7 @@ async function generateEnglishContent() {
       subtitle: metaData.subtitle,
       date: new Date().toISOString(),
       description: metaData.description,
-      image: imageData.url,
+      image: imageData.path,
       category: category,
       tags: metaData.tags.split(',').map(tag => tag.trim()),
       author: author.name,
@@ -476,7 +502,7 @@ async function generateEnglishContent() {
       authorImage: author.image,
       authorBio: author.bio,
       readTime: metaData.readTime,
-      imageCredit: imageData.credit,
+      imageCredit: imageData.photographer,
       generatedTopic: topic,
       uniqueApproach: topicResult.uniquePerspective
     };
@@ -522,7 +548,7 @@ ${articleContent}`;
       success: true,
       title: metaData.title,
       slug: slug,
-      imagePath: imageData.url,
+      imagePath: imageData.path,
       topic: topic,
       category: category
     };

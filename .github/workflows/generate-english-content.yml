@@ -29,11 +29,12 @@ jobs:
         run: npm ci
       
       - name: Ensure directories exist
-        run: mkdir -p content/posts-en
+        run: mkdir -p content/posts-en public/images/unsplash
       
       - name: Generate English Content
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: node scripts/generate-english-content.js
       
       - name: Sync with remote
@@ -45,7 +46,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add content/posts-en
+          git add content/posts-en public/images/unsplash
           git commit -m "chore: auto-generated English article [skip ci]" || echo "No changes to commit"
       
       - name: Push changes

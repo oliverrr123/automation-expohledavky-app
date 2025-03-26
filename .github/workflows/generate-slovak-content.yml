@@ -4,9 +4,9 @@ on:
   # Manual trigger
   workflow_dispatch:
   
-  # Scheduled trigger - every day at 10 AM UTC
+  # Scheduled trigger - every day at 9 AM UTC
   schedule:
-    - cron: '0 10 * * *'
+    - cron: '0 9 * * *'
 
 permissions:
   contents: write

@@ -3,7 +3,7 @@ name: Generate Czech Content
 on:
   workflow_dispatch:  # Manual trigger
   schedule:
-    - cron: '0 10 * * *'  # 10 AM UTC, every day
+    - cron: '0 9 * * *'  # 9 AM UTC, every day
 
 permissions:
   contents: write  # Permission to write to the repository

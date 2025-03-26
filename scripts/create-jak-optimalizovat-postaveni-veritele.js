@@ -1,39 +1,40 @@
----
-title: Jak optimalizovat postavení věřitele v insolvenci v ČR
-subtitle: Strategie pro zvýšení návratnosti pohledávek v českém insolvenčním řízení
-date: '2025-03-27T19:41:57.298Z'
-description: >-
-  Získejte přehled o strategiích pro maximalizaci návratnosti pohledávek v
-  insolvenci.
-image: /images/unsplash/insolvence-8d187bea83.jpg
-category: Insolvence
-tags:
-  - insolvence
-  - věřitelé
-  - pohledávky
-  - české právo
-  - optimalizace
-author: Jan Novák
-authorPosition: Specialista na pohledávky
-authorImage: /images/authors/cs/jan-novk.jpg
-authorBio: >-
-  Specialista na správu a vymáhání pohledávek s více než 10 lety zkušeností v
-  oboru.
-readTime: 8
-imageCredit: Deniz Altindas on Unsplash
-generatedTopic: >-
-  "Optimalizace postavení věřitele v insolvenčním řízení: Strategie pro
-  maximalizaci návratnosti pohledávek v českém právním prostředí"
-uniqueApproach: >-
-  Článek nabízí pohled na optimalizaci postavení věřitele v českém insolvenčním
-  řízení jako dynamický proces, který vyžaduje kombinaci právních znalostí a
-  ekonomické předvídavosti. Místo tradičního zaměření se pouze na právní
-  aspekty, článek integruje finanční analýzu a strategie rizikového managementu,
-  čímž poskytuje komplexní přístup pro obchodní profesionály. Zaměřuje se také
-  na proaktivní a kolaborativní přístupy mezi věřiteli, které se často
-  přehlížejí, ale mohou být klíčové pro úspěšné vymožení pohledávek.
----
-# Optimalizace postavení věřitele v insolvenčním řízení: Strategie pro maximalizaci návratnosti pohledávek v českém právním prostředí
+const fs = require('fs');
+const path = require('path');
+const matter = require('gray-matter');
+
+/**
+ * Create the missing article for "Jak optimalizovat postavení věřitele v insolvenci v ČR"
+ * Since the original source file with the long name may not exist, this script creates the article from scratch
+ */
+const createOptimalizaceArticle = () => {
+  // Target file path with proper slug
+  const targetFilePath = path.join(
+    process.cwd(),
+    'content',
+    'posts-cs',
+    '2025-03-27-jak-optimalizovat-postaveni-veritele-v-insolvenci-v-cr.mdx'
+  );
+  
+  // Check if file already exists
+  if (fs.existsSync(targetFilePath)) {
+    console.log('Article file already exists, no need to create it.');
+    return { success: true, skipped: true, path: targetFilePath };
+  }
+
+  // Create frontmatter data
+  const frontmatterData = {
+    title: 'Jak optimalizovat postavení věřitele v insolvenci v ČR',
+    date: '2025-03-27T12:00:00.000Z',
+    description: 'Strategie pro maximalizaci návratnosti pohledávek v českém právním prostředí',
+    image: '/images/default-business.jpg',
+    author: 'Jan Novák',
+    authorPosition: 'Specialista na pohledávky',
+    authorImage: '/images/authors/cs/jan-novak.png',
+    readTime: '7 min'
+  };
+
+  // Article content
+  const articleContent = `# Optimalizace postavení věřitele v insolvenčním řízení: Strategie pro maximalizaci návratnosti pohledávek v českém právním prostředí
 
 ## Úvod
 
@@ -49,7 +50,7 @@ Optimalizace postavení věřitele v insolvenčním řízení je klíčová pro 
 
 ### Nedávné legislativní změny a precedenční judikatura
 
-Novela z roku 2022 zavedla nové mechanismy pro zajištění větší transparentnosti a spravedlnosti v insolvenčních řízeních. Precedenční judikatura, jako například rozhodnutí Nejvyššího soudu ve věci „Kreditní unie vs. ABC s.r.o.“, posílila roli věřitelů při kontrole dlužníkových aktivit během reorganizace. Tyto právní instrumenty umožňují věřitelům lépe chránit své zájmy a maximalizovat návratnost.
+Novela z roku 2022 zavedla nové mechanismy pro zajištění větší transparentnosti a spravedlnosti v insolvenčních řízeních. Precedenční judikatura, jako například rozhodnutí Nejvyššího soudu ve věci "Kreditní unie vs. ABC s.r.o.", posílila roli věřitelů při kontrole dlužníkových aktivit během reorganizace. Tyto právní instrumenty umožňují věřitelům lépe chránit své zájmy a maximalizovat návratnost.
 
 ## Strategie aktivního řízení pohledávek před zahájením insolvenčního řízení
 
@@ -69,7 +70,7 @@ Zajištění pohledávek hraje klíčovou roli v insolvenčním řízení. Využ
 
 ### Zajišťovací instrumenty
 
-Využití zástav na majetek dlužníka poskytuje věřitelům vyšší prioritu při rozdělování výtěžku z prodeje majetku během insolvenčního řízení. Podle odborníka na insolvence Jana Novotného: „Správně nastavené zajištění může být rozdílem mezi úplnou ztrátou a částečnou či plnou návratností pohledávky.“
+Využití zástav na majetek dlužníka poskytuje věřitelům vyšší prioritu při rozdělování výtěžku z prodeje majetku během insolvenčního řízení. Podle odborníka na insolvence Jana Novotného: "Správně nastavené zajištění může být rozdílem mezi úplnou ztrátou a částečnou či plnou návratností pohledávky."
 
 ## Role věřitelů v insolvenčním řízení
 
@@ -110,4 +111,24 @@ Optimalizace postavení věřitele v českém insolvenčním řízení je dynami
 
 ## Závěr
 
-Optimalizace postavení věřitele v insolvenčním řízení vyžaduje komplexní přístup kombinující právní, finanční a strategické aspekty. Proaktivní řízení, spolupráce mezi věřiteli a zohlednění ekonomických trendů mohou významně přispět k dosažení maximální návratnosti pohledávek. V dynamickém českém právním prostředí je klíčové neustále se přizpůsobovat a využívat všechny dostupné nástroje k ochraně vašich zájmů.
+Optimalizace postavení věřitele v insolvenčním řízení vyžaduje komplexní přístup kombinující právní, finanční a strategické aspekty. Proaktivní řízení, spolupráce mezi věřiteli a zohlednění ekonomických trendů mohou významně přispět k dosažení maximální návratnosti pohledávek. V dynamickém českém právním prostředí je klíčové neustále se přizpůsobovat a využívat všechny dostupné nástroje k ochraně vašich zájmů.`;
+
+  try {
+    // Write the file with frontmatter and content
+    fs.writeFileSync(targetFilePath, matter.stringify(articleContent, frontmatterData));
+    console.log(`Successfully created article: ${targetFilePath}`);
+    
+    return { 
+      success: true, 
+      created: true,
+      path: targetFilePath
+    };
+  } catch (error) {
+    console.error(`Error creating article: ${error.message}`);
+    return { success: false, error: error.message };
+  }
+};
+
+// Execute the function
+const result = createOptimalizaceArticle();
+console.log('Operation result:', result); 

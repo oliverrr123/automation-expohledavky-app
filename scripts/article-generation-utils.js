@@ -283,7 +283,12 @@ const getRandomUnsplashImage = async (language = 'en') => {
     'receivables', 'activity', 'corporate', 'office', 'professional',
     'finance', 'document', 'contract', 'handshake', 'success',
     'strategy', 'analysis', 'growth', 'teamwork', 'leadership',
-    'technology', 'innovation', 'suit', 'briefcase', 'conference'
+    'technology', 'innovation', 'suit', 'briefcase', 'conference',
+    'business people', 'modern office', 'board meeting', 'financial district',
+    'business deal', 'corporate finance', 'startup', 'entrepreneur',
+    'bank', 'investment', 'accounting', 'economy', 'legal', 'lawyer',
+    'executive', 'ceo', 'manager', 'business plan', 'marketing',
+    'financial advisor', 'client meeting', 'business law', 'debt collection'
   ];
 
   // Get a random keyword

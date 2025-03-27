@@ -244,14 +244,6 @@ export default async function BlogPage() {
                   </div>
                   <div className="flex flex-col justify-center p-6 lg:py-12">
                     <div className="mb-2 flex items-center gap-2">
-                      <div className="relative h-8 w-8 overflow-hidden rounded-full">
-                        <Image
-                          src={allPosts[0].frontMatter.authorImage || "/placeholder.svg?height=120&width=120"}
-                          alt={allPosts[0].frontMatter.author || ""}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
                       <span className="text-sm text-zinc-600">{allPosts[0].frontMatter.author}</span>
                       <span className="text-xs text-zinc-400">•</span>
                       <span className="text-sm text-zinc-500">{new Date(allPosts[0].frontMatter.date).toLocaleDateString(
@@ -319,14 +311,6 @@ export default async function BlogPage() {
                     </div>
                     <div className="p-6">
                       <div className="mb-2 flex items-center gap-2">
-                        <div className="relative h-6 w-6 overflow-hidden rounded-full">
-                          <Image
-                            src={post.frontMatter.authorImage || "/placeholder.svg?height=120&width=120"}
-                            alt={post.frontMatter.author || ""}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
                         <span className="text-xs text-zinc-600">{post.frontMatter.author}</span>
                         <span className="text-xs text-zinc-400">•</span>
                         <span className="text-xs text-zinc-500">{new Date(post.frontMatter.date).toLocaleDateString(

@@ -99,17 +99,6 @@ export default async function SearchPage({
                       </div>
                       <div className="p-6">
                         <div className="mb-2 flex items-center gap-2">
-                          <div className="relative h-6 w-6 overflow-hidden rounded-full">
-                            <Image
-                              src={
-                                post.frontMatter.authorImage ||
-                                "/placeholder.svg?height=120&width=120"
-                              }
-                              alt={post.frontMatter.author || ""}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
                           <span className="text-xs text-zinc-600">
                             {post.frontMatter.author}
                           </span>

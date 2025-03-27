@@ -34,19 +34,16 @@ const authors = [
   {
     name: 'Jan Novák',
     position: 'Specialista na pohledávky',
-    image: '/placeholder.svg?height=120&width=120',
     bio: 'Specialista na správu a vymáhání pohledávek s více než 10 lety zkušeností v oboru.'
   },
   {
     name: 'Mgr. Martin Dvořák',
     position: 'Právní specialista',
-    image: '/placeholder.svg?height=120&width=120',
     bio: 'Právník specializující se na oblast obchodního práva a vymáhání pohledávek s praxí v advokacii.'
   },
   {
     name: 'Ing. Petra Svobodová',
     position: 'Finanční analytik',
-    image: '/placeholder.svg?height=120&width=120',
     bio: 'Finanční analytička zaměřující se na řízení cash flow a prevenci platební neschopnosti.'
   }
 ];
@@ -180,7 +177,6 @@ ${articleContent.substring(0, 1500)}...`;
       tags: tags,
       author: author.name,
       authorPosition: author.position,
-      authorImage: author.image,
       authorBio: author.bio,
       readTime: metaData.readTime,
       imageCredit: {

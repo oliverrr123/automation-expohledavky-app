@@ -33,32 +33,71 @@ const MIN_WORD_COUNTS = {
 async function getUnsplashImage(category, language) {
   console.log(`Getting image for category: ${category} in ${language}`);
   
-  // Define a set of reliable Unsplash image URLs that we know exist
-  const reliableImageUrls = [
-    'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40',
-    'https://images.unsplash.com/photo-1556761175-b413da4baf72',
-    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab',
-    'https://images.unsplash.com/photo-1507679799987-c73779587ccf',
-    'https://images.unsplash.com/photo-1450101499163-c8848c66ca85',
-    'https://images.unsplash.com/photo-1444653614773-995cb1ef9efa',
+  // Define a set of reliable Unsplash image URLs that we know exist, organized by language
+  const reliableImageUrlsByLanguage = {
+    cs: [
+      'https://images.unsplash.com/photo-1542744173-8e7e53415bb0',
+      'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4',
+      'https://images.unsplash.com/photo-1590402494587-44b71d7772f6',
+      'https://images.unsplash.com/photo-1554224155-6726b3ff858f',
+      'https://images.unsplash.com/photo-1638643391904-9b551ba91eaa',
+      'https://images.unsplash.com/photo-1533749047139-189de3cf06d3',
+      'https://images.unsplash.com/photo-1606836591695-4d58a73eba1e',
+      'https://images.unsplash.com/photo-1664575602276-acd073f1c829'
+    ],
+    sk: [
+      'https://images.unsplash.com/photo-1589829545856-d10d557cf95f',
+      'https://images.unsplash.com/photo-1607968565043-36af90dde238',
+      'https://images.unsplash.com/photo-1622675363311-3e1904dc1885',
+      'https://images.unsplash.com/photo-1552664688-cf412ec27db2',
+      'https://images.unsplash.com/photo-1536987333706-fc9adfb10d91',
+      'https://images.unsplash.com/photo-1576091160550-2173dba999ef',
+      'https://images.unsplash.com/photo-1535957998253-26ae1ef29506',
+      'https://images.unsplash.com/photo-1562654501-a0ccc0fc3fb1'
+    ],
+    de: [
+      'https://images.unsplash.com/photo-1488998427799-e3362cec87c3',
+      'https://images.unsplash.com/photo-1573164574572-cb89e39749b4',
+      'https://images.unsplash.com/photo-1573497491765-55ef20715def',
+      'https://images.unsplash.com/photo-1569017388730-020b5f80a004',
+      'https://images.unsplash.com/photo-1559526324-593bc073d938',
+      'https://images.unsplash.com/photo-1551836022-d5d88e9218df',
+      'https://images.unsplash.com/photo-1560250097-0b93528c311a',
+      'https://images.unsplash.com/photo-1568992687947-868a62a9f521'
+    ],
+    en: [
+      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40',
+      'https://images.unsplash.com/photo-1556761175-b413da4baf72',
+      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab',
+      'https://images.unsplash.com/photo-1507679799987-c73779587ccf',
+      'https://images.unsplash.com/photo-1450101499163-c8848c66ca85',
+      'https://images.unsplash.com/photo-1444653614773-995cb1ef9efa',
+      'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc',
+      'https://images.unsplash.com/photo-1604933762023-f0b656193913'
+    ]
+  };
+  
+  // Fallback images if language is not found
+  const fallbackImages = [
     'https://images.unsplash.com/photo-1516321318423-f06f85e504b3',
     'https://images.unsplash.com/photo-1634224143538-ce0221abca4f',
     'https://images.unsplash.com/photo-1521791136064-7986c2920216',
     'https://images.unsplash.com/photo-1577412647305-991150c7d163',
     'https://images.unsplash.com/photo-1460925895917-afdab827c52f',
     'https://images.unsplash.com/photo-1497215728101-856f4ea42174',
-    'https://images.unsplash.com/photo-1604933762023-f0b656193913',
-    'https://images.unsplash.com/photo-1664575599736-c5197c684aec',
-    'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc'
+    'https://images.unsplash.com/photo-1664575599736-c5197c684aec'
   ];
   
-  // Select a random image URL from the reliable list
-  const randomIndex = Math.floor(Math.random() * reliableImageUrls.length);
-  const baseImageUrl = reliableImageUrls[randomIndex];
+  // Get the appropriate image set for the language, or use fallback
+  const imageSet = reliableImageUrlsByLanguage[language] || fallbackImages;
+  
+  // Select a random image URL from the appropriate set
+  const randomIndex = Math.floor(Math.random() * imageSet.length);
+  const baseImageUrl = imageSet[randomIndex];
   
   // Add parameters to image URL
   const imageUrl = `${baseImageUrl}?fit=crop&w=1600&h=900&q=80`;
-  console.log(`Using reliable Unsplash image URL: ${imageUrl}`);
+  console.log(`Using reliable Unsplash image URL for ${language}: ${imageUrl}`);
   
   return {
     success: true,

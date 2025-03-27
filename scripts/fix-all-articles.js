@@ -33,29 +33,33 @@ const MIN_WORD_COUNTS = {
 async function getUnsplashImage(category, language) {
   console.log(`Getting image for category: ${category} in ${language}`);
   
-  // Instead of using the Unsplash API which has authentication issues,
-  // we'll use the direct Unsplash Source URL which doesn't require authentication
+  // Define a set of reliable Unsplash image URLs that we know exist
+  const reliableImageUrls = [
+    'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40',
+    'https://images.unsplash.com/photo-1556761175-b413da4baf72',
+    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab',
+    'https://images.unsplash.com/photo-1507679799987-c73779587ccf',
+    'https://images.unsplash.com/photo-1450101499163-c8848c66ca85',
+    'https://images.unsplash.com/photo-1444653614773-995cb1ef9efa',
+    'https://images.unsplash.com/photo-1516321318423-f06f85e504b3',
+    'https://images.unsplash.com/photo-1634224143538-ce0221abca4f',
+    'https://images.unsplash.com/photo-1521791136064-7986c2920216',
+    'https://images.unsplash.com/photo-1577412647305-991150c7d163',
+    'https://images.unsplash.com/photo-1460925895917-afdab827c52f',
+    'https://images.unsplash.com/photo-1497215728101-856f4ea42174',
+    'https://images.unsplash.com/photo-1604933762023-f0b656193913',
+    'https://images.unsplash.com/photo-1664575599736-c5197c684aec',
+    'https://images.unsplash.com/photo-1579532537598-459ecdaf39cc'
+  ];
   
-  // Build a search query based on category and language
-  let query;
-  if (language === 'en') {
-    query = `business,office,finance,${category.toLowerCase().replace(/\s+/g, ',')}`;
-  } else if (language === 'de') {
-    query = `büro,finanzen,geschäft,${category.toLowerCase().replace(/\s+/g, ',')}`;
-  } else if (language === 'sk') {
-    query = `kancelária,financie,podnikanie,${category.toLowerCase().replace(/\s+/g, ',')}`;
-  } else {
-    query = `kancelář,finance,podnikání,${category.toLowerCase().replace(/\s+/g, ',')}`;
-  }
+  // Select a random image URL from the reliable list
+  const randomIndex = Math.floor(Math.random() * reliableImageUrls.length);
+  const baseImageUrl = reliableImageUrls[randomIndex];
   
-  // Generate a unique seed to avoid getting the same image
-  const seed = Math.floor(Math.random() * 10000);
+  // Add parameters to image URL
+  const imageUrl = `${baseImageUrl}?fit=crop&w=1600&h=900&q=80`;
+  console.log(`Using reliable Unsplash image URL: ${imageUrl}`);
   
-  // Use direct Unsplash source URL
-  const imageUrl = `https://source.unsplash.com/1600x900/?${query}&sig=${seed}`;
-  console.log(`Using direct Unsplash source URL: ${imageUrl}`);
-  
-  // Fake success response with direct URL
   return {
     success: true,
     imageUrl: imageUrl,
@@ -66,20 +70,44 @@ async function getUnsplashImage(category, language) {
 
 // Function to download and save an image
 async function downloadImage(imageUrl, savePath) {
-  try {
-    console.log(`Downloading image from ${imageUrl} to ${savePath}`);
-    const response = await axios.get(imageUrl, {
-      responseType: 'arraybuffer',
-      timeout: 10000
-    });
-    
-    fs.writeFileSync(savePath, response.data);
-    console.log(`Image saved successfully`);
-    return true;
-  } catch (error) {
-    console.error(`Error downloading image: ${error.message}`);
-    return false;
+  const MAX_RETRIES = 3;
+  let attempt = 0;
+  
+  while (attempt < MAX_RETRIES) {
+    attempt++;
+    try {
+      console.log(`Downloading image (attempt ${attempt}/${MAX_RETRIES}): ${imageUrl}`);
+      
+      const response = await axios.get(imageUrl, {
+        responseType: 'arraybuffer',
+        timeout: 15000,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+      });
+      
+      if (response.status === 200 && response.data && response.data.length > 1000) {
+        fs.writeFileSync(savePath, response.data);
+        console.log(`Image saved successfully to ${savePath}`);
+        return true;
+      } else {
+        console.error(`Received invalid image data (size: ${response.data ? response.data.length : 0} bytes)`);
+        if (attempt < MAX_RETRIES) {
+          console.log(`Retrying download...`);
+          await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
+        }
+      }
+    } catch (error) {
+      console.error(`Error downloading image (attempt ${attempt}/${MAX_RETRIES}): ${error.message}`);
+      if (attempt < MAX_RETRIES) {
+        console.log(`Retrying download...`);
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
+      }
+    }
   }
+  
+  console.error(`Failed to download image after ${MAX_RETRIES} attempts`);
+  return false;
 }
 
 // Function to expand article content
@@ -126,7 +154,7 @@ ${originalContent}`;
 
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-4o",
       messages: [
         { 
           role: "system", 
@@ -333,11 +361,102 @@ async function fixAllArticles() {
   console.log(`Failed: ${results.failed}`);
 }
 
+// Special function to manually fix specific articles with issues
+async function manuallyFixSpecificArticles() {
+  console.log('\nManually fixing articles with known issues...');
+  console.log('----------------------------------------');
+  
+  // Create a list of specific problematic articles
+  const problematicArticles = [
+    { path: 'content/posts-de/2025-03-28-die-rolle-der-mediation-im-forderungsmanagement-strategien-zur-au-ergerichtlichen-konfliktlosung-im-deutschen-rechtsrahmen.mdx', lang: 'de' },
+    { path: 'content/posts-de/2025-03-27-forderungsmanagement-strategische-neuausrichtung-2023.mdx', lang: 'de' },
+    { path: 'content/posts-de/2025-03-27-strategien-zur-risikominimierung-in-der-forderungsbetreibung.mdx', lang: 'de' },
+    { path: 'content/posts-sk/2025-03-28-eticke-dilemy-vo-vymahani-pohladavok-balansovanie-medzi-zakonnymi-povinnostami-a-reputacnymi-rizikami-v-slovenskom-podnikatelskom-prostredi.mdx', lang: 'sk' },
+    { path: 'content/posts-cs/2025-03-27-makroekonomicke-vlivy-na-vymahani-pohledavek-v-cr.mdx', lang: 'cs' }
+  ];
+  
+  let fixedCount = 0;
+  
+  for (const article of problematicArticles) {
+    console.log(`\nManually fixing: ${article.path}`);
+    
+    try {
+      // Read the article file
+      const filePath = path.join(process.cwd(), article.path);
+      const fileContent = fs.readFileSync(filePath, 'utf8');
+      const { data: frontMatter, content: originalContent } = matter(fileContent);
+      
+      // Create language-specific directory if it doesn't exist
+      const blogImageDir = path.join(process.cwd(), 'public', 'images', 'blog', article.lang);
+      if (!fs.existsSync(blogImageDir)) {
+        fs.mkdirSync(blogImageDir, { recursive: true });
+      }
+      
+      // Get a reliable image
+      const imageData = await getUnsplashImage(frontMatter.category || 'business', article.lang);
+      
+      // Generate a unique filename based on the article slug
+      const fileName = path.basename(article.path, '.mdx');
+      const imageFileName = `${article.lang}-${fileName}.jpg`;
+      const imagePath = path.join(blogImageDir, imageFileName);
+      
+      // Download and save the image
+      const downloadSuccess = await downloadImage(imageData.imageUrl, imagePath);
+      
+      if (downloadSuccess) {
+        // Update frontmatter with new image path
+        frontMatter.image = `/images/blog/${article.lang}/${imageFileName}`;
+        frontMatter.imageCredit = {
+          photographer: imageData.photographer,
+          url: imageData.photographerUrl
+        };
+        
+        // Write the updated file back
+        const updatedFileContent = matter.stringify(originalContent, frontMatter);
+        fs.writeFileSync(filePath, updatedFileContent);
+        
+        console.log(`Successfully fixed image for: ${path.basename(article.path)}`);
+        fixedCount++;
+      } else {
+        // Fall back to the default image
+        frontMatter.image = '/images/default-business.jpg';
+        frontMatter.imageCredit = {
+          photographer: 'Default Image',
+          url: 'https://unsplash.com/'
+        };
+        
+        // Write the updated file back
+        const updatedFileContent = matter.stringify(originalContent, frontMatter);
+        fs.writeFileSync(filePath, updatedFileContent);
+        
+        console.log(`Applied default image for: ${path.basename(article.path)}`);
+        fixedCount++;
+      }
+    } catch (error) {
+      console.error(`Error fixing article ${article.path}:`, error);
+    }
+  }
+  
+  console.log('\nManual fixes complete:');
+  console.log(`Fixed ${fixedCount} articles out of ${problematicArticles.length}`);
+}
+
 // Run the process
-fixAllArticles().then(() => {
-  console.log('Article fixing completed successfully.');
-  process.exit(0);
-}).catch(error => {
-  console.error('Fatal error:', error);
-  process.exit(1);
-}); 
+async function runFixes() {
+  try {
+    // First, manually fix specific problematic articles
+    await manuallyFixSpecificArticles();
+    
+    // Then run the general fix for all articles
+    await fixAllArticles();
+    
+    console.log('Article fixing completed successfully.');
+    process.exit(0);
+  } catch (error) {
+    console.error('Fatal error:', error);
+    process.exit(1);
+  }
+}
+
+// Start the fixing process
+runFixes(); 

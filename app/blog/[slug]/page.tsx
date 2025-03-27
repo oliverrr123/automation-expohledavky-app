@@ -8,6 +8,26 @@ import { getPostBySlug, getAllPostSlugs, getAllPosts } from '@/lib/posts';
 import MDXContent from '@/components/mdx-content';
 import { getCurrentLocale } from '@/lib/server-locale';
 
+// Generate static paths for all blog posts in all languages
+export async function generateStaticParams() {
+  const locales = ['cs', 'sk', 'de', 'en'];
+  let paths = [];
+
+  for (const locale of locales) {
+    try {
+      const slugs = await getAllPostSlugs(locale);
+      const localePaths = slugs.map(slug => ({
+        slug: slug
+      }));
+      paths.push(...localePaths);
+    } catch (error) {
+      console.error(`Error generating paths for locale ${locale}:`, error);
+    }
+  }
+
+  return paths;
+}
+
 // Metadata for SEO
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   // Get the locale from server context

@@ -18,7 +18,7 @@ const nextConfig = {
   
   // Add image domains configuration
   images: {
-    domains: ['i.ibb.co', 'images.unsplash.com'],
+    domains: ['i.ibb.co', 'images.unsplash.com', 'source.unsplash.com'],
   },
 };
 

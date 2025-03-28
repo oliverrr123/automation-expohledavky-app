@@ -321,7 +321,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
             {/* Article Excerpt */}
             {post.frontMatter.excerpt && (
-              <div className="mb-8 rounded-lg bg-zinc-100 p-6 text-lg text-zinc-700">
+              <div className="mb-8 text-lg text-zinc-700 italic">
                 {post.frontMatter.excerpt}
               </div>
             )}

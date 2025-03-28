@@ -58,7 +58,8 @@ jobs:
       
       - name: Commit changes
         run: |
-          git add content/
+          git add content/posts-*
+          git add content/images/
           git diff --staged --quiet || git commit -m "Add daily generated content for $(date +'%Y-%m-%d')"
       
       - name: Push changes

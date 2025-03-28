@@ -1,6 +1,70 @@
 # Systém generování obsahu
 
-Tento adresář obsahuje skripty pro automatické generování obsahu blogu v několika jazycích pro platformu ExpoHledávky.
+Tento systém automaticky generuje obsah pro blog ExPohledávky v různých jazycích pomocí OpenAI GPT-4o a Unsplash API.
+
+## Struktura
+
+- **Články** jsou uloženy v adresářích podle jazyka:
+  - `content/posts-cs/` - české články
+  - `content/posts-sk/` - slovenské články 
+  - `content/posts-de/` - německé články
+  - `content/posts-en/` - anglické články
+  - `content/posts/` - starší české články (pro zpětnou kompatibilitu)
+
+- **Obrázky** jsou uloženy v `content/images/{jazyk}/`:
+  - `content/images/cs/` - obrázky pro české články
+  - `content/images/sk/` - obrázky pro slovenské články
+  - `content/images/de/` - obrázky pro německé články
+  - `content/images/en/` - obrázky pro anglické články
+
+## Použité technologie
+
+- **OpenAI GPT-4o** - generování textu článků
+- **Unsplash API** - získávání obrázků
+- **GitHub Actions** - automatické spouštění generování obsahu
+- **Next.js** - zobrazování článků a obrázků
+
+## Proces generování
+
+1. Skript `generate-content.js` řídí celý proces generování
+2. Pro každý jazyk:
+   - Vybere kategorii
+   - Vygeneruje téma pomocí OpenAI
+   - Vygeneruje obsah článku pomocí OpenAI
+   - Stáhne obrázek z Unsplash
+   - Vytvoří MDX soubor s obsahem a metadaty
+
+## Zobrazování
+
+- Články jsou zobrazovány pomocí Next.js v `/blog/[slug]`
+- Obrázky jsou servírovány přes API endpoint `/api/content-images/[lang]/[file]`
+- Redirecty jsou nastaveny v `next.config.js`
+
+## Spuštění manuálně
+
+```bash
+# Generování článků pro všechny jazyky
+node scripts/generate-content.js
+
+# Generování článků pro specifické jazyky
+node scripts/generate-content.js cs sk
+```
+
+## GitHub Actions
+
+Automatické generování obsahu probíhá každý den v 09:00 UTC.
+
+Workflow je definován v `.github/workflows/generate-daily-content.yml`.
+
+## Oprava 404 chyb u obrázků
+
+Obrázky z Unsplash jsou nyní ukládány do `content/images/{jazyk}/` místo `public/images/blog/{jazyk}/`, což zajišťuje:
+
+1. Verzování obrázků v Git repozitáři
+2. Persistenci obrázků mezi buildy
+3. Automatické commity změn v GitHub Actions
+
+API endpoint `/api/content-images/[lang]/[...file]` zajišťuje servírování obrázků z této nové cesty.
 
 ## Přehled
 
@@ -62,15 +126,6 @@ Každý vygenerovaný článek obsahuje:
 - Hlavní obsah rozdělený do sekcí
 - Závěr
 - Příklady a citace od fiktivních odborníků z oboru
-
-## Výstupní adresáře
-
-Vygenerované články jsou uloženy v následujících adresářích:
-
-- Čeština: `/content/posts-cs/`
-- Slovenština: `/content/posts-sk/`
-- Němčina: `/content/posts-de/`
-- Angličtina: `/content/posts-en/`
 
 ## Přizpůsobení
 

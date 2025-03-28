@@ -19,6 +19,7 @@ const {
 // Konfigurace pro OpenAI API
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
+  defaultModel: "gpt-4o",
 });
 
 // Konfigurace pro všechny jazyky

@@ -195,11 +195,15 @@ async function getArticleImage(category, topic, language = 'en') {
     // Create a specific path for this image
     const slug = createSlug(topic);
     const imageName = `${slug}-${timestamp}.jpg`;
-    const imagePath = `/images/blog/${language}/${imageName}`;
-    const localImagePath = path.join(process.cwd(), 'public', imagePath);
+    
+    // Změna: Ukládáme obrázky do content/images místo public/images
+    // Toto zajistí, že obrázky budou verzovány v git repozitáři
+    const contentImageDir = path.join('content', 'images', language);
+    const imagePath = path.join(contentImageDir, imageName);
+    const publicPath = `/images/${language}/${imageName}`;
     
     // Ensure directory exists
-    const dir = path.dirname(localImagePath);
+    const dir = path.join(process.cwd(), contentImageDir);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
@@ -208,10 +212,12 @@ async function getArticleImage(category, topic, language = 'en') {
     const response = await fetch(imageUrl);
     if (response.ok) {
       const buffer = await response.buffer();
-      fs.writeFileSync(localImagePath, buffer);
+      fs.writeFileSync(path.join(process.cwd(), imagePath), buffer);
+      
+      console.log(`Image saved to: ${imagePath}`);
       
       return {
-        path: imagePath,
+        path: publicPath,
         photographer: {
           name: "Unsplash",
           link: "https://unsplash.com"

@@ -20,6 +20,16 @@ const nextConfig = {
   images: {
     domains: ['i.ibb.co', 'images.unsplash.com', 'source.unsplash.com'],
   },
+  
+  // Konfigurace pro zpřístupnění obrázků z content/images
+  async rewrites() {
+    return [
+      {
+        source: '/images/:lang/:file',
+        destination: '/api/content-images/:lang/:file',
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig; 

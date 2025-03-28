@@ -1,12 +1,35 @@
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Calendar, Share2, BookOpen, Facebook, Linkedin, Mail, Twitter } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getPostBySlug, getAllPostSlugs, getAllPosts } from '@/lib/posts';
 import MDXContent from '@/components/mdx-content';
-import { getCurrentLocale } from '@/lib/server-locale';
+import { BlogImage } from '@/components/blog-image';
+import { headers } from 'next/headers';
+
+// Funkce pro získání lokalizace na serveru
+function getServerLocale(): string {
+  // Získání informací z hlaviček (hostname)
+  const headersList = headers();
+  const hostname = headersList.get('host') || '';
+  const domain = hostname.split(':')[0];
+  
+  // Vyhodnocení domény
+  if (domain.includes('expohledavky.com')) return 'en';
+  if (domain.includes('expohledavky.sk')) return 'sk';
+  if (domain.includes('expohledavky.de')) return 'de';
+  if (domain.includes('expohledavky.cz')) return 'cs';
+  
+  // Vývoj - subdomény
+  if (domain.startsWith('en.')) return 'en';
+  if (domain.startsWith('sk.')) return 'sk';
+  if (domain.startsWith('de.')) return 'de';
+  if (domain.startsWith('cs.')) return 'cs';
+  
+  // Výchozí je čeština
+  return 'cs';
+}
 
 // Generate static paths for all blog posts in all languages
 export async function generateStaticParams() {
@@ -39,7 +62,7 @@ export async function generateStaticParams() {
 // Metadata for SEO
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   // Get the locale from server context
-  const locale = getCurrentLocale();
+  const locale = getServerLocale();
   const post = await getPostBySlug(params.slug, locale);
   
   // Handle case when post doesn't exist
@@ -71,7 +94,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   // Get the locale from server context
-  const locale = getCurrentLocale();
+  const locale = getServerLocale();
   
   // Get post content based on locale
   const post = await getPostBySlug(params.slug, locale);
@@ -191,6 +214,29 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                  '90% collection success rate'
   };
 
+  // Funkce pro normalizaci cesty k obrázku
+  const normalizeSrc = (src: string) => {
+    if (!src) return '/images/placeholder.jpg';
+    if (src.startsWith('http')) return src;
+    
+    // Zpracování různých formátů cest
+    if (src.startsWith('/images/blog/')) {
+      // Starý formát
+      const parts = src.replace('/images/blog/', '').split('/');
+      if (parts.length >= 2) {
+        const imgLang = parts[0];
+        const imgFile = parts.slice(1).join('/');
+        return `/images/${imgLang}/${imgFile}`;
+      }
+    } else if (src.startsWith('/images/')) {
+      return src;
+    } else if (!src.startsWith('/')) {
+      return `/images/${locale}/${src}`;
+    }
+    
+    return src;
+  };
+
   return (
     <article className="min-h-screen bg-gray-50 pb-16 pt-32">
       {/* Breadcrumbs */}
@@ -263,13 +309,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             {post.frontMatter.image && (
               <div className="mb-8 overflow-hidden rounded-xl">
                 <div className="relative aspect-[21/9]">
-                  <Image
+                  <BlogImage
                     src={post.frontMatter.image}
                     alt={post.frontMatter.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 800px"
-                    priority
+                    className="rounded-xl"
+                    locale={locale}
                   />
                 </div>
               </div>
@@ -312,7 +356,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             {/* Article Content */}
             <div className={`lg:order-1 ${headings.length > 0 ? 'lg:w-3/4' : 'w-full'}`}>
               <div className="prose prose-zinc prose-lg mx-auto">
-                <MDXContent source={post.mdxSource} />
+                <MDXContent source={post.mdxSource} locale={locale} />
               </div>
 
               {/* CTA Section */}
@@ -426,11 +470,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                         <div className="rounded-lg border border-gray-200 overflow-hidden hover:border-orange-200 transition-all duration-300">
                           {relatedPost.frontMatter.image && (
                             <div className="relative aspect-[16/9]">
-                              <Image
+                              <BlogImage
                                 src={relatedPost.frontMatter.image}
                                 alt={relatedPost.frontMatter.title}
-                                fill
-                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                locale={locale}
                               />
                             </div>
                           )}

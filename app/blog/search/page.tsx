@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Clock, X } from "lucide-react";
-import { searchPosts } from "@/lib/posts";
+import { searchPosts, PostData } from "@/lib/posts";
 import { Button } from "@/components/ui/button";
 import { getCurrentLocale } from "@/lib/server-locale";
 
@@ -41,7 +41,63 @@ export default async function SearchPage({
     clearSearch: locale === 'cs' ? 'Zrušit vyhledávání' :
                  locale === 'sk' ? 'Zrušiť vyhľadávanie' :
                  locale === 'de' ? 'Suche löschen' :
-                 'Clear search'
+                 'Clear search',
+  };
+
+  // Function to render one article card
+  const renderArticleCard = (post: PostData) => {
+    return (
+      <div
+        key={post.slug}
+        className="transform transition-all duration-500 ease-in-out hover:scale-[1.03]"
+      >
+        <Link href={`/blog/${post.slug}`} className="group">
+          <article className="h-full overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg">
+            <div className="relative aspect-[16/9]">
+              <Image
+                src={post.frontMatter.image || "/placeholder.jpg"}
+                alt={post.frontMatter.title}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                <div className="rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white inline">
+                  {post.frontMatter.category}
+                </div>
+              </div>
+            </div>
+            <div className="p-6">
+              <div className="mb-2 flex items-center gap-2">
+                <span className="text-xs text-zinc-600">
+                  {post.frontMatter.author}
+                </span>
+                <span className="text-xs text-zinc-400">•</span>
+                <span className="text-xs text-zinc-500">
+                  {new Date(post.frontMatter.date).toLocaleDateString(
+                    locale === 'cs' ? 'cs-CZ' :
+                    locale === 'sk' ? 'sk-SK' :
+                    locale === 'de' ? 'de-DE' :
+                    'en-US',
+                    { day: 'numeric', month: 'long', year: 'numeric' }
+                  )}
+                </span>
+              </div>
+              <h3 className="mb-2 text-xl font-bold text-zinc-900 group-hover:text-orange-500 transition-colors">
+                {post.frontMatter.title}
+              </h3>
+              <p className="mb-4 text-sm text-zinc-600">
+                {post.frontMatter.description}
+              </p>
+              <div className="mt-auto flex items-center gap-1 text-sm text-zinc-500">
+                <Clock className="h-4 w-4" />
+                {post.frontMatter.readTime || 
+                 `${Math.ceil((post.frontMatter.description?.length || 0) / 1000)} min`}
+              </div>
+            </div>
+          </article>
+        </Link>
+      </div>
+    );
   };
 
   return (
@@ -77,58 +133,7 @@ export default async function SearchPage({
             </div>
           ) : (
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 px-6">
-              {searchResults.map((post, index) => (
-                <div
-                  key={post.slug}
-                  className="transform transition-all duration-500 ease-in-out hover:scale-[1.03]"
-                >
-                  <Link href={`/blog/${post.slug}`} className="group">
-                    <article className="h-full overflow-hidden rounded-xl bg-white shadow-md transition-shadow hover:shadow-lg">
-                      <div className="relative aspect-[16/9]">
-                        <Image
-                          src={post.frontMatter.image || "/placeholder.jpg"}
-                          alt={post.frontMatter.title}
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                          <div className="rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white inline">
-                            {post.frontMatter.category}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="p-6">
-                        <div className="mb-2 flex items-center gap-2">
-                          <span className="text-xs text-zinc-600">
-                            {post.frontMatter.author}
-                          </span>
-                          <span className="text-xs text-zinc-400">•</span>
-                          <span className="text-xs text-zinc-500">
-                            {new Date(post.frontMatter.date).toLocaleDateString(
-                              locale === 'cs' ? 'cs-CZ' :
-                              locale === 'sk' ? 'sk-SK' :
-                              locale === 'de' ? 'de-DE' :
-                              'en-US',
-                              { day: 'numeric', month: 'long', year: 'numeric' }
-                            )}
-                          </span>
-                        </div>
-                        <h3 className="mb-2 text-xl font-bold text-zinc-900 group-hover:text-orange-500 transition-colors">
-                          {post.frontMatter.title}
-                        </h3>
-                        <p className="mb-4 text-sm text-zinc-600">
-                          {post.frontMatter.description}
-                        </p>
-                        <div className="mt-auto flex items-center gap-1 text-sm text-zinc-500">
-                          <Clock className="h-4 w-4" />
-                          {post.frontMatter.readTime || 
-                           `${Math.ceil((post.frontMatter.description?.length || 0) / 1000)} min`}
-                        </div>
-                      </div>
-                    </article>
-                  </Link>
-                </div>
-              ))}
+              {searchResults.map((post) => renderArticleCard(post))}
             </div>
           )}
         </section>

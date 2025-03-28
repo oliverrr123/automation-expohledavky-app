@@ -66,6 +66,29 @@ Obrázky z Unsplash jsou nyní ukládány do `content/images/{jazyk}/` místo `p
 
 API endpoint `/api/content-images/[lang]/[...file]` zajišťuje servírování obrázků z této nové cesty.
 
+### Vylepšení získávání obrázků
+
+Systém nyní používá oficiální Unsplash API místo neoficiálního endpointu, což přináší:
+
+- Spolehlivější stahování obrázků
+- Informace o autorovi obrázku
+- Dodržování limitů API a licenčních podmínek
+- Více kontroly nad velikostí a kvalitou obrázků
+
+V případě selhání Unsplash API nebo chybějícího API klíče systém poskytuje několik fallback mechanismů:
+
+1. Pokus o získání obrázku z neoficiálního endpointu source.unsplash.com
+2. Použití předgenerovaného placeholder obrázku
+3. Vytvoření základního placeholder souboru jako poslední možnost
+
+### Kontrola konfigurace
+
+Před generováním obsahu systém nyní kontroluje:
+
+- Přítomnost OPENAI_API_KEY a UNSPLASH_ACCESS_KEY
+- Připojení k Unsplash API pomocí jednoduchého testu
+- Vytváří placeholder obrázek pro fallback případy
+
 ## Přehled
 
 Systém generuje odborné články na témata související se správou pohledávek, vymáháním dluhů a finančním řízením. Obsah je generován ve čtyřech jazycích:

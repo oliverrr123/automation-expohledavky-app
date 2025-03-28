@@ -187,17 +187,14 @@ async function getArticleImage(category, topic, language = 'en') {
     
     // Select random search term and combine with category
     const searchTerm = `${getRandomElement(searchTerms)} ${category}`;
+    console.log(`Using search term for Unsplash: "${searchTerm}"`);
     
-    // Create a timestamp-based unique ID to prevent caching
+    // Timestamp pro unikátní soubor
     const timestamp = Date.now();
-    const imageUrl = `https://source.unsplash.com/1600x900/?${encodeURIComponent(searchTerm)}&t=${timestamp}`;
-    
-    // Create a specific path for this image
     const slug = createSlug(topic);
     const imageName = `${slug}-${timestamp}.jpg`;
     
-    // Změna: Ukládáme obrázky do content/images místo public/images
-    // Toto zajistí, že obrázky budou verzovány v git repozitáři
+    // Cesta pro uložení obrázku
     const contentImageDir = path.join('content', 'images', language);
     const imagePath = path.join(contentImageDir, imageName);
     const publicPath = `/images/${language}/${imageName}`;
@@ -208,28 +205,124 @@ async function getArticleImage(category, topic, language = 'en') {
       fs.mkdirSync(dir, { recursive: true });
     }
     
-    // Download the image
-    const response = await fetch(imageUrl);
-    if (response.ok) {
-      const buffer = await response.buffer();
-      fs.writeFileSync(path.join(process.cwd(), imagePath), buffer);
+    // Kontrola přítomnosti API klíče
+    if (!process.env.UNSPLASH_ACCESS_KEY) {
+      console.error("⚠️ UNSPLASH_ACCESS_KEY is not set! Using fallback method.");
+      // Fallback na neoficiální endpoint jako záloha
+      const fallbackUrl = `https://source.unsplash.com/1600x900/?${encodeURIComponent(searchTerm)}`;
+      const response = await fetch(fallbackUrl);
+      if (response.ok) {
+        const buffer = await response.buffer();
+        fs.writeFileSync(path.join(process.cwd(), imagePath), buffer);
+        console.log(`Image saved using fallback method: ${imagePath}`);
+        return {
+          path: publicPath,
+          photographer: {
+            name: "Unsplash",
+            link: "https://unsplash.com"
+          }
+        };
+      }
+    } else {
+      // Používáme oficiální Unsplash API s autorizací
+      console.log("Using official Unsplash API with access key");
+      const apiUrl = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(searchTerm)}&orientation=landscape&count=1&client_id=${process.env.UNSPLASH_ACCESS_KEY}`;
       
-      console.log(`Image saved to: ${imagePath}`);
-      
-      return {
-        path: publicPath,
-        photographer: {
-          name: "Unsplash",
-          link: "https://unsplash.com"
+      try {
+        const response = await fetch(apiUrl, {
+          headers: {
+            'Accept-Version': 'v1'
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Unsplash API returned status: ${response.status}`);
         }
-      };
+        
+        const data = await response.json();
+        
+        if (!data || (Array.isArray(data) && data.length === 0)) {
+          throw new Error("No images returned from Unsplash API");
+        }
+        
+        // Zpracování výsledku - získáme první obrázek z výsledků
+        const image = Array.isArray(data) ? data[0] : data;
+        const imageUrl = image.urls.regular || image.urls.full;
+        
+        // Stažení obrázku
+        const imageResponse = await fetch(imageUrl);
+        if (!imageResponse.ok) {
+          throw new Error(`Failed to download image: ${imageResponse.status}`);
+        }
+        
+        const buffer = await imageResponse.buffer();
+        fs.writeFileSync(path.join(process.cwd(), imagePath), buffer);
+        
+        console.log(`Image saved to: ${imagePath}`);
+        console.log(`Photo by: ${image.user.name} (${image.user.links.html})`);
+        
+        return {
+          path: publicPath,
+          photographer: {
+            name: image.user.name,
+            link: image.user.links.html
+          }
+        };
+      } catch (apiError) {
+        console.error("Error using Unsplash API:", apiError);
+        // Fallback na neoficiální endpoint v případě chyby
+        console.log("Falling back to unofficial Unsplash endpoint");
+        const fallbackUrl = `https://source.unsplash.com/1600x900/?${encodeURIComponent(searchTerm)}`;
+        const response = await fetch(fallbackUrl);
+        if (response.ok) {
+          const buffer = await response.buffer();
+          fs.writeFileSync(path.join(process.cwd(), imagePath), buffer);
+          console.log(`Image saved using fallback method: ${imagePath}`);
+          return {
+            path: publicPath,
+            photographer: {
+              name: "Unsplash",
+              link: "https://unsplash.com"
+            }
+          };
+        }
+      }
     }
     
     throw new Error("Failed to download image from Unsplash");
   } catch (error) {
     console.error("Error getting image:", error);
+    
+    // Vytvoření fallback placeholder obrázku
+    console.log("Creating a basic placeholder image");
+    
+    // Zajistíme, že adresář pro placeholder existuje
+    const contentImageDir = path.join('content', 'images', language);
+    const dir = path.join(process.cwd(), contentImageDir);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    
+    // Vytvoření jednoduchého placeholder obrázku s textem
+    const timestamp = Date.now();
+    const slug = createSlug(topic);
+    const imageName = `placeholder-${slug}-${timestamp}.jpg`;
+    const imagePath = path.join(contentImageDir, imageName);
+    const publicPath = `/images/${language}/${imageName}`;
+    
+    // Kopírujeme základní placeholder z public do content/images
+    const placeholderPath = path.join(process.cwd(), 'public', 'images', 'placeholder.jpg');
+    if (fs.existsSync(placeholderPath)) {
+      fs.copyFileSync(placeholderPath, path.join(process.cwd(), imagePath));
+      console.log(`Copied placeholder image to: ${imagePath}`);
+    } else {
+      // Pokud není k dispozici placeholder, vytvoříme prázdný soubor
+      fs.writeFileSync(path.join(process.cwd(), imagePath), Buffer.from(''));
+      console.log(`Created empty placeholder file: ${imagePath}`);
+    }
+    
     return {
-      path: "/images/placeholder.jpg",
+      path: publicPath,
       photographer: {
         name: "Placeholder",
         link: "#"

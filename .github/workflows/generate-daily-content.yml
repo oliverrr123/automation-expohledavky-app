@@ -38,6 +38,24 @@ jobs:
       - name: Set environment variables
         run: |
           echo "TZ=UTC" >> $GITHUB_ENV
+          echo "API_KEY_STATUS=✓" >> $GITHUB_ENV
+          # Kontrola API klíčů
+          if [ -z "${{ secrets.OPENAI_API_KEY }}" ]; then
+            echo "❌ ERROR: OPENAI_API_KEY is not set"
+            exit 1
+          else
+            echo "✅ OpenAI API key is configured"
+          fi
+          
+          if [ -z "${{ secrets.UNSPLASH_ACCESS_KEY }}" ]; then
+            echo "⚠️ WARNING: UNSPLASH_ACCESS_KEY is not set, will use fallback methods"
+          else
+            echo "✅ Unsplash API key is configured"
+          fi
+      
+      - name: Create placeholder image
+        run: |
+          node scripts/create-placeholder.js
       
       - name: Generate content
         run: |

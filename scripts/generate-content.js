@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { OpenAI } = require('openai');
 const matter = require('gray-matter');
+const { execSync } = require('child_process');
 
 // Import shared utilities
 const { 
@@ -21,6 +22,70 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
   defaultModel: "gpt-4o",
 });
+
+// Kontrola konfigurace a vytvoření placeholder obrázků
+function checkConfiguration() {
+  console.log('===== Kontrola konfigurace systému =====');
+  
+  // Kontrola OpenAI API klíče
+  if (!process.env.OPENAI_API_KEY) {
+    console.error('❌ OPENAI_API_KEY není nastaven! Generování obsahu nebude fungovat.');
+    process.exit(1);
+  } else {
+    console.log('✅ OPENAI_API_KEY je nastaven');
+  }
+  
+  // Kontrola Unsplash API klíče
+  if (!process.env.UNSPLASH_ACCESS_KEY) {
+    console.warn('⚠️ UNSPLASH_ACCESS_KEY není nastaven! Obrázky budou získány alternativní cestou.');
+  } else {
+    console.log('✅ UNSPLASH_ACCESS_KEY je nastaven');
+    
+    // Ověření klíče zjednodušeným testem
+    try {
+      console.log('Testování připojení k Unsplash API...');
+      const testCmd = `curl -s -o /dev/null -w "%{http_code}" "https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH_ACCESS_KEY}"`;
+      const statusCode = execSync(testCmd).toString().trim();
+      
+      if (statusCode === '200' || statusCode === '403') {
+        console.log(`✅ Unsplash API test prošel (status: ${statusCode})`);
+      } else {
+        console.warn(`⚠️ Unsplash API vrátilo neočekávaný status: ${statusCode}`);
+      }
+    } catch (error) {
+      console.warn('⚠️ Test připojení k Unsplash API selhal');
+    }
+  }
+  
+  // Vytvoření placeholder obrázku pro fallback
+  console.log('Vytvářím placeholder obrázek...');
+  try {
+    execSync('node scripts/create-placeholder.js');
+    console.log('✅ Placeholder obrázek vytvořen');
+  } catch (error) {
+    console.warn('⚠️ Nepodařilo se vytvořit placeholder obrázek:', error.message);
+    
+    // Vytvoření jednoduchého prázdného placeholder souboru jako záloha
+    try {
+      const dir = path.join(process.cwd(), 'public', 'images');
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      const placeholderPath = path.join(dir, 'placeholder.jpg');
+      if (!fs.existsSync(placeholderPath)) {
+        fs.writeFileSync(placeholderPath, Buffer.from(''));
+        console.log('✅ Vytvořen prázdný placeholder soubor');
+      }
+    } catch (err) {
+      console.error('❌ Nepodařilo se vytvořit žádný placeholder:', err.message);
+    }
+  }
+  
+  console.log('=======================================');
+}
+
+// Volání kontroly konfigurace před generováním
+checkConfiguration();
 
 // Konfigurace pro všechny jazyky
 const config = {

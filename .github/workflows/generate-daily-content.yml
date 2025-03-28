@@ -1,0 +1,47 @@
+name: Daily Content Generation
+
+on:
+  schedule:
+    # Run every day at 9:00 AM UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    # Allow manual triggering of the workflow
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Set environment variables
+        run: |
+          echo "TZ=UTC" >> $GITHUB_ENV
+      
+      - name: Generate content
+        run: node scripts/generate-all-content.js
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+      
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+      
+      - name: Commit and push new content
+        run: |
+          git add content/
+          git diff --staged --quiet || (git commit -m "Add daily generated content for $(date +'%Y-%m-%d')" && git push) 

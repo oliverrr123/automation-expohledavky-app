@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Search, ArrowRight, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { getAllPosts } from "@/lib/posts"
+import { getAllPosts, getAllPostSlugs } from "@/lib/posts"
 import { getCurrentLocale } from "@/lib/server-locale"
 // Import translations for each language
 import csBlogPage from '@/locales/cs/blog-page.json'
@@ -14,6 +14,7 @@ import deBlogPage from '@/locales/de/blog-page.json'
 export default async function BlogPage() {
   // Get current locale from server
   const locale = getCurrentLocale();
+  console.log(`Rendering blog page for locale: ${locale}`);
   
   // Get translations based on locale
   let translations;
@@ -33,6 +34,12 @@ export default async function BlogPage() {
   
   // Get all blog posts for the current locale only
   const allPosts = await getAllPosts(locale);
+  console.log(`Retrieved ${allPosts.length} posts for locale: ${locale}`);
+  
+  // If there are posts, log some sample data
+  if (allPosts.length > 0) {
+    console.log(`First post: ${allPosts[0].slug} - ${allPosts[0].frontMatter.title}`);
+  }
   
   // If there are no posts for this locale, show an empty state
   if (allPosts.length === 0) {
@@ -406,5 +413,29 @@ export default async function BlogPage() {
       </div>
     </div>
   )
+}
+
+// Generate static paths for all blog posts in all languages
+export async function generateStaticParams() {
+  const locales = ['cs', 'sk', 'de', 'en'];
+  let paths = [];
+
+  for (const locale of locales) {
+    try {
+      console.log(`Generating static paths for locale: ${locale}`);
+      const slugs = await getAllPostSlugs(locale);
+      console.log(`Found ${slugs.length} articles for locale ${locale}: ${slugs.join(', ')}`);
+      
+      const localePaths = slugs.map(slug => ({
+        slug: slug
+      }));
+      paths.push(...localePaths);
+    } catch (error) {
+      console.error(`Error generating paths for locale ${locale}:`, error);
+    }
+  }
+
+  console.log(`Total paths generated: ${paths.length}`);
+  return paths;
 }
 

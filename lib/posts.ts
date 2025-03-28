@@ -20,6 +20,7 @@ export interface PostData {
   };
   mdxSource?: any;
   locale?: string;
+  isLegacy?: boolean;
 }
 
 // Get the posts directory based on locale
@@ -97,21 +98,60 @@ export async function getPostBySlug(slug: string, locale: string = 'cs'): Promis
     });
 
     let filePath;
+    let source;
+    let isFromPrimaryDirectory = true;
+
     if (matchingFile) {
       filePath = path.join(targetDirectory, matchingFile);
+      source = fs.readFileSync(filePath, 'utf8');
     } else {
-      // Pokud nenajdeme soubor s datem, zkusíme najít soubor bez data
+      // Try without date
       filePath = path.join(targetDirectory, `${sanitizedSlug}.mdx`);
+      
+      if (fs.existsSync(filePath)) {
+        source = fs.readFileSync(filePath, 'utf8');
+      } else {
+        // If no file found in language-specific directory, try the legacy 'posts' directory as a fallback
+        isFromPrimaryDirectory = false;
+        
+        // Only try the legacy directory for Czech locale
+        if (locale === 'cs' && fs.existsSync(postsDirectory)) {
+          const legacyFiles = fs.readdirSync(postsDirectory);
+          const legacyMatch = legacyFiles.find(file => {
+            const fileWithoutDate = file.replace(datePattern, '').replace(/\.mdx$/, '');
+            return fileWithoutDate === sanitizedSlug;
+          });
+          
+          if (legacyMatch) {
+            filePath = path.join(postsDirectory, legacyMatch);
+            source = fs.readFileSync(filePath, 'utf8');
+          } else {
+            // Try without date in legacy directory
+            filePath = path.join(postsDirectory, `${sanitizedSlug}.mdx`);
+            if (fs.existsSync(filePath)) {
+              source = fs.readFileSync(filePath, 'utf8');
+            } else {
+              console.log(`Article ${slug} not found in any directory for locale ${locale}`);
+              return null;
+            }
+          }
+        } else {
+          console.log(`Article ${slug} not found in directory for locale ${locale}`);
+          return null;
+        }
+      }
     }
 
-    // Verify that the file path is within the posts directory
+    // Verify that the file path is within the posts directory or legacy directory
     const resolvedPath = path.resolve(filePath);
-    if (!resolvedPath.startsWith(path.resolve(targetDirectory))) {
+    if (isFromPrimaryDirectory && !resolvedPath.startsWith(path.resolve(targetDirectory))) {
       console.error(`Path traversal attempt detected: ${slug}`);
+      return null;
+    } else if (!isFromPrimaryDirectory && !resolvedPath.startsWith(path.resolve(postsDirectory))) {
+      console.error(`Path traversal attempt detected in legacy directory: ${slug}`);
       return null;
     }
 
-    const source = fs.readFileSync(filePath, 'utf8');
     const { content, data } = matter(source);
     const mdxSource = await serialize({
       source: content,
@@ -147,18 +187,39 @@ export async function getPostBySlug(slug: string, locale: string = 'cs'): Promis
 export function getAllPostSlugs(locale: string = 'cs'): string[] {
   try {
     const targetDirectory = getPostsDirectory(locale);
+    let slugs = [];
     
-    if (!fs.existsSync(targetDirectory)) {
-      return [];
+    if (fs.existsSync(targetDirectory)) {
+      const datePattern = /^\d{4}-\d{2}-\d{2}-/;
+      const languageSpecificSlugs = fs.readdirSync(targetDirectory)
+        .filter((file) => file.endsWith('.mdx'))
+        .map((file) => {
+          // Odstraníme datum z názvu souboru, pokud existuje
+          return file.replace(datePattern, '').replace(/\.mdx$/, '');
+        });
+      
+      slugs.push(...languageSpecificSlugs);
     }
     
-    const datePattern = /^\d{4}-\d{2}-\d{2}-/;
-    return fs.readdirSync(targetDirectory)
-      .filter((file) => file.endsWith('.mdx'))
-      .map((file) => {
-        // Odstraníme datum z názvu souboru, pokud existuje
-        return file.replace(datePattern, '').replace(/\.mdx$/, '');
+    // For Czech locale, also include articles from legacy 'posts' directory
+    if (locale === 'cs' && fs.existsSync(postsDirectory)) {
+      const datePattern = /^\d{4}-\d{2}-\d{2}-/;
+      const legacySlugs = fs.readdirSync(postsDirectory)
+        .filter((file) => file.endsWith('.mdx'))
+        .map((file) => {
+          // Remove date from filename if exists
+          return file.replace(datePattern, '').replace(/\.mdx$/, '');
+        });
+      
+      // Add legacy slugs, avoiding duplicates
+      legacySlugs.forEach(slug => {
+        if (!slugs.includes(slug)) {
+          slugs.push(slug);
+        }
       });
+    }
+    
+    return slugs;
   } catch (error) {
     console.error(`Chyba při načítání slugů článků pro jazyk ${locale}:`, error);
     return [];
@@ -169,47 +230,78 @@ export function getAllPostSlugs(locale: string = 'cs'): string[] {
 export async function getAllPosts(locale: string = 'cs'): Promise<PostData[]> {
   try {
     const targetDirectory = getPostsDirectory(locale);
+    let postsPromises: Promise<PostData>[] = [];
     
-    if (!fs.existsSync(targetDirectory)) {
-      return [];
-    }
-    
-    const files = fs.readdirSync(targetDirectory).filter(file => file.endsWith('.mdx'));
-    const datePattern = /^(\d{4}-\d{2}-\d{2})-(.+)\.mdx$/;
-    
-    const postsPromises = files.map(async (file) => {
-      const filePath = path.join(targetDirectory, file);
-      const source = fs.readFileSync(filePath, 'utf8');
-      const { data } = matter(source);
-      
-      // Extrahujeme slug z názvu souboru (odstraníme datum, pokud existuje)
-      let slug;
-      const match = file.match(datePattern);
-      if (match) {
-        // Pokud soubor obsahuje datum, použijeme část za datem jako slug
-        slug = match[2];
-      } else {
-        // Jinak použijeme celý název souboru bez přípony
-        slug = file.replace(/\.mdx$/, '');
+    // Function to process files from a directory
+    const processFilesFromDirectory = (directory: string, isLegacy = false): Promise<PostData>[] => {
+      if (!fs.existsSync(directory)) {
+        return [];
       }
       
-      // Zajistíme, že frontMatter obsahuje povinné vlastnosti
-      const frontMatter = {
-        title: data.title || 'Bez názvu',
-        date: data.date || new Date().toISOString(),
-        ...data
-      };
+      const files = fs.readdirSync(directory).filter(file => file.endsWith('.mdx'));
+      const datePattern = /^(\d{4}-\d{2}-\d{2})-(.+)\.mdx$/;
       
-      return {
-        slug,
-        frontMatter,
-        locale,
-      };
-    });
+      return files.map(async (file) => {
+        const filePath = path.join(directory, file);
+        const source = fs.readFileSync(filePath, 'utf8');
+        const { data } = matter(source);
+        
+        // Extrahujeme slug z názvu souboru (odstraníme datum, pokud existuje)
+        let slug;
+        const match = file.match(datePattern);
+        if (match) {
+          // Pokud soubor obsahuje datum, použijeme část za datem jako slug
+          slug = match[2];
+        } else {
+          // Jinak použijeme celý název souboru bez přípony
+          slug = file.replace(/\.mdx$/, '');
+        }
+        
+        // Zajistíme, že frontMatter obsahuje povinné vlastnosti
+        const frontMatter = {
+          title: data.title || 'Bez názvu',
+          date: data.date || new Date().toISOString(),
+          ...data
+        };
+        
+        return {
+          slug,
+          frontMatter,
+          locale,
+          isLegacy // Flag to identify legacy posts if needed
+        } as PostData;
+      });
+    };
+    
+    // Get posts from language-specific directory
+    postsPromises = processFilesFromDirectory(targetDirectory);
+    
+    // For Czech locale, also include articles from legacy directory
+    if (locale === 'cs' && fs.existsSync(postsDirectory)) {
+      const legacyPostsPromises = processFilesFromDirectory(postsDirectory, true);
+      postsPromises.push(...legacyPostsPromises);
+    }
 
     const posts = await Promise.all(postsPromises);
+    
+    // Remove duplicates (prefer language-specific over legacy if slug is the same)
+    const uniquePosts = posts.reduce<PostData[]>((acc, post) => {
+      // If we already have this slug and it's not from legacy, or if we don't have this slug yet
+      const existingIndex = acc.findIndex(p => p.slug === post.slug);
+      if (existingIndex === -1) {
+        // This post doesn't exist yet, add it
+        acc.push(post);
+      } else if (!post.isLegacy && acc[existingIndex].isLegacy) {
+        // Replace legacy post with language-specific post
+        acc[existingIndex] = post;
+      }
+      return acc;
+    }, []);
+    
     // Seřadíme podle data sestupně
-    return posts.sort((a, b) => new Date(b.frontMatter.date).getTime() - new Date(a.frontMatter.date).getTime());
+    return uniquePosts.sort((a, b) => 
+      new Date(b.frontMatter.date).getTime() - new Date(a.frontMatter.date).getTime()
+    );
   } catch (error) {
     console.error(`Chyba při načítání všech článků pro jazyk ${locale}:`, error);
     return [];

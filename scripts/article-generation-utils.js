@@ -12,7 +12,21 @@ function containsAIReference(text) {
   return aiPattern.test(text);
 }
 
-// Function to generate article content
+// Function to select a random element from an array
+function getRandomElement(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+// Function to create a slug from a title
+function createSlug(title) {
+  return title
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+// Function to generate article content with optimized prompts by language
 async function generateArticleContent(openai, topic, category, uniqueApproach, language) {
   try {
     console.log(`Generating article content for topic: ${topic} in language: ${language}...`);
@@ -23,137 +37,104 @@ async function generateArticleContent(openai, topic, category, uniqueApproach, l
     // Language-specific prompts
     if (language === 'en') {
       // English prompts
-      systemPrompt = `You are an expert in ${category} with extensive industry experience. Your articles are detailed, authoritative, and backed by real-world experience and up-to-date research. You write in a clear, professional style that engages business professionals while providing actionable insights.`;
+      systemPrompt = `You are an expert in ${category} with extensive industry experience. Your articles are detailed, authoritative, and backed by real-world experience and research.`;
       
-      userPrompt = `Write a comprehensive, in-depth article on the topic: "${topic}" for business professionals interested in ${category}.
+      userPrompt = `Write a comprehensive article on "${topic}" for business professionals in ${category}.
 
-The article should be 1500-2000 words long and follow this structure:
-1. Introduction - Engaging opening that establishes the importance of the topic
-2. Main thesis: ${uniqueApproach.mainThesis}
-3. Detailed exploration of these key points:
-${uniqueApproach.keyPoints.map(point => `   - ${point}`).join('\n')}
-4. A section that offers your unique perspective: ${uniqueApproach.uniquePerspective}
-5. Practical advice and actionable takeaways
-6. Conclusion that reinforces the main thesis
+The article should:
+1. Be 1500-2000 words with a professional, engaging tone
+2. Follow this structure:
+   - Introduction establishing the topic's importance
+   - Main thesis: ${uniqueApproach.mainThesis}
+   - Detailed sections covering: ${uniqueApproach.keyPoints.join(', ')}
+   - Your unique perspective: ${uniqueApproach.uniquePerspective}
+   - Practical advice and actionable takeaways
+   - Conclusion reinforcing the main thesis
 
-Guidelines:
-- Use a professional but engaging tone aimed at business leaders
-- Include 1-2 relevant quotes from (fictional) industry experts
-- Mention 2-3 specific statistics or data points to support your arguments (create realistic ones if needed)
-- Provide practical, actionable advice that readers can implement
-- Include both strategic insights and tactical recommendations
-- Avoid technical jargon unless explained
-- Structure with clear headings, subheadings, and bullet points for readability
+Include:
+- 1-2 quotes from fictional industry experts
+- 2-3 specific statistics or data points to support your arguments
+- Clear headings (## for main sections, ### for subsections)
+- Bullet points or numbered lists where appropriate
 
-Absolutely avoid:
-- Any mention of AI, artificial intelligence, language models, or machine learning
-- References to yourself as an AI or language model
-- Phrases like "As an AI" or "As a language model"
-- Generic advice without specific examples
-- Obvious or basic information without depth
+STRICTLY AVOID any mention of AI, artificial intelligence, or language models.`;
 
-Write a complete, publication-ready article that demonstrates expertise and provides genuine value to professionals in the field.`;
     } else if (language === 'cs') {
       // Czech prompts
-      systemPrompt = `Jste odborník v oblasti ${category} s rozsáhlými zkušenostmi z praxe. Vaše články jsou detailní, autoritativní a podložené skutečnými zkušenostmi a aktuálním výzkumem. Píšete jasným, profesionálním stylem, který oslovuje obchodní profesionály a zároveň poskytuje praktické poznatky.`;
+      systemPrompt = `Jste odborník v oblasti ${category} s rozsáhlými zkušenostmi z praxe. Vaše články jsou detailní, autoritativní a podložené skutečnými zkušenostmi.`;
       
-      userPrompt = `Napište komplexní, hloubkový článek na téma: "${topic}" pro obchodní profesionály se zájmem o ${category}.
+      userPrompt = `Napište komplexní článek na téma: "${topic}" pro obchodní profesionály v oblasti ${category}.
 
-Článek by měl mít 1500-2000 slov a následovat tuto strukturu:
-1. Úvod - Poutavé zahájení, které stanoví důležitost tématu
-2. Hlavní teze: ${uniqueApproach.mainThesis}
-3. Detailní prozkoumání těchto klíčových bodů:
-${uniqueApproach.keyPoints.map(point => `   - ${point}`).join('\n')}
-4. Sekce, která nabízí váš jedinečný pohled: ${uniqueApproach.uniquePerspective}
-5. Praktické rady a realizovatelné závěry
-6. Závěr, který posiluje hlavní tezi
+Článek by měl:
+1. Mít 1500-2000 slov s profesionálním, poutavým tónem
+2. Sledovat tuto strukturu:
+   - Úvod stanovující důležitost tématu
+   - Hlavní teze: ${uniqueApproach.mainThesis}
+   - Detailní sekce pokrývající: ${uniqueApproach.keyPoints.join(', ')}
+   - Váš jedinečný pohled: ${uniqueApproach.uniquePerspective}
+   - Praktické rady a realizovatelné závěry
+   - Závěr posilující hlavní tezi
 
-Pokyny:
-- Používejte profesionální, ale poutavý tón zaměřený na business leadery
-- Zahrňte 1-2 relevantní citáty od (fiktivních) odborníků z oboru
-- Zmiňte 2-3 konkrétní statistiky nebo datové body na podporu vašich argumentů (v případě potřeby vytvořte realistické)
-- Poskytněte praktické, realizovatelné rady, které mohou čtenáři implementovat
-- Zahrňte jak strategické poznatky, tak taktická doporučení
-- Vyhněte se odbornému žargonu, pokud není vysvětlen
-- Strukturujte s jasnými nadpisy, podnadpisy a odrážkami pro lepší čitelnost
+Zahrňte:
+- 1-2 citáty od fiktivních odborníků z oboru
+- 2-3 konkrétní statistiky nebo datové body na podporu vašich argumentů
+- Jasné nadpisy (## pro hlavní sekce, ### pro podsekce)
+- Odrážky nebo číslované seznamy, kde je to vhodné
 
-Absolutně se vyhněte:
-- Jakýmkoli zmínkám o umělé inteligenci, jazykových modelech nebo strojovém učení
-- Odkazům na sebe jako na umělou inteligenci nebo jazykový model
-- Frázím jako "Jako umělá inteligence" nebo "Jako jazykový model"
-- Obecným radám bez konkrétních příkladů
-- Zřejmým nebo základním informacím bez hloubky
+PŘÍSNĚ SE VYHNĚTE jakýmkoli zmínkám o umělé inteligenci nebo jazykových modelech.`;
 
-Napište kompletní, publikačně připravený článek, který demonstruje odbornost a poskytuje skutečnou hodnotu profesionálům v oboru.`;
     } else if (language === 'sk') {
       // Slovak prompts
-      systemPrompt = `Ste odborník v oblasti ${category} s rozsiahlymi skúsenosťami z praxe. Vaše články sú detailné, autoritatívne a podložené skutočnými skúsenosťami a aktuálnym výskumom. Píšete jasným, profesionálnym štýlom, ktorý oslovuje obchodných profesionálov a zároveň poskytuje praktické poznatky.`;
+      systemPrompt = `Ste odborník v oblasti ${category} s rozsiahlymi skúsenosťami z praxe. Vaše články sú detailné, autoritatívne a podložené skutočnými skúsenosťami.`;
       
-      userPrompt = `Napíšte komplexný, hĺbkový článok na tému: "${topic}" pre obchodných profesionálov so záujmom o ${category}.
+      userPrompt = `Napíšte komplexný článok na tému: "${topic}" pre obchodných profesionálov v oblasti ${category}.
 
-Článok by mal mať 1500-2000 slov a nasledovať túto štruktúru:
-1. Úvod - Pútavé začatie, ktoré stanoví dôležitosť témy
-2. Hlavná téza: ${uniqueApproach.mainThesis}
-3. Detailné preskúmanie týchto kľúčových bodov:
-${uniqueApproach.keyPoints.map(point => `   - ${point}`).join('\n')}
-4. Sekcia, ktorá ponúka váš jedinečný pohľad: ${uniqueApproach.uniquePerspective}
-5. Praktické rady a realizovateľné závery
-6. Záver, ktorý posilňuje hlavnú tézu
+Článok by mal:
+1. Mať 1500-2000 slov s profesionálnym, pútavým tónom
+2. Sledovať túto štruktúru:
+   - Úvod stanovujúci dôležitosť témy
+   - Hlavná téza: ${uniqueApproach.mainThesis}
+   - Detailné sekcie pokrývajúce: ${uniqueApproach.keyPoints.join(', ')}
+   - Váš jedinečný pohľad: ${uniqueApproach.uniquePerspective}
+   - Praktické rady a realizovateľné závery
+   - Záver posilňujúci hlavnú tézu
 
-Pokyny:
-- Používajte profesionálny, ale pútavý tón zameraný na business lídrov
-- Zahrňte 1-2 relevantné citáty od (fiktívnych) odborníkov z odboru
-- Spomeňte 2-3 konkrétne štatistiky alebo dátové body na podporu vašich argumentov (v prípade potreby vytvorte realistické)
-- Poskytnite praktické, realizovateľné rady, ktoré môžu čitatelia implementovať
-- Zahrňte ako strategické poznatky, tak taktické odporúčania
-- Vyhnite sa odbornému žargónu, pokiaľ nie je vysvetlený
-- Štruktúrujte s jasnými nadpismi, podnadpismi a odrážkami pre lepšiu čitateľnosť
+Zahrňte:
+- 1-2 citáty od fiktívnych odborníkov z odboru
+- 2-3 konkrétne štatistiky alebo dátové body na podporu vašich argumentov
+- Jasné nadpisy (## pre hlavné sekcie, ### pre podsekcie)
+- Odrážky alebo číslované zoznamy, kde je to vhodné
 
-Absolútne sa vyhnite:
-- Akýmkoľvek zmienkam o umelej inteligencii, jazykových modeloch alebo strojovom učení
-- Odkazom na seba ako na umelú inteligenciu alebo jazykový model
-- Frázam ako "Ako umelá inteligencia" alebo "Ako jazykový model"
-- Všeobecným radám bez konkrétnych príkladov
-- Zrejmým alebo základným informáciám bez hĺbky
+STRIKTNE SA VYHNITE akýmkoľvek zmienkam o umelej inteligencii alebo jazykových modeloch.`;
 
-Napíšte kompletný, publikačne pripravený článok, ktorý demonštruje odbornosť a poskytuje skutočnú hodnotu profesionálom v odbore.`;
     } else if (language === 'de') {
       // German prompts
-      systemPrompt = `Sie sind ein Experte auf dem Gebiet ${category} mit umfangreicher Branchenerfahrung. Ihre Artikel sind detailliert, maßgeblich und durch reale Erfahrungen und aktuelle Forschung gestützt. Sie schreiben in einem klaren, professionellen Stil, der Geschäftsfachleute anspricht und gleichzeitig praktische Erkenntnisse vermittelt.`;
+      systemPrompt = `Sie sind ein Experte auf dem Gebiet ${category} mit umfangreicher Branchenerfahrung. Ihre Artikel sind detailliert, maßgeblich und durch reale Erfahrungen gestützt.`;
       
-      userPrompt = `Schreiben Sie einen umfassenden, tiefgehenden Artikel zum Thema: "${topic}" für Geschäftsfachleute, die sich für ${category} interessieren.
+      userPrompt = `Schreiben Sie einen umfassenden Artikel zum Thema: "${topic}" für Geschäftsfachleute im Bereich ${category}.
 
-Der Artikel sollte 1500-2000 Wörter lang sein und dieser Struktur folgen:
-1. Einleitung - Packender Einstieg, der die Bedeutung des Themas etabliert
-2. Hauptthese: ${uniqueApproach.mainThesis}
-3. Ausführliche Untersuchung dieser Schlüsselpunkte:
-${uniqueApproach.keyPoints.map(point => `   - ${point}`).join('\n')}
-4. Ein Abschnitt, der Ihre einzigartige Perspektive bietet: ${uniqueApproach.uniquePerspective}
-5. Praktische Ratschläge und umsetzbare Erkenntnisse
-6. Schlussfolgerung, die die Hauptthese verstärkt
+Der Artikel sollte:
+1. 1500-2000 Wörter mit einem professionellen, ansprechenden Ton haben
+2. Dieser Struktur folgen:
+   - Einleitung, die die Bedeutung des Themas hervorhebt
+   - Hauptthese: ${uniqueApproach.mainThesis}
+   - Detaillierte Abschnitte zu: ${uniqueApproach.keyPoints.join(', ')}
+   - Ihre einzigartige Perspektive: ${uniqueApproach.uniquePerspective}
+   - Praktische Ratschläge und umsetzbare Erkenntnisse
+   - Schlussfolgerung, die die Hauptthese verstärkt
 
-Richtlinien:
-- Verwenden Sie einen professionellen, aber ansprechenden Ton, der auf Unternehmensführer ausgerichtet ist
-- Beziehen Sie 1-2 relevante Zitate von (fiktiven) Branchenexperten ein
-- Erwähnen Sie 2-3 spezifische Statistiken oder Datenpunkte zur Unterstützung Ihrer Argumente (erstellen Sie bei Bedarf realistische)
-- Bieten Sie praktische, umsetzbare Ratschläge, die Leser implementieren können
-- Schließen Sie sowohl strategische Erkenntnisse als auch taktische Empfehlungen ein
-- Vermeiden Sie Fachjargon, es sei denn, er wird erklärt
-- Strukturieren Sie mit klaren Überschriften, Unterüberschriften und Aufzählungspunkten für bessere Lesbarkeit
+Berücksichtigen Sie:
+- 1-2 Zitate von fiktiven Branchenexperten
+- 2-3 spezifische Statistiken oder Datenpunkte zur Unterstützung Ihrer Argumente
+- Klare Überschriften (## für Hauptabschnitte, ### für Unterabschnitte)
+- Aufzählungspunkte oder nummerierte Listen, wo angebracht
 
-Vermeiden Sie unbedingt:
-- Jegliche Erwähnung von KI, künstlicher Intelligenz, Sprachmodellen oder maschinellem Lernen
-- Bezüge auf sich selbst als KI oder Sprachmodell
-- Phrasen wie "Als KI" oder "Als Sprachmodell"
-- Allgemeine Ratschläge ohne konkrete Beispiele
-- Offensichtliche oder grundlegende Informationen ohne Tiefe
-
-Schreiben Sie einen vollständigen, publikationsreifen Artikel, der Fachwissen demonstriert und Fachleuten in diesem Bereich echten Mehrwert bietet.`;
+VERMEIDEN SIE STRIKT jegliche Erwähnung von künstlicher Intelligenz oder Sprachmodellen.`;
     } else {
       throw new Error(`Unsupported language: ${language}`);
     }
     
-    // Generate article content
+    // Generate article content with retry logic
     let attempts = 0;
     let articleContent = '';
     
@@ -180,8 +161,7 @@ Schreiben Sie einen vollständigen, publikationsreifen Artikel, der Fachwissen d
       attempts++;
     }
     
-    // If we've reached here, we couldn't get AI-free content after max attempts
-    // Clean the content manually by replacing known problematic phrases
+    // If we've reached here, clean the content manually by replacing problematic phrases
     console.log("Cleaning AI references from the content...");
     articleContent = articleContent.replace(/\b(AI|artificial intelligence|language model|machine learning|ML|GPT|ChatGPT|OpenAI|neural network|deep learning)\b/gi, 'advanced analysis');
     articleContent = articleContent.replace(/As an AI|As a language model|As an assistant/gi, 'As an expert');
@@ -190,27 +170,303 @@ Schreiben Sie einen vollständigen, publikationsreifen Artikel, der Fachwissen d
   } catch (error) {
     console.error("Error generating article content:", error);
     // Return a fallback message if the API call fails
-    return `# ${topic}\n\nThis article explores various aspects of ${topic} within the context of ${category}.\n\nThe main thesis is: ${uniqueApproach.mainThesis}\n\n## Key Points\n${uniqueApproach.keyPoints.map(point => `- ${point}`).join('\n')}\n\n## Unique Perspective\n${uniqueApproach.uniquePerspective}\n\n*Note: This is a placeholder content due to an error in content generation.*`;
+    return `# ${topic}\n\nThis article explores various aspects of ${topic} within the context of ${category}.\n\n## Key Points\n${uniqueApproach.keyPoints.map(point => `- ${point}`).join('\n')}\n\n## Unique Perspective\n${uniqueApproach.uniquePerspective}\n\n*Note: This is a placeholder content due to an error in content generation.*`;
   }
 }
 
 // Function to get article image from Unsplash
-const getArticleImage = async (topic, language = 'en') => {
+async function getArticleImage(category, topic) {
   try {
-    // Use our custom Unsplash image function with business keywords
-    const imageUrl = await getRandomUnsplashImage(language);
-    return {
-      path: imageUrl,
-      photographer: "Unsplash Photographer"
-    };
+    console.log(`Getting image for topic: ${topic}, category: ${category}`);
+    
+    // Search terms for better Unsplash results based on financial/legal content
+    const searchTerms = [
+      'business', 'finance', 'office', 'professional', 
+      'document', 'contract', 'meeting', 'legal', 'corporate'
+    ];
+    
+    // Select random search term and combine with category
+    const searchTerm = `${getRandomElement(searchTerms)} ${category}`;
+    
+    // Create a timestamp-based unique ID to prevent caching
+    const timestamp = Date.now();
+    const imageUrl = `https://source.unsplash.com/1600x900/?${encodeURIComponent(searchTerm)}&t=${timestamp}`;
+    
+    // Create a specific path for this image
+    const slug = createSlug(topic);
+    const imageName = `${slug}-${timestamp}.jpg`;
+    const imagePath = `/images/blog/${language}/${imageName}`;
+    const localImagePath = path.join(process.cwd(), 'public', imagePath);
+    
+    // Ensure directory exists
+    const dir = path.dirname(localImagePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    
+    // Download the image
+    const response = await fetch(imageUrl);
+    if (response.ok) {
+      const buffer = await response.buffer();
+      fs.writeFileSync(localImagePath, buffer);
+      
+      return {
+        path: imagePath,
+        photographer: {
+          name: "Unsplash",
+          link: "https://unsplash.com"
+        }
+      };
+    }
+    
+    throw new Error("Failed to download image from Unsplash");
   } catch (error) {
-    console.error('Error getting article image:', error);
+    console.error("Error getting image:", error);
     return {
-      path: 'https://source.unsplash.com/1600x900/?business',
-      photographer: "Unsplash Photographer"
+      path: "/images/placeholder.jpg",
+      photographer: {
+        name: "Placeholder",
+        link: "#"
+      }
     };
   }
-};
+}
+
+// Function to generate metadata for articles
+async function generateMetadata(openai, topic, category, language) {
+  try {
+    console.log(`Generating metadata for ${language} article on "${topic}"...`);
+    
+    let prompt;
+    
+    if (language === 'en') {
+      prompt = `Generate metadata for an article titled "${topic}" in the category "${category}".
+Include:
+1. Title (max 60 chars)
+2. Subtitle (max 100 chars)
+3. Description (max 160 chars)
+4. Tags (5-7 relevant keywords)
+5. Read time (in "X minute read" format)
+Respond in JSON format with keys: title, subtitle, description, tags, readTime.`;
+    } else if (language === 'cs') {
+      prompt = `Vygenerujte metadata pro článek s názvem "${topic}" v kategorii "${category}".
+Zahrňte:
+1. Titulek (max 60 znaků)
+2. Podtitulek (max 100 znaků)
+3. Popis (max 160 znaků)
+4. Tagy (5-7 relevantních klíčových slov)
+5. Doba čtení (ve formátu "X minut čtení")
+Odpovězte ve formátu JSON s klíči: title, subtitle, description, tags, readTime.`;
+    } else if (language === 'sk') {
+      prompt = `Vygenerujte metadáta pre článok s názvom "${topic}" v kategórii "${category}".
+Zahrňte:
+1. Titulok (max 60 znakov)
+2. Podtitulok (max 100 znakov)
+3. Popis (max 160 znakov)
+4. Tagy (5-7 relevantných kľúčových slov)
+5. Čas čítania (vo formáte "X minút čítania")
+Odpovedzte vo formáte JSON s kľúčmi: title, subtitle, description, tags, readTime.`;
+    } else if (language === 'de') {
+      prompt = `Generieren Sie Metadaten für einen Artikel mit dem Titel "${topic}" in der Kategorie "${category}".
+Beinhalten Sie:
+1. Titel (max. 60 Zeichen)
+2. Untertitel (max. 100 Zeichen)
+3. Beschreibung (max. 160 Zeichen)
+4. Tags (5-7 relevante Schlüsselwörter)
+5. Lesezeit (im Format "X Minuten Lesezeit")
+Antworten Sie im JSON-Format mit den Schlüsseln: title, subtitle, description, tags, readTime.`;
+    } else {
+      throw new Error(`Unsupported language: ${language}`);
+    }
+    
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: "You are a metadata specialist for professional business articles." },
+        { role: "user", content: prompt }
+      ],
+      temperature: 0.7,
+      max_tokens: 500,
+      response_format: { type: "json_object" }
+    });
+    
+    return JSON.parse(completion.choices[0].message.content);
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    // Fallback metadata
+    return {
+      title: topic,
+      subtitle: `Professional insights on ${topic}`,
+      description: `Learn about ${topic} in the context of ${category} with practical advice for businesses.`,
+      tags: `${category}, business, professional, advice, management`,
+      readTime: "8 minute read"
+    };
+  }
+}
+
+// Function to get a unique approach for an article topic
+async function generateUniqueApproach(openai, topic, category, language) {
+  try {
+    console.log(`Generating unique approach for ${language} article on "${topic}"...`);
+    
+    let prompt;
+    
+    if (language === 'en') {
+      prompt = `For the topic "${topic}" in the category "${category}", suggest a unique approach for an expert article.
+Provide:
+1. A compelling main thesis that provides clear direction
+2. 5-6 key points to cover that would provide depth and comprehensive coverage
+3. A unique perspective that differentiates it from standard treatments
+Respond in JSON format with keys: mainThesis, keyPoints, uniquePerspective.`;
+    } else if (language === 'cs') {
+      prompt = `Pro téma "${topic}" v kategorii "${category}" navrhněte jedinečný přístup pro odborný článek.
+Poskytněte:
+1. Přesvědčivou hlavní tezi, která poskytuje jasný směr
+2. 5-6 klíčových bodů k pokrytí, které poskytnou hloubku a komplexní pokrytí
+3. Jedinečnou perspektivu, která jej odliší od standardních pojednání
+Odpovězte ve formátu JSON s klíči: mainThesis, keyPoints, uniquePerspective.`;
+    } else if (language === 'sk') {
+      prompt = `Pre tému "${topic}" v kategórii "${category}" navrhnite jedinečný prístup pre odborný článok.
+Poskytnite:
+1. Presvedčivú hlavnú tézu, ktorá poskytuje jasný smer
+2. 5-6 kľúčových bodov na pokrytie, ktoré poskytnú hĺbku a komplexné pokrytie
+3. Jedinečnú perspektívu, ktorá ho odlíši od štandardných pojednávaní
+Odpovedzte vo formáte JSON s kľúčmi: mainThesis, keyPoints, uniquePerspective.`;
+    } else if (language === 'de') {
+      prompt = `Für das Thema "${topic}" in der Kategorie "${category}" schlagen Sie einen einzigartigen Ansatz für einen Fachartikel vor.
+Bieten Sie:
+1. Eine überzeugende Hauptthese, die eine klare Richtung vorgibt
+2. 5-6 Schlüsselpunkte zur Abdeckung, die Tiefe und umfassende Abdeckung bieten würden
+3. Eine einzigartige Perspektive, die ihn von Standardbehandlungen unterscheidet
+Antworten Sie im JSON-Format mit den Schlüsseln: mainThesis, keyPoints, uniquePerspective.`;
+    } else {
+      throw new Error(`Unsupported language: ${language}`);
+    }
+    
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: "You are a content strategy specialist for professional articles." },
+        { role: "user", content: prompt }
+      ],
+      temperature: 0.8,
+      max_tokens: 800,
+      response_format: { type: "json_object" }
+    });
+    
+    return JSON.parse(completion.choices[0].message.content);
+  } catch (error) {
+    console.error("Error generating unique approach:", error);
+    // Fallback approach
+    return {
+      mainThesis: `A strategic approach to ${topic} can significantly improve outcomes for businesses.`,
+      keyPoints: [
+        "Legal framework and compliance",
+        "Financial implications",
+        "Effective communication strategies",
+        "Risk management and prevention",
+        "Long-term relationship maintenance",
+        "Industry best practices"
+      ],
+      uniquePerspective: `A balanced approach that combines legal rigor with relationship preservation.`
+    };
+  }
+}
+
+// Function to generate a random topic for an article
+async function generateRandomTopic(openai, category, language) {
+  try {
+    console.log(`Generating random topic for ${language} article in category: ${category}...`);
+    
+    let prompt;
+    
+    if (language === 'en') {
+      prompt = `Generate an original, thought-provoking topic for a professional article about "${category}".
+The topic should be:
+1. Relevant for business professionals
+2. Focused on practical and strategic aspects
+3. Suitable for an in-depth expert article of 1500-2000 words
+4. Specific enough to provide valuable insights
+5. Innovative and exploring new perspectives
+Avoid topics related to AI or technology. Return only the topic name.`;
+    } else if (language === 'cs') {
+      prompt = `Vygenerujte originální, podnětné téma pro odborný článek o "${category}".
+Téma by mělo být:
+1. Relevantní pro obchodní profesionály
+2. Zaměřené na praktické a strategické aspekty
+3. Vhodné pro hloubkový odborný článek o délce 1500-2000 slov
+4. Dostatečně specifické, aby poskytovalo hodnotné poznatky
+5. Inovativní a zkoumající nové perspektivy
+Vyhněte se tématům souvisejícím s AI nebo technologiemi. Vraťte pouze název tématu.`;
+    } else if (language === 'sk') {
+      prompt = `Vygenerujte originálnu, podnetnú tému pre odborný článok o "${category}".
+Téma by malo byť:
+1. Relevantné pre obchodných profesionálov
+2. Zamerané na praktické a strategické aspekty
+3. Vhodné pre hĺbkový odborný článok s dĺžkou 1500-2000 slov
+4. Dostatočne špecifické, aby poskytovalo hodnotné poznatky
+5. Inovatívne a skúmajúce nové perspektívy
+Vyhnite sa témam súvisiacim s AI alebo technológiami. Vráťte iba názov témy.`;
+    } else if (language === 'de') {
+      prompt = `Generieren Sie ein originelles, zum Nachdenken anregendes Thema für einen Fachartikel über "${category}".
+Das Thema sollte:
+1. Relevant für Geschäftsfachleute sein
+2. Sich auf praktische und strategische Aspekte konzentrieren
+3. Geeignet für einen vertiefenden Fachartikel von 1500-2000 Wörtern sein
+4. Spezifisch genug sein, um wertvolle Erkenntnisse zu liefern
+5. Innovativ sein und neue Perspektiven erkunden
+Vermeiden Sie Themen im Zusammenhang mit KI oder Technologie. Geben Sie nur den Themennamen zurück.`;
+    } else {
+      throw new Error(`Unsupported language: ${language}`);
+    }
+    
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: "You are a specialist in generating business content ideas." },
+        { role: "user", content: prompt }
+      ],
+      temperature: 0.9,
+      max_tokens: 100,
+    });
+    
+    const topic = completion.choices[0].message.content.trim();
+    console.log(`Generated topic: ${topic}`);
+    
+    return topic;
+  } catch (error) {
+    console.error("Error generating topic:", error);
+    // Fallback topics based on category and language
+    let fallbackTopics = {
+      en: [
+        `Strategic Approaches to Modern ${category}`,
+        `Optimizing ${category} Processes for Small Businesses`,
+        `Legal Aspects of ${category} in International Business`,
+        `Building Client Relationships Through Effective ${category}`
+      ],
+      cs: [
+        `Strategické přístupy k moderní ${category}`,
+        `Optimalizace procesů ${category} pro malé podniky`,
+        `Právní aspekty ${category} v mezinárodním obchodě`,
+        `Budování vztahů s klienty prostřednictvím efektivního ${category}`
+      ],
+      sk: [
+        `Strategické prístupy k modernej ${category}`,
+        `Optimalizácia procesov ${category} pre malé podniky`,
+        `Právne aspekty ${category} v medzinárodnom obchode`,
+        `Budovanie vzťahov s klientmi prostredníctvom efektívneho ${category}`
+      ],
+      de: [
+        `Strategische Ansätze zum modernen ${category}`,
+        `Optimierung von ${category}-Prozessen für kleine Unternehmen`,
+        `Rechtliche Aspekte von ${category} im internationalen Geschäft`,
+        `Aufbau von Kundenbeziehungen durch effektives ${category}`
+      ]
+    };
+    
+    return getRandomElement(fallbackTopics[language] || fallbackTopics.en);
+  }
+}
 
 // Function to get author profile image
 async function getAuthorProfileImage(author, language) {
@@ -369,8 +625,13 @@ const createAuthorPlaceholderImage = async (author, language = 'en') => {
 
 module.exports = {
   containsAIReference,
+  getRandomElement,
+  createSlug,
   generateArticleContent,
   getArticleImage,
+  generateMetadata,
+  generateUniqueApproach,
+  generateRandomTopic,
   getAuthorProfileImage,
   getRandomUnsplashImage,
   createAuthorPlaceholderImage

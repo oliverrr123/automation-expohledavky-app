@@ -15,7 +15,14 @@ export async function generateStaticParams() {
 
   for (const locale of locales) {
     try {
+      console.log(`Generating static paths for locale: ${locale}`);
       const slugs = await getAllPostSlugs(locale);
+      console.log(`Found ${slugs.length} articles for locale ${locale}`);
+      
+      if (slugs.length > 0) {
+        console.log(`Sample slugs for ${locale}: ${slugs.slice(0, 3).join(', ')}${slugs.length > 3 ? '...' : ''}`);
+      }
+      
       const localePaths = slugs.map(slug => ({
         slug: slug
       }));
@@ -25,6 +32,7 @@ export async function generateStaticParams() {
     }
   }
 
+  console.log(`Total static paths generated for blog posts: ${paths.length}`);
   return paths;
 }
 

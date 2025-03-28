@@ -66,77 +66,134 @@ try {
 function sanitizeSlug(slug: string): string {
   if (!slug) return '';
   
+  const originalSlug = slug;
+  
   // Remove any path traversal characters or patterns and forbidden characters
-  return slug
-    .replace(/\.\./g, '') // Remove path traversal sequences
-    .replace(/[\/\\]/g, '') // Remove slashes
-    .replace(/[^a-zA-Z0-9-_]/g, '') // Only allow alphanumeric, dashes and underscores
-    .substring(0, 100); // Limit length
+  const sanitized = slug
+    .replace(/\.\./g, '.') // Allow single dots
+    .replace(/[\\]/g, '') // Remove backslashes
+    .replace(/[^a-zA-Z0-9\-_.]/g, '') // Allow alphanumeric, dashes, dots and underscores
+    .substring(0, 200); // Increase length limit
+    
+  if (sanitized !== originalSlug) {
+    console.log(`Slug sanitization: "${originalSlug}" → "${sanitized}"`);
+  }
+  
+  return sanitized;
 }
 
 // Get post by slug, with optional locale
 export async function getPostBySlug(slug: string, locale: string = 'cs'): Promise<PostData | null> {
   try {
+    console.log(`\n=== Hledání článku ===`);
+    console.log(`Původní slug: "${slug}"`);
+    console.log(`Locale: ${locale}`);
+    
     // Sanitize slug to prevent path traversal attacks
     const sanitizedSlug = sanitizeSlug(slug);
     
     // If the slug was modified during sanitization, it might be malicious
     if (sanitizedSlug !== slug) {
-      console.warn(`Potentially malicious slug was sanitized: ${slug}`);
-      if (!sanitizedSlug) return null;
+      console.log(`Slug byl upraven během sanitizace`);
+      if (!sanitizedSlug) {
+        console.log(`Sanitizovaný slug je prázdný, končím`);
+        return null;
+      }
     }
     
     // Get the appropriate directory based on locale
     const targetDirectory = getPostsDirectory(locale);
+    console.log(`\nHledám v adresáři: ${targetDirectory}`);
+    
+    if (!fs.existsSync(targetDirectory)) {
+      console.log(`Adresář neexistuje: ${targetDirectory}`);
+      return null;
+    }
     
     const files = fs.readdirSync(targetDirectory);
-    const datePattern = /^\d{4}-\d{2}-\d{2}-/;
-    const matchingFile = files.find(file => {
-      // Odstraníme datum z názvu souboru a porovnáme se slugem
-      const fileWithoutDate = file.replace(datePattern, '').replace(/\.mdx$/, '');
-      return fileWithoutDate === sanitizedSlug;
-    });
-
+    console.log(`Nalezeno ${files.length} souborů`);
+    if (files.length > 0) {
+      console.log(`První soubory: ${files.slice(0, 3).join(', ')}${files.length > 3 ? '...' : ''}`);
+    }
+    
+    // Try different date patterns
+    const datePatterns = [
+      /^\d{4}-\d{2}-\d{2}-/, // YYYY-MM-DD-
+      /^\d{2}-\d{2}-\d{4}-/, // DD-MM-YYYY-
+      /^\d{8}-/,             // YYYYMMDD-
+      /^\d{6}-/              // YYMMDD-
+    ];
+    
     let filePath;
     let source;
     let isFromPrimaryDirectory = true;
+    let matchingFile;
+
+    // 1. Try to find exact match with date patterns
+    for (const pattern of datePatterns) {
+      matchingFile = files.find(file => {
+        const fileWithoutDate = file.replace(pattern, '').replace(/\.mdx$/, '');
+        const matches = fileWithoutDate === sanitizedSlug;
+        if (matches) {
+          console.log(`Nalezena shoda s vzorem ${pattern}: ${file}`);
+        }
+        return matches;
+      });
+      
+      if (matchingFile) break;
+    }
 
     if (matchingFile) {
       filePath = path.join(targetDirectory, matchingFile);
+      console.log(`Nalezen soubor s datem: ${filePath}`);
       source = fs.readFileSync(filePath, 'utf8');
     } else {
-      // Try without date
+      // 2. Try without date
       filePath = path.join(targetDirectory, `${sanitizedSlug}.mdx`);
+      console.log(`Zkouším bez data: ${filePath}`);
       
       if (fs.existsSync(filePath)) {
+        console.log(`Nalezen soubor bez data`);
         source = fs.readFileSync(filePath, 'utf8');
       } else {
-        // If no file found in language-specific directory, try the legacy 'posts' directory as a fallback
+        // 3. If no file found in language-specific directory, try the legacy 'posts' directory as a fallback
         isFromPrimaryDirectory = false;
         
         // Only try the legacy directory for Czech locale
         if (locale === 'cs' && fs.existsSync(postsDirectory)) {
+          console.log(`\nZkouším legacy adresář: ${postsDirectory}`);
           const legacyFiles = fs.readdirSync(postsDirectory);
-          const legacyMatch = legacyFiles.find(file => {
-            const fileWithoutDate = file.replace(datePattern, '').replace(/\.mdx$/, '');
-            return fileWithoutDate === sanitizedSlug;
-          });
+          console.log(`Nalezeno ${legacyFiles.length} legacy souborů`);
           
-          if (legacyMatch) {
-            filePath = path.join(postsDirectory, legacyMatch);
-            source = fs.readFileSync(filePath, 'utf8');
-          } else {
-            // Try without date in legacy directory
+          // Try with date patterns in legacy directory
+          for (const pattern of datePatterns) {
+            const legacyMatch = legacyFiles.find(file => {
+              const fileWithoutDate = file.replace(pattern, '').replace(/\.mdx$/, '');
+              return fileWithoutDate === sanitizedSlug;
+            });
+            
+            if (legacyMatch) {
+              filePath = path.join(postsDirectory, legacyMatch);
+              console.log(`Nalezen legacy soubor s datem: ${filePath}`);
+              source = fs.readFileSync(filePath, 'utf8');
+              break;
+            }
+          }
+          
+          // Try without date in legacy directory if not found
+          if (!source) {
             filePath = path.join(postsDirectory, `${sanitizedSlug}.mdx`);
+            console.log(`Zkouším legacy bez data: ${filePath}`);
             if (fs.existsSync(filePath)) {
+              console.log(`Nalezen legacy soubor bez data`);
               source = fs.readFileSync(filePath, 'utf8');
             } else {
-              console.log(`Article ${slug} not found in any directory for locale ${locale}`);
+              console.log(`Článek nenalezen v žádném adresáři pro locale ${locale}`);
               return null;
             }
           }
         } else {
-          console.log(`Article ${slug} not found in directory for locale ${locale}`);
+          console.log(`Článek nenalezen v adresáři pro locale ${locale}`);
           return null;
         }
       }
@@ -144,15 +201,24 @@ export async function getPostBySlug(slug: string, locale: string = 'cs'): Promis
 
     // Verify that the file path is within the posts directory or legacy directory
     const resolvedPath = path.resolve(filePath);
-    if (isFromPrimaryDirectory && !resolvedPath.startsWith(path.resolve(targetDirectory))) {
-      console.error(`Path traversal attempt detected: ${slug}`);
-      return null;
-    } else if (!isFromPrimaryDirectory && !resolvedPath.startsWith(path.resolve(postsDirectory))) {
-      console.error(`Path traversal attempt detected in legacy directory: ${slug}`);
+    const contentRoot = path.resolve(process.cwd());
+    
+    if (!resolvedPath.startsWith(contentRoot)) {
+      console.error(`Detekován pokus o path traversal: ${filePath}`);
       return null;
     }
 
+    console.log(`\nNačítám obsah souboru: ${filePath}`);
     const { content, data } = matter(source);
+    
+    // Log frontmatter data for debugging
+    console.log('Frontmatter data:', {
+      title: data.title,
+      date: data.date,
+      hasDescription: !!data.description,
+      hasImage: !!data.image
+    });
+    
     const mdxSource = await serialize({
       source: content,
       options: {
@@ -164,21 +230,24 @@ export async function getPostBySlug(slug: string, locale: string = 'cs'): Promis
       }
     });
     
-    // Zajistíme, že frontMatter obsahuje povinné vlastnosti
+    // Ensure frontMatter contains required properties
     const frontMatter = {
       title: data.title || 'Bez názvu',
       date: data.date || new Date().toISOString(),
       ...data
     };
     
+    console.log(`\nČlánek úspěšně načten`);
+    
     return {
       slug: sanitizedSlug,
       frontMatter,
       mdxSource,
       locale,
+      isLegacy: !isFromPrimaryDirectory
     };
   } catch (error) {
-    console.error(`Chyba při načítání článku ${slug} pro jazyk ${locale}:`, error);
+    console.error(`\nChyba při načítání článku:`, error);
     return null;
   }
 }

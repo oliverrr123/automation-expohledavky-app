@@ -386,4 +386,76 @@ export async function searchPosts(query: string, locale: string = 'cs'): Promise
     console.error(`Chyba při vyhledávání článků pro jazyk ${locale}:`, error);
     return [];
   }
+}
+
+// Search posts across all locales
+export async function searchAllPosts(query: string): Promise<PostData[]> {
+  console.log(`Searching for "${query}" across all locales`);
+  
+  try {
+    // Validate and sanitize query parameter
+    if (!query) {
+      console.log("Empty query provided, returning empty results");
+      return [];
+    }
+    
+    // Sanitize the query
+    const sanitizedQuery = query
+      .replace(/[^\w\s.,?!-]/g, '') // Only allow alphanumeric, spaces and basic punctuation
+      .substring(0, 100); // Limit length to 100 characters
+    
+    if (!sanitizedQuery) {
+      console.log("Query was sanitized to empty string, returning empty results");
+      return [];
+    }
+    
+    // Get posts from all supported locales
+    const locales = ['cs', 'sk', 'de', 'en'];
+    const allPostsPromises = locales.map(locale => getAllPosts(locale));
+    const allPostsByLocale = await Promise.all(allPostsPromises);
+    
+    // Flatten and add locale identifier to each post
+    const allPosts = allPostsByLocale.flatMap((posts, index) => 
+      posts.map(post => ({
+        ...post,
+        locale: locales[index]
+      }))
+    );
+    
+    console.log(`Found ${allPosts.length} total posts across all locales`);
+    
+    const lowerCaseQuery = sanitizedQuery.toLowerCase();
+    
+    const results = allPosts.filter(post => {
+      const { title, description, category, tags } = post.frontMatter;
+      
+      // Search in title
+      if (title && title.toLowerCase().includes(lowerCaseQuery)) {
+        return true;
+      }
+      
+      // Search in description
+      if (description && description.toLowerCase().includes(lowerCaseQuery)) {
+        return true;
+      }
+      
+      // Search in category
+      if (category && category.toLowerCase().includes(lowerCaseQuery)) {
+        return true;
+      }
+      
+      // Search in tags
+      if (tags && Array.isArray(tags)) {
+        return tags.some(tag => tag.toLowerCase().includes(lowerCaseQuery));
+      }
+      
+      return false;
+    });
+    
+    console.log(`Found ${results.length} matching posts for query "${query}" across all locales`);
+    return results;
+  } catch (error) {
+    console.error(`Error when searching posts across all locales:`, error);
+    return [];
+  }
 } 

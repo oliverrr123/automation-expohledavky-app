@@ -1,85 +1,88 @@
-# Content Generation System
+# Systém generování obsahu
 
-This directory contains scripts for automatically generating blog content in multiple languages for the ExpoHledávky platform.
+Tento adresář obsahuje skripty pro automatické generování obsahu blogu v několika jazycích pro platformu ExpoHledávky.
 
-## Overview
+## Přehled
 
-The system generates expert articles on topics related to receivables management, debt collection, and financial management. Content is generated in four languages:
+Systém generuje odborné články na témata související se správou pohledávek, vymáháním dluhů a finančním řízením. Obsah je generován ve čtyřech jazycích:
 
-- 🇨🇿 Czech
-- 🇸🇰 Slovak
-- 🇩🇪 German
-- 🇬🇧 English
+- 🇨🇿 Čeština
+- 🇸🇰 Slovenština
+- 🇩🇪 Němčina
+- 🇬🇧 Angličtina
 
-Articles are generated using OpenAI GPT-4 and stored as MDX files in the `/content` directory. Images for articles are fetched from Unsplash.
+Články jsou generovány pomocí OpenAI GPT-4 a ukládány jako MDX soubory v adresáři `/content`. Obrázky pro články jsou získávány z Unsplash.
 
-## Scripts
+## Skripty
 
-### Core Utility
+### Hlavní skripty
 
-- `article-generation-utils.js` - Contains shared utilities used by all generators, including functions for generating content, getting images, and creating metadata.
+- `generate-content.js` - Univerzální generátor obsahu pro všechny jazyky
+- `article-generation-utils.js` - Sdílené utility používané generátorem
 
-### Language-Specific Generators
+## Jak spustit
 
-- `generate-czech-content.js` - Generates articles in Czech
-- `generate-slovak-content.js` - Generates articles in Slovak
-- `generate-german-content.js` - Generates articles in German
-- `generate-english-content.js` - Generates articles in English
-
-### Orchestration
-
-- `generate-all-content.js` - Runs all language generators sequentially
-
-## How to Run
-
-### Prerequisites
+### Předpoklady
 
 - Node.js 18+
-- OpenAI API key (set as `OPENAI_API_KEY` environment variable)
-- Unsplash API key (set as `UNSPLASH_ACCESS_KEY` environment variable)
+- OpenAI API klíč (nastavený jako `OPENAI_API_KEY` proměnná prostředí)
+- Unsplash API klíč (nastavený jako `UNSPLASH_ACCESS_KEY` proměnná prostředí)
 
-### Generate Content for All Languages
-
-```bash
-node scripts/generate-all-content.js
-```
-
-### Generate Content for Specific Language
+### Generování obsahu pro všechny jazyky
 
 ```bash
-node scripts/generate-czech-content.js
-node scripts/generate-slovak-content.js
-node scripts/generate-german-content.js
-node scripts/generate-english-content.js
+node scripts/generate-content.js
 ```
 
-## Automated Workflow
+### Generování obsahu pro konkrétní jazyky
 
-Content generation is automated via GitHub Actions. The workflow is configured to run daily at 9:00 AM UTC. The workflow file is located at `.github/workflows/generate-daily-content.yml`.
+```bash
+# Generování pouze pro češtinu
+node scripts/generate-content.js cs
 
-## Article Structure
+# Generování pro češtinu a slovenštinu
+node scripts/generate-content.js cs sk
 
-Each generated article includes:
+# Generování pro němčinu a angličtinu
+node scripts/generate-content.js de en
+```
 
-- Frontmatter with metadata (title, author, date, tags, etc.)
-- Introduction
-- Main content divided into sections
-- Conclusion
-- Examples and quotes from fictional industry experts
+## Automatizovaný workflow
 
-## Output Directories
+Generování obsahu je automatizováno pomocí GitHub Actions. Workflow je nakonfigurován tak, aby běžel denně v 9:00 UTC. Soubor workflow je umístěn v `.github/workflows/generate-daily-content.yml`.
 
-Generated articles are stored in the following directories:
+Workflow lze také spustit ručně s možností určit, pro které jazyky má být obsah generován.
 
-- Czech: `/content/posts-cs/`
-- Slovak: `/content/posts-sk/`
-- German: `/content/posts-de/`
-- English: `/content/posts-en/`
+## Struktura článku
 
-## Customization
+Každý vygenerovaný článek obsahuje:
 
-To customize the content generation:
+- Frontmatter s metadaty (titulek, autor, datum, tagy atd.)
+- Úvod
+- Hlavní obsah rozdělený do sekcí
+- Závěr
+- Příklady a citace od fiktivních odborníků z oboru
 
-1. Edit categories and authors in the language-specific generator files
-2. Modify prompts in `article-generation-utils.js`
-3. Adjust metadata generation in `article-generation-utils.js` 
+## Výstupní adresáře
+
+Vygenerované články jsou uloženy v následujících adresářích:
+
+- Čeština: `/content/posts-cs/`
+- Slovenština: `/content/posts-sk/`
+- Němčina: `/content/posts-de/`
+- Angličtina: `/content/posts-en/`
+
+## Přizpůsobení
+
+Pro přizpůsobení generování obsahu:
+
+1. Upravte kategorie a autory v objektu `config` v souboru `generate-content.js`
+2. Upravte prompty v `article-generation-utils.js`
+3. Upravte generování metadat v `article-generation-utils.js`
+
+## Rozšíření na další jazyky
+
+Pro přidání podpory nového jazyka:
+
+1. Přidejte konfiguraci pro nový jazyk do objektu `config` v `generate-content.js`
+2. Upravte příslušné funkce v `article-generation-utils.js` pro generování obsahu v novém jazyce 

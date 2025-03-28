@@ -9,6 +9,8 @@ import csBlogPage from '@/locales/cs/blog-page.json'
 import skBlogPage from '@/locales/sk/blog-page.json'
 import enBlogPage from '@/locales/en/blog-page.json'
 import deBlogPage from '@/locales/de/blog-page.json'
+// Import the SearchBox component
+import SearchBox from "@/app/components/SearchBox"
 
 // Server component for the blog page
 export default async function BlogPage() {
@@ -41,6 +43,12 @@ export default async function BlogPage() {
     console.log(`First post: ${allPosts[0].slug} - ${allPosts[0].frontMatter.title}`);
   }
   
+  // Get placeholder text based on locale
+  const searchPlaceholder = locale === 'cs' ? 'Hledat články...' :
+                           locale === 'sk' ? 'Hľadať články...' :
+                           locale === 'de' ? 'Artikel suchen...' :
+                           'Search articles...';
+  
   // If there are no posts for this locale, show an empty state
   if (allPosts.length === 0) {
     return (
@@ -70,26 +78,8 @@ export default async function BlogPage() {
                  'Welcome to our blog dedicated to receivables management, debt purchase, and collection. Here you will find expert articles with practical advice for businesses in the international legal environment.'}
               </p>
               <div className="mx-auto mb-8 max-w-xl">
-                <div className="relative">
-                  <form className="relative z-[100]" action="/blog/search" method="get">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white z-20" size={20} />
-                    <input
-                      name="q"
-                      type="text"
-                      placeholder={locale === 'cs' ? 'Hledat články...' :
-                                   locale === 'sk' ? 'Hľadať články...' :
-                                   locale === 'de' ? 'Artikel suchen...' :
-                                   'Search articles...'}
-                      className="w-full rounded-full border-0 bg-white/10 px-5 pl-10 py-3 text-white placeholder-gray-300 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300"
-                    />
-                    <input type="hidden" name="locale" value={locale} />
-                    <button
-                      type="submit"
-                      className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-orange-500 p-2 text-white hover:bg-orange-600 transition-colors duration-300"
-                    >
-                      <Search className="h-5 w-5" />
-                    </button>
-                  </form>
+                <div className="relative z-[100] text-white px-3">
+                  <SearchBox locale={locale} placeholderText={searchPlaceholder} />
                 </div>
               </div>
               <div className="text-center">
@@ -192,26 +182,8 @@ export default async function BlogPage() {
                'Welcome to our blog dedicated to receivables management, debt purchase, and collection. Here you will find expert articles with practical advice for businesses in the international legal environment.'}
             </p>
             <div className="mx-auto mb-8 max-w-xl">
-              <div className="relative">
-                <form className="relative z-[100]" action="/blog/search" method="get">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white z-20" size={20} />
-                  <input
-                    name="q"
-                    type="text"
-                    placeholder={locale === 'cs' ? 'Hledat články...' :
-                                 locale === 'sk' ? 'Hľadať články...' :
-                                 locale === 'de' ? 'Artikel suchen...' :
-                                 'Search articles...'}
-                    className="w-full rounded-full border-0 bg-white/10 px-5 pl-10 py-3 text-white placeholder-gray-300 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300"
-                  />
-                  <input type="hidden" name="locale" value={locale} />
-                  <button
-                    type="submit"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-orange-500 p-2 text-white hover:bg-orange-600 transition-colors duration-300"
-                  >
-                    <Search className="h-5 w-5" />
-                  </button>
-                </form>
+              <div className="relative z-[100] text-white px-3">
+                <SearchBox locale={locale} placeholderText={searchPlaceholder} />
               </div>
             </div>
             <div className="text-center">

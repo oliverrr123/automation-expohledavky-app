@@ -6,6 +6,11 @@ on:
     - cron: '0 9 * * *'
   workflow_dispatch:
     # Allow manual triggering of the workflow
+    inputs:
+      languages:
+        description: 'Languages to generate (space-separated, e.g. cs sk de en)'
+        required: false
+        default: 'cs sk de en'
 
 jobs:
   generate-content:
@@ -31,7 +36,13 @@ jobs:
           echo "TZ=UTC" >> $GITHUB_ENV
       
       - name: Generate content
-        run: node scripts/generate-all-content.js
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${{ github.event.inputs.languages }}" != "" ]; then
+            node scripts/generate-content.js ${{ github.event.inputs.languages }}
+          else
+            # Default: generate content for all languages
+            node scripts/generate-content.js
+          fi
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}

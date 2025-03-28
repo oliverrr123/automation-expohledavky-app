@@ -175,7 +175,7 @@ VERMEIDEN SIE STRIKT jegliche Erwähnung von künstlicher Intelligenz oder Sprac
 }
 
 // Function to get article image from Unsplash
-async function getArticleImage(category, topic) {
+async function getArticleImage(category, topic, language = 'en') {
   try {
     console.log(`Getting image for topic: ${topic}, category: ${category}`);
     
@@ -245,7 +245,7 @@ Include:
 1. Title (max 60 chars)
 2. Subtitle (max 100 chars)
 3. Description (max 160 chars)
-4. Tags (5-7 relevant keywords)
+4. Tags (5-7 relevant keywords, comma separated)
 5. Read time (in "X minute read" format)
 Respond in JSON format with keys: title, subtitle, description, tags, readTime.`;
     } else if (language === 'cs') {
@@ -254,7 +254,7 @@ Zahrňte:
 1. Titulek (max 60 znaků)
 2. Podtitulek (max 100 znaků)
 3. Popis (max 160 znaků)
-4. Tagy (5-7 relevantních klíčových slov)
+4. Tagy (5-7 relevantních klíčových slov, oddělených čárkou)
 5. Doba čtení (ve formátu "X minut čtení")
 Odpovězte ve formátu JSON s klíči: title, subtitle, description, tags, readTime.`;
     } else if (language === 'sk') {
@@ -263,7 +263,7 @@ Zahrňte:
 1. Titulok (max 60 znakov)
 2. Podtitulok (max 100 znakov)
 3. Popis (max 160 znakov)
-4. Tagy (5-7 relevantných kľúčových slov)
+4. Tagy (5-7 relevantných kľúčových slov, oddelených čiarkou)
 5. Čas čítania (vo formáte "X minút čítania")
 Odpovedzte vo formáte JSON s kľúčmi: title, subtitle, description, tags, readTime.`;
     } else if (language === 'de') {
@@ -272,7 +272,7 @@ Beinhalten Sie:
 1. Titel (max. 60 Zeichen)
 2. Untertitel (max. 100 Zeichen)
 3. Beschreibung (max. 160 Zeichen)
-4. Tags (5-7 relevante Schlüsselwörter)
+4. Tags (5-7 relevante Schlüsselwörter, durch Kommas getrennt)
 5. Lesezeit (im Format "X Minuten Lesezeit")
 Antworten Sie im JSON-Format mit den Schlüsseln: title, subtitle, description, tags, readTime.`;
     } else {
@@ -290,7 +290,14 @@ Antworten Sie im JSON-Format mit den Schlüsseln: title, subtitle, description, 
       response_format: { type: "json_object" }
     });
     
-    return JSON.parse(completion.choices[0].message.content);
+    const metadata = JSON.parse(completion.choices[0].message.content);
+    
+    // Ensure tags are in string format if they aren't already
+    if (metadata.tags && typeof metadata.tags !== 'string' && !Array.isArray(metadata.tags)) {
+      metadata.tags = String(metadata.tags);
+    }
+    
+    return metadata;
   } catch (error) {
     console.error("Error generating metadata:", error);
     // Fallback metadata

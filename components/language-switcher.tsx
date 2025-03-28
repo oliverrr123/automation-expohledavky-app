@@ -79,11 +79,16 @@ export function LanguageSwitcher() {
     // Get the current path
     const currentPath = window.location.pathname
     
-    // Transform the path to the target locale
-    // Only if we have both current locale and it's different from target
-    const localizedPath = currentLocale && currentLocale !== locale
-      ? transformPath(currentPath, currentLocale, locale)
-      : currentPath;
+    // Check if we're on a blog post page
+    const isBlogPost = currentPath.startsWith('/blog/') && currentPath.split('/').length === 3
+    
+    // For blog posts, if changing language, redirect to blog homepage
+    // to prevent 404 errors when posts don't exist in target language
+    const localizedPath = isBlogPost
+      ? '/blog'  // Always redirect to blog homepage for language switches on blog posts
+      : currentLocale && currentLocale !== locale
+        ? transformPath(currentPath, currentLocale, locale)
+        : currentPath;
     
     // Build the new URL with the localized path and different domain
     let targetUrl: string

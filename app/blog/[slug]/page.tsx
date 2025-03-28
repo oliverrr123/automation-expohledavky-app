@@ -101,6 +101,24 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   
   // If the article doesn't exist, show error page
   if (!post) {
+    // Check if there's a version of this post in any language before showing 404
+    // This could help in future for potential cross-language redirects
+    const locales = ['cs', 'sk', 'de', 'en'];
+    let existsInAnyLanguage = false;
+    
+    for (const otherLocale of locales) {
+      if (otherLocale === locale) continue; // Skip current locale
+      
+      const otherPost = await getPostBySlug(params.slug, otherLocale);
+      if (otherPost) {
+        existsInAnyLanguage = true;
+        break;
+      }
+    }
+    
+    // Log information for debugging purposes
+    console.log(`Post ${params.slug} not found in ${locale}. Exists in other language: ${existsInAnyLanguage}`);
+    
     return notFound();
   }
 

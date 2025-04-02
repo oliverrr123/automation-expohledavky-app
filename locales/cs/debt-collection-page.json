@@ -30,7 +30,7 @@
       "jmeno": "Jméno a příjmení",
       "email": "Email",
       "telefon": "Telefon",
-      "vyse": "Výše pohledávky (Kč)",
+      "castka": "Výše pohledávky (Kč)",
       "zprava": "Zpráva"
     },
     "statuses": {

@@ -30,7 +30,7 @@
       "jmeno": "Full name",
       "email": "Email",
       "telefon": "Phone",
-      "vyse": "Receivable amount (CZK)",
+      "castka": "Receivable amount (CZK)",
       "zprava": "Message"
     },
     "statuses": {

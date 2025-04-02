@@ -12,6 +12,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Send } from "lucide-react"
 import Script from "next/script"
 import { useTranslations } from "@/lib/i18n"
+import { getCurrentLocale } from "@/lib/i18n"
+
+// Add Google reCAPTCHA site key
+const RECAPTCHA_SITE_KEY = "6LfecQArAAAAAHY4AdWeBS3Ubx5lFH6hI342ZmO8";
 
 export default function PoptavkaPage() {
   const [isClient, setIsClient] = useState(false)
@@ -19,7 +23,7 @@ export default function PoptavkaPage() {
     jmeno: "",
     email: "",
     telefon: "",
-    vyse: "",
+    castka: "",
     zprava: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -45,41 +49,79 @@ export default function PoptavkaPage() {
     setSubmitStatus("idle")
 
     try {
-      // Get reCAPTCHA token
+      // Get reCAPTCHA Enterprise token
+      let recaptchaToken = "";
+      
       // @ts-ignore - window.grecaptcha is added by the script
-      const token = await window.grecaptcha?.getResponse()
+      if (window.grecaptcha && window.grecaptcha.enterprise) {
+        try {
+          // @ts-ignore - window.grecaptcha.enterprise.execute returns a promise
+          recaptchaToken = await new Promise((resolve, reject) => {
+            // @ts-ignore
+            window.grecaptcha.enterprise.ready(async () => {
+              try {
+                // @ts-ignore
+                const token = await window.grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, {action: 'CONTACT_FORM'});
+                resolve(token);
+              } catch (error) {
+                console.error("reCAPTCHA execution error:", error);
+                reject(error);
+              }
+            });
+          });
+        } catch (error) {
+          console.error("reCAPTCHA ready error:", error);
+        }
+      }
 
-      if (!token) {
+      if (!recaptchaToken) {
         setErrorMessage(t?.form?.captchaError || "Prosím potvrďte, že nejste robot.")
         setSubmitStatus("error")
         setIsSubmitting(false)
         return
       }
 
-      // Here you would normally send the data to your server
-      // For now, we'll simulate a successful submission
-      setTimeout(() => {
-        console.log("Form submitted:", formData)
-        setSubmitStatus("success")
-        setIsSubmitting(false)
+      // Get current locale from URL
+      const currentLocale = getCurrentLocale();
 
-        // Reset form after successful submission
+      // Create form data to send
+      const formDataToSend = {
+        ...formData,
+        recaptchaToken, // Include the token in the request
+        csrfToken: "dummy-token", // Add a dummy CSRF token for testing
+        formAction: "CONTACT_FORM", // Specify the form action
+        language: currentLocale || 'cs' // Default to Czech if no locale found
+      }
+
+      // Send the form data to the API
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formDataToSend),
+      });
+
+      if (response.ok) {
+        console.log("Form submitted successfully:", formData)
+        setSubmitStatus("success")
         setFormData({
           jmeno: "",
           email: "",
           telefon: "",
-          vyse: "",
+          castka: "",
           zprava: "",
-        })
-
-        // Reset reCAPTCHA
-        // @ts-ignore - window.grecaptcha is added by the script
-        window.grecaptcha?.reset()
-      }, 1500)
+        });
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.error || t?.form?.generalError || "Došlo k chybě při odesílání formuláře. Zkuste to prosím znovu.");
+        setSubmitStatus("error");
+      }
     } catch (error) {
       console.error("Error submitting form:", error)
       setErrorMessage(t?.form?.generalError || "Došlo k chybě při odesílání formuláře. Zkuste to prosím znovu.")
       setSubmitStatus("error")
+    } finally {
       setIsSubmitting(false)
     }
   }
@@ -220,14 +262,14 @@ export default function PoptavkaPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <label htmlFor="vyse" className="text-sm font-medium text-gray-700">
+                      <label htmlFor="castka" className="text-sm font-medium text-gray-700">
                         {t.form.amount.label}
                       </label>
                       <Input
                         required
-                        id="vyse"
-                        name="vyse"
-                        value={formData.vyse}
+                        id="castka"
+                        name="castka"
+                        value={formData.castka}
                         onChange={handleChange}
                         placeholder={t.form.amount.placeholder}
                         className="w-full"
@@ -253,8 +295,7 @@ export default function PoptavkaPage() {
                   </div>
 
                   <div className="pt-2">
-                    {/* Google reCAPTCHA */}
-                    <div className="g-recaptcha mb-6" data-sitekey="6LcEJLYhAAAAADvV9mLgwaWHHy1YVfVWyIeg7Gkn"></div>
+                    {/* reCAPTCHA Enterprise is invisible, no div needed here */}
 
                     <Button
                       type="submit"
@@ -323,8 +364,8 @@ export default function PoptavkaPage() {
 
       <Footer />
 
-      {/* Google reCAPTCHA Script */}
-      <Script src="https://www.google.com/recaptcha/api.js" strategy="afterInteractive" />
+      {/* Google reCAPTCHA Enterprise Script */}
+      <Script src={`https://www.google.com/recaptcha/enterprise.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
     </div>
   )
 }

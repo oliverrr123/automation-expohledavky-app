@@ -1,0 +1,111 @@
+{
+  "hero": {
+    "badge": "Naše služby",
+    "title": "Odkup společností",
+    "subtitle": "Profesionální řešení pro prodej a nákup firem"
+  },
+  "mainSection": {
+    "badge": "Strategické řešení",
+    "title": "Odkup společností",
+    "paragraphs": [
+      "Uvažujete o prodeji nebo nákupu společnosti?",
+      "Náš tým specialistů vám pomůže s celým procesem odkupu nebo prodeje společnosti. Nabízíme komplexní služby, které zahrnují analýzu společnosti, oceňování, právní zastoupení a vyjednávání. Zajistíme, že celý proces proběhne hladce a efektivně."
+    ],
+    "button": "Nezávazná konzultace"
+  },
+  "services": {
+    "badge": "Naše řešení",
+    "title": "Služby při odkupu společností",
+    "items": [
+      {
+        "icon": "Search",
+        "title": "Analýza společnosti",
+        "description": "Důkladná analýza finančního stavu, provozních procesů a tržní pozice společnosti"
+      },
+      {
+        "icon": "Calculator",
+        "title": "Oceňování",
+        "description": "Profesionální oceňování společnosti s ohledem na všechny relevantní faktory"
+      },
+      {
+        "icon": "Scale",
+        "title": "Právní zastoupení",
+        "description": "Komplexní právní služby včetně přípravy smluv a jednání s protistranou"
+      },
+      {
+        "icon": "MessageCircle",
+        "title": "Vyjednávání",
+        "description": "Profesionální vyjednávání podmínek prodeje nebo nákupu"
+      },
+      {
+        "icon": "FileCheck",
+        "title": "Due diligence",
+        "description": "Komplexní prověření společnosti před uzavřením obchodu"
+      }
+    ]
+  },
+  "process": {
+    "badge": "Postupný proces",
+    "title": "Jak probíhá odkup společnosti?",
+    "steps": [
+      {
+        "number": "1",
+        "title": "Analýza",
+        "description": "Důkladná analýza společnosti a jejího tržního postavení"
+      },
+      {
+        "number": "2",
+        "title": "Oceňování",
+        "description": "Stanovení reálné hodnoty společnosti"
+      },
+      {
+        "number": "3",
+        "title": "Due diligence",
+        "description": "Komplexní prověření všech aspektů společnosti"
+      },
+      {
+        "number": "4",
+        "title": "Vyjednávání",
+        "description": "Jednání o podmínkách obchodu"
+      },
+      {
+        "number": "5",
+        "title": "Uzavření obchodu",
+        "description": "Právní zajištění a realizace obchodu"
+      }
+    ]
+  },
+  "benefits": {
+    "badge": "Výhody",
+    "title": "Proč zvolit naše služby?",
+    "items": [
+      {
+        "icon": "Award",
+        "title": "Zkušenosti",
+        "description": "Náš tým má rozsáhlé zkušenosti s odkupem a prodejem společností"
+      },
+      {
+        "icon": "Target",
+        "title": "Individuální přístup",
+        "description": "Každá společnost je jedinečná, proto vytváříme řešení na míru"
+      },
+      {
+        "icon": "Shield",
+        "title": "Diskrétnost",
+        "description": "Garantujeme naprostou důvěrnost všech informací"
+      },
+      {
+        "icon": "Clock",
+        "title": "Efektivita",
+        "description": "Zajistíme rychlý a efektivní průběh celého procesu"
+      }
+    ],
+    "note": "Naším cílem je zajistit, aby proces odkupu nebo prodeje společnosti proběhl hladce a efektivně, s maximálním zohledněním vašich zájmů."
+  },
+  "cta": {
+    "title": "Potřebujete pomoc s prodejem nebo nákupem společnosti?",
+    "description": "Kontaktujte nás pro nezávaznou konzultaci. Náš tým odborníků je připraven vám pomoci s celým procesem.",
+    "primaryButton": "Kontaktovat nás",
+    "secondaryButton": "Další služby"
+  }
+} 

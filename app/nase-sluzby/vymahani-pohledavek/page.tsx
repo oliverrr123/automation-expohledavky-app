@@ -43,7 +43,7 @@ export default function VymahaniPohledavekPage() {
     jmeno: "",
     email: "",
     telefon: "",
-    vyse: "",
+    castka: "",
     zprava: "",
   })
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
@@ -69,7 +69,7 @@ export default function VymahaniPohledavekPage() {
           jmeno: "",
           email: "",
           telefon: "",
-          vyse: "",
+          castka: "",
           zprava: "",
         })
         setFormStatus("idle")

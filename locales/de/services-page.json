@@ -38,6 +38,22 @@
       "cta": "Mehr erfahren"
     },
     {
+      "id": "likvidace-firem",
+      "title": "Unternehmensliquidation",
+      "description": "Professionelle und reibungslose Beendigung von Geschäftstätigkeiten mit vollständigem Rechtsservice.",
+      "icon": "FileSignature",
+      "color": "red",
+      "cta": "Mehr erfahren"
+    },
+    {
+      "id": "krizovy-management",
+      "title": "Krisenmanagement",
+      "description": "Umfassende Lösungen für Unternehmen in Schwierigkeiten und Restrukturierung von Unternehmen in herausfordernden Situationen.",
+      "icon": "Shield",
+      "color": "blue",
+      "cta": "Mehr erfahren"
+    },
+    {
       "id": "odkup-smenek",
       "title": "Ankauf von Wechseln",
       "description": "Wir kaufen Wechsel aller Art zu günstigen Konditionen mit schneller Auszahlung der Geldmittel.",

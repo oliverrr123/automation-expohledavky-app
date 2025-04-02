@@ -30,7 +30,7 @@
       "jmeno": "Vor- und Nachname",
       "email": "E-Mail",
       "telefon": "Telefon",
-      "vyse": "Forderungshöhe (€)",
+      "castka": "Forderungshöhe (€)",
       "zprava": "Nachricht"
     },
     "statuses": {

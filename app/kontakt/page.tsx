@@ -18,9 +18,18 @@ import deContactPage from '@/locales/de/contact-page.json'
 import { generateCSRFToken } from "@/lib/csrf"
 import { headers } from 'next/headers'
 import { useParams } from "next/navigation"
+import { getCurrentLocale } from "@/lib/i18n"
 
 // Default translations for the contact page
 const defaultTranslations = csContactPage;
+
+// Map URLs by locale
+const mapUrls = {
+  cs: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1309.991323351492!2d14.43769867043068!3d50.05029700340133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b947584a7271d%3A0x757cf669b838c9f1!2sNa%20Str%C5%BEi%201721%2F63a%2C%20140%2000%20Praha%204-Nusle!5e0!3m2!1sen!2scz!4v1742944531660!5m2!1sen!2scz",
+  sk: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1595.420886943552!2d17.11086138629983!3d48.09949778007999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476c89c9ceb0411b%3A0xc5659f7b6594d864!2sBetliarska%2022%2C%20851%2007%20Petr%C5%BEalka%2C%20Slovakia!5e0!3m2!1sen!2scz!4v1742944599488!5m2!1sen!2scz",
+  de: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2246.999029765841!2d13.188615607759504!3d49.11945363885499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47752fdd5192a2c3%3A0x4daf2d023ef3df8a!2sSonnenhof%203%2C%2094252%20Bayerisch%20Eisenstein%2C%20Germany!5e0!3m2!1sen!2scz!4v1742944776751!5m2!1sen!2scz",
+  en: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3794.373087528779!2d-0.12827111545847228!3d51.51500093540498!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487604cb57fec9f9%3A0x2e42a59ca28651cb!2s71-75%20Shelton%20St%2C%20London%20WC2H%209JQ%2C%20UK!5e0!3m2!1sen!2scz!4v1742945021778!5m2!1sen!2scz"
+};
 
 export default function ContactPage() {
   // Add state to track if client-side rendered
@@ -37,6 +46,12 @@ export default function ContactPage() {
     setIsClient(true)
     // Generate CSRF token when component mounts
     setCsrfToken(generateCSRFToken())
+    
+    // Set the appropriate map URL based on locale
+    const currentLocale = getCurrentLocale();
+    if (currentLocale && mapUrls[currentLocale as keyof typeof mapUrls]) {
+      setMapUrl(mapUrls[currentLocale as keyof typeof mapUrls]);
+    }
   }, [])
   
   const [formData, setFormData] = useState({
@@ -51,6 +66,7 @@ export default function ContactPage() {
   const [copyStatus, setCopyStatus] = useState<{ [key: number]: boolean }>({})
 
   const [csrfToken, setCsrfToken] = useState("")
+  const [mapUrl, setMapUrl] = useState(mapUrls.cs);
 
   useEffect(() => {
     // Generate a CSRF token on the client side
@@ -105,13 +121,19 @@ export default function ContactPage() {
     setFormStatus("submitting")
 
     try {
+      // Get current locale from URL
+      const currentLocale = getCurrentLocale();
+
       // Send the form data to the API
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          language: currentLocale || 'cs' // Default to Czech if no locale found
+        }),
       });
 
       const data = await response.json();
@@ -617,7 +639,7 @@ export default function ContactPage() {
                 <SectionWrapper animation="fade-right" delay={300}>
                   <div className="h-[300px] rounded-xl overflow-hidden shadow-md relative group transition-all duration-300 hover:shadow-xl">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1785.5514604373323!2d14.440829114698493!3d50.05107500142287!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b9475831cbea9%3A0xc1bda36768f28d19!2sCity%20Empiria%2C%20Na%20Pankr%C3%A1ci%2C%20140%2000%20Praha%204-Nusle!5e0!3m2!1scs!2scz!4v1633944667937!5m2!1scs!2scz"
+                      src={mapUrl}
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
@@ -626,7 +648,7 @@ export default function ContactPage() {
                       referrerPolicy="no-referrer-when-downgrade"
                       sandbox="allow-scripts allow-same-origin allow-popups"
                     ></iframe>
-
+                    
                     {/* Map overlay with hover effect */}
                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent flex items-end transition-opacity duration-300 hover:opacity-0">
                       <div className="p-4 text-white w-full">

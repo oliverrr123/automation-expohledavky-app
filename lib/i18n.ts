@@ -25,6 +25,10 @@ import csMetadata from '@/locales/cs/metadata.json';
 import csServicesLayout from '@/locales/cs/services-layout.json';
 import csLoading from '@/locales/cs/loading.json';
 import csInquiryPage from '@/locales/cs/inquiry-page.json';
+import csCompanyLiquidationPage from '@/locales/cs/company-liquidation-page.json';
+import csCrisisManagementPage from '@/locales/cs/crisis-management-page.json';
+import csScreeningPage from '@/locales/cs/screening-page.json';
+import csCompanyAcquisitionPage from '@/locales/cs/company-acquisition-page.json';
 
 // English translations
 import enHero from '@/locales/en/hero.json';
@@ -52,6 +56,10 @@ import enMetadata from '@/locales/en/metadata.json';
 import enServicesLayout from '@/locales/en/services-layout.json';
 import enLoading from '@/locales/en/loading.json';
 import enInquiryPage from '@/locales/en/inquiry-page.json';
+import enCompanyLiquidationPage from '@/locales/en/company-liquidation-page.json';
+import enCrisisManagementPage from '@/locales/en/crisis-management-page.json';
+import enScreeningPage from '@/locales/en/screening-page.json';
+import enCompanyAcquisitionPage from '@/locales/en/company-acquisition-page.json';
 
 // German translations
 import deHero from '@/locales/de/hero.json';
@@ -79,6 +87,10 @@ import deMetadata from '@/locales/de/metadata.json';
 import deServicesLayout from '@/locales/de/services-layout.json';
 import deLoading from '@/locales/de/loading.json';
 import deInquiryPage from '@/locales/de/inquiry-page.json';
+import deCompanyLiquidationPage from '@/locales/de/company-liquidation-page.json';
+import deCrisisManagementPage from '@/locales/de/crisis-management-page.json';
+import deScreeningPage from '@/locales/de/screening-page.json';
+import deCompanyAcquisitionPage from '@/locales/de/company-acquisition-page.json';
 
 // Slovak translations
 import skHero from '@/locales/sk/hero.json';
@@ -106,6 +118,10 @@ import skMetadata from '@/locales/sk/metadata.json';
 import skServicesLayout from '@/locales/sk/services-layout.json';
 import skLoading from '@/locales/sk/loading.json';
 import skInquiryPage from '@/locales/sk/inquiry-page.json';
+import skCompanyLiquidationPage from '@/locales/sk/company-liquidation-page.json';
+import skCrisisManagementPage from '@/locales/sk/crisis-management-page.json';
+import skScreeningPage from '@/locales/sk/screening-page.json';
+import skCompanyAcquisitionPage from '@/locales/sk/company-acquisition-page.json';
 
 import { getLanguageFromHostname } from './domain-mapping';
 import Cookies from 'js-cookie';
@@ -154,7 +170,11 @@ const translations: Record<string, Record<string, any>> = {
     metadata: csMetadata,
     servicesLayout: csServicesLayout,
     loading: csLoading,
-    inquiryPage: csInquiryPage
+    inquiryPage: csInquiryPage,
+    companyLiquidationPage: csCompanyLiquidationPage,
+    crisisManagementPage: csCrisisManagementPage,
+    screeningPage: csScreeningPage,
+    companyAcquisitionPage: csCompanyAcquisitionPage
   },
   en: {
     hero: enHero,
@@ -181,7 +201,11 @@ const translations: Record<string, Record<string, any>> = {
     metadata: enMetadata,
     servicesLayout: enServicesLayout,
     loading: enLoading,
-    inquiryPage: enInquiryPage
+    inquiryPage: enInquiryPage,
+    companyLiquidationPage: enCompanyLiquidationPage,
+    crisisManagementPage: enCrisisManagementPage,
+    screeningPage: enScreeningPage,
+    companyAcquisitionPage: enCompanyAcquisitionPage
   },
   de: {
     hero: deHero,
@@ -208,7 +232,11 @@ const translations: Record<string, Record<string, any>> = {
     metadata: deMetadata,
     servicesLayout: deServicesLayout,
     loading: deLoading,
-    inquiryPage: deInquiryPage
+    inquiryPage: deInquiryPage,
+    companyLiquidationPage: deCompanyLiquidationPage,
+    crisisManagementPage: deCrisisManagementPage,
+    screeningPage: deScreeningPage,
+    companyAcquisitionPage: deCompanyAcquisitionPage
   },
   sk: {
     hero: skHero,
@@ -235,7 +263,11 @@ const translations: Record<string, Record<string, any>> = {
     metadata: skMetadata,
     servicesLayout: skServicesLayout,
     loading: skLoading,
-    inquiryPage: skInquiryPage
+    inquiryPage: skInquiryPage,
+    companyLiquidationPage: skCompanyLiquidationPage,
+    crisisManagementPage: skCrisisManagementPage,
+    screeningPage: skScreeningPage,
+    companyAcquisitionPage: skCompanyAcquisitionPage
   }
 };
 

@@ -1,0 +1,129 @@
+{
+  "hero": {
+    "badge": "Naše služby",
+    "title": "Likvidácia spoločností",
+    "subtitle": "Profesionálne a rýchle riešenie pre ukončenie činnosti vašej spoločnosti"
+  },
+  "mainSection": {
+    "badge": "Profesionálne riešenie",
+    "title": "Likvidácia spoločností",
+    "paragraphs": [
+      "Potrebujete ukončiť činnosť vašej spoločnosti a neviete ako na to?",
+      "Ponúkame kompletný servis v oblasti likvidácie obchodných spoločností. Postaráme sa o všetky právne, účtovné a administratívne úkony spojené s likvidáciou vašej spoločnosti, aby pre vás celý proces prebehol čo najplynulejšie a najrýchlejšie."
+    ],
+    "button": "Nezáväzná poptávka"
+  },
+  "reasons": {
+    "badge": "Kedy zvoliť likvidáciu",
+    "title": "V akých situáciách je vhodné likvidovať spoločnosť",
+    "description": "Likvidácia spoločnosti môže byť vhodným riešením v rôznych situáciách. Tu sú najčastejšie dôvody, prečo sa spoločnosti rozhodnú pre likvidáciu:",
+    "items": [
+      {
+        "icon": "Briefcase",
+        "title": "Ukončenie podnikateľskej činnosti",
+        "description": "Spoločníci sa rozhodli ukončiť podnikateľskú činnosť a nechcú v nej ďalej pokračovať."
+      },
+      {
+        "icon": "Clock",
+        "title": "Dosiahnutie účelu spoločnosti",
+        "description": "Spoločnosť bola založená za určitým účelom, ktorý bol už naplnený (napr. realizácia konkrétneho projektu)."
+      },
+      {
+        "icon": "Scale",
+        "title": "Ekonomické dôvody",
+        "description": "Spoločnosť je dlhodobo nerentabilná, ale stále je schopná dostáť svojim záväzkom (nie je v úpadku)."
+      },
+      {
+        "icon": "FileText",
+        "title": "Administratívne zjednodušenie",
+        "description": "Zjednodušenie firemnej štruktúry, napr. pri fúziách alebo akvizíciách, keď je potrebné eliminovať nadbytočné entity."
+      },
+      {
+        "icon": "ShieldCheck",
+        "title": "Právne dôvody",
+        "description": "Rozhodnutie súdu o zrušení spoločnosti alebo uplynutie doby, na ktorú bola spoločnosť založená."
+      },
+      {
+        "icon": "FileCheck",
+        "title": "Preventívne opatrenia",
+        "description": "Predchádzanie budúcim problémom u neaktívnych spoločností, ktoré by mohli viesť k nútenej likvidácii."
+      }
+    ]
+  },
+  "process": {
+    "badge": "Priebeh likvidácie",
+    "title": "Ako prebieha likvidácia spoločnosti?",
+    "steps": [
+      {
+        "number": "1",
+        "title": "Vstupná analýza",
+        "description": "Dôkladná analýza stavu spoločnosti a príprava plánu likvidácie"
+      },
+      {
+        "number": "2",
+        "title": "Zahájenie likvidácie",
+        "description": "Vymenovanie likvidátora a zápis do obchodného registra"
+      },
+      {
+        "number": "3",
+        "title": "Vypořádanie záväzkov",
+        "description": "Oznámenie veriteľom, vypořádanie pohľadávok a záväzkov spoločnosti"
+      },
+      {
+        "number": "4",
+        "title": "Ukončenie likvidácie",
+        "description": "Zostavenie záverečnej účtovnej závierky a návrhu na rozdelenie likvidačného zostatku"
+      },
+      {
+        "number": "5",
+        "title": "Vymazanie z registra",
+        "description": "Podanie návrhu na vymazanie spoločnosti z obchodného registra"
+      }
+    ]
+  },
+  "benefits": {
+    "badge": "Výhody",
+    "title": "Prečo zvoliť naše služby?",
+    "items": [
+      {
+        "icon": "Clock",
+        "title": "Rýchly proces",
+        "description": "Vďaka našim skúsenostiam dokážeme celý proces likvidácie značne urýchliť"
+      },
+      {
+        "icon": "Shield",
+        "title": "Právna istota",
+        "description": "Zajistíme, že celý proces prebehne v súlade s platnou legislatívou"
+      },
+      {
+        "icon": "FileText",
+        "title": "Kompletná administratíva",
+        "description": "Postaráme sa o všetku dokumentáciu a komunikáciu s úradmi"
+      },
+      {
+        "icon": "Users",
+        "title": "Skúsený tím",
+        "description": "Náš tím má bohaté skúsenosti s likvidáciou rôznych typov spoločností"
+      }
+    ],
+    "note": "Ponúkame aj možnosť prevzatia role likvidátora, čo vám umožní sa plne venovať vašim ďalším podnikateľským aktivitám."
+  },
+  "advantages": {
+    "badge": "Výhody našej služby",
+    "title": "Prečo zveriť likvidáciu spoločnosti odborníkom",
+    "description": "Likvidácia spoločnosti je komplexný proces, ktorý vyžaduje odborné znalosti a skúsenosti.",
+    "items": [
+      "Profesionálny prístup a skúsenosti",
+      "Dôkladné overenie všetkých aspektov",
+      "Rýchle a efektívne spracovanie",
+      "Konkrétne odporúčania pre ďalšie kroky",
+      "Ochrana vášho podnikania"
+    ]
+  },
+  "cta": {
+    "title": "Potrebujete profesionálne zlikvidovať spoločnosť?",
+    "description": "Kontaktujte nás pre nezáväznú konzultáciu. Náš tím odborníkov je pripravený vám pomôcť s profesionálnou likvidáciou vašej spoločnosti.",
+    "primaryButton": "Kontaktovať nás",
+    "secondaryButton": "Ďalšie služby"
+  }
+} 

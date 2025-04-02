@@ -1,0 +1,111 @@
+{
+  "hero": {
+    "badge": "Naše služby",
+    "title": "Krízový manažment",
+    "subtitle": "Profesionálne riešenia pre firmy v ťažkej situácii"
+  },
+  "mainSection": {
+    "badge": "Strategické riešenie",
+    "title": "Krízový manažment",
+    "paragraphs": [
+      "Nachádza sa vaša spoločnosť v kríze a hľadáte profesionálnu pomoc?",
+      "Náš tím špecialistov na krízový manažment vám pomôže identifikovať príčiny problémov, navrhnúť a implementovať účinné riešenia, ktoré vašu firmu dostanú späť na správnu cestu. Ponúkame komplexné služby krízového riadenia, ktoré sú vždy prispôsobené špecifickým potrebám vašej spoločnosti."
+    ],
+    "button": "Nezáväzná konzultácia"
+  },
+  "services": {
+    "badge": "Naše riešenia",
+    "title": "Služby krízového manažmentu",
+    "items": [
+      {
+        "icon": "TrendingUp",
+        "title": "Finančná reštrukturalizácia",
+        "description": "Analýza finančného stavu spoločnosti, identifikácia problémov a návrh optimálneho riešenia finančnej situácie"
+      },
+      {
+        "icon": "Scale",
+        "title": "Právne zastúpenie",
+        "description": "Komplexná právna pomoc pri jednaní s veriteľmi, dlžníkmi a ďalšími zúčastnenými stranami"
+      },
+      {
+        "icon": "BarChart",
+        "title": "Prevádzková optimalizácia",
+        "description": "Identifikácia neefektívnych procesov a implementácia opatrení na zníženie nákladov a zvýšenie produktivity"
+      },
+      {
+        "icon": "Users",
+        "title": "Personálne riešenia",
+        "description": "Analýza personálnej štruktúry a implementácia potrebných zmien s ohľadom na efektivitu a náklady"
+      },
+      {
+        "icon": "MessageCircle",
+        "title": "Krízová komunikácia",
+        "description": "Profesionálna komunikácia s obchodnými partnermi, zamestnancami a verejnosťou počas krízového obdobia"
+      }
+    ]
+  },
+  "process": {
+    "badge": "Postupný proces",
+    "title": "Ako prebieha krízový manažment?",
+    "steps": [
+      {
+        "number": "1",
+        "title": "Analýza situácie",
+        "description": "Dôkladná analýza súčasného stavu spoločnosti, identifikácia hlavných problémov a ich príčin"
+      },
+      {
+        "number": "2",
+        "title": "Návrh riešenia",
+        "description": "Vypracovanie stratégie a konkrétnych opatrení na prekonanie krízy a stabilizáciu spoločnosti"
+      },
+      {
+        "number": "3",
+        "title": "Implementácia",
+        "description": "Realizácia navrhnutých riešení pod vedením skúsených krízových manažérov"
+      },
+      {
+        "number": "4",
+        "title": "Monitoring a úpravy",
+        "description": "Priebežné sledovanie výsledkov, hodnotenie účinnosti opatrení a ich prípadná úprava"
+      },
+      {
+        "number": "5",
+        "title": "Stabilizácia",
+        "description": "Dosiahnutie stability a vytvorenie podmienok pre dlhodobý rast spoločnosti"
+      }
+    ]
+  },
+  "benefits": {
+    "badge": "Výhody",
+    "title": "Prečo zvoliť náš krízový manažment?",
+    "items": [
+      {
+        "icon": "Award",
+        "title": "Skúsenosti",
+        "description": "Náš tím má rozsiahle skúsenosti s riešením krízových situácií v rôznych odvetviach"
+      },
+      {
+        "icon": "Clock",
+        "title": "Rýchla reakcia",
+        "description": "Sme pripravení začať pracovať na vašom prípade okamžite, pretože vieme, že v kríze je čas rozhodujúci"
+      },
+      {
+        "icon": "Target",
+        "title": "Individuálny prístup",
+        "description": "Každá spoločnosť je jedinečná, preto vytvárame riešenia na mieru vašim špecifickým potrebám"
+      },
+      {
+        "icon": "Shield",
+        "title": "Diskrétnosť",
+        "description": "Garantujeme úplnú dôvernosť všetkých informácií, s ktorými prichádzame do kontaktu"
+      }
+    ],
+    "note": "Naším cieľom nie je len vyriešiť aktuálnu krízu, ale aj posilniť spoločnosť tak, aby bola v budúcnosti odolnejšia voči podobným situáciám."
+  },
+  "cta": {
+    "title": "Potrebujete pomoc s restrukturalizáciou vašej firmy?",
+    "description": "Kontaktujte nás pre nezáväznú konzultáciu. Náš tím odborníkov je pripravený vám pomôcť s restrukturalizáciou vašej spoločnosti.",
+    "primaryButton": "Kontaktovať nás",
+    "secondaryButton": "Ďalšie služby"
+  }
+} 

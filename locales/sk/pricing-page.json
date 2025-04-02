@@ -1,6 +1,6 @@
 {
   "title": "CENNÍK",
-  "subtitle": "Základné sadzby platné od 1. 1. 2023",
+  "subtitle": "Základné sadzby platné od 1. 4. 2025 (v EUR)",
   "pricingTable": {
     "header": {
       "specification": "Špecifikácia jednotlivých oddelení pri spracovaní každej pohľadávky",
@@ -9,31 +9,35 @@
     "rows": [
       {
         "service": "Administratíva – sprocesovanie pohľadávky",
-        "price": "1 000,- Kč"
+        "price": "50 EUR"
       },
       {
         "service": "Lustračné oddelenie",
-        "price": "1 300,- Kč"
+        "price": "65 EUR"
       },
       {
         "service": "Vymáhanie inkasnými špecialistami",
-        "price": "2 000,- Kč" 
+        "price": "100 EUR" 
       },
       {
         "service": "Právne oddelenie",
-        "price": "3 000,- Kč"
+        "price": "150 EUR"
+      },
+      {
+        "service": "Právne poradenstvo v oblasti vymáhania pohľadávok",
+        "price": "od 154 EUR/hodina"
       },
       {
         "service": "Súdna žaloba – 15% z výšky pohľadávky",
-        "price": "minimálne však 15 000,- Kč"
+        "price": "minimálne však 750 EUR"
       },
       {
         "service": "Doložka právnej vykonateľnosti u notára",
-        "price": "minimálne 12 000,- Kč"
+        "price": "minimálne 600 EUR"
       },
       {
         "service": "Výjazd za dlžníkom",
-        "price": "30,- Kč/km + 500,- Kč/hodina"
+        "price": "1,52 EUR/km + 25 EUR/hodina"
       }
     ]
   },

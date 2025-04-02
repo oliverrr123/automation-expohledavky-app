@@ -38,6 +38,22 @@
       "cta": "Learn more"
     },
     {
+      "id": "likvidace-firem",
+      "title": "Company Liquidation",
+      "description": "Professional and trouble-free termination of business activities with complete legal service.",
+      "icon": "FileSignature",
+      "color": "red",
+      "cta": "Learn more"
+    },
+    {
+      "id": "krizovy-management",
+      "title": "Crisis Management",
+      "description": "Comprehensive solutions for companies in difficulty and restructuring of businesses in challenging situations.",
+      "icon": "Shield",
+      "color": "blue",
+      "cta": "Learn more"
+    },
+    {
       "id": "odkup-smenek",
       "title": "Purchase of promissory notes",
       "description": "We purchase promissory notes of all types under favorable conditions with quick payment of funds.",

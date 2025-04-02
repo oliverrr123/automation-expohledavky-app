@@ -1,0 +1,129 @@
+{
+  "hero": {
+    "badge": "Our Services",
+    "title": "Company Liquidation",
+    "subtitle": "Professional and fast solution for winding up your company"
+  },
+  "mainSection": {
+    "badge": "Professional Solution",
+    "title": "Company Liquidation",
+    "paragraphs": [
+      "Need to wind up your company and don't know how?",
+      "We offer a complete service in the field of company liquidation. We will handle all legal, accounting, and administrative tasks associated with your company's liquidation to ensure the entire process runs as smoothly and quickly as possible."
+    ],
+    "button": "Non-binding Inquiry"
+  },
+  "reasons": {
+    "badge": "When to Choose Liquidation",
+    "title": "In Which Situations is Company Liquidation Appropriate",
+    "description": "Company liquidation can be an appropriate solution in various situations. Here are the most common reasons why companies choose liquidation:",
+    "items": [
+      {
+        "icon": "Briefcase",
+        "title": "Business Activity Termination",
+        "description": "Shareholders have decided to terminate business activities and do not want to continue."
+      },
+      {
+        "icon": "Clock",
+        "title": "Purpose Achievement",
+        "description": "The company was established for a specific purpose that has been fulfilled (e.g., completion of a specific project)."
+      },
+      {
+        "icon": "Scale",
+        "title": "Economic Reasons",
+        "description": "The company is long-term unprofitable but still able to meet its obligations (not in bankruptcy)."
+      },
+      {
+        "icon": "FileText",
+        "title": "Administrative Simplification",
+        "description": "Simplifying the corporate structure, e.g., during mergers or acquisitions when redundant entities need to be eliminated."
+      },
+      {
+        "icon": "ShieldCheck",
+        "title": "Legal Reasons",
+        "description": "Court decision to dissolve the company or expiration of the period for which the company was established."
+      },
+      {
+        "icon": "FileCheck",
+        "title": "Preventive Measures",
+        "description": "Preventing future problems with inactive companies that could lead to forced liquidation."
+      }
+    ]
+  },
+  "process": {
+    "badge": "Liquidation Process",
+    "title": "How Does Company Liquidation Work?",
+    "steps": [
+      {
+        "number": "1",
+        "title": "Initial Analysis",
+        "description": "Thorough analysis of the company's status and preparation of the liquidation plan"
+      },
+      {
+        "number": "2",
+        "title": "Liquidation Start",
+        "description": "Appointment of the liquidator and registration in the commercial register"
+      },
+      {
+        "number": "3",
+        "title": "Settlement of Liabilities",
+        "description": "Notification of creditors, settlement of receivables and company liabilities"
+      },
+      {
+        "number": "4",
+        "title": "Liquidation Completion",
+        "description": "Preparation of final financial statements and proposal for distribution of liquidation balance"
+      },
+      {
+        "number": "5",
+        "title": "Registry Deletion",
+        "description": "Filing a proposal for deletion of the company from the commercial register"
+      }
+    ]
+  },
+  "benefits": {
+    "badge": "Benefits",
+    "title": "Why Choose Our Services?",
+    "items": [
+      {
+        "icon": "Clock",
+        "title": "Fast Process",
+        "description": "Thanks to our experience, we can significantly speed up the entire liquidation process"
+      },
+      {
+        "icon": "Shield",
+        "title": "Legal Security",
+        "description": "We ensure that the entire process complies with current legislation"
+      },
+      {
+        "icon": "FileText",
+        "title": "Complete Administration",
+        "description": "We handle all documentation and communication with authorities"
+      },
+      {
+        "icon": "Users",
+        "title": "Experienced Team",
+        "description": "Our team has extensive experience in liquidating various types of companies"
+      }
+    ],
+    "note": "We also offer the possibility of taking over the role of liquidator, allowing you to fully focus on your other business activities."
+  },
+  "advantages": {
+    "badge": "Service Benefits",
+    "title": "Why Trust Company Liquidation to Experts",
+    "description": "Company liquidation is a complex process that requires professional knowledge and experience.",
+    "items": [
+      "Professional approach and experience",
+      "Thorough verification of all aspects",
+      "Fast and efficient processing",
+      "Concrete recommendations for next steps",
+      "Protection of your business"
+    ]
+  },
+  "cta": {
+    "title": "Need Professional Company Liquidation?",
+    "description": "Contact us for a non-binding consultation. Our team of experts is ready to help you with professional liquidation of your company.",
+    "primaryButton": "Contact Us",
+    "secondaryButton": "Other Services"
+  }
+} 

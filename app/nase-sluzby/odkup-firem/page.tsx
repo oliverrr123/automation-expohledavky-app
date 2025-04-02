@@ -1,81 +1,31 @@
 "use client"
 
+import React from "react"
 import Image from "next/image"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, CheckCircle, FileText, Building, ClipboardCheck } from "lucide-react"
+import { ArrowRight, CheckCircle, FileText, Building, ClipboardCheck, Search, Calculator, Scale, MessageCircle, FileCheck, Award, Target, Shield, Clock } from "lucide-react"
 import { useTranslations } from "@/lib/i18n"
-import { useState, useEffect } from "react"
-
-// Icon mapping for document icons
-const iconMap = {
-  FileText,
-  ClipboardCheck,
-  Building
-}
-
-// Default translations as fallback
-const defaultTranslations = {
-  hero: {
-    badge: "Naše služby",
-    title: "Odkup firem",
-    subtitle: "Profesionální řešení pro majitele, kteří chtějí prodat svou společnost"
-  },
-  mainSection: {
-    badge: "Komplexní řešení",
-    title: "Odkup firem",
-    paragraphs: [
-      "Vlastníte firmu, kterou již nepotřebujete a rádi byste ji prodali?",
-      "Pak neváhejte a kontaktuje nás, připravíme vám nabídku šitou na míru na odkup společnosti."
-    ],
-    button: "Nezávazná poptávka"
-  },
-  requirements: {
-    badge: "Naše požadavky",
-    title: "Máme zájem o firmy, které:",
-    items: [
-      "byly založeny, ale nedošlo k uskutečnění podnikatelského záměru",
-      "mají jasnou a bezproblémovou historii",
-      "firmy jsou bez závazků"
-    ],
-    note: "Spolupracujeme rovněž se soukromými exekutory po celé ČR, tudíž jsme schopni realizovat vymáhání ve zkrácené době."
-  },
-  documents: {
-    badge: "Potřebné dokumenty",
-    title: "V případě odkupu budeme vyžadovat tyto podklady:",
-    items: [
-      {
-        icon: "FileText",
-        title: "Potvrzení o bezdlužnosti",
-        description: "Potvrzení o bezdlužnosti ze strany finančního úřadu a dalších institucí"
-      },
-      {
-        icon: "ClipboardCheck",
-        title: "Prohlášení o bezdlužnosti",
-        description: "Prohlášení o bezdlužnosti od stávajícího majitele"
-      },
-      {
-        icon: "Building",
-        title: "Kompletní účetnictví",
-        description: "Kompletní účetnictví společnosti"
-      }
-    ]
-  }
-};
 
 export default function OdkupFiremPage() {
-  // Add state to track if client-side rendered
-  const [isClient, setIsClient] = useState(false)
-  // Use client translations after hydration
-  const translationsRaw = useTranslations('companyPurchasePage')
-  // Merge with fallback values
-  const t = { ...defaultTranslations, ...translationsRaw }
-  
-  // Set isClient to true after hydration is complete
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-  
+  const translations = useTranslations("companyAcquisitionPage")
+
+  // Icon mapping
+  const iconMap: Record<string, React.ReactNode> = {
+    Search: <Search className="h-6 w-6 text-orange-600" />,
+    Calculator: <Calculator className="h-6 w-6 text-orange-600" />,
+    Scale: <Scale className="h-6 w-6 text-orange-600" />,
+    MessageCircle: <MessageCircle className="h-6 w-6 text-orange-600" />,
+    FileCheck: <FileCheck className="h-6 w-6 text-orange-600" />,
+    Award: <Award className="h-6 w-6 text-orange-600" />,
+    Target: <Target className="h-6 w-6 text-orange-600" />,
+    Shield: <Shield className="h-6 w-6 text-orange-600" />,
+    Clock: <Clock className="h-6 w-6 text-orange-600" />,
+    FileText: <FileText className="h-6 w-6 text-orange-600" />,
+    ClipboardCheck: <ClipboardCheck className="h-6 w-6 text-orange-600" />,
+    Building: <Building className="h-6 w-6 text-orange-600" />
+  }
+
   return (
     <>
       {/* Hero Section */}
@@ -93,11 +43,11 @@ export default function OdkupFiremPage() {
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
               <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                {t.hero?.badge || defaultTranslations.hero.badge}
+                {translations.hero.badge}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero?.title || defaultTranslations.hero.title}</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{translations.hero.title}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                {t.hero?.subtitle || defaultTranslations.hero.subtitle}
+                {translations.hero.subtitle}
               </p>
             </SectionWrapper>
           </div>
@@ -106,27 +56,21 @@ export default function OdkupFiremPage() {
 
       {/* Main Content Section */}
       <section className="pt-0 pb-12 -mt-20 relative z-10">
-        {" "}
-        {/* Updated section class */}
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-            {" "}
-            {/* Added border */}
             <div className="p-8 md:p-12">
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {t.mainSection?.badge || defaultTranslations.mainSection.badge}
+                    {translations.mainSection.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">
-                    {t.mainSection?.title || defaultTranslations.mainSection.title}
-                  </h2>
-                  
-                  {(t.mainSection?.paragraphs || defaultTranslations.mainSection.paragraphs).map((paragraph: string, index: number) => (
-                    <p key={index} className={`text-gray-600 ${index === 0 ? 'mb-4 text-lg' : 'mb-8'}`}>
-                      {paragraph}
-                    </p>
-                  ))}
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{translations.mainSection.title}</h2>
+                  <p className="text-gray-600 mb-4 text-lg">
+                    {translations.mainSection.paragraphs[0]}
+                  </p>
+                  <p className="text-gray-600 mb-8">
+                    {translations.mainSection.paragraphs[1]}
+                  </p>
 
                   <div className="mt-8">
                     <Button
@@ -134,7 +78,7 @@ export default function OdkupFiremPage() {
                       className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
                     >
                       <a href="#contact-form" className="flex items-center">
-                        {t.mainSection?.button || defaultTranslations.mainSection.button} <ArrowRight className="ml-2 h-4 w-4" />
+                        {translations.mainSection.button} <ArrowRight className="ml-2 h-4 w-4" />
                       </a>
                     </Button>
                   </div>
@@ -145,7 +89,7 @@ export default function OdkupFiremPage() {
         </div>
       </section>
 
-      {/* Companies We're Interested In Section */}
+      {/* Services Section */}
       <section className="py-12">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -153,22 +97,95 @@ export default function OdkupFiremPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {t.requirements?.badge || defaultTranslations.requirements.badge}
+                    {translations.services.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">
-                    {t.requirements?.title || defaultTranslations.requirements.title}
-                  </h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{translations.services.title}</h2>
 
-                  <ul className="space-y-4 mb-8">
-                    {(t.requirements?.items || defaultTranslations.requirements.items).map((item: string, index: number) => (
-                      <li key={index} className="flex items-start gap-3 group">
-                        <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-1 shadow-sm group-hover:shadow transition-shadow">
-                          <CheckCircle className="h-4 w-4 text-orange-500" />
+                  <div className="grid md:grid-cols-1 gap-6 mt-8">
+                    {translations.services.items.map((item: { icon: string; title: string; description: string }, index: number) => (
+                      <SectionWrapper key={index} animation="zoom" delay={index * 100}>
+                        <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-8 shadow-sm border border-orange-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
+                          <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                              {iconMap[item.icon] || <FileText className="h-6 w-6 text-orange-600" />}
+                            </div>
+                            <div>
+                              <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                              <p className="text-gray-600">{item.description}</p>
+                            </div>
+                          </div>
                         </div>
-                        <span className="text-gray-700">{item}</span>
-                      </li>
+                      </SectionWrapper>
                     ))}
-                  </ul>
+                  </div>
+                </div>
+              </SectionWrapper>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div className="p-8 md:p-12">
+              <SectionWrapper animation="fade-up">
+                <div className="max-w-3xl mx-auto">
+                  <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
+                    {translations.process.badge}
+                  </div>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{translations.process.title}</h2>
+
+                  <div className="grid md:grid-cols-1 gap-6 mt-8">
+                    {translations.process.steps.map((step: { number: string; title: string; description: string }, index: number) => (
+                      <div key={index} className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-8 shadow-sm border border-orange-100 transition-all duration-300 hover:shadow-md">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                            <span className="text-xl font-bold text-orange-600">{step.number}</span>
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+                            <p className="text-gray-600">{step.description}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </SectionWrapper>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div className="p-8 md:p-12">
+              <SectionWrapper animation="fade-up">
+                <div className="max-w-3xl mx-auto">
+                  <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
+                    {translations.benefits.badge}
+                  </div>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{translations.benefits.title}</h2>
+
+                  <div className="grid md:grid-cols-2 gap-6 mt-8">
+                    {translations.benefits.items.map((item: { icon: string; title: string; description: string }, index: number) => (
+                      <div key={index} className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-6 shadow-sm border border-orange-100">
+                        <div className="flex items-start gap-4">
+                          <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                            {iconMap[item.icon] || <Award className="h-5 w-5 text-orange-600" />}
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                            <p className="text-gray-600">{item.description}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
 
                   <div className="mt-10 p-6 bg-zinc-900 text-white rounded-xl">
                     <div className="flex items-start gap-4">
@@ -176,7 +193,7 @@ export default function OdkupFiremPage() {
                         <Building className="h-5 w-5 text-orange-400" />
                       </div>
                       <p className="text-lg">
-                        {t.requirements?.note || defaultTranslations.requirements.note}
+                        {translations.benefits.note}
                       </p>
                     </div>
                   </div>
@@ -187,40 +204,36 @@ export default function OdkupFiremPage() {
         </div>
       </section>
 
-      {/* Required Documents Section */}
-      <section className="py-12">
+      {/* CTA Section */}
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
             <div className="p-8 md:p-12">
               <SectionWrapper animation="fade-up">
-                <div className="max-w-3xl mx-auto">
-                  <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {t.documents?.badge || defaultTranslations.documents.badge}
-                  </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">
-                    {t.documents?.title || defaultTranslations.documents.title}
-                  </h2>
+                <div className="max-w-3xl mx-auto text-center">
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{translations.cta.title}</h2>
+                  <p className="text-gray-600 mb-8 text-lg">
+                    {translations.cta.description}
+                  </p>
 
-                  <div className="grid md:grid-cols-1 gap-6 mt-8">
-                    {(t.documents?.items || defaultTranslations.documents.items).map((item: any, index: number) => {
-                      const Icon = iconMap[item.icon as keyof typeof iconMap];
-                      
-                      return (
-                        <SectionWrapper key={index} animation="zoom" delay={index * 100}>
-                          <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-8 shadow-sm border border-orange-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
-                            <div className="flex items-start gap-4">
-                              <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                                <Icon className="h-6 w-6 text-orange-600" />
-                              </div>
-                              <div>
-                                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                                <p className="text-gray-600">{item.description}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </SectionWrapper>
-                      );
-                    })}
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button
+                      asChild
+                      className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
+                    >
+                      <a href="#contact-form" className="flex items-center">
+                        {translations.cta.primaryButton} <ArrowRight className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="border-orange-500 text-orange-500 hover:bg-orange-50 transition-all duration-300"
+                    >
+                      <a href="/nase-sluzby" className="flex items-center">
+                        {translations.cta.secondaryButton}
+                      </a>
+                    </Button>
                   </div>
                 </div>
               </SectionWrapper>

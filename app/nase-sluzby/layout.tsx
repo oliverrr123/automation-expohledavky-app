@@ -1,15 +1,22 @@
 "use client"
 
-import React from "react"
-import { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Header } from "@/components/header"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Button } from "@/components/ui/button"
-import { Eye, User, FileText, Gavel, CreditCard, CheckCircle, ArrowRight, Send, Phone } from "lucide-react"
+import { Eye, User, FileText, Gavel, CreditCard, CheckCircle, ArrowRight, Send, Phone, Mail, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Footer } from "@/components/footer"
 import { toast } from "sonner"
 import { useTranslations } from "@/lib/i18n"
+import { getCurrentLocale } from "@/lib/i18n"
+import Script from 'next/script'
+
+// Add Google reCAPTCHA site key
+const RECAPTCHA_SITE_KEY = "6LfecQArAAAAAHY4AdWeBS3Ubx5lFH6hI342ZmO8"
+
+// Type for form state
+type FormStatus = "idle" | "submitting" | "success" | "error"
 
 export default function ServiceLayout({
   children,
@@ -18,14 +25,16 @@ export default function ServiceLayout({
 }) {
   const t = useTranslations('servicesLayout')
   
+  // Form state
   const [formData, setFormData] = useState({
     jmeno: "",
     email: "",
     telefon: "",
-    vyse: "",
+    castka: "",
     zprava: "",
   })
-  const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
+
+  const [formStatus, setFormStatus] = useState<FormStatus>("idle")
   const [activeTab, setActiveTab] = useState("kontrola")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -37,23 +46,87 @@ export default function ServiceLayout({
     e.preventDefault()
     setFormStatus("submitting")
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Form submitted:", formData)
-      setFormStatus("success")
+    try {
+      // Get reCAPTCHA Enterprise token
+      let recaptchaToken = ""
+      
+      try {
+        // @ts-ignore - window.grecaptcha is added by the script
+        if (window.grecaptcha && window.grecaptcha.enterprise) {
+          // @ts-ignore - window.grecaptcha.enterprise.execute returns a promise
+          recaptchaToken = await new Promise((resolve, reject) => {
+            try {
+              window.grecaptcha.enterprise.ready(async () => {
+                try {
+                  // @ts-ignore - window.grecaptcha.enterprise.execute returns a promise
+                  const token = await window.grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, {action: 'SERVICES_FORM'})
+                  resolve(token)
+                } catch (error) {
+                  console.error("reCAPTCHA execution error:", error)
+                  reject(error)
+                }
+              })
+            } catch (error) {
+              console.error("reCAPTCHA ready error:", error)
+              reject(error)
+            }
+          })
+        }
+      } catch (error) {
+        console.error("reCAPTCHA error:", error)
+      }
+      
+      if (!recaptchaToken) {
+        toast.warning(t?.contactForm?.form?.warnings?.recaptchaFailed || "Could not validate your request. Please try again.")
+      }
 
-      // Reset form after submission
+      // Get current locale from URL
+      const currentLocale = getCurrentLocale();
+
+      // Send the form data to the API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          jmeno: formData.jmeno,
+          email: formData.email,
+          telefon: formData.telefon,
+          zprava: formData.zprava,
+          castka: formData.castka,
+          recaptchaToken, // Include the token in the request
+          formAction: 'SERVICES_FORM', // Identify which form this is
+          language: currentLocale || 'cs' // Default to Czech if no locale found
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Something went wrong')
+      }
+
+      // Success
+      setFormStatus("success")
+      toast.success(t?.contactForm?.form?.success)
+      
+      // Reset form after success
       setTimeout(() => {
         setFormData({
           jmeno: "",
           email: "",
           telefon: "",
-          vyse: "",
+          castka: "",
           zprava: "",
         })
         setFormStatus("idle")
       }, 3000)
-    }, 1500)
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setFormStatus("error")
+      toast.error(error instanceof Error ? error.message : t?.contactForm?.form?.error)
+    }
   }
 
   const handleCopy = async (text: string) => {
@@ -187,15 +260,15 @@ export default function ServiceLayout({
                             />
                           </div>
                           <div>
-                            <label htmlFor="vyse" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="castka" className="block text-sm font-medium text-gray-700 mb-1">
                               {t?.contactForm?.form?.amount?.label}
                             </label>
                             <input
                               required
-                              id="vyse"
-                              name="vyse"
+                              id="castka"
+                              name="castka"
                               type="text"
-                              value={formData.vyse}
+                              value={formData.castka}
                               onChange={handleChange}
                               placeholder={t?.contactForm?.form?.amount?.placeholder}
                               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
@@ -281,62 +354,72 @@ export default function ServiceLayout({
                               </span>
                             )}
 
-                            {formStatus === "error" && (
-                              <span className="relative z-10">{t?.contactForm?.form?.error}</span>
-                            )}
+                            {formStatus === "error" && <span className="relative z-10">{t?.contactForm?.form?.error}</span>}
                           </Button>
                         </div>
                       </form>
                     </div>
 
-                    {/* Right side - info */}
-                    <div className="md:col-span-4 bg-gradient-to-br from-zinc-900 to-zinc-800 text-white p-8">
-                      <h3 className="text-xl font-semibold mb-6">{t?.contactSidebar?.title}</h3>
-                      <ul className="space-y-4">
-                        {(t?.contactSidebar?.reasons || []).map((reason: string, index: number) => (
-                          <li key={index} className="flex items-start gap-3">
-                            <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <CheckCircle className="h-4 w-4 text-orange-400" />
-                            </div>
-                            <span>{reason}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    {/* Right side - contact info */}
+                    <div className="md:col-span-4 bg-zinc-900 text-white p-8 flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold mb-6">{t?.contactSidebar?.title}</h3>
+                        <p className="text-zinc-300 mb-8">
+                          {t?.contactSidebar?.description}
+                        </p>
 
-                      <div className="mt-8 pt-8 border-t border-zinc-700">
-                        <p className="text-zinc-300 mb-4">{t?.contactSidebar?.contact?.title}</p>
-                        <div className="space-y-3">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
-                              <Phone className="h-4 w-4 text-orange-400" />
+                        <div className="space-y-6">
+                          <div className="flex items-start gap-4">
+                            <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
+                              <Phone className="h-5 w-5 text-orange-500" />
                             </div>
-                            <a 
-                              href={`tel:${t?.contactSidebar?.contact?.phone}`}
-                              className="hover:text-orange-300 transition-colors cursor-pointer"
-                              onClick={(e) => {
-                                e.preventDefault()
-                                handleCopy(t?.contactSidebar?.contact?.phone)
-                              }}
-                            >
-                              {t?.contactSidebar?.contact?.phone}
-                            </a>
+                            <div>
+                              <p className="font-medium text-sm text-zinc-400 mb-1">{t?.contactSidebar?.phone?.label}</p>
+                              <div
+                                className="text-white hover:text-orange-300 transition-colors cursor-pointer"
+                                onClick={() => handleCopy(t?.contactSidebar?.phone?.number || "")}
+                              >
+                                {t?.contactSidebar?.phone?.number}
+                              </div>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
-                              <Send className="h-4 w-4 text-orange-400" />
+
+                          <div className="flex items-start gap-4">
+                            <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
+                              <Mail className="h-5 w-5 text-orange-500" />
                             </div>
-                            <a 
-                              href={`mailto:${t?.contactSidebar?.contact?.email}`}
-                              className="hover:text-orange-300 transition-colors cursor-pointer"
-                              onClick={(e) => {
-                                e.preventDefault()
-                                handleCopy(t?.contactSidebar?.contact?.email)
-                              }}
-                            >
-                              {t?.contactSidebar?.contact?.email}
-                            </a>
+                            <div>
+                              <p className="font-medium text-sm text-zinc-400 mb-1">{t?.contactSidebar?.email?.label}</p>
+                              <div
+                                className="text-white hover:text-orange-300 transition-colors cursor-pointer"
+                                onClick={() => handleCopy(t?.contactSidebar?.email?.address || "")}
+                              >
+                                {t?.contactSidebar?.email?.address}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex items-start gap-4">
+                            <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center flex-shrink-0">
+                              <MapPin className="h-5 w-5 text-orange-500" />
+                            </div>
+                            <div>
+                              <p className="font-medium text-sm text-zinc-400 mb-1">{t?.contactSidebar?.address?.label}</p>
+                              <div className="text-white">{t?.contactSidebar?.address?.line1}</div>
+                              <div className="text-white">{t?.contactSidebar?.address?.line2}</div>
+                            </div>
                           </div>
                         </div>
+                      </div>
+
+                      <div className="mt-8">
+                        <a
+                          href="#"
+                          className="inline-flex items-center text-orange-400 hover:text-orange-300 transition-colors group"
+                        >
+                          {t?.contactSidebar?.viewOnMap}
+                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -454,6 +537,9 @@ export default function ServiceLayout({
       </main>
 
       <Footer />
+      
+      {/* reCAPTCHA Enterprise Script */}
+      <Script src={`https://www.google.com/recaptcha/enterprise.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
     </div>
   )
 }

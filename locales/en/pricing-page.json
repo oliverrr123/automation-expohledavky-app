@@ -1,6 +1,6 @@
 {
   "title": "PRICING",
-  "subtitle": "Basic rates valid from January 1, 2023",
+  "subtitle": "Basic rates valid from April 1, 2025 (in EUR)",
   "pricingTable": {
     "header": {
       "specification": "Specification of individual departments in processing each receivable",
@@ -9,31 +9,35 @@
     "rows": [
       {
         "service": "Administration - processing of receivable",
-        "price": "1,000 CZK"
+        "price": "50 EUR"
       },
       {
         "service": "Investigation department",
-        "price": "1,300 CZK"
+        "price": "65 EUR"
       },
       {
         "service": "Collection by debt specialists",
-        "price": "2,000 CZK" 
+        "price": "100 EUR" 
       },
       {
         "service": "Legal department",
-        "price": "3,000 CZK"
+        "price": "150 EUR"
+      },
+      {
+        "service": "Legal consulting in debt collection",
+        "price": "from 154 EUR/hour"
       },
       {
         "service": "Court action - 15% of the receivable amount",
-        "price": "minimum of 15,000 CZK"
+        "price": "minimum of 750 EUR"
       },
       {
         "service": "Legal enforceability clause by a notary",
-        "price": "minimum of 12,000 CZK"
+        "price": "minimum of 600 EUR"
       },
       {
         "service": "Visit to the debtor",
-        "price": "30 CZK/km + 500 CZK/hour"
+        "price": "1.52 EUR/km + 25 EUR/hour"
       }
     ]
   },

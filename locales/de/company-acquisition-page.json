@@ -1,0 +1,111 @@
+{
+  "hero": {
+    "badge": "Unsere Dienstleistungen",
+    "title": "Unternehmensübernahme",
+    "subtitle": "Professionelle Lösungen für den Kauf und Verkauf von Unternehmen"
+  },
+  "mainSection": {
+    "badge": "Strategische Lösung",
+    "title": "Unternehmensübernahme",
+    "paragraphs": [
+      "Denken Sie über den Verkauf oder Kauf eines Unternehmens nach?",
+      "Unser Team von Spezialisten unterstützt Sie im gesamten Prozess der Übernahme oder des Verkaufs eines Unternehmens. Wir bieten umfassende Dienstleistungen an, die Unternehmensanalyse, Bewertung, rechtliche Vertretung und Verhandlungen umfassen. Wir stellen sicher, dass der gesamte Prozess reibungslos und effizient abläuft."
+    ],
+    "button": "Unverbindliche Beratung"
+  },
+  "services": {
+    "badge": "Unsere Lösungen",
+    "title": "Dienstleistungen bei der Unternehmensübernahme",
+    "items": [
+      {
+        "icon": "Search",
+        "title": "Unternehmensanalyse",
+        "description": "Gründliche Analyse der finanziellen Lage, Betriebsprozesse und Marktposition"
+      },
+      {
+        "icon": "Calculator",
+        "title": "Bewertung",
+        "description": "Professionelle Unternehmensbewertung unter Berücksichtigung aller relevanten Faktoren"
+      },
+      {
+        "icon": "Scale",
+        "title": "Rechtliche Vertretung",
+        "description": "Umfassende rechtliche Dienstleistungen einschließlich Vertragsgestaltung und Verhandlungen"
+      },
+      {
+        "icon": "MessageCircle",
+        "title": "Verhandlungen",
+        "description": "Professionelle Verhandlung der Verkaufs- oder Kaufbedingungen"
+      },
+      {
+        "icon": "FileCheck",
+        "title": "Due Diligence",
+        "description": "Umfassende Unternehmensprüfung vor Abschluss des Geschäfts"
+      }
+    ]
+  },
+  "process": {
+    "badge": "Schrittweiser Prozess",
+    "title": "Wie funktioniert die Unternehmensübernahme?",
+    "steps": [
+      {
+        "number": "1",
+        "title": "Analyse",
+        "description": "Gründliche Analyse des Unternehmens und seiner Marktposition"
+      },
+      {
+        "number": "2",
+        "title": "Bewertung",
+        "description": "Bestimmung des realen Unternehmenswerts"
+      },
+      {
+        "number": "3",
+        "title": "Due Diligence",
+        "description": "Umfassende Prüfung aller Unternehmensaspekte"
+      },
+      {
+        "number": "4",
+        "title": "Verhandlungen",
+        "description": "Verhandlung der Geschäftsbedingungen"
+      },
+      {
+        "number": "5",
+        "title": "Abschluss",
+        "description": "Rechtliche Absicherung und Geschäftsabschluss"
+      }
+    ]
+  },
+  "benefits": {
+    "badge": "Vorteile",
+    "title": "Warum unsere Dienstleistungen wählen?",
+    "items": [
+      {
+        "icon": "Award",
+        "title": "Erfahrung",
+        "description": "Unser Team verfügt über umfangreiche Erfahrung bei Unternehmensübernahmen und -verkäufen"
+      },
+      {
+        "icon": "Target",
+        "title": "Individueller Ansatz",
+        "description": "Jedes Unternehmen ist einzigartig, daher erstellen wir maßgeschneiderte Lösungen"
+      },
+      {
+        "icon": "Shield",
+        "title": "Diskretion",
+        "description": "Wir garantieren absolute Vertraulichkeit aller Informationen"
+      },
+      {
+        "icon": "Clock",
+        "title": "Effizienz",
+        "description": "Wir stellen einen schnellen und effizienten Prozess sicher"
+      }
+    ],
+    "note": "Unser Ziel ist es, sicherzustellen, dass der Prozess der Übernahme oder des Verkaufs eines Unternehmens reibungslos und effizient abläuft, unter maximaler Berücksichtigung Ihrer Interessen."
+  },
+  "cta": {
+    "title": "Benötigen Sie Hilfe beim Verkauf oder Kauf eines Unternehmens?",
+    "description": "Kontaktieren Sie uns für eine unverbindliche Beratung. Unser Expertenteam ist bereit, Sie im gesamten Prozess zu unterstützen.",
+    "primaryButton": "Kontaktieren Sie Uns",
+    "secondaryButton": "Weitere Dienstleistungen"
+  }
+} 

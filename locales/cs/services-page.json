@@ -38,6 +38,22 @@
       "cta": "Zjistit více"
     },
     {
+      "id": "likvidace-firem",
+      "title": "Likvidace firem",
+      "description": "Profesionální a bezproblémové ukončení podnikatelské činnosti s kompletním právním servisem.",
+      "icon": "FileSignature",
+      "color": "red",
+      "cta": "Zjistit více"
+    },
+    {
+      "id": "krizovy-management",
+      "title": "Krizový management",
+      "description": "Komplexní řešení pro firmy s problémy a restrukturalizace podniků v obtížné situaci.",
+      "icon": "Shield",
+      "color": "blue",
+      "cta": "Zjistit více"
+    },
+    {
       "id": "odkup-smenek",
       "title": "Odkup směnek",
       "description": "Odkupujeme směnky všech typů za výhodných podmínek s rychlým vyplacením finančních prostředků.",

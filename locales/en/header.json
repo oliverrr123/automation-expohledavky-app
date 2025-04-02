@@ -19,12 +19,15 @@
         { "name": "Corporate Receivables Management", "href": "services/corporate-receivables" },
         { "name": "Purchase & Sale of Receivables", "href": "services/receivables-purchase" },
         { "name": "Company Acquisition", "href": "services/company-purchase" },
+        { "name": "Company Liquidation", "href": "services/company-liquidation" },
+        { "name": "Crisis Management", "href": "services/crisis-management" },
         { "name": "Promissory Notes Purchase", "href": "services/promissory-notes" },
         { "name": "Partner in Liechtenstein", "href": "https://expohledavky.cz/firstAdvisoryGroup.pdf", "target": "_blank" }
       ]
     },
     { "name": "Pricing", "href": "pricing" },
     { "name": "Dictionary & Templates", "href": "dictionary-templates" },
+    { "name": "Background Checks", "href": "background-checks" },
     { "name": "Blog", "href": "blog" },
     { "name": "Careers", "href": "careers" },
     { "name": "Contact", "href": "contact" }

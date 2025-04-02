@@ -19,12 +19,15 @@
         { "name": "Správa firemních pohledávek", "href": "nase-sluzby/sprava-firemnich-pohledavek" },
         { "name": "Odkup a prodej pohledávek", "href": "nase-sluzby/odkup-prodej-pohledavek" },
         { "name": "Odkup firem", "href": "nase-sluzby/odkup-firem" },
+        { "name": "Likvidace firem", "href": "nase-sluzby/likvidace-firem" },
+        { "name": "Krizový management", "href": "nase-sluzby/krizovy-management" },
         { "name": "Odkup směnek", "href": "nase-sluzby/odkup-smenek" },
         { "name": "Partner v Lichtenštejnsku", "href": "https://expohledavky.cz/firstAdvisoryGroup.pdf", "target": "_blank" }
       ]
     },
     { "name": "Ceník", "href": "cenik" },
     { "name": "Slovník a vzory", "href": "slovnik-a-vzory" },
+    { "name": "Lustrace", "href": "lustrace" },
     { "name": "Blog", "href": "blog" },
     { "name": "Kariéra", "href": "kariera" },
     { "name": "Kontakt", "href": "kontakt" }

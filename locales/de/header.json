@@ -19,12 +19,15 @@
         { "name": "Verwaltung von Unternehmensforderungen", "href": "unsere-leistungen/firmen-forderungsmanagement" },
         { "name": "Ankauf und Verkauf von Forderungen", "href": "unsere-leistungen/forderungskauf-verkauf" },
         { "name": "Unternehmensübernahme", "href": "unsere-leistungen/unternehmenskauf" },
+        { "name": "Unternehmensliquidation", "href": "unsere-leistungen/unternehmensliquidation" },
+        { "name": "Krisenmanagement", "href": "unsere-leistungen/krisenmanagement" },
         { "name": "Ankauf von Wechseln", "href": "unsere-leistungen/wechselkauf" },
         { "name": "Partner in Liechtenstein", "href": "https://expohledavky.cz/firstAdvisoryGroup.pdf", "target": "_blank" }
       ]
     },
     { "name": "Preisliste", "href": "preisliste" },
     { "name": "Glossar und Vorlagen", "href": "worterbuch-vorlagen" },
+    { "name": "Überprüfungen", "href": "uberprufungen" },
     { "name": "Blog", "href": "blog" },
     { "name": "Karriere", "href": "karriere" },
     { "name": "Kontakt", "href": "kontakt" }

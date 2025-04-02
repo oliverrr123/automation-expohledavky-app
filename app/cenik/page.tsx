@@ -1,63 +1,126 @@
 "use client"
 
-import type React from "react"
+import React, { useState } from 'react'
+import Script from 'next/script'
+import { Button } from '@/components/ui/button'
+import { Header } from '@/components/header'
+import { Footer } from '@/components/footer'
+import { useTranslations } from '@/lib/i18n'
+import { getCurrentLocale } from "@/lib/i18n"
+import { SectionWrapper } from '@/components/section-wrapper'
+import { toast } from 'sonner'
 
-import { SectionWrapper } from "@/components/section-wrapper"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { Button } from "@/components/ui/button"
-import { useState, useEffect } from "react"
-import { useTranslations, getServerTranslations } from "@/lib/i18n"
-import csPricingPage from '@/locales/cs/pricing-page.json'
-import enPricingPage from '@/locales/en/pricing-page.json'
-import skPricingPage from '@/locales/sk/pricing-page.json'
-import dePricingPage from '@/locales/de/pricing-page.json'
+// Add Google reCAPTCHA site key
+const RECAPTCHA_SITE_KEY = "6LfecQArAAAAAHY4AdWeBS3Ubx5lFH6hI342ZmO8"
 
-// Default translations for client-side rendering
-const defaultTranslations = csPricingPage;
+// Type for form state
+type FormStatus = "idle" | "submitting" | "success" | "error"
 
 export default function PricingPage() {
-  // Add state to track if client-side rendered
-  const [isClient, setIsClient] = useState(false)
-  
-  // Always call hooks unconditionally
-  const clientTranslations = useTranslations('pricingPage')
-  
-  // Use client translations or default translations based on client state
-  const t = isClient ? clientTranslations : defaultTranslations
-  
-  // Set isClient to true after hydration is complete
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
+  // Get translations
+  const t = useTranslations('pricing-page')
 
+  // Form state
   const [formData, setFormData] = useState({
     jmeno: "",
     email: "",
     telefon: "",
-    vyse: "",
+    castka: "",
     zprava: "",
   })
+
+  const [formStatus, setFormStatus] = useState<FormStatus>("idle")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Form submission logic would go here
-    console.log("Form submitted:", formData)
-    // Reset form after submission
-    setFormData({
-      jmeno: "",
-      email: "",
-      telefon: "",
-      vyse: "",
-      zprava: "",
-    })
-    // Show success message
-    alert(t?.contactForm?.success)
+    setFormStatus("submitting")
+
+    try {
+      // Get reCAPTCHA Enterprise token
+      let recaptchaToken = ""
+      
+      try {
+        // @ts-ignore - window.grecaptcha is added by the script
+        if (window.grecaptcha && window.grecaptcha.enterprise) {
+          // @ts-ignore - window.grecaptcha.enterprise.execute returns a promise
+          recaptchaToken = await new Promise((resolve, reject) => {
+            try {
+              window.grecaptcha.enterprise.ready(async () => {
+                try {
+                  // @ts-ignore - window.grecaptcha.enterprise.execute returns a promise
+                  const token = await window.grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, {action: 'PRICING_FORM'})
+                  resolve(token)
+                } catch (error) {
+                  console.error("reCAPTCHA execution error:", error)
+                  reject(error)
+                }
+              })
+            } catch (error) {
+              console.error("reCAPTCHA ready error:", error)
+              reject(error)
+            }
+          })
+        }
+      } catch (error) {
+        console.error("reCAPTCHA error:", error)
+      }
+      
+      if (!recaptchaToken) {
+        toast.warning(t?.contactForm?.warnings?.recaptchaFailed || "Could not validate your request. Please try again.")
+      }
+
+      // Get current locale from URL
+      const currentLocale = getCurrentLocale();
+
+      // Send the form data to the API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          jmeno: formData.jmeno,
+          email: formData.email,
+          telefon: formData.telefon,
+          zprava: formData.zprava,
+          castka: formData.castka,
+          recaptchaToken, // Include the token in the request
+          formAction: 'PRICING_FORM', // Identify which form this is
+          language: currentLocale || 'cs' // Default to Czech if no locale found
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Something went wrong')
+      }
+
+      // Success
+      setFormStatus("success")
+      toast.success(t?.contactForm?.success || "Your message has been sent!")
+      
+      // Reset form after success
+      setTimeout(() => {
+        setFormData({
+          jmeno: "",
+          email: "",
+          telefon: "",
+          castka: "",
+          zprava: "",
+        })
+        setFormStatus("idle")
+      }, 3000)
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setFormStatus("error")
+      toast.error(error instanceof Error ? error.message : t?.contactForm?.error || "Failed to send message")
+    }
   }
 
   return (
@@ -174,6 +237,7 @@ export default function PricingPage() {
                           onChange={handleChange}
                           placeholder={t?.contactForm?.fields?.name?.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                          disabled={formStatus === "submitting" || formStatus === "success"}
                         />
                       </div>
                       <div>
@@ -189,6 +253,7 @@ export default function PricingPage() {
                           onChange={handleChange}
                           placeholder={t?.contactForm?.fields?.email?.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                          disabled={formStatus === "submitting" || formStatus === "success"}
                         />
                       </div>
                       <div>
@@ -204,21 +269,23 @@ export default function PricingPage() {
                           onChange={handleChange}
                           placeholder={t?.contactForm?.fields?.phone?.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                          disabled={formStatus === "submitting" || formStatus === "success"}
                         />
                       </div>
                       <div>
-                        <label htmlFor="vyse" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="castka" className="block text-sm font-medium text-gray-700 mb-1">
                           {t?.contactForm?.fields?.amount?.label}
                         </label>
                         <input
                           required
-                          id="vyse"
-                          name="vyse"
+                          id="castka"
+                          name="castka"
                           type="text"
-                          value={formData.vyse}
+                          value={formData.castka}
                           onChange={handleChange}
                           placeholder={t?.contactForm?.fields?.amount?.placeholder}
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                          disabled={formStatus === "submitting" || formStatus === "success"}
                         />
                       </div>
                     </div>
@@ -235,24 +302,33 @@ export default function PricingPage() {
                         onChange={handleChange}
                         placeholder={t?.contactForm?.fields?.message?.placeholder}
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                        disabled={formStatus === "submitting" || formStatus === "success"}
                       ></textarea>
                     </div>
-                    <div className="pt-4">
+                    <div>
                       <Button
                         type="submit"
-                        className="w-full text-white font-semibold transition-all duration-500 hover:scale-[1.02] relative overflow-hidden group shadow-xl shadow-orange-500/20"
-                        style={{
-                          background:
-                            "radial-gradient(ellipse at 50% 125%, hsl(17, 88%, 40%) 20%, hsl(27, 96%, 61%) 80%)",
-                          backgroundPosition: "bottom",
-                          backgroundSize: "150% 100%",
-                        }}
+                        className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-md transition-colors"
+                        disabled={formStatus === "submitting" || formStatus === "success"}
                       >
-                        <div
-                          className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
-                          aria-hidden="true"
-                        />
-                        <span className="relative z-10">{t?.contactForm?.fields?.submit || t?.contactForm?.submitButton}</span>
+                        {formStatus === "submitting" ? (
+                          <div className="flex items-center justify-center">
+                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            {t?.contactForm?.fields?.submitting}
+                          </div>
+                        ) : formStatus === "success" ? (
+                          <div className="flex items-center justify-center">
+                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            {t?.contactForm?.fields?.success}
+                          </div>
+                        ) : (
+                          <span className="relative z-10">{t?.contactForm?.fields?.submit || t?.contactForm?.submitButton}</span>
+                        )}
                       </Button>
                     </div>
                   </form>
@@ -264,6 +340,9 @@ export default function PricingPage() {
       </main>
 
       <Footer />
+
+      {/* reCAPTCHA Enterprise Script */}
+      <Script src={`https://www.google.com/recaptcha/enterprise.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
     </div>
   )
 }

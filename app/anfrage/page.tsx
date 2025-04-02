@@ -12,6 +12,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Send } from "lucide-react"
 import Script from "next/script"
 import { useTranslations } from "@/lib/i18n"
+import { getCurrentLocale } from "@/lib/i18n"
+
+// Add Google reCAPTCHA site key
+const RECAPTCHA_SITE_KEY = "6LfecQArAAAAAHY4AdWeBS3Ubx5lFH6hI342ZmO8";
 
 export default function AnfragePage() {
   const [isClient, setIsClient] = useState(false)
@@ -19,7 +23,7 @@ export default function AnfragePage() {
     jmeno: "",
     email: "",
     telefon: "",
-    vyse: "",
+    castka: "",
     zprava: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -48,32 +52,63 @@ export default function AnfragePage() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    
-    // Validate recaptcha
-    // @ts-ignore - grecaptcha is loaded via Script
-    const recaptchaValue = window.grecaptcha?.getResponse()
-    
-    if (!recaptchaValue) {
-      setErrorMessage(t.form?.captchaError || "Bitte bestätigen Sie, dass Sie kein Roboter sind.")
-      return
-    }
-    
     setIsSubmitting(true)
     setSubmitStatus("idle")
-    setErrorMessage("")
-    
+
     try {
-      const response = await fetch('/api/submit-inquiry', {
-        method: 'POST',
+      // Get reCAPTCHA Enterprise token
+      let recaptchaToken = "";
+      
+      // @ts-ignore - window.grecaptcha is added by the script
+      if (window.grecaptcha && window.grecaptcha.enterprise) {
+        try {
+          // @ts-ignore - window.grecaptcha.enterprise.execute returns a promise
+          recaptchaToken = await new Promise((resolve, reject) => {
+            // @ts-ignore
+            window.grecaptcha.enterprise.ready(async () => {
+              try {
+                // @ts-ignore
+                const token = await window.grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, {action: 'ANFRAGE_FORM'});
+                resolve(token);
+              } catch (error) {
+                console.error("reCAPTCHA execution error:", error);
+                reject(error);
+              }
+            });
+          });
+        } catch (error) {
+          console.error("reCAPTCHA ready error:", error);
+        }
+      }
+
+      if (!recaptchaToken) {
+        setErrorMessage(t?.form?.captchaError || "Bitte bestätigen Sie, dass Sie kein Roboter sind.")
+        setSubmitStatus("error")
+        setIsSubmitting(false)
+        return
+      }
+
+      // Get current locale from URL
+      const currentLocale = getCurrentLocale();
+
+      // Create form data to send
+      const formDataToSend = {
+        ...formData,
+        recaptchaToken, // Include the token in the request
+        csrfToken: "dummy-token", // Add a dummy CSRF token for testing
+        formAction: "ANFRAGE_FORM", // Specify the form action
+        language: currentLocale || 'de' // Default to German if no locale found
+      }
+
+      // Send the data
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...formData,
-          recaptcha: recaptchaValue,
-        }),
+        body: JSON.stringify(formDataToSend),
       })
 
       if (response.ok) {
@@ -82,20 +117,18 @@ export default function AnfragePage() {
           jmeno: "",
           email: "",
           telefon: "",
-          vyse: "",
+          castka: "",
           zprava: "",
         })
-        // Reset recaptcha
-        // @ts-ignore
-        window.grecaptcha?.reset()
       } else {
-        setSubmitStatus("error")
         const errorData = await response.json()
-        setErrorMessage(errorData.message || t.form?.generalError || "Ein Fehler ist aufgetreten")
+        setErrorMessage(errorData.error || t?.form?.generalError || "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.")
+        setSubmitStatus("error")
       }
     } catch (error) {
+      console.error("Error submitting form:", error)
+      setErrorMessage(t?.form?.generalError || "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.")
       setSubmitStatus("error")
-      setErrorMessage(t.form?.generalError || "Ein Fehler ist aufgetreten")
     } finally {
       setIsSubmitting(false)
     }
@@ -104,7 +137,7 @@ export default function AnfragePage() {
   return (
     <>
       <Script
-        src="https://www.google.com/recaptcha/api.js"
+        src={`https://www.google.com/recaptcha/enterprise.js?render=${RECAPTCHA_SITE_KEY}`}
         strategy="afterInteractive"
       />
       
@@ -170,13 +203,13 @@ export default function AnfragePage() {
                 </div>
                 
                 <div>
-                  <label htmlFor="vyse" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="castka" className="block text-sm font-medium text-gray-700 mb-1">
                     {t.form?.amount?.label || "Forderungsbetrag"}
                   </label>
                   <Input
-                    id="vyse"
-                    name="vyse"
-                    value={formData.vyse}
+                    id="castka"
+                    name="castka"
+                    value={formData.castka}
                     onChange={handleChange}
                     placeholder={t.form?.amount?.placeholder || "Forderungsbetrag"}
                     className="w-full"
@@ -198,10 +231,6 @@ export default function AnfragePage() {
                   />
                 </div>
                 
-                <div className="mt-4">
-                  <div className="g-recaptcha" data-sitekey="6LcHiHcpAAAAAMDFPS1nPmQR_EDHb6GNYSofsqVU"></div>
-                </div>
-                
                 {errorMessage && (
                   <div className="p-3 bg-red-50 text-red-700 rounded-md text-sm">
                     {errorMessage}
@@ -213,6 +242,10 @@ export default function AnfragePage() {
                     {t.form?.success || "Ihre Nachricht wurde erfolgreich gesendet. Wir werden Sie so schnell wie möglich kontaktieren."}
                   </div>
                 )}
+                
+                <div className="pt-2">
+                  {/* reCAPTCHA Enterprise is invisible, no div needed here */}
+                </div>
                 
                 <Button 
                   type="submit" 

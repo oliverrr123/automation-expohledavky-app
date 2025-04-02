@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { SectionWrapper } from "@/components/section-wrapper"
-import { ArrowRight, FileText, Building, CreditCard, Briefcase, FileSignature } from "lucide-react"
+import { ArrowRight, FileText, Building, CreditCard, Briefcase, FileSignature, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n"
@@ -14,7 +14,8 @@ const iconMap = {
   Building,
   CreditCard,
   Briefcase,
-  FileSignature
+  FileSignature,
+  Shield
 }
 
 const colorVariants = {

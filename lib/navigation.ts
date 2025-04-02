@@ -27,7 +27,6 @@ export const Routes = {
   promissoryNotes: (locale?: string) => getLocalizedRoute('services/promissory-notes', locale),
   pricing: (locale?: string) => getLocalizedRoute('pricing', locale),
   dictionaryTemplates: (locale?: string) => getLocalizedRoute('dictionary-templates', locale),
-  careers: (locale?: string) => getLocalizedRoute('careers', locale),
   contact: (locale?: string) => getLocalizedRoute('contact', locale),
   blog: (locale?: string) => getLocalizedRoute('blog', locale),
   privacyPolicy: (locale?: string) => getLocalizedRoute('privacy-policy', locale),

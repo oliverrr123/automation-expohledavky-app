@@ -15,7 +15,6 @@ import csCompanyPurchasePage from '@/locales/cs/company-purchase-page.json';
 import csPromissoryNotesPage from '@/locales/cs/promissory-notes-page.json';
 import csPricingPage from '@/locales/cs/pricing-page.json';
 import csDictionaryTemplatesPage from '@/locales/cs/dictionary-templates-page.json';
-import csCareerPage from '@/locales/cs/career-page.json';
 import csContactPage from '@/locales/cs/contact-page.json';
 import csBlogPage from '@/locales/cs/blog-page.json';
 import csPrivacyPolicyPage from '@/locales/cs/privacy-policy-page.json';
@@ -46,7 +45,6 @@ import enCompanyPurchasePage from '@/locales/en/company-purchase-page.json';
 import enPromissoryNotesPage from '@/locales/en/promissory-notes-page.json';
 import enPricingPage from '@/locales/en/pricing-page.json';
 import enDictionaryTemplatesPage from '@/locales/en/dictionary-templates-page.json';
-import enCareerPage from '@/locales/en/career-page.json';
 import enContactPage from '@/locales/en/contact-page.json';
 import enBlogPage from '@/locales/en/blog-page.json';
 import enPrivacyPolicyPage from '@/locales/en/privacy-policy-page.json';
@@ -77,7 +75,6 @@ import deCompanyPurchasePage from '@/locales/de/company-purchase-page.json';
 import dePromissoryNotesPage from '@/locales/de/promissory-notes-page.json';
 import dePricingPage from '@/locales/de/pricing-page.json';
 import deDictionaryTemplatesPage from '@/locales/de/dictionary-templates-page.json';
-import deCareerPage from '@/locales/de/career-page.json';
 import deContactPage from '@/locales/de/contact-page.json';
 import deBlogPage from '@/locales/de/blog-page.json';
 import dePrivacyPolicyPage from '@/locales/de/privacy-policy-page.json';
@@ -108,7 +105,6 @@ import skCompanyPurchasePage from '@/locales/sk/company-purchase-page.json';
 import skPromissoryNotesPage from '@/locales/sk/promissory-notes-page.json';
 import skPricingPage from '@/locales/sk/pricing-page.json';
 import skDictionaryTemplatesPage from '@/locales/sk/dictionary-templates-page.json';
-import skCareerPage from '@/locales/sk/career-page.json';
 import skContactPage from '@/locales/sk/contact-page.json';
 import skBlogPage from '@/locales/sk/blog-page.json';
 import skPrivacyPolicyPage from '@/locales/sk/privacy-policy-page.json';
@@ -161,7 +157,6 @@ const translations: Record<string, Record<string, any>> = {
     promissoryNotesPage: csPromissoryNotesPage,
     pricingPage: csPricingPage,
     dictionaryTemplatesPage: csDictionaryTemplatesPage,
-    careerPage: csCareerPage,
     contactPage: csContactPage,
     blogPage: csBlogPage,
     privacyPolicyPage: csPrivacyPolicyPage,
@@ -192,7 +187,6 @@ const translations: Record<string, Record<string, any>> = {
     promissoryNotesPage: enPromissoryNotesPage,
     pricingPage: enPricingPage,
     dictionaryTemplatesPage: enDictionaryTemplatesPage,
-    careerPage: enCareerPage,
     contactPage: enContactPage,
     blogPage: enBlogPage,
     privacyPolicyPage: enPrivacyPolicyPage,
@@ -223,7 +217,6 @@ const translations: Record<string, Record<string, any>> = {
     promissoryNotesPage: dePromissoryNotesPage,
     pricingPage: dePricingPage,
     dictionaryTemplatesPage: deDictionaryTemplatesPage,
-    careerPage: deCareerPage,
     contactPage: deContactPage,
     blogPage: deBlogPage,
     privacyPolicyPage: dePrivacyPolicyPage,
@@ -254,7 +247,6 @@ const translations: Record<string, Record<string, any>> = {
     promissoryNotesPage: skPromissoryNotesPage,
     pricingPage: skPricingPage,
     dictionaryTemplatesPage: skDictionaryTemplatesPage,
-    careerPage: skCareerPage,
     contactPage: skContactPage,
     blogPage: skBlogPage,
     privacyPolicyPage: skPrivacyPolicyPage,
@@ -609,7 +601,8 @@ export function useTranslations(namespace: string, locale?: string): any {
   const [translationState, setTranslationState] = useState<Record<string, any>>(() => {
     try {
       const currentLocale = locale || getCurrentLocale();
-      const fixedNamespace = namespace.replace(/-/g, '');
+      // Convert namespace to camelCase (e.g., pricing-page -> pricingPage)
+      const fixedNamespace = namespace.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
       const localeDict = translations[currentLocale as keyof typeof translations] || {};
       const nsKey = fixedNamespace as keyof typeof localeDict;
       return localeDict[nsKey] || getEmptyStructure(namespace);
@@ -625,7 +618,8 @@ export function useTranslations(namespace: string, locale?: string): any {
     
     // Get translations directly
     const currentLocale = locale || getCurrentLocale();
-    const fixedNamespace = namespace.replace(/-/g, '');
+    // Convert namespace to camelCase (e.g., pricing-page -> pricingPage)
+    const fixedNamespace = namespace.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
     
     try {
       // Get the locale dictionary

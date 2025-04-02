@@ -8,7 +8,6 @@ Moderní webová stránka a blog pro společnost ExpoHledávky vytvořená pomoc
 - Blog s podporou MDX
 - Stránky služeb
 - Kontaktní formulář
-- Kariérní stránka
 - Ceník
 - Sekce slovník a vzory
 

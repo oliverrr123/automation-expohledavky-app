@@ -22,6 +22,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useTranslations } from "@/lib/i18n"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import { PaymentModal } from "@/components/stripe/PaymentModal"
 
 // Icon mapping
 const iconMap: Record<string, React.ComponentType<any>> = {
@@ -55,6 +56,8 @@ export default function LustracePage() {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
   const [isClient, setIsClient] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [paymentSuccess, setPaymentSuccess] = useState(false)
+  const [paymentError, setPaymentError] = useState<string | null>(null)
   
   // Get translations
   const t = useTranslations(namespace)
@@ -68,6 +71,19 @@ export default function LustracePage() {
     }, 100)
     return () => clearTimeout(timer)
   }, [])
+
+  const handlePaymentSuccess = () => {
+    setPaymentSuccess(true)
+    setIsPaymentModalOpen(false)
+    // You could redirect to the success page or show a success message
+    window.location.href = '/lustrace/payment-success'
+  }
+
+  const handlePaymentError = (error: string) => {
+    setPaymentError(error)
+    // The error is displayed in the PaymentForm component
+    // You could also do additional error handling here
+  }
 
   // If still loading, show a minimal loading state
   if (isLoading) {
@@ -358,7 +374,7 @@ export default function LustracePage() {
                     </ul>
                     <Button
                       className="w-full bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105 h-14"
-                      onClick={() => (window.location.href = "https://lustrace.expohledavky.cz/")}
+                      onClick={() => setIsPaymentModalOpen(true)}
                     >
                       <CreditCard className="mr-2 h-5 w-5" /> {t?.pricing?.orderButton}
                     </Button>
@@ -508,6 +524,19 @@ export default function LustracePage() {
       </section>
 
       <Footer />
+
+      {isClient && (
+        <PaymentModal
+          isOpen={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
+          amount={1199}
+          serviceName={t?.pricing?.packageTitle}
+          onPaymentSuccess={handlePaymentSuccess}
+          onPaymentError={handlePaymentError}
+          buttonText={t?.pricing?.orderButton}
+          language={t?.__lang || 'cs'}
+        />
+      )}
     </div>
   )
 }

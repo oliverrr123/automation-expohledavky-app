@@ -113,19 +113,59 @@ async function sendCustomerEmail(email: string, amount: number, notes: string, l
       from: emailConfig.auth.user,
       to: email,
       subject: template.subject,
-      html: `
-        <h2>${template.subject}</h2>
-        <p>${template.greeting}</p>
-        <p>${template.body}</p>
-        <p>${template.details}</p>
-        <p><strong>${template.amount}</strong> ${amountFormatted}</p>
-        <p><strong>${template.requestDetails}</strong></p>
-        <p>${notes.replace(/\n/g, "<br>")}</p>
-        <p>${template.contactUs}</p>
-        <br>
-        <p>${template.closing}</p>
-        <p>${template.signature}</p>
-      `,
+      html: `<!DOCTYPE html>
+        <html lang="${language}">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>${template.subject}</title>
+          <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; margin: 0; padding: 0; }
+            .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+            .email-header { background-color: #f97316; color: white; padding: 20px 30px; text-align: center; }
+            .email-header h1 { margin: 0; font-size: 24px; font-weight: 600; }
+            .email-body { padding: 30px; color: #4b5563; }
+            .email-body p { margin: 0 0 15px; }
+            .amount-box { background-color: #fff7ed; border-left: 4px solid #f97316; padding: 12px 15px; margin: 20px 0; border-radius: 4px; }
+            .amount-value { font-size: 22px; font-weight: 600; color: #f97316; }
+            .notes-box { background-color: #f9fafb; padding: 15px; border-radius: 4px; border: 1px solid #e5e7eb; margin-top: 20px; white-space: pre-line; }
+            .notes-box h3 { margin-top: 0; color: #374151; font-size: 16px; font-weight: 600; }
+            .email-footer { padding: 20px 30px; background-color: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 14px; }
+            .email-footer p { margin: 0; line-height: 1.5; }
+            .email-footer .website { margin-top: 5px; }
+            .signature { margin-top: 20px; font-weight: 600; color: #4b5563; }
+            .signature p { margin: 0; line-height: 1.5; }
+            .signature p:first-child { font-weight: normal; margin-bottom: 5px; }
+            .contact-us { margin-top: 15px; font-style: italic; }
+            .contact-signature { margin-top: 30px; padding-top: 15px; border-top: 1px dashed #e5e7eb; }
+            @media screen and (max-width: 600px) { .email-container { width: 100%; border-radius: 0; } .email-header, .email-body, .email-footer { padding: 15px; } }
+          </style>
+        </head>
+        <body>
+          <div class="email-container">
+            <div class="email-header"><h1>${template.subject}</h1></div>
+            <div class="email-body">
+              <p>${template.greeting}</p>
+              <p>${template.body}</p>
+              <p>${template.details}</p>
+              <div class="amount-box"><strong>${template.amount}</strong><div class="amount-value">${amountFormatted}</div></div>
+              <h3>${template.requestDetails}</h3>
+              <div class="notes-box">${notes.replace(/\n/g, "<br>")}</div>
+              <div class="contact-signature">
+                <p class="contact-us">${template.contactUs}</p>
+                <div class="signature">
+                  <p>${template.closing}</p>
+                  <p>${template.signature}</p>
+                </div>
+              </div>
+            </div>
+            <div class="email-footer">
+              <p>&copy; ${new Date().getFullYear()} EX Pohledávky</p>
+              <p class="website"><a href="https://www.expohledavky.cz" style="color: #f97316; text-decoration: none;">www.expohledavky.cz</a></p>
+            </div>
+          </div>
+        </body>
+        </html>`,
     });
     
     console.log('Confirmation email sent successfully to:', email);

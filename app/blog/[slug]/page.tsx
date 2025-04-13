@@ -1,29 +1,89 @@
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Calendar, Share2, BookOpen, Facebook, Linkedin, Mail, Twitter } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getPostBySlug, getAllPostSlugs, getAllPosts } from '@/lib/posts';
 import MDXContent from '@/components/mdx-content';
+import { BlogImage } from '@/components/blog-image';
+import { headers } from 'next/headers';
 
-// Generate static parameters for all articles
+// Funkce pro získání lokalizace na serveru
+function getServerLocale(): string {
+  // Získání informací z hlaviček (hostname)
+  const headersList = headers();
+  const hostname = headersList.get('host') || '';
+  const domain = hostname.split(':')[0];
+  
+  // Vyhodnocení domény
+  if (domain.includes('expohledavky.com')) return 'en';
+  if (domain.includes('expohledavky.sk')) return 'sk';
+  if (domain.includes('expohledavky.de')) return 'de';
+  if (domain.includes('expohledavky.cz')) return 'cs';
+  
+  // Vývoj - subdomény
+  if (domain.startsWith('en.')) return 'en';
+  if (domain.startsWith('sk.')) return 'sk';
+  if (domain.startsWith('de.')) return 'de';
+  if (domain.startsWith('cs.')) return 'cs';
+  
+  // Výchozí je čeština
+  return 'cs';
+}
+
+// Generate static paths for all blog posts in all languages
 export async function generateStaticParams() {
-  const slugs = getAllPostSlugs();
-  return slugs.map((slug) => ({ slug }));
+  const locales = ['cs', 'sk', 'de', 'en'];
+  let paths = [];
+
+  for (const locale of locales) {
+    try {
+      console.log(`Generating static paths for locale: ${locale}`);
+      const slugs = await getAllPostSlugs(locale);
+      console.log(`Found ${slugs.length} articles for locale ${locale}`);
+      
+      if (slugs.length > 0) {
+        console.log(`Sample slugs for ${locale}: ${slugs.slice(0, 3).join(', ')}${slugs.length > 3 ? '...' : ''}`);
+      }
+      
+      const localePaths = slugs.map(slug => ({
+        slug: slug
+      }));
+      paths.push(...localePaths);
+    } catch (error) {
+      console.error(`Error generating paths for locale ${locale}:`, error);
+    }
+  }
+
+  console.log(`Total static paths generated for blog posts: ${paths.length}`);
+  return paths;
 }
 
 // Metadata for SEO
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = await getPostBySlug(params.slug);
+  // Get the locale from server context
+  const locale = getServerLocale();
+  const post = await getPostBySlug(params.slug, locale);
+  
+  // Handle case when post doesn't exist
   if (!post) return {
-    title: 'Článek nenalezen | EXPOHLEDÁVKY',
-    description: 'Požadovaný článek nebyl nalezen'
+    title: locale === 'cs' ? 'Článek nenalezen | EXPOHLEDÁVKY' :
+           locale === 'sk' ? 'Článok nenájdený | EXPOHLEDÁVKY' :
+           locale === 'de' ? 'Artikel nicht gefunden | EXPOHLEDÁVKY' :
+           'Article not found | EXPOHLEDÁVKY',
+    description: locale === 'cs' ? 'Požadovaný článek nebyl nalezen' :
+                 locale === 'sk' ? 'Požadovaný článok nebol nájdený' :
+                 locale === 'de' ? 'Der angeforderte Artikel wurde nicht gefunden' :
+                 'The requested article was not found'
   };
   
   return {
     title: `${post.frontMatter.title} | EXPOHLEDÁVKY`,
-    description: post.frontMatter.description || post.frontMatter.excerpt || 'Odborný článek na téma pohledávek',
+    description: post.frontMatter.description || post.frontMatter.excerpt || 
+                 (locale === 'cs' ? 'Odborný článek na téma pohledávek' :
+                  locale === 'sk' ? 'Odborný článok na tému pohľadávok' :
+                  locale === 'de' ? 'Fachartikel zum Thema Forderungen' :
+                  'Expert article on the topic of receivables'),
     openGraph: {
       title: post.frontMatter.title,
       description: post.frontMatter.description || post.frontMatter.excerpt,
@@ -33,24 +93,47 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await getPostBySlug(params.slug);
+  // Get the locale from server context
+  const locale = getServerLocale();
+  
+  // Get post content based on locale
+  const post = await getPostBySlug(params.slug, locale);
   
   // If the article doesn't exist, show error page
   if (!post) {
+    // Check if there's a version of this post in any language before showing 404
+    // This could help in future for potential cross-language redirects
+    const locales = ['cs', 'sk', 'de', 'en'];
+    let existsInAnyLanguage = false;
+    
+    for (const otherLocale of locales) {
+      if (otherLocale === locale) continue; // Skip current locale
+      
+      const otherPost = await getPostBySlug(params.slug, otherLocale);
+      if (otherPost) {
+        existsInAnyLanguage = true;
+        break;
+      }
+    }
+    
+    // Log information for debugging purposes
+    console.log(`Post ${params.slug} not found in ${locale}. Exists in other language: ${existsInAnyLanguage}`);
+    
     return notFound();
   }
 
-  // Get all posts for Related Articles section
-  const allPosts = await getAllPosts();
+  // Get all posts for Related Articles section from the same locale
+  const allPosts = await getAllPosts(locale);
   
   // Filter related posts (same category or shared tags, but not current article)
   const relatedPosts = allPosts
     .filter(relatedPost => 
       relatedPost.slug !== params.slug && (
         relatedPost.frontMatter.category === post.frontMatter.category ||
-        (post.frontMatter.tags && relatedPost.frontMatter.tags && 
+        (post.frontMatter.tags && Array.isArray(post.frontMatter.tags) && 
+         relatedPost.frontMatter.tags && Array.isArray(relatedPost.frontMatter.tags) && 
           post.frontMatter.tags.some(tag => 
-            relatedPost.frontMatter.tags && relatedPost.frontMatter.tags.includes(tag)
+            relatedPost.frontMatter.tags?.includes(tag)
           ))
       )
     )
@@ -71,8 +154,13 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     });
   }
 
-  // Create sharing URLs
-  const shareUrl = `https://expohledavky.cz/blog/${params.slug}`;
+  // Create sharing URLs - use appropriate domain based on locale
+  const domain = locale === 'cs' ? 'expohledavky.cz' :
+                 locale === 'sk' ? 'expohladavky.sk' :
+                 locale === 'de' ? 'exforderungen.de' :
+                 'exreceivables.com';
+  
+  const shareUrl = `https://${domain}/blog/${params.slug}`;
   const shareTitle = encodeURIComponent(post.frontMatter.title);
   const shareText = encodeURIComponent(post.frontMatter.excerpt || '');
 
@@ -89,6 +177,82 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       default:
         return '#';
     }
+  };
+
+  // Localized UI strings
+  const uiStrings = {
+    backToBlog: locale === 'cs' ? 'Zpět na blogy' :
+                locale === 'sk' ? 'Späť na blogy' :
+                locale === 'de' ? 'Zurück zum Blog' :
+                'Back to blog',
+    tableOfContents: locale === 'cs' ? 'Obsah článku' :
+                     locale === 'sk' ? 'Obsah článku' :
+                     locale === 'de' ? 'Inhaltsverzeichnis' :
+                     'Table of contents',
+    relatedTopics: locale === 'cs' ? 'Související témata' :
+                   locale === 'sk' ? 'Súvisiace témy' :
+                   locale === 'de' ? 'Verwandte Themen' :
+                   'Related topics',
+    shareArticle: locale === 'cs' ? 'Sdílet článek' :
+                  locale === 'sk' ? 'Zdieľať článok' :
+                  locale === 'de' ? 'Artikel teilen' :
+                  'Share article',
+    relatedArticles: locale === 'cs' ? 'Související články' :
+                     locale === 'sk' ? 'Súvisiace články' :
+                     locale === 'de' ? 'Ähnliche Artikel' :
+                     'Related articles',
+    // CTA section
+    getExpertHelp: locale === 'cs' ? 'Získejte odbornou pomoc' :
+                   locale === 'sk' ? 'Získajte odbornú pomoc' :
+                   locale === 'de' ? 'Holen Sie sich Expertenberatung' :
+                   'Get expert help',
+    needHelpWithReceivables: locale === 'cs' ? 'Potřebujete pomoc s vymáháním pohledávek?' :
+                             locale === 'sk' ? 'Potrebujete pomoc s vymáhaním pohľadávok?' :
+                             locale === 'de' ? 'Benötigen Sie Hilfe bei der Forderungseintreibung?' :
+                             'Need help with debt collection?',
+    specialistsReady: locale === 'cs' ? 'Naši specialisté jsou připraveni vám pomoci s jakýmkoliv problémem týkajícím se pohledávek. Získejte bezplatnou konzultaci ještě dnes.' :
+                      locale === 'sk' ? 'Naši špecialisti sú pripravení vám pomôcť s akýmkoľvek problémom týkajúcim sa pohľadávok. Získajte bezplatnú konzultáciu ešte dnes.' :
+                      locale === 'de' ? 'Unsere Spezialisten stehen bereit, Ihnen bei Problemen mit Forderungen zu helfen. Holen Sie sich noch heute eine kostenlose Beratung.' :
+                      'Our specialists are ready to help you with any receivables issue. Get a free consultation today.',
+    inquireRequest: locale === 'cs' ? 'Nezávazně poptat' :
+                    locale === 'sk' ? 'Nezáväzne dopytovať' :
+                    locale === 'de' ? 'Unverbindlich anfragen' :
+                    'Request a quote',
+    contactUs: locale === 'cs' ? 'Kontaktovat nás' :
+               locale === 'sk' ? 'Kontaktovať nás' :
+               locale === 'de' ? 'Kontaktieren Sie uns' :
+               'Contact us',
+    responseTime: locale === 'cs' ? 'Odpovídáme do 24 hodin' :
+                  locale === 'sk' ? 'Odpovedáme do 24 hodín' :
+                  locale === 'de' ? 'Wir antworten innerhalb von 24 Stunden' :
+                  'We respond within 24 hours',
+    successRate: locale === 'cs' ? '90% úspěšnost vymáhání' :
+                 locale === 'sk' ? '90% úspešnosť vymáhania' :
+                 locale === 'de' ? '90% Erfolgsquote bei der Eintreibung' :
+                 '90% collection success rate'
+  };
+
+  // Funkce pro normalizaci cesty k obrázku
+  const normalizeSrc = (src: string) => {
+    if (!src) return '/images/placeholder.jpg';
+    if (src.startsWith('http')) return src;
+    
+    // Zpracování různých formátů cest
+    if (src.startsWith('/images/blog/')) {
+      // Starý formát
+      const parts = src.replace('/images/blog/', '').split('/');
+      if (parts.length >= 2) {
+        const imgLang = parts[0];
+        const imgFile = parts.slice(1).join('/');
+        return `/images/${imgLang}/${imgFile}`;
+      }
+    } else if (src.startsWith('/images/')) {
+      return src;
+    } else if (!src.startsWith('/')) {
+      return `/images/${locale}/${src}`;
+    }
+    
+    return src;
   };
 
   return (
@@ -114,7 +278,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         <Button variant="ghost" className="mb-6" asChild>
           <Link href="/blog" className="flex items-center gap-2">
             <ArrowLeft className="h-4 w-4" />
-            Zpět na blogy
+            {uiStrings.backToBlog}
           </Link>
         </Button>
 
@@ -135,11 +299,17 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                   {post.frontMatter.date && (
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
-                      <span>{new Date(post.frontMatter.date).toLocaleDateString('cs-CZ', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                      })}</span>
+                      <span>{new Date(post.frontMatter.date).toLocaleDateString(
+                        locale === 'cs' ? 'cs-CZ' :
+                        locale === 'sk' ? 'sk-SK' :
+                        locale === 'de' ? 'de-DE' :
+                        'en-US',
+                        {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        }
+                      )}</span>
                     </div>
                   )}
                   
@@ -157,13 +327,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             {post.frontMatter.image && (
               <div className="mb-8 overflow-hidden rounded-xl">
                 <div className="relative aspect-[21/9]">
-                  <Image
+                  <BlogImage
                     src={post.frontMatter.image}
                     alt={post.frontMatter.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 800px"
-                    priority
+                    className="rounded-xl"
+                    locale={locale}
                   />
                 </div>
               </div>
@@ -171,7 +339,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
             {/* Article Excerpt */}
             {post.frontMatter.excerpt && (
-              <div className="mb-8 rounded-lg bg-zinc-100 p-6 text-lg text-zinc-700">
+              <div className="mb-8 text-lg text-zinc-700 italic">
                 {post.frontMatter.excerpt}
               </div>
             )}
@@ -183,7 +351,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             {headings.length > 0 && (
               <div className="lg:order-2 lg:w-1/4 mb-8 lg:mb-0 lg:sticky lg:top-24 lg:self-start">
                 <div className="rounded-lg border border-gray-200 p-6 hover:border-orange-200 transition-colors duration-300">
-                  <h4 className="mb-4 font-bold">Obsah článku</h4>
+                  <h4 className="mb-4 font-bold">{uiStrings.tableOfContents}</h4>
                   <ul className="space-y-2">
                     {headings.map((item) => (
                       <li
@@ -206,7 +374,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             {/* Article Content */}
             <div className={`lg:order-1 ${headings.length > 0 ? 'lg:w-3/4' : 'w-full'}`}>
               <div className="prose prose-zinc prose-lg mx-auto">
-                <MDXContent source={post.mdxSource} />
+                <MDXContent source={post.mdxSource} locale={locale} />
               </div>
 
               {/* CTA Section */}
@@ -214,13 +382,13 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 <div className="absolute inset-0 bg-grid-white/10" />
                 <div className="relative">
                   <div className="inline-flex items-center rounded-full bg-white/20 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/30 mb-6">
-                    <span className="relative">Získejte odbornou pomoc</span>
+                    <span className="relative">{uiStrings.getExpertHelp}</span>
                   </div>
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                    Potřebujete pomoc s vymáháním pohledávek?
+                    {uiStrings.needHelpWithReceivables}
                   </h3>
                   <p className="text-lg text-white/90 mb-8 max-w-2xl">
-                    Naši specialisté jsou připraveni vám pomoci s jakýmkoliv problémem týkajícím se pohledávek. Získejte bezplatnou konzultaci ještě dnes.
+                    {uiStrings.specialistsReady}
                   </p>
                   <div className="flex flex-wrap gap-4">
                     <Button 
@@ -229,7 +397,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                       className="bg-white text-orange-600 hover:bg-white/90 hover:text-orange-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                     >
                       <Link href="/poptavka">
-                        Nezávazně poptat
+                        {uiStrings.inquireRequest}
                       </Link>
                     </Button>
                     <Button 
@@ -239,18 +407,18 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                       className="bg-transparent border-white text-white hover:bg-white/10 hover:text-white transition-all duration-300"
                     >
                       <Link href="/kontakt">
-                        Kontaktovat nás
+                        {uiStrings.contactUs}
                       </Link>
                     </Button>
                   </div>
                   <div className="mt-6 flex items-center gap-4 text-white/80 text-sm">
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4" />
-                      <span>Odpovídáme do 24 hodin</span>
+                      <span>{uiStrings.responseTime}</span>
                     </div>
                     <div className="hidden md:flex items-center gap-2">
                       <Share2 className="h-4 w-4" />
-                      <span>90% úspěšnost vymáhání</span>
+                      <span>{uiStrings.successRate}</span>
                     </div>
                   </div>
                 </div>
@@ -259,7 +427,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               {/* Tags */}
               {post.frontMatter.tags && post.frontMatter.tags.length > 0 && (
                 <div className="mt-4 pt-8">
-                  <h3 className="mb-4 text-lg font-bold">Související témata</h3>
+                  <h3 className="mb-4 text-lg font-bold">{uiStrings.relatedTopics}</h3>
                   <div className="flex flex-wrap gap-2">
                     {post.frontMatter.tags.map((tag: string) => (
                       <Link key={tag} href={`/blog?tag=${encodeURIComponent(tag)}`}>
@@ -276,7 +444,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               <div className="mt-12 border-t border-gray-200 pt-8">
                 <h3 className="mb-4 flex items-center gap-2 text-xl font-bold">
                   <Share2 className="h-5 w-5" />
-                  Sdílet článek
+                  {uiStrings.shareArticle}
                 </h3>
                 <div className="flex gap-4">
                   {[
@@ -309,7 +477,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               {/* Related Posts */}
               {relatedPosts.length > 0 && (
                 <div className="mt-12 border-t border-gray-200 pt-8">
-                  <h3 className="mb-6 text-xl font-bold">Související články</h3>
+                  <h3 className="mb-6 text-xl font-bold">{uiStrings.relatedArticles}</h3>
                   <div className="grid gap-6 md:grid-cols-2">
                     {relatedPosts.map((relatedPost) => (
                       <Link 
@@ -320,11 +488,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                         <div className="rounded-lg border border-gray-200 overflow-hidden hover:border-orange-200 transition-all duration-300">
                           {relatedPost.frontMatter.image && (
                             <div className="relative aspect-[16/9]">
-                              <Image
+                              <BlogImage
                                 src={relatedPost.frontMatter.image}
                                 alt={relatedPost.frontMatter.title}
-                                fill
-                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                locale={locale}
                               />
                             </div>
                           )}

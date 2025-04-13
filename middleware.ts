@@ -207,6 +207,35 @@ export function middleware(request: NextRequest) {
     }
   }
   
+  // Aby se zajistilo správné fungování stránky pro vyhledávání, přidám ošetření cesty /blog/search
+  if (pathname.startsWith('/blog/search')) {
+    // Parse the existing search parameters
+    const url = request.nextUrl.clone();
+    const searchParams = url.searchParams;
+    
+    // If locale is not present in the URL, add it from our detected locale
+    if (!searchParams.has('locale') && locale) {
+      searchParams.set('locale', locale);
+      url.search = searchParams.toString();
+      return NextResponse.redirect(url);
+    }
+    
+    // If not redirecting, still set the locale cookie and header
+    let response = NextResponse.next();
+    
+    // Set locale cookie
+    response.cookies.set(LOCALE_COOKIE, locale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'strict',
+    });
+    
+    // Set X-Locale header
+    response.headers.set('X-Locale', locale);
+    
+    return response;
+  }
+  
   // Create response object to set cookies for Czech or unmapped paths
   let response = NextResponse.next();
   

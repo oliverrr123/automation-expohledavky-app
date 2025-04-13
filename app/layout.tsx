@@ -7,6 +7,7 @@ import type { Metadata, Viewport } from "next"
 import { Toaster } from "sonner"
 import { headers } from "next/headers"
 import { getLocaleMetadata } from "@/lib/server-metadata"
+import Script from "next/script"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -147,6 +148,36 @@ export default function RootLayout({
         <Analytics />
         <SpeedInsights />
         <Toaster richColors position="top-center" />
+        
+        {/* ElevenLabs ConvAI Agent - conditionally display based on locale */}
+        {serverLocale === 'cs' && (
+          <div dangerouslySetInnerHTML={{
+            __html: '<elevenlabs-convai agent-id="KmqPHyQe8UJy0qsV53VS"></elevenlabs-convai>'
+          }} />
+        )}
+        {serverLocale === 'sk' && (
+          <div dangerouslySetInnerHTML={{
+            __html: '<elevenlabs-convai agent-id="AvRJAyMh1pypZka2fJ7E"></elevenlabs-convai>'
+          }} />
+        )}
+        {serverLocale === 'de' && (
+          <div dangerouslySetInnerHTML={{
+            __html: '<elevenlabs-convai agent-id="NSMq1NSKlTgUkMy3zxlE"></elevenlabs-convai>'
+          }} />
+        )}
+        {serverLocale === 'en' && (
+          <div dangerouslySetInnerHTML={{
+            __html: '<elevenlabs-convai agent-id="pt4EuPNePmhmHAQL8D0b"></elevenlabs-convai>'
+          }} />
+        )}
+        
+        {/* ElevenLabs ConvAI Widget Script - loaded once for all locales */}
+        <Script 
+          src="https://elevenlabs.io/convai-widget/index.js" 
+          strategy="afterInteractive"
+          async
+          type="text/javascript"
+        />
       </body>
     </html>
   )

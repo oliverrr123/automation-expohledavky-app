@@ -121,7 +121,7 @@ import skCompanyAcquisitionPage from '@/locales/sk/company-acquisition-page.json
 
 import { getLanguageFromHostname } from './domain-mapping';
 import Cookies from 'js-cookie';
-import { getInitialLocale } from './server-utils';
+import { getInitialLocale } from './server-utils-client';
 import { useState, useEffect, useMemo } from 'react';
 import * as React from 'react';
 
@@ -613,7 +613,7 @@ export function useTranslations(namespace: string, locale?: string): any {
   });
   
   useEffect(() => {
-    // Only run on client and when the locale changes
+    // Only run on client
     if (!isBrowser) return;
     
     // Get translations directly
@@ -627,11 +627,10 @@ export function useTranslations(namespace: string, locale?: string): any {
       const nsKey = fixedNamespace as keyof typeof localeDict;
       
       // Safely set the translation object - always return at least an empty object
-      const newTranslations = localeDict[nsKey] || getEmptyStructure(namespace);
-      setTranslationState(newTranslations);
+      setTranslationState(localeDict[nsKey] || {});
     } catch (error) {
       console.error(`Translation error for namespace ${namespace} in locale ${currentLocale}:`, error);
-      setTranslationState(getEmptyStructure(namespace));
+      setTranslationState({});
     }
   }, [namespace, locale, isBrowser]);
   

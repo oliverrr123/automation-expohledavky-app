@@ -118,7 +118,7 @@
     "form": {
       "title": "Kontaktujte nás",
       "fields": {
-        "name": {
+        "jmeno": {
           "label": "Meno",
           "placeholder": "Vaše meno"
         },
@@ -126,16 +126,25 @@
           "label": "Email",
           "placeholder": "vas@email.sk"
         },
-        "phone": {
+        "telefon": {
           "label": "Telefón",
           "placeholder": "+421 XXX XXX XXX"
         },
-        "message": {
+        "castka": {
+          "label": "Výška pohľadávky",
+          "placeholder": "Čiastka v €"
+        },
+        "zprava": {
           "label": "Správa",
           "placeholder": "Popíšte nám Váš prípad..."
         }
       },
-      "submitButton": "Odoslať správu"
+      "submitButton": "Odoslať správu",
+      "sending": "Odosielanie...",
+      "success": "Ďakujeme za kontaktovanie. Ozveme sa vám čo najskôr.",
+      "generalError": "Pri odosielaní formulára došlo k chybe. Skúste to prosím znova.",
+      "phoneError": "Zadajte prosím platné telefónne číslo",
+      "captchaError": "Potvrďte prosím, že nie ste robot"
     }
   }
 } 

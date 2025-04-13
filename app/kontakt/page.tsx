@@ -19,6 +19,18 @@ import { generateCSRFToken } from "@/lib/csrf"
 import { headers } from 'next/headers'
 import { useParams } from "next/navigation"
 import { getCurrentLocale } from "@/lib/i18n"
+import Script from "next/script"
+
+// reCAPTCHA site key
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""
+
+// Phone validation function
+const isValidPhone = (phone: string): boolean => {
+  // Basic international phone regex
+  // Allows for: +XXX XXX XXX XXX format or any reasonable variation
+  const phoneRegex = /^(\+|00)?[0-9\s-]{8,20}$/;
+  return phoneRegex.test(phone);
+}
 
 // Default translations for the contact page
 const defaultTranslations = csContactPage;
@@ -30,6 +42,18 @@ const mapUrls = {
   de: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2246.999029765841!2d13.188615607759504!3d49.11945363885499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47752fdd5192a2c3%3A0x4daf2d023ef3df8a!2sSonnenhof%203%2C%2094252%20Bayerisch%20Eisenstein%2C%20Germany!5e0!3m2!1sen!2scz!4v1742944776751!5m2!1sen!2scz",
   en: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3794.373087528779!2d-0.12827111545847228!3d51.51500093540498!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487604cb57fec9f9%3A0x2e42a59ca28651cb!2s71-75%20Shelton%20St%2C%20London%20WC2H%209JQ%2C%20UK!5e0!3m2!1sen!2scz!4v1742945021778!5m2!1sen!2scz"
 };
+
+// Type declaration for grecaptcha
+declare global {
+  interface Window {
+    grecaptcha: {
+      enterprise: {
+        ready: (callback: () => void) => void;
+        execute: (siteKey: string, options: { action: string }) => Promise<string>;
+      };
+    };
+  }
+}
 
 export default function ContactPage() {
   // Add state to track if client-side rendered
@@ -64,6 +88,8 @@ export default function ContactPage() {
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [activeInfoBox, setActiveInfoBox] = useState<number | null>(null)
   const [copyStatus, setCopyStatus] = useState<{ [key: number]: boolean }>({})
+  const [validationErrors, setValidationErrors] = useState<{[key: string]: string}>({})
+  const [errorMessage, setErrorMessage] = useState("")
 
   const [csrfToken, setCsrfToken] = useState("")
   const [mapUrl, setMapUrl] = useState(mapUrls.cs);
@@ -94,8 +120,10 @@ export default function ContactPage() {
         toast.success(t?.contactInfo?.copySuccess?.phone)
       } else if (text.includes("@")) {
         toast.success(t?.contactInfo?.copySuccess?.email)
-      } else if (text.includes("Praha")) {
+      } else if (text.includes("Praha") || text.includes("Bratislava") || text.includes("London") || text.includes("Bayerisch")) {
         toast.success(t?.contactInfo?.copySuccess?.address)
+      } else if (text.includes("9:00") || text.includes("Pondělí") || text.includes("Pondelok") || text.includes("Monday") || text.includes("Montag")) {
+        toast.success(t?.contactInfo?.copySuccess?.hours)
       } else {
         toast.success(t?.contactInfo?.copySuccess?.generic)
       }
@@ -112,15 +140,67 @@ export default function ContactPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    
+    // Clear validation error when user starts typing
+    if (validationErrors[name]) {
+      setValidationErrors((prev) => ({ ...prev, [name]: "" }))
+    }
   }
+
+  const validateForm = (): boolean => {
+    const errors: {[key: string]: string} = {};
+    let isValid = true;
+
+    // Validate phone
+    if (!isValidPhone(formData.telefon)) {
+      errors.telefon = t?.contactForm?.form?.phoneError || "Please enter a valid phone number";
+      isValid = false;
+    }
+
+    setValidationErrors(errors);
+    return isValid;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validate form first
+    if (!validateForm()) {
+      return;
+    }
     
     // CSRF token is already included in formData
     setFormStatus("submitting")
 
     try {
+      // Get reCAPTCHA Enterprise token
+      let recaptchaToken = "";
+      
+      if (window.grecaptcha && window.grecaptcha.enterprise) {
+        try {
+          recaptchaToken = await new Promise((resolve, reject) => {
+            window.grecaptcha.enterprise.ready(async () => {
+              try {
+                const token = await window.grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, {action: 'CONTACT_FORM'});
+                resolve(token);
+              } catch (error) {
+                console.error("reCAPTCHA execution error:", error);
+                reject(error);
+              }
+            });
+          });
+        } catch (error) {
+          console.error("reCAPTCHA ready error:", error);
+        }
+      }
+
+      if (!recaptchaToken) {
+        setErrorMessage(t?.contactForm?.form?.captchaError || "Please confirm you're not a robot.")
+        setFormStatus("error")
+        toast.error(t?.contactForm?.form?.captchaError || "Please confirm you're not a robot.")
+        return
+      }
+
       // Get current locale from URL
       const currentLocale = getCurrentLocale();
 
@@ -132,7 +212,9 @@ export default function ContactPage() {
         },
         body: JSON.stringify({
           ...formData,
-          language: currentLocale || 'cs' // Default to Czech if no locale found
+          language: currentLocale || 'cs', // Default to Czech if no locale found
+          recaptchaToken,
+          formAction: 'CONTACT_PAGE_FORM',
         }),
       });
 
@@ -159,11 +241,14 @@ export default function ContactPage() {
           csrfToken: newToken
         });
         setFormStatus("idle");
+        setErrorMessage("");
       }, 3000);
     } catch (error) {
       console.error('Error submitting form:', error);
       setFormStatus("error");
-      toast.error(error instanceof Error ? error.message : t?.contactForm?.form?.error);
+      const errorMsg = error instanceof Error ? error.message : t?.contactForm?.form?.error;
+      setErrorMessage(errorMsg);
+      toast.error(errorMsg);
     }
   }
 
@@ -355,9 +440,16 @@ export default function ContactPage() {
                   title: t.contactInfo?.items?.[3]?.title,
                   content: (
                     <p>
-                      {t.contactInfo?.items?.[3]?.content?.[0]}
+                      <span 
+                        className="cursor-pointer"
+                        onClick={() => handleCopy(t.contactInfo?.items?.[3]?.content?.[0], 3)}
+                      >
+                        {t.contactInfo?.items?.[3]?.content?.[0]}
+                      </span>
                     </p>
                   ),
+                  dark: t.contactInfo?.items?.[3]?.title ? false : true,
+                  copyText: t.contactInfo?.items?.[3]?.content?.[0],
                 }
               ].map((item, index) => (
                 <SectionWrapper key={index} animation="fade-up" delay={100 * (index + 1)}>
@@ -505,9 +597,15 @@ export default function ContactPage() {
                           value={formData.telefon}
                           onChange={handleChange}
                           placeholder={t.contactForm?.form?.phone}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300"
+                          className={cn(
+                            "w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all duration-300",
+                            validationErrors.telefon ? "border-red-500" : ""
+                          )}
                           disabled={formStatus === "submitting" || formStatus === "success"}
                         />
+                        {validationErrors.telefon && (
+                          <div className="text-sm text-red-500 mt-1">{validationErrors.telefon}</div>
+                        )}
                       </div>
                       <div className="relative">
                         <textarea
@@ -587,6 +685,12 @@ export default function ContactPage() {
 
                         {formStatus === "error" && <span className="relative z-10">{t.contactForm?.form?.error}</span>}
                       </Button>
+                      
+                      {errorMessage && formStatus === "error" && (
+                        <div className="p-4 bg-red-50 text-red-700 rounded-md mt-4 text-sm">
+                          {errorMessage}
+                        </div>
+                      )}
                     </div>
                   </form>
                 </div>
@@ -743,6 +847,9 @@ export default function ContactPage() {
       </main>
 
       <Footer />
+      
+      {/* reCAPTCHA Enterprise Script */}
+      <Script src={`https://www.google.com/recaptcha/enterprise.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
     </div>
   )
 }

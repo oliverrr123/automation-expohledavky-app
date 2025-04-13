@@ -79,7 +79,8 @@
     "title": "Umfassende Überprüfung zu einem vorteilhaften Preis",
     "description": "Bestellen Sie eine umfassende Überprüfung einer Person oder eines Unternehmens und gewinnen Sie Sicherheit und Gewissheit in Ihrer Entscheidungsfindung.",
     "packageTitle": "Umfassende Überprüfung",
-    "price": "65 €",
+    "price": "47 €",
+    "rawPrice": 47,
     "taxNote": "inkl. MwSt.",
     "packageDescription": "Vollständige Verifizierung einer Person oder eines Unternehmens in allen verfügbaren Registern und Datenbanken mit Expertenkommentar.",
     "benefits": [
@@ -174,6 +175,32 @@
   "cta": {
     "title": "Schützen Sie Ihr Eigentum und Ihre Zeit",
     "description": "Die Investition in eine gründliche Verifizierung zahlt sich immer aus. Bestellen Sie noch heute eine umfassende Überprüfung und gewinnen Sie Sicherheit und Gewissheit in Ihrer Entscheidungsfindung.",
-    "button": "Überprüfung für 65 € bestellen"
+    "button": "Überprüfung für 47 € bestellen"
+  },
+  "payment": {
+    "title": "Zahlung abschließen",
+    "subtitle": "Sie zahlen für:",
+    "emailLabel": "E-Mail für Ergebnisse",
+    "emailPlaceholder": "ihre@email.de",
+    "emailError": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "notesLabel": "Details zur Überprüfung",
+    "notesPlaceholder": "Geben Sie an, wen/was Sie überprüfen möchten (z.B. ACME GmbH, HRN: XXX12345) und weitere relevante Informationen",
+    "notesHelp": "Diese Informationen helfen uns, die Überprüfung effizient nach Ihren Anforderungen durchzuführen.",
+    "companyIdError": "Bitte überprüfen Sie, ob wir anhand dieser Angaben die spezifische Person/Firma identifizieren können. Die Handelsregisternummer (HRN) sollte enthalten sein.",
+    "terms": "Mit der Fortsetzung Ihrer Zahlung stimmen Sie unseren",
+    "termsLink": "Allgemeinen Geschäftsbedingungen",
+    "privacyLink": "Datenschutzrichtlinien",
+    "processing": "Wird verarbeitet...",
+    "error": "Zahlungsfehler",
+    "errorMessage": "Bei der Verarbeitung Ihrer Zahlung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."
+  },
+  "success": {
+    "title": "Zahlung erfolgreich!",
+    "message": "Vielen Dank für Ihre Zahlung. Ihre Bestellung wurde erfolgreich verarbeitet.",
+    "nextStepsTitle": "Was passiert als nächstes?",
+    "step1": "Unser Team wird Ihre Anfrage bearbeiten und den Überprüfungsprozess starten.",
+    "step2": "Sie erhalten eine E-Mail-Bestätigung mit Details zu Ihrer Bestellung.",
+    "step3": "Die Ergebnisse werden Ihnen gemäß dem Service-Zeitplan zugestellt.",
+    "homeButton": "Zurück zur Startseite"
   }
 } 

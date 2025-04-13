@@ -1,14 +1,33 @@
 "use client"
 
-import React from "react"
+import React, { useState, useEffect } from "react"
 import Image from "next/image"
 import { SectionWrapper } from "@/components/section-wrapper"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle, FileText, Building, ClipboardCheck, Search, Calculator, Scale, MessageCircle, FileCheck, Award, Target, Shield, Clock } from "lucide-react"
 import { useTranslations } from "@/lib/i18n"
+import { ContactForm } from "@/components/contact-form"
+import { Footer } from "@/components/footer"
+import csCompanyAcquisitionPage from '@/locales/cs/company-acquisition-page.json'
+import enCompanyAcquisitionPage from '@/locales/en/company-acquisition-page.json'
+import skCompanyAcquisitionPage from '@/locales/sk/company-acquisition-page.json'
+import deCompanyAcquisitionPage from '@/locales/de/company-acquisition-page.json'
+
+// Default translations to use before client-side hydration
+const defaultTranslations = csCompanyAcquisitionPage;
 
 export default function OdkupFiremPage() {
-  const translations = useTranslations("companyAcquisitionPage")
+  const [isClient, setIsClient] = useState(false)
+  const clientTranslations = useTranslations('companyAcquisitionPage')
+  const formTranslations = useTranslations('servicesLayout')
+  
+  // Set isClient to true after hydration is complete
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  // Use client translations or default translations based on client state
+  const t = isClient ? clientTranslations : defaultTranslations
 
   // Icon mapping
   const iconMap: Record<string, React.ReactNode> = {
@@ -43,11 +62,11 @@ export default function OdkupFiremPage() {
           <div className="max-w-3xl mx-auto text-center text-white">
             <SectionWrapper animation="fade-up">
               <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white mb-4">
-                {translations.hero.badge}
+                {t.hero.badge}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">{translations.hero.title}</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{t.hero.title}</h1>
               <p className="text-xl text-zinc-300 mb-8">
-                {translations.hero.subtitle}
+                {t.hero.subtitle}
               </p>
             </SectionWrapper>
           </div>
@@ -62,14 +81,14 @@ export default function OdkupFiremPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {translations.mainSection.badge}
+                    {t.mainSection.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{translations.mainSection.title}</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.mainSection.title}</h2>
                   <p className="text-gray-600 mb-4 text-lg">
-                    {translations.mainSection.paragraphs[0]}
+                    {t.mainSection.paragraphs[0]}
                   </p>
                   <p className="text-gray-600 mb-8">
-                    {translations.mainSection.paragraphs[1]}
+                    {t.mainSection.paragraphs[1]}
                   </p>
 
                   <div className="mt-8">
@@ -78,7 +97,7 @@ export default function OdkupFiremPage() {
                       className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
                     >
                       <a href="#contact-form" className="flex items-center">
-                        {translations.mainSection.button} <ArrowRight className="ml-2 h-4 w-4" />
+                        {t.mainSection.button} <ArrowRight className="ml-2 h-4 w-4" />
                       </a>
                     </Button>
                   </div>
@@ -97,12 +116,12 @@ export default function OdkupFiremPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {translations.services.badge}
+                    {t.services.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{translations.services.title}</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.services.title}</h2>
 
                   <div className="grid md:grid-cols-1 gap-6 mt-8">
-                    {translations.services.items.map((item: { icon: string; title: string; description: string }, index: number) => (
+                    {t.services.items.map((item: { icon: string; title: string; description: string }, index: number) => (
                       <SectionWrapper key={index} animation="zoom" delay={index * 100}>
                         <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-8 shadow-sm border border-orange-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
                           <div className="flex items-start gap-4">
@@ -133,12 +152,12 @@ export default function OdkupFiremPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {translations.process.badge}
+                    {t.process.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{translations.process.title}</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.process.title}</h2>
 
                   <div className="grid md:grid-cols-1 gap-6 mt-8">
-                    {translations.process.steps.map((step: { number: string; title: string; description: string }, index: number) => (
+                    {t.process.steps.map((step: { number: string; title: string; description: string }, index: number) => (
                       <div key={index} className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-8 shadow-sm border border-orange-100 transition-all duration-300 hover:shadow-md">
                         <div className="flex items-start gap-4">
                           <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
@@ -167,12 +186,12 @@ export default function OdkupFiremPage() {
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto">
                   <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                    {translations.benefits.badge}
+                    {t.benefits.badge}
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{translations.benefits.title}</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-6">{t.benefits.title}</h2>
 
                   <div className="grid md:grid-cols-2 gap-6 mt-8">
-                    {translations.benefits.items.map((item: { icon: string; title: string; description: string }, index: number) => (
+                    {t.benefits.items.map((item: { icon: string; title: string; description: string }, index: number) => (
                       <div key={index} className="bg-gradient-to-br from-orange-50 to-white rounded-xl p-6 shadow-sm border border-orange-100">
                         <div className="flex items-start gap-4">
                           <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
@@ -193,7 +212,7 @@ export default function OdkupFiremPage() {
                         <Building className="h-5 w-5 text-orange-400" />
                       </div>
                       <p className="text-lg">
-                        {translations.benefits.note}
+                        {t.benefits.note}
                       </p>
                     </div>
                   </div>
@@ -211,9 +230,9 @@ export default function OdkupFiremPage() {
             <div className="p-8 md:p-12">
               <SectionWrapper animation="fade-up">
                 <div className="max-w-3xl mx-auto text-center">
-                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{translations.cta.title}</h2>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t.cta.title}</h2>
                   <p className="text-gray-600 mb-8 text-lg">
-                    {translations.cta.description}
+                    {t.cta.description}
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -222,7 +241,7 @@ export default function OdkupFiremPage() {
                       className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
                     >
                       <a href="#contact-form" className="flex items-center">
-                        {translations.cta.primaryButton} <ArrowRight className="ml-2 h-4 w-4" />
+                        {t.cta.primaryButton} <ArrowRight className="ml-2 h-4 w-4" />
                       </a>
                     </Button>
                     <Button
@@ -231,7 +250,7 @@ export default function OdkupFiremPage() {
                       className="border-orange-500 text-orange-500 hover:bg-orange-50 transition-all duration-300"
                     >
                       <a href="/nase-sluzby" className="flex items-center">
-                        {translations.cta.secondaryButton}
+                        {t.cta.secondaryButton}
                       </a>
                     </Button>
                   </div>
@@ -239,6 +258,38 @@ export default function OdkupFiremPage() {
               </SectionWrapper>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Contact Form Section */}
+      <section className="py-16 bg-gray-50" id="contact-form">
+        <div className="container mx-auto px-4 max-w-5xl">
+          {isClient && (
+            <ContactForm
+              badge={t.contactForm?.badge || formTranslations?.contactForm?.badge}
+              title={t.contactForm?.title || formTranslations?.contactForm?.title}
+              description={t.contactForm?.description || formTranslations?.serviceContactDescriptions?.companyAcquisition}
+              fields={{
+                name: true,
+                email: true,
+                phone: true,
+                amount: false, // Company acquisition doesn't need amount field
+                message: true,
+              }}
+              formAction="COMPANY_ACQUISITION_FORM"
+              showSidebar={true}
+              translations={t.contactForm?.form || formTranslations?.contactForm?.form}
+              serviceName="Odkup firem"
+              sidebarTitle={t.contactForm?.sidebarTitle || formTranslations?.serviceSidebarTitles?.companyAcquisition || "Proč prodat společnost nám?"}
+              sidebarReasons={t.contactForm?.sidebarReasons || formTranslations?.serviceSidebarReasons?.companyAcquisition || [
+                "Rychlý a diskrétní proces",
+                "Individuální ocenění vaší společnosti",
+                "Převzetí všech závazků a pohledávek",
+                "Profesionální právní zajištění transakce",
+                "Okamžitá úhrada po dokončení transakce"
+              ]}
+            />
+          )}
         </div>
       </section>
     </>

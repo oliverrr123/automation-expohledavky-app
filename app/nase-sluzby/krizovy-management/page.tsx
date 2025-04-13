@@ -12,6 +12,8 @@ import csCrisisManagementPage from '@/locales/cs/crisis-management-page.json'
 import enCrisisManagementPage from '@/locales/en/crisis-management-page.json'
 import skCrisisManagementPage from '@/locales/sk/crisis-management-page.json'
 import deCrisisManagementPage from '@/locales/de/crisis-management-page.json'
+import { ContactForm } from "@/components/contact-form"
+import { Footer } from "@/components/footer"
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -32,6 +34,8 @@ export default function KrizovyManagementPage() {
   
   // Always call hooks unconditionally
   const clientTranslations = useTranslations('crisisManagementPage')
+  // Load form translations
+  const formTranslations = useTranslations('servicesLayout')
   
   // Use client translations or default translations based on client state
   const t = isClient ? clientTranslations : defaultTranslations
@@ -342,6 +346,38 @@ export default function KrizovyManagementPage() {
               </div>
             </div>
           </SectionWrapper>
+        </div>
+      </section>
+
+      {/* Contact Form Section */}
+      <section id="contact-form" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 max-w-5xl">
+          {isClient && (
+            <ContactForm
+              badge={t?.contactForm?.badge || formTranslations?.contactForm?.badge || "Krizový management"}
+              title={t?.contactForm?.title || formTranslations?.contactForm?.title || "Kontaktujte nás pro nezávaznou konzultaci"}
+              description={t?.contactForm?.description || formTranslations?.serviceContactDescriptions?.crisisManagement || "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve s nabídkou řešení krizové situace vaší firmy."}
+              fields={{
+                name: true,
+                email: true,
+                phone: true,
+                amount: false,
+                message: true,
+              }}
+              formAction="CRISIS_MANAGEMENT_FORM"
+              showSidebar={true}
+              translations={t?.contactForm?.form || formTranslations?.contactForm?.form}
+              serviceName="Krizový management"
+              sidebarTitle={t?.contactForm?.sidebarTitle || formTranslations?.serviceSidebarTitles?.crisisManagement || "Proč zvolit náš krizový management?"}
+              sidebarReasons={t?.contactForm?.sidebarReasons || formTranslations?.serviceSidebarReasons?.crisisManagement || [
+                "Okamžitá analýza vaší situace",
+                "Praktická implementace krizových opatření",
+                "Optimalizace finančních toků",
+                "Vyjednávání s věřiteli a stakeholdery",
+                "Dlouhodobý plán revitalizace společnosti"
+              ]}
+            />
+          )}
         </div>
       </section>
     </>

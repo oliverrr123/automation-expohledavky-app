@@ -17,6 +17,14 @@ import { getCurrentLocale } from "@/lib/i18n"
 // Add Google reCAPTCHA site key
 const RECAPTCHA_SITE_KEY = "6LfecQArAAAAAHY4AdWeBS3Ubx5lFH6hI342ZmO8";
 
+// Add phone validation function
+const isValidPhone = (phone: string): boolean => {
+  // Basic international phone regex
+  // Allows for: +XXX XXX XXX XXX format or any reasonable variation
+  const phoneRegex = /^(\+|00)?[0-9\s-]{8,20}$/;
+  return phoneRegex.test(phone);
+};
+
 export default function PoptavkaPage() {
   const [isClient, setIsClient] = useState(false)
   const [formData, setFormData] = useState({
@@ -29,6 +37,7 @@ export default function PoptavkaPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState("")
+  const [validationErrors, setValidationErrors] = useState<{[key: string]: string}>({})
   
   // Get translations
   const t = useTranslations('inquiryPage')
@@ -41,10 +50,35 @@ export default function PoptavkaPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    
+    // Clear validation error when user starts typing
+    if (validationErrors[name]) {
+      setValidationErrors((prev) => ({ ...prev, [name]: "" }))
+    }
   }
+
+  const validateForm = (): boolean => {
+    const errors: {[key: string]: string} = {};
+    let isValid = true;
+
+    // Validate phone
+    if (!isValidPhone(formData.telefon)) {
+      errors.telefon = t?.form?.phoneError || "Prosím zadejte platné telefonní číslo ve formátu +XXX XXX XXX XXX";
+      isValid = false;
+    }
+
+    setValidationErrors(errors);
+    return isValid;
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    
+    // Validate form first
+    if (!validateForm()) {
+      return;
+    }
+    
     setIsSubmitting(true)
     setSubmitStatus("idle")
 
@@ -257,9 +291,12 @@ export default function PoptavkaPage() {
                         value={formData.telefon}
                         onChange={handleChange}
                         placeholder={t.form.phone.placeholder}
-                        className="w-full"
+                        className={`w-full ${validationErrors.telefon ? 'border-red-500' : ''}`}
                         disabled={isSubmitting}
                       />
+                      {validationErrors.telefon && (
+                        <div className="text-sm text-red-500 mt-1">{validationErrors.telefon}</div>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <label htmlFor="castka" className="text-sm font-medium text-gray-700">

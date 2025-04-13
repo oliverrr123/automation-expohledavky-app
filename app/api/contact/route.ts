@@ -7,12 +7,12 @@ async function verifyRecaptchaToken(token: string, action: string) {
   try {
     // Log token for debugging
     console.log(`Verifying reCAPTCHA token for action: ${action}`);
-    console.log(`Using site key: ${process.env.RECAPTCHA_SITE_KEY}`);
+    console.log(`Using site key: ${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`);
     console.log(`API Key available: ${!!process.env.RECAPTCHA_API_KEY}`);
   
     // Check if we have the required environment variables
-    if (!process.env.RECAPTCHA_SITE_KEY || !process.env.RECAPTCHA_API_KEY) {
-      console.error('Missing RECAPTCHA_SITE_KEY or RECAPTCHA_API_KEY environment variables');
+    if (!process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || !process.env.RECAPTCHA_API_KEY) {
+      console.error('Missing NEXT_PUBLIC_RECAPTCHA_SITE_KEY or RECAPTCHA_API_KEY environment variables');
       return { valid: false, score: 0, error: 'Missing reCAPTCHA configuration' };
     }
 
@@ -25,7 +25,7 @@ async function verifyRecaptchaToken(token: string, action: string) {
       event: {
         token: token,
         expectedAction: action,
-        siteKey: process.env.RECAPTCHA_SITE_KEY,
+        siteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
       }
     };
 
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Extract form data
-    const { jmeno, email, telefon, zprava, castka, language } = body;
+    const { jmeno, email, telefon, zprava, castka, language, serviceName } = body;
     
     // Validate required fields
     if (!jmeno || !email || !zprava) {
@@ -146,7 +146,8 @@ export async function POST(request: NextRequest) {
       message: zprava,
       phone: telefon,
       amount: castka,
-      language: language || 'cs' // Default to Czech if no language specified
+      language: language || 'cs', // Default to Czech if no language specified
+      serviceName: serviceName // Include the service name in email data
     });
     
     if (!emailResult.success) {

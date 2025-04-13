@@ -100,7 +100,24 @@ const emailConfigs = {
 // Custom function to send only customer email, not owner copy
 async function sendCustomerEmail(email: string, amount: number, notes: string, language: string = 'cs') {
   try {
-    const amountFormatted = amount.toLocaleString('cs-CZ') + ' Kč';
+    // Format amount based on language
+    let amountFormatted;
+    
+    switch(language) {
+      case 'en':
+        amountFormatted = '£' + amount.toLocaleString('en-GB');
+        break;
+      case 'sk':
+        amountFormatted = amount.toLocaleString('sk-SK') + ' €';
+        break;
+      case 'de':
+        amountFormatted = amount.toLocaleString('de-DE') + ' €';
+        break;
+      case 'cs':
+      default:
+        amountFormatted = amount.toLocaleString('cs-CZ') + ' Kč';
+        break;
+    }
     
     // Get template based on language or default to Czech
     const template = emailTemplates[language as keyof typeof emailTemplates] || emailTemplates.cs;
@@ -298,7 +315,7 @@ export async function POST(request: Request) {
         
         console.log(`
           Payment successful:
-          - Amount: ${amount} CZK
+          - Amount: ${amount} ${language === 'en' ? 'GBP' : (language === 'sk' || language === 'de') ? 'EUR' : 'CZK'}
           - Email: ${email}
           - Payment ID: ${paymentIntent.id}
           - Customer ID: ${customerId || 'Not available'}

@@ -5,8 +5,9 @@ import { SectionWrapper } from "@/components/section-wrapper"
 import { ArrowRight, FileText, Building, CreditCard, Briefcase, FileSignature, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { useTranslations } from "@/lib/i18n"
+import { useTranslations, getCurrentLocale } from "@/lib/i18n"
 import { useState, useEffect } from "react"
+import { ContactForm } from "@/components/contact-form"
 
 // Icon mapping for service icons
 const iconMap = {
@@ -71,11 +72,48 @@ export default function NaseSluzbyPage() {
   const [isClient, setIsClient] = useState(false)
   // Use client translations
   const t = useTranslations('servicesPage')
+  // Load form translations
+  const formT = useTranslations('servicesLayout')
+  const [currentLang, setCurrentLang] = useState<string>('')
   
   // Set isClient to true after hydration is complete
   useEffect(() => {
     setIsClient(true)
+    const locale = getCurrentLocale()
+    setCurrentLang(locale)
+    
+    // Debug translations for different locales
+    console.log('Current locale:', locale)
+    console.log('Form translations:', formT?.contactForm?.form)
   }, [])
+  
+  // Create a complete form translations object with appropriate handling
+  const formTranslations = isClient ? {
+    name: {
+      label: formT?.contactForm?.form?.name?.label,
+      placeholder: formT?.contactForm?.form?.name?.placeholder
+    },
+    email: {
+      label: formT?.contactForm?.form?.email?.label,
+      placeholder: formT?.contactForm?.form?.email?.placeholder
+    },
+    phone: {
+      label: formT?.contactForm?.form?.phone?.label,
+      placeholder: formT?.contactForm?.form?.phone?.placeholder
+    },
+    message: {
+      label: formT?.contactForm?.form?.message?.label,
+      placeholder: formT?.contactForm?.form?.message?.placeholder
+    },
+    amount: {
+      label: formT?.contactForm?.form?.amount?.label,
+      placeholder: formT?.contactForm?.form?.amount?.placeholder
+    },
+    submitButton: formT?.contactForm?.form?.submitButton,
+    submitting: formT?.contactForm?.form?.submitting,
+    success: formT?.contactForm?.form?.success,
+    error: formT?.contactForm?.form?.error
+  } : {}
   
   return (
     <div className="pt-16 pb-24">
@@ -85,11 +123,13 @@ export default function NaseSluzbyPage() {
           <SectionWrapper animation="fade-up">
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                {t?.hero?.badge}
+                {isClient ? t?.hero?.badge : ''}
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 mb-6">{t?.hero?.title}</h1>
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 mb-6">
+                {isClient ? t?.hero?.title : ''}
+              </h1>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                {t?.hero?.description}
+                {isClient ? t?.hero?.description : ''}
               </p>
             </div>
           </SectionWrapper>
@@ -100,40 +140,42 @@ export default function NaseSluzbyPage() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <SectionWrapper animation="fade-up" delay={200}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {(t?.services || []).map((service: any, index: number) => {
-                const colors = colorVariants[service?.color as keyof typeof colorVariants] || colorVariants.orange;
-                const Icon = iconMap[service?.icon as keyof typeof iconMap] || FileText;
+            {isClient && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {(t?.services || []).map((service: any, index: number) => {
+                  const colors = colorVariants[service?.color as keyof typeof colorVariants] || colorVariants.orange;
+                  const Icon = iconMap[service?.icon as keyof typeof iconMap] || FileText;
 
-                return (
-                  <Link
-                    href={`/nase-sluzby/${service?.id}`}
-                    key={service?.id || index}
-                    className={cn(
-                      "group flex flex-col h-full rounded-xl border bg-white p-6 shadow-sm transition-all duration-200",
-                      colors.border,
-                      colors.hover,
-                    )}
-                  >
-                    <SectionWrapper animation="fade-up" delay={100 * (index + 1)}>
-                      <div className="flex-1">
-                        <div
-                          className={cn("w-12 h-12 rounded-lg flex items-center justify-center mb-4", colors.medium)}
-                        >
-                          <Icon className={cn("h-6 w-6", colors.icon)} />
+                  return (
+                    <Link
+                      href={`/nase-sluzby/${service?.id}`}
+                      key={service?.id || index}
+                      className={cn(
+                        "group flex flex-col h-full rounded-xl border bg-white p-6 shadow-sm transition-all duration-200",
+                        colors.border,
+                        colors.hover,
+                      )}
+                    >
+                      <SectionWrapper animation="fade-up" delay={100 * (index + 1)}>
+                        <div className="flex-1">
+                          <div
+                            className={cn("w-12 h-12 rounded-lg flex items-center justify-center mb-4", colors.medium)}
+                          >
+                            <Icon className={cn("h-6 w-6", colors.icon)} />
+                          </div>
+                          <h3 className="text-xl font-bold text-zinc-900 mb-3">{service?.title}</h3>
+                          <p className="text-gray-600 mb-6">{service?.description}</p>
                         </div>
-                        <h3 className="text-xl font-bold text-zinc-900 mb-3">{service?.title}</h3>
-                        <p className="text-gray-600 mb-6">{service?.description}</p>
-                      </div>
-                      <div className="flex items-center text-sm font-medium mt-2 group-hover:translate-x-1 transition-transform">
-                        <span className={colors.icon}>{service?.cta}</span>
-                        <ArrowRight className={cn("ml-1 h-4 w-4", colors.icon)} />
-                      </div>
-                    </SectionWrapper>
-                  </Link>
-                )
-              })}
-            </div>
+                        <div className="flex items-center text-sm font-medium mt-2 group-hover:translate-x-1 transition-transform">
+                          <span className={colors.icon}>{service?.cta}</span>
+                          <ArrowRight className={cn("ml-1 h-4 w-4", colors.icon)} />
+                        </div>
+                      </SectionWrapper>
+                    </Link>
+                  )
+                })}
+              </div>
+            )}
           </SectionWrapper>
         </div>
       </section>
@@ -142,34 +184,36 @@ export default function NaseSluzbyPage() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <SectionWrapper animation="fade-up" delay={400}>
-            <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-2xl p-8 md:p-12 text-white">
-              <div className="max-w-3xl mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-6">{t?.cta?.title}</h2>
-                <p className="text-zinc-300 mb-8">
-                  {t?.cta?.description}
-                </p>
-                <div className="flex justify-center">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-orange-500 text-white font-semibold transition-all duration-500 hover:scale-[1.04] relative overflow-hidden group shadow-xl shadow-orange-500/20"
-                    style={{
-                      background: "radial-gradient(ellipse at 50% 125%, hsl(17, 88%, 40%) 20%, hsl(27, 96%, 61%) 80%)",
-                      backgroundPosition: "bottom",
-                      backgroundSize: "150% 100%",
-                    }}
-                  >
-                    <a href="#contact-form" className="relative">
-                      <div
-                        className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
-                        aria-hidden="true"
-                      />
-                      <span className="relative z-10">{t?.cta?.button}</span>
-                    </a>
-                  </Button>
+            {isClient && (
+              <div className="bg-gradient-to-br from-zinc-900 to-zinc-800 rounded-2xl p-8 md:p-12 text-white">
+                <div className="max-w-3xl mx-auto text-center">
+                  <h2 className="text-3xl font-bold mb-6">{t?.cta?.title}</h2>
+                  <p className="text-zinc-300 mb-8">
+                    {t?.cta?.description}
+                  </p>
+                  <div className="flex justify-center">
+                    <Button
+                      asChild
+                      size="lg"
+                      className="bg-orange-500 text-white font-semibold transition-all duration-500 hover:scale-[1.04] relative overflow-hidden group shadow-xl shadow-orange-500/20"
+                      style={{
+                        background: "radial-gradient(ellipse at 50% 125%, hsl(17, 88%, 40%) 20%, hsl(27, 96%, 61%) 80%)",
+                        backgroundPosition: "bottom",
+                        backgroundSize: "150% 100%",
+                      }}
+                    >
+                      <a href="#contact-form" className="relative">
+                        <div
+                          className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
+                          aria-hidden="true"
+                        />
+                        <span className="relative z-10">{t?.cta?.button}</span>
+                      </a>
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </SectionWrapper>
         </div>
       </section>
@@ -178,31 +222,58 @@ export default function NaseSluzbyPage() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <SectionWrapper animation="fade-up" delay={500}>
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
-                  {t?.whyChooseUs?.badge}
+            {isClient && (
+              <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-12">
+                  <div className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500/10 to-orange-600/10 px-3 py-1 text-sm font-medium text-orange-600 ring-1 ring-inset ring-orange-500/20 mb-4">
+                    {t?.whyChooseUs?.badge}
+                  </div>
+                  <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t?.whyChooseUs?.title}</h2>
+                  <p className="text-gray-600 max-w-2xl mx-auto">
+                    {t?.whyChooseUs?.description}
+                  </p>
                 </div>
-                <h2 className="text-3xl font-bold tracking-tight text-zinc-900 mb-4">{t?.whyChooseUs?.title}</h2>
-                <p className="text-gray-600 max-w-2xl mx-auto">
-                  {t?.whyChooseUs?.description}
-                </p>
-              </div>
 
-              <div className="grid md:grid-cols-2 gap-8">
-                {(t?.whyChooseUs?.advantages || []).map((item: any, index: number) => (
-                  <SectionWrapper key={index} animation="fade-up" delay={600 + index * 100}>
-                    <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm h-full">
-                      <h3 className="text-xl font-bold text-zinc-900 mb-3">{item?.title}</h3>
-                      <p className="text-gray-600">{item?.description}</p>
-                    </div>
-                  </SectionWrapper>
-                ))}
+                <div className="grid md:grid-cols-2 gap-8">
+                  {(t?.whyChooseUs?.advantages || []).map((item: any, index: number) => (
+                    <SectionWrapper key={index} animation="fade-up" delay={600 + index * 100}>
+                      <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm h-full">
+                        <h3 className="text-xl font-bold text-zinc-900 mb-3">{item?.title}</h3>
+                        <p className="text-gray-600">{item?.description}</p>
+                      </div>
+                    </SectionWrapper>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </SectionWrapper>
         </div>
       </section>
+
+      {/* Contact Form */}
+      {isClient && (
+        <div className="mt-4">
+          <p className="text-xs text-gray-400 text-center mb-2">Current language: {currentLang}</p>
+          <ContactForm
+            badge={formT?.contactForm?.badge || ""}
+            title={formT?.contactForm?.title || ""}
+            description={formT?.serviceContactDescriptions?.default || formT?.contactForm?.description || ""}
+            fields={{
+              name: true,
+              email: true,
+              phone: true,
+              amount: false, // Default service form doesn't need amount
+              message: true,
+            }}
+            formAction="SERVICES_FORM"
+            showSidebar={true}
+            sidebarTitle={formT?.contactSidebar?.title || formT?.serviceSidebarTitles?.default || ""}
+            sidebarReasons={formT?.contactSidebar?.reasons || formT?.serviceSidebarReasons?.default || []}
+            translations={formT?.contactForm?.form}
+            serviceName="Služby"
+          />
+        </div>
+      )}
     </div>
   )
 }

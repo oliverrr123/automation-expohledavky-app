@@ -23,6 +23,7 @@ import Link from "next/link"
 import { useTranslations } from "@/lib/i18n"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { PaymentModal } from "@/components/stripe/PaymentModal"
+import { getLanguageFromHostname } from "@/lib/domain-mapping"
 
 // Icon mapping
 const iconMap: Record<string, React.ComponentType<any>> = {
@@ -58,31 +59,35 @@ export default function LustracePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [paymentSuccess, setPaymentSuccess] = useState(false)
   const [paymentError, setPaymentError] = useState<string | null>(null)
+  const [currentLocale, setCurrentLocale] = useState<string>('')
   
   // Get translations
   const t = useTranslations(namespace)
   
-  // Set isClient to true after hydration is complete
+  // Set isClient to true after hydration is complete and detect language
   useEffect(() => {
     setIsClient(true)
-    // Add a small delay to ensure translations are loaded
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 100)
-    return () => clearTimeout(timer)
+    
+    // Detect the current language from hostname
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname
+      const detectedLocale = getLanguageFromHostname(hostname)
+      if (detectedLocale) {
+        setCurrentLocale(detectedLocale)
+      }
+    }
+    
+    setIsLoading(false)
   }, [])
 
   const handlePaymentSuccess = () => {
     setPaymentSuccess(true)
     setIsPaymentModalOpen(false)
-    // You could redirect to the success page or show a success message
     window.location.href = '/lustrace/payment-success'
   }
 
   const handlePaymentError = (error: string) => {
     setPaymentError(error)
-    // The error is displayed in the PaymentForm component
-    // You could also do additional error handling here
   }
 
   // If still loading, show a minimal loading state
@@ -144,7 +149,7 @@ export default function LustracePage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative py-36 overflow-hidden">
+      <section className="relative pb-36 pt-48 overflow-hidden">
         <div className="absolute inset-0 bg-zinc-900/90 z-0">
           <Image
             src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1473&auto=format&fit=crop"
@@ -506,7 +511,12 @@ export default function LustracePage() {
                       backgroundPosition: "bottom",
                       backgroundSize: "150% 100%",
                     }}
-                    onClick={() => (window.location.href = "https://lustrace.expohledavky.cz/")}
+                    onClick={() =>
+                      window.scrollTo({
+                        top: (document.getElementById("buy-section")?.offsetTop ?? 0) - 100,
+                        behavior: "smooth",
+                      })
+                    }
                   >
                     <div
                       className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
@@ -525,16 +535,16 @@ export default function LustracePage() {
 
       <Footer />
 
-      {isClient && (
+      {isClient && currentLocale && (
         <PaymentModal
           isOpen={isPaymentModalOpen}
           onClose={() => setIsPaymentModalOpen(false)}
-          amount={1199}
+          amount={t?.pricing?.rawPrice}
           serviceName={t?.pricing?.packageTitle}
           onPaymentSuccess={handlePaymentSuccess}
           onPaymentError={handlePaymentError}
           buttonText={t?.pricing?.orderButton}
-          language={t?.__lang || 'cs'}
+          language={currentLocale}
         />
       )}
     </div>

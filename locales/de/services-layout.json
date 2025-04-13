@@ -50,6 +50,84 @@
       "copyFailed": "Kopieren fehlgeschlagen"
     }
   },
+  "serviceSidebarReasons": {
+    "default": [
+      "Professionelle Erfahrung mit Inkasso",
+      "Kostenlose Online-Beratung für Ihre Forderung",
+      "Diskreter Umgang mit unseren Kunden",
+      "Vorschläge für mögliche Lösungen",
+      "Rechtsdienstleistung als Teil unserer Dienstleistungen"
+    ],
+    "debtCollection": [
+      "Erfolgsquote über 90%",
+      "Schneller und effizienter Inkassoprozess",
+      "Keine Vorauszahlung",
+      "Professionelle rechtliche Vertretung",
+      "Transparente Kommunikation"
+    ],
+    "receivablesPurchase": [
+      "Sofortige finanzielle Liquidität",
+      "Transparente Bewertung der Forderungen",
+      "Faire Kaufkonditionen",
+      "Schneller Prozess ohne unnötige Verwaltung",
+      "Wir übernehmen alle mit dem Inkasso verbundenen Risiken"
+    ],
+    "companyAcquisition": [
+      "Schneller und diskreter Prozess",
+      "Individuelle Bewertung Ihres Unternehmens",
+      "Übernahme aller Verbindlichkeiten und Forderungen",
+      "Professionelle rechtliche Abwicklung der Transaktion",
+      "Sofortige Zahlung nach Abschluss der Transaktion"
+    ],
+    "companyLiquidation": [
+      "Komplette Abwicklung des Liquidationsprozesses",
+      "Minimierung der Risiken für Geschäftsführer",
+      "Schnelle und professionelle Lösung",
+      "Unterstützung bei der Eintreibung von Unternehmensforderungen",
+      "Sicherstellung aller rechtlichen Anforderungen"
+    ],
+    "crisisManagement": [
+      "Sofortige Analyse Ihrer Situation",
+      "Praktische Umsetzung von Krisenmaßnahmen",
+      "Optimierung der Finanzströme",
+      "Verhandlungen mit Gläubigern und Stakeholdern",
+      "Langfristiger Revitalisierungsplan für das Unternehmen"
+    ],
+    "corporateReceivables": [
+      "Umfassende Verwaltung aller Forderungen",
+      "Optimierung des Cashflows Ihres Unternehmens",
+      "Minimierung der Inkassokosten",
+      "Regelmäßige Berichterstattung und Übersicht",
+      "Prävention von uneinbringlichen Forderungen"
+    ],
+    "promissoryNotes": [
+      "Sofortige Zahlung für genehmigte Wechsel",
+      "Expertise im Wechselrecht",
+      "Faire Bewertung des Nennwertes",
+      "Diskreter und schneller Prozess",
+      "Keine Wartezeit bis zur Fälligkeit des Wechsels"
+    ]
+  },
+  "serviceSidebarTitles": {
+    "default": "Warum uns kontaktieren?",
+    "debtCollection": "Warum uns Ihre Forderungen anvertrauen?",
+    "receivablesPurchase": "Warum Ihre Forderung an uns verkaufen?",
+    "companyAcquisition": "Warum Ihr Unternehmen an uns verkaufen?",
+    "companyLiquidation": "Warum die Liquidation uns anvertrauen?",
+    "crisisManagement": "Warum unser Krisenmanagement wählen?",
+    "corporateReceivables": "Warum unsere Forderungsverwaltung wählen?",
+    "promissoryNotes": "Warum Wechsel an uns verkaufen?"
+  },
+  "serviceContactDescriptions": {
+    "default": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie Ihre Situation und wir werden die optimale Lösung vorschlagen.",
+    "debtCollection": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die Details Ihrer Forderung und wir werden das optimale Verfahren für ihre erfolgreiche Eintreibung vorschlagen.",
+    "receivablesPurchase": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die Details der Forderung, die Sie verkaufen möchten, und wir werden ein transparentes Angebot für ihren Kauf vorbereiten.",
+    "companyAcquisition": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die Details Ihres Unternehmens, das Sie verkaufen möchten, und wir werden ein Angebot für dessen Übernahme vorbereiten.",
+    "companyLiquidation": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die Situation Ihres Unternehmens und wir werden Ihnen das optimale Verfahren für seine problemlose Liquidation vorschlagen.",
+    "crisisManagement": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die aktuelle Krisensituation Ihres Unternehmens und wir werden eine geeignete Lösung zur Stabilisierung und Wiederherstellung eines gesunden Betriebs vorschlagen.",
+    "corporateReceivables": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die Bedürfnisse Ihres Unternehmens im Bereich Forderungsmanagement und wir werden Ihnen umfassende Dienstleistungen vorstellen, die Zeit und Ressourcen sparen.",
+    "promissoryNotes": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Geben Sie Details zu den Wechseln an, die Sie verkaufen möchten, und wir werden ein faires Angebot für deren Kauf vorbereiten."
+  },
   "process": {
     "badge": "Wie es funktioniert",
     "title": "Unser Kooperationsprozess",

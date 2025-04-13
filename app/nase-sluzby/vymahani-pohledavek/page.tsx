@@ -10,6 +10,8 @@ import { CheckCircle, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import { useTranslations } from "@/lib/i18n"
 import { getServerTranslations } from "@/lib/server-utils"
+import { ContactForm } from "@/components/contact-form"
+import { Footer } from "@/components/footer"
 import csDebtCollectionPage from '@/locales/cs/debt-collection-page.json'
 import enDebtCollectionPage from '@/locales/en/debt-collection-page.json'
 import skDebtCollectionPage from '@/locales/sk/debt-collection-page.json'
@@ -26,57 +28,24 @@ const translationsByLang = {
 // Server-side default translations to prevent hydration mismatch
 const serverTranslations = getServerTranslations('debtCollectionPage', translationsByLang);
 
+// Default translations to use before client-side hydration
+const defaultTranslations = csDebtCollectionPage;
+
 export default function VymahaniPohledavekPage() {
   const [isClient, setIsClient] = useState(false)
   // Always call hooks unconditionally
   const clientTranslations = useTranslations('debtCollectionPage')
+  // Load form translations
+  const formTranslations = useTranslations('servicesLayout')
   
-  // Use client translations or server translations based on client state  
-  const t = isClient ? clientTranslations : serverTranslations
+  // Use client translations or default translations based on client state
+  const t = isClient ? clientTranslations : defaultTranslations;
   
   // Set isClient to true after hydration is complete
   useEffect(() => {
     setIsClient(true)
   }, [])
   
-  const [formData, setFormData] = useState({
-    jmeno: "",
-    email: "",
-    telefon: "",
-    castka: "",
-    zprava: "",
-  })
-  const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
-  const [activeTab, setActiveTab] = useState("kontrola")
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setFormStatus("submitting")
-
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Form submitted:", formData)
-      setFormStatus("success")
-
-      // Reset form after submission
-      setTimeout(() => {
-        setFormData({
-          jmeno: "",
-          email: "",
-          telefon: "",
-          castka: "",
-          zprava: "",
-        })
-        setFormStatus("idle")
-      }, 3000)
-    }, 1500)
-  }
-
   return (
     <div className="flex min-h-screen flex-col">
       {/* Background gradients */}
@@ -197,6 +166,32 @@ export default function VymahaniPohledavekPage() {
                 </SectionWrapper>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Contact Form Section */}
+        <section id="contact-form" className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4 max-w-5xl">
+            {isClient && (
+              <ContactForm
+                badge={t?.contactForm?.badge || formTranslations?.contactForm?.badge || ""}
+                title={t?.contactForm?.title || formTranslations?.contactForm?.title || ""}
+                description={t?.contactForm?.description || formTranslations?.serviceContactDescriptions?.debtCollection || ""}
+                fields={{
+                  name: true,
+                  email: true,
+                  phone: true,
+                  amount: true,
+                  message: true,
+                }}
+                formAction="DEBT_COLLECTION_FORM"
+                showSidebar={true}
+                translations={t?.contactForm?.form || formTranslations?.contactForm?.form}
+                serviceName="Vymáhání pohledávek"
+                sidebarTitle={t?.contactForm?.sidebarTitle || formTranslations?.serviceSidebarTitles?.debtCollection || ""}
+                sidebarReasons={t?.contactForm?.sidebarReasons || formTranslations?.serviceSidebarReasons?.debtCollection || []}
+              />
+            )}
           </div>
         </section>
       </main>

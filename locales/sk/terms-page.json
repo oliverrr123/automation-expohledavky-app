@@ -1,0 +1,47 @@
+{
+  "title": "Obchodné podmienky",
+  "subtitle": "Prečítajte si prosím tieto podmienky pred použitím našich služieb.",
+  "sections": {
+    "introduction": {
+      "title": "1. Úvod",
+      "content": "Prístupom a používaním služieb poskytovaných spoločnosťou EX Pohľadávky súhlasíte s týmito obchodnými podmienkami. Ak nesúhlasíte s akoukoľvek časťou týchto podmienok, nemôžete naše služby využívať."
+    },
+    "services": {
+      "title": "2. Popis služieb",
+      "content": "EX Pohľadávky poskytuje lustračné služby na overenie osôb a spoločností prostredníctvom verejne dostupných registrov a databáz. Naše služby zahŕňajú okrem iného kontroly v insolvenčnom registri, overenie v centrálnom registri exekúcií, overenie v obchodnom registri a ďalšie verejne dostupné informácie."
+    },
+    "usage": {
+      "title": "3. Používanie služieb",
+      "content": "Súhlasíte s tým, že budete naše služby používať iba na zákonné účely a v súlade s týmito podmienkami. Ste zodpovední za poskytovanie presných informácií pri používaní našich služieb a rozumiete, že výsledky sú založené na verejne dostupných informáciách v čase lustrácie."
+    },
+    "payment": {
+      "title": "4. Platobné podmienky",
+      "content": "Platba za naše služby je splatná pri objednaní. Ceny sú zobrazené v mene platnej pre váš región. Všetky platby sú spracovávané bezpečne prostredníctvom služby Stripe a neukladáme vaše platobné údaje. Vrátenie peňazí môže byť k dispozícii za určitých okolností, ako je podrobne uvedené v našej politike vrátenia peňazí."
+    },
+    "liability": {
+      "title": "5. Obmedzenie zodpovednosti",
+      "content": "EX Pohľadávky poskytuje lustračné služby na základe verejne dostupných informácií. Hoci sa snažíme o presnosť, nemôžeme zaručiť, že všetky informácie sú úplné, presné alebo aktuálne. Naše služby sú poskytované 'tak ako sú' bez akýchkoľvek záruk. Nenesieme zodpovednosť za akékoľvek rozhodnutia urobené na základe informácií poskytnutých prostredníctvom našich služieb."
+    },
+    "privacy": {
+      "title": "6. Ochrana osobných údajov",
+      "content": "Spracovávame osobné údaje v súlade s našou Zásadou ochrany osobných údajov a platnými zákonmi o ochrane osobných údajov, vrátane GDPR. Používaním našich služieb súhlasíte so zhromažďovaním a spracovaním vašich osobných údajov, ako je popísané v našich Zásadách ochrany osobných údajov."
+    },
+    "termination": {
+      "title": "7. Ukončenie",
+      "content": "Vyhradzujeme si právo ukončiť alebo pozastaviť váš prístup k našim službám okamžite, bez predchádzajúceho upozornenia alebo zodpovednosti, z akéhokoľvek dôvodu, vrátane (ale nie výhradne) porušenia týchto obchodných podmienok."
+    },
+    "changes": {
+      "title": "8. Zmeny podmienok",
+      "content": "Vyhradzujeme si právo tieto podmienky kedykoľvek upraviť. Zmeny nadobúdajú účinnosť okamžite po zverejnení na našom webe. Pokračujúce využívanie našich služieb po akýchkoľvek zmenách podmienok predstavuje váš súhlas s novými podmienkami."
+    },
+    "governing": {
+      "title": "9. Rozhodné právo",
+      "content": "Tieto podmienky sa riadia a sú vykladané v súlade s právnymi predpismi Českej republiky, bez ohľadu na ich ustanovenia o kolíznych normách."
+    },
+    "contact": {
+      "title": "10. Kontaktujte nás",
+      "content": "Ak máte akékoľvek otázky týkajúce sa týchto podmienok, kontaktujte nás na adrese info@expohledavky.com."
+    }
+  },
+  "lastUpdated": "Posledná aktualizácia: 10. apríla 2025"
+} 

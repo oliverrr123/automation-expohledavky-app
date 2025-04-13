@@ -11,7 +11,7 @@
     { "name": "Startseite", "href": "/" },
     { "name": "Über uns", "href": "uber-uns" },
     {
-      "name": "Unsere Dienstleistungen",
+      "name": "Dienstleistungen",
       "href": "unsere-leistungen",
       "hasDropdown": true,
       "submenu": [
@@ -26,7 +26,7 @@
       ]
     },
     { "name": "Preisliste", "href": "preisliste" },
-    { "name": "Glossar und Vorlagen", "href": "worterbuch-vorlagen" },
+    { "name": "Vorlagen", "href": "worterbuch-vorlagen" },
     { "name": "Überprüfungen", "href": "uberprufungen" },
     { "name": "Blog", "href": "blog" },
     { "name": "Kontakt", "href": "kontakt" }

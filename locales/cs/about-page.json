@@ -118,7 +118,7 @@
     "form": {
       "title": "Kontaktujte nás",
       "fields": {
-        "name": {
+        "jmeno": {
           "label": "Jméno",
           "placeholder": "Vaše jméno"
         },
@@ -126,16 +126,25 @@
           "label": "Email",
           "placeholder": "vas@email.cz"
         },
-        "phone": {
+        "telefon": {
           "label": "Telefon",
           "placeholder": "+420 XXX XXX XXX"
         },
-        "message": {
+        "castka": {
+          "label": "Výše pohledávky",
+          "placeholder": "Částka v Kč"
+        },
+        "zprava": {
           "label": "Zpráva",
           "placeholder": "Popište nám Váš případ..."
         }
       },
-      "submitButton": "Odeslat zprávu"
+      "submitButton": "Odeslat zprávu",
+      "sending": "Odesílání...",
+      "success": "Děkujeme za kontaktování. Ozveme se vám co nejdříve.",
+      "generalError": "Při odesílání formuláře došlo k chybě. Zkuste to prosím znovu.",
+      "phoneError": "Zadejte prosím platné telefonní číslo",
+      "captchaError": "Potvrďte prosím, že nejste robot"
     }
   }
 } 

@@ -10,6 +10,8 @@ import csReceivablesPurchasePage from '@/locales/cs/receivables-purchase-page.js
 import enReceivablesPurchasePage from '@/locales/en/receivables-purchase-page.json'
 import skReceivablesPurchasePage from '@/locales/sk/receivables-purchase-page.json'
 import deReceivablesPurchasePage from '@/locales/de/receivables-purchase-page.json'
+import { ContactForm } from "@/components/contact-form"
+import { Footer } from "@/components/footer"
 
 // Icon mapping for process steps icons
 const iconMap = {
@@ -28,6 +30,8 @@ export default function OdkupProdejPohledavekPage() {
   
   // Always call hooks unconditionally
   const clientTranslations = useTranslations('receivablesPurchasePage')
+  // Load form translations
+  const formTranslations = useTranslations('servicesLayout')
   
   // Use client translations or default translations based on client state
   const t = isClient ? clientTranslations : defaultTranslations
@@ -177,6 +181,38 @@ export default function OdkupProdejPohledavekPage() {
               </SectionWrapper>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Contact Form Section */}
+      <section id="contact-form" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 max-w-5xl">
+          {isClient && (
+            <ContactForm
+              badge={t?.contactForm?.badge || formTranslations?.contactForm?.badge || "Máte zájem o prodej pohledávky?"}
+              title={t?.contactForm?.title || formTranslations?.contactForm?.title || "Kontaktujte nás pro rychlé řešení"}
+              description={t?.contactForm?.description || formTranslations?.serviceContactDescriptions?.receivablesPurchase || "Vyplňte formulář níže a náš tým vás bude kontaktovat s nabídkou co nejdříve. Pro přesnější ocenění uveďte prosím co nejvíce informací o pohledávce."}
+              fields={{
+                name: true,
+                email: true,
+                phone: true,
+                amount: true,
+                message: true,
+              }}
+              formAction="RECEIVABLES_PURCHASE_FORM"
+              showSidebar={true}
+              translations={t?.contactForm?.form || formTranslations?.contactForm?.form}
+              serviceName="Odkup a prodej pohledávek"
+              sidebarTitle={t?.contactForm?.sidebarTitle || formTranslations?.serviceSidebarTitles?.receivablesPurchase || "Proč prodat pohledávku nám?"}
+              sidebarReasons={t?.contactForm?.sidebarReasons || formTranslations?.serviceSidebarReasons?.receivablesPurchase || [
+                "Okamžitá finanční likvidita",
+                "Transparentní ocenění pohledávek",
+                "Férové podmínky odkupu",
+                "Rychlý proces bez zbytečné administrativy",
+                "Přebíráme veškerá rizika spojená s vymáháním"
+              ]}
+            />
+          )}
         </div>
       </section>
     </>

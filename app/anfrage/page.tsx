@@ -14,8 +14,8 @@ import Script from "next/script"
 import { useTranslations } from "@/lib/i18n"
 import { getCurrentLocale } from "@/lib/i18n"
 
-// Add Google reCAPTCHA site key
-const RECAPTCHA_SITE_KEY = "6LfecQArAAAAAHY4AdWeBS3Ubx5lFH6hI342ZmO8";
+// Use environment variable instead of hardcoded value
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
 
 export default function AnfragePage() {
   const [isClient, setIsClient] = useState(false)

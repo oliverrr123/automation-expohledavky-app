@@ -141,7 +141,6 @@ export function LanguageSwitcher() {
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="px-2">
-          <Globe className="h-4 w-4 mr-1" />
           {displayFlag && <span className="mr-1">{displayFlag}</span>}
           <span className="sr-only sm:not-sr-only sm:inline-block">
             {displayName}

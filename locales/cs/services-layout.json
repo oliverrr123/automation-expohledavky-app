@@ -2,7 +2,7 @@
   "contactForm": {
     "badge": "Jsme připraveni vám pomoci",
     "title": "Kontaktní formulář",
-    "description": "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve. Popište nám detaily vaší pohledávky a my vám navrhneme optimální řešení.",
+    "description": "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve. Popište nám vaši situaci a my vám navrhneme optimální řešení.",
     "form": {
       "name": {
         "label": "Jméno a příjmení",
@@ -49,6 +49,84 @@
       "phoneCopied": "Telefonní číslo zkopírováno",
       "copyFailed": "Kopírování se nezdařilo"
     }
+  },
+  "serviceSidebarReasons": {
+    "default": [
+      "Profesionální zkušenosti s vymáháním pohledávek",
+      "Bezplatná konzultace pohledávky online",
+      "Diskrétní přístup k našim klientům",
+      "Navržení dalších případných řešení",
+      "Právní servis v rámci našich služeb"
+    ],
+    "debtCollection": [
+      "Úspěšnost vymáhání přes 90%",
+      "Rychlý a efektivní proces vymáhání",
+      "Žádné počáteční náklady",
+      "Profesionální právní zastoupení",
+      "Transparentní komunikace"
+    ],
+    "receivablesPurchase": [
+      "Okamžitá finanční likvidita",
+      "Transparentní ocenění pohledávek",
+      "Férové podmínky odkupu",
+      "Rychlý proces bez zbytečné administrativy",
+      "Přebíráme veškerá rizika spojená s vymáháním"
+    ],
+    "companyAcquisition": [
+      "Rychlý a diskrétní proces",
+      "Individuální ocenění vaší společnosti",
+      "Převzetí všech závazků a pohledávek",
+      "Profesionální právní zajištění transakce",
+      "Okamžitá úhrada po dokončení transakce"
+    ],
+    "companyLiquidation": [
+      "Kompletní zajištění procesu likvidace",
+      "Minimalizace rizik pro jednatele",
+      "Rychlé a profesionální řešení",
+      "Pomoc s vymáháním pohledávek společnosti",
+      "Zajištění všech právních náležitostí"
+    ],
+    "crisisManagement": [
+      "Okamžitá analýza vaší situace",
+      "Praktická implementace krizových opatření",
+      "Optimalizace finančních toků",
+      "Vyjednávání s věřiteli a stakeholdery",
+      "Dlouhodobý plán revitalizace společnosti"
+    ],
+    "corporateReceivables": [
+      "Komplexní správa všech pohledávek",
+      "Optimalizace cash-flow vaší společnosti",
+      "Minimalizace nákladů na vymáhání",
+      "Pravidelný reporting a přehled",
+      "Prevence vzniku nedobytných pohledávek"
+    ],
+    "promissoryNotes": [
+      "Okamžité proplacení schválených směnek",
+      "Expertíza v oblasti směnečného práva",
+      "Férové ocenění nominální hodnoty",
+      "Diskrétní a rychlý proces",
+      "Bez nutnosti čekat na splatnost směnky"
+    ]
+  },
+  "serviceSidebarTitles": {
+    "default": "Proč nás kontaktovat?",
+    "debtCollection": "Proč nám svěřit vaše pohledávky?",
+    "receivablesPurchase": "Proč prodat pohledávku nám?",
+    "companyAcquisition": "Proč prodat společnost nám?",
+    "companyLiquidation": "Proč svěřit likvidaci nám?",
+    "crisisManagement": "Proč zvolit náš krizový management?",
+    "corporateReceivables": "Proč zvolit naši správu pohledávek?",
+    "promissoryNotes": "Proč prodat směnky nám?"
+  },
+  "serviceContactDescriptions": {
+    "default": "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve. Popište nám vaši situaci a my vám navrhneme optimální řešení.",
+    "debtCollection": "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve. Popište nám detaily vaší pohledávky a my vám navrhneme optimální postup pro její úspěšné vymožení.",
+    "receivablesPurchase": "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve. Popište detaily pohledávky, kterou chcete prodat, a my vám připravíme transparentní nabídku na její odkup.",
+    "companyAcquisition": "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve. Popište nám detaily o vaší společnosti, kterou zvažujete prodat, a my vám připravíme nabídku na odkup.",
+    "companyLiquidation": "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve. Popište nám situaci vaší společnosti a my vám navrhneme optimální postup pro její bezproblémovou likvidaci.",
+    "crisisManagement": "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve. Popište aktuální krizovou situaci vaší firmy a my vám navrhneme vhodné řešení pro stabilizaci a obnovení zdravého chodu.",
+    "corporateReceivables": "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve. Popište potřeby vaší firmy v oblasti správy pohledávek a my vám představíme komplexní služby, které vám ušetří čas i zdroje.",
+    "promissoryNotes": "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve. Uveďte podrobnosti o směnkách, které chcete prodat, a my vám připravíme férovou nabídku na jejich odkup."
   },
   "process": {
     "badge": "Jak to funguje",

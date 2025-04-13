@@ -11,7 +11,7 @@
     { "name": "Home", "href": "/" },
     { "name": "About Us", "href": "about-us" },
     {
-      "name": "Our Services",
+      "name": "Services",
       "href": "services",
       "hasDropdown": true,
       "submenu": [

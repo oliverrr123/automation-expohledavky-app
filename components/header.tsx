@@ -193,8 +193,8 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
         <div className={`${isScrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"} transition-all duration-500`}>
           <div className="container mx-auto px-4">
             <nav className="flex h-16 items-center justify-between">
-              <div className="flex lg:flex-1"></div>
-              <div className="flex lg:hidden"></div>
+              <div className="flex xl:flex-1"></div>
+              <div className="flex xl:hidden"></div>
             </nav>
           </div>
         </div>
@@ -233,12 +233,13 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
         </div>
       </div>
 
+      
       <div
         className={`${isScrolled ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"} transition-all duration-500`}
       >
         <div className="container mx-auto px-4">
           <nav className="flex h-16 items-center justify-between">
-            <div className="flex lg:flex-1">
+            <div className="flex">
               <Link href="/" className="-m-1.5 p-1.5">
                 <span className="text-2xl font-bold">
                   <span className={`${isScrolled ? "text-zinc-900" : "text-white"} transition-colors duration-500`}>
@@ -250,7 +251,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
             </div>
 
             {/* Always show navigation items, with a fade-in effect when loaded */}
-            <div className="flex lg:hidden">
+            <div className="flex xl:hidden">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon" className="hover:bg-transparent">
@@ -314,7 +315,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
               </Sheet>
             </div>
 
-            <div className="hidden lg:flex lg:gap-x-8 items-center h-16">
+            <div className="hidden xl:flex xl:gap-x-8 items-center h-16">
               {translations.navigation.map((item) => (
                 <div key={item.name} className="relative flex items-center h-full">
                   {item.hasDropdown ? (
@@ -365,7 +366,7 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
               ))}
             </div>
 
-            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            <div className="hidden xl:flex">
               <Button
                 className={`transition-colors duration-300 ${
                   !isScrolled

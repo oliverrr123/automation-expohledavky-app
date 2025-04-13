@@ -13,6 +13,8 @@ import enCompanyLiquidationPage from '@/locales/en/company-liquidation-page.json
 import skCompanyLiquidationPage from '@/locales/sk/company-liquidation-page.json'
 import deCompanyLiquidationPage from '@/locales/de/company-liquidation-page.json'
 import { usePathname } from 'next/navigation'
+import { ContactForm } from "@/components/contact-form"
+import { Footer } from "@/components/footer"
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -54,6 +56,8 @@ export default function LikvidaceFiremPage() {
   
   // Always call hooks unconditionally
   const clientTranslations = useTranslations('companyLiquidationPage')
+  // Load form translations
+  const formTranslations = useTranslations('servicesLayout')
   
   // Use client translations or default translations based on client state
   const t = isClient ? clientTranslations : defaultTranslations
@@ -61,6 +65,8 @@ export default function LikvidaceFiremPage() {
   // Set isClient to true after hydration is complete
   useEffect(() => {
     setIsClient(true)
+    console.log("Company liquidation form translations:", t?.contactForm?.form);
+    console.log("Services layout form translations:", formTranslations?.contactForm?.form);
   }, [])
   
   return (
@@ -402,6 +408,38 @@ export default function LikvidaceFiremPage() {
               </div>
             </div>
           </SectionWrapper>
+        </div>
+      </section>
+
+      {/* Contact Form Section */}
+      <section id="contact-form" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          {isClient && (
+            <ContactForm
+              badge={t?.contactForm?.badge || formTranslations?.contactForm?.badge || "Máte zájem o likvidaci společnosti?"}
+              title={t?.contactForm?.title || formTranslations?.contactForm?.title || "Kontaktujte nás pro nezávaznou konzultaci"}
+              description={t?.contactForm?.description || formTranslations?.serviceContactDescriptions?.companyLiquidation || "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve s nabídkou řešení na míru vaší situaci."}
+              fields={{
+                name: true,
+                email: true,
+                phone: true,
+                amount: false,
+                message: true,
+              }}
+              formAction="COMPANY_LIQUIDATION_FORM"
+              showSidebar={true}
+              translations={t?.contactForm?.form || formTranslations?.contactForm?.form}
+              serviceName="Likvidace firem"
+              sidebarTitle={t?.contactForm?.sidebarTitle || formTranslations?.serviceSidebarTitles?.companyLiquidation || "Proč svěřit likvidaci nám?"}
+              sidebarReasons={t?.contactForm?.sidebarReasons || formTranslations?.serviceSidebarReasons?.companyLiquidation || [
+                "Kompletní zajištění procesu likvidace",
+                "Minimalizace rizik pro jednatele",
+                "Rychlé a profesionální řešení",
+                "Pomoc s vymáháním pohledávek společnosti",
+                "Zajištění všech právních náležitostí"
+              ]}
+            />
+          )}
         </div>
       </section>
     </>

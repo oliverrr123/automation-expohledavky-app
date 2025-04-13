@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from '@/lib/i18n';
 
 interface PaymentFormProps {
   onPaymentSuccess?: () => void;
@@ -10,6 +11,7 @@ interface PaymentFormProps {
   buttonText?: string;
   onEmailChange?: (email: string) => void;
   onNotesChange?: (notes: string) => void;
+  language?: string;
 }
 
 export function PaymentForm({
@@ -19,6 +21,7 @@ export function PaymentForm({
   buttonText = 'Pay Now',
   onEmailChange,
   onNotesChange,
+  language,
 }: PaymentFormProps) {
   const stripe = useStripe();
   const elements = useElements();
@@ -27,10 +30,36 @@ export function PaymentForm({
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState<string | undefined>();
   const [notes, setNotes] = useState('');
+  const [notesError, setNotesError] = useState<string | undefined>();
+  const [companyIdWarningShown, setCompanyIdWarningShown] = useState(false);
+  const t = useTranslations('screeningPage');
+  
+  // Add ref for the notes textarea
+  const notesRef = useRef<HTMLTextAreaElement>(null);
 
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
+  };
+  
+  const validateCompanyId = (notes: string) => {
+    // Use the language prop passed from PaymentModal instead of t?.__lang
+    const lang = language;
+    
+    let validationPattern: RegExp;
+    let companyIdFound = false;
+    
+    if (lang === 'de') {
+      // For German: Looking for a pattern like XXX12345 (3 letters followed by 5 digits)
+      validationPattern = /[A-Za-z]{3}\d{5}/;
+      companyIdFound = validationPattern.test(notes);
+    } else {
+      // For Czech and Slovak: Looking for 8 digit number (it can be part of longer text)
+      validationPattern = /\d{8}/;
+      companyIdFound = validationPattern.test(notes);
+    }
+    
+    return companyIdFound;
   };
 
   // Notify parent components when email or notes change
@@ -55,10 +84,29 @@ export function PaymentForm({
 
     // Validate email
     if (!email || !validateEmail(email)) {
-      setEmailError('Zadejte platnou e-mailovou adresu');
+      setEmailError(t?.payment?.emailError);
       return;
     } else {
       setEmailError(undefined);
+    }
+    
+    // Validate company identification number in notes - only on first attempt
+    if (!validateCompanyId(notes) && !companyIdWarningShown) {
+      const lang = language || 'cs';
+      setNotesError(t?.payment?.companyIdError);
+      
+      // Mark that we've shown the warning
+      setCompanyIdWarningShown(true);
+      
+      // Scroll to the notes textarea with smooth behavior
+      if (notesRef.current) {
+        notesRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        notesRef.current.focus();
+      }
+      
+      return;
+    } else {
+      setNotesError(undefined);
     }
 
     setIsLoading(true);
@@ -127,7 +175,7 @@ export function PaymentForm({
           payment_method_data: {
             billing_details: {
               email: email,
-              name: `Notes: ${notes.substring(0, 40)}...`, // Keep the name to make sure it propagates
+              name: `Notes: ${notes}`, // Keep the name to make sure it propagates
             },
           },
           receipt_email: email,
@@ -138,7 +186,7 @@ export function PaymentForm({
       if (error) {
         setErrorMessage(error.message);
         if (onPaymentError) {
-          onPaymentError(error.message || 'Payment failed');
+          onPaymentError(error.message || t?.payment?.errorMessage);
         }
       } else {
         if (onPaymentSuccess) {
@@ -146,9 +194,9 @@ export function PaymentForm({
         }
       }
     } catch (error: any) {
-      setErrorMessage(error.message || 'An unexpected error occurred');
+      setErrorMessage(error.message || t?.payment?.errorMessage);
       if (onPaymentError) {
-        onPaymentError(error.message || 'An unexpected error occurred');
+        onPaymentError(error.message || t?.payment?.errorMessage);
       }
     } finally {
       setIsLoading(false);
@@ -168,14 +216,14 @@ export function PaymentForm({
       <div className="space-y-4">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-            E-mail pro zaslání výsledků
+            {t?.payment?.emailLabel}
           </label>
           <input
             type="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="vase@email.cz"
+            placeholder={t?.payment?.emailPlaceholder}
             className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
             required
           />
@@ -186,19 +234,30 @@ export function PaymentForm({
         
         <div>
           <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">
-            Detaily k lustraci
+            {t?.payment?.notesLabel}
           </label>
           <textarea
             id="notes"
+            ref={notesRef}
             value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Uveďte koho/co chcete lustrovat (např. ACME s.r.o., IČO: 12345678) a další relevantní informace"
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500 min-h-[100px]"
+            onChange={(e) => {
+              setNotes(e.target.value);
+              // Clear error when user types
+              if (notesError) {
+                setNotesError(undefined);
+              }
+            }}
+            placeholder={t?.payment?.notesPlaceholder}
+            className={`w-full px-4 py-2.5 border ${notesError ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500'} min-h-[100px]`}
             rows={4}
           />
-          <p className="mt-1 text-xs text-gray-500">
-            Tyto informace nám pomohou efektivně provést lustraci dle vašeho požadavku.
-          </p>
+          {notesError ? (
+            <p className="mt-1 text-sm text-red-600">{notesError}</p>
+          ) : (
+            <p className="mt-1 text-xs text-gray-500">
+              {t?.payment?.notesHelp}
+            </p>
+          )}
         </div>
       </div>
       
@@ -217,7 +276,7 @@ export function PaymentForm({
       >
         {isLoading ? (
           <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {t?.payment?.processing}
           </>
         ) : (
           buttonText

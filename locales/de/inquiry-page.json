@@ -26,6 +26,7 @@
     "sending": "Wird gesendet...",
     "captchaError": "Bitte bestätigen Sie, dass Sie kein Roboter sind.",
     "generalError": "Beim Absenden des Formulars ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-    "success": "Ihre Nachricht wurde erfolgreich gesendet. Wir werden Sie so schnell wie möglich kontaktieren."
+    "success": "Ihre Nachricht wurde erfolgreich gesendet. Wir werden Sie so schnell wie möglich kontaktieren.",
+    "phoneError": "Bitte geben Sie eine gültige Telefonnummer ein"
   }
 } 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { StripeProvider } from './StripeProvider';
 import { PaymentForm } from './PaymentForm';
+import { useTranslations } from '@/lib/i18n';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export function PaymentModal({
   const [email, setEmail] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
   const [detectedLanguage, setDetectedLanguage] = useState<string>(language || 'cs');
+  const t = useTranslations('screeningPage');
 
   // Detect browser language on mount
   useEffect(() => {
@@ -61,15 +63,15 @@ export function PaymentModal({
         <div className="p-6">
           <div className="text-center mb-8">
             <h3 className="text-xl font-bold text-gray-900 mb-2">
-              Complete Your Payment
+              {t?.payment?.title}
             </h3>
             <p className="text-gray-600">
-              You're paying for: {serviceName}
+              {t?.payment?.subtitle} {serviceName}
             </p>
             <div className="mt-2 text-2xl font-bold text-orange-600">
-              {amount.toLocaleString('cs-CZ', {
+              {amount.toLocaleString(detectedLanguage === 'cs' ? 'cs-CZ' : detectedLanguage === 'sk' ? 'sk-SK' : detectedLanguage === 'de' ? 'de-DE' : 'en-GB', {
                 style: 'currency',
-                currency: 'CZK',
+                currency: detectedLanguage === 'cs' ? 'CZK' : detectedLanguage === 'sk' ? 'EUR' : detectedLanguage === 'de' ? 'EUR' : 'GBP',
               })}
             </div>
           </div>
@@ -87,18 +89,19 @@ export function PaymentModal({
               buttonText={buttonText}
               onEmailChange={setEmail}
               onNotesChange={setNotes}
+              language={detectedLanguage}
             />
           </StripeProvider>
 
           <div className="mt-6 pt-6 border-t border-gray-100 text-center">
             <p className="text-sm text-gray-500">
-              By proceeding with your payment, you agree to our{' '}
+              {t?.payment?.terms}{' '}
               <a href="/terms" className="text-orange-600 hover:underline">
-                Terms of Service
+                {t?.payment?.termsLink}
               </a>{' '}
-              and{' '}
+              {t?.payment?.and}{' '}
               <a href="/privacy-policy" className="text-orange-600 hover:underline">
-                Privacy Policy
+                {t?.payment?.privacyLink}
               </a>
               .
             </p>

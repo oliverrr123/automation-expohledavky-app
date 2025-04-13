@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from '@/lib/i18n';
 
 // Load Stripe outside of render to avoid multiple instances
 const stripePromise = loadStripe(
@@ -23,6 +24,7 @@ export function StripeProvider({ amount, email, notes, language, children }: Str
   const notesRef = useRef(notes);
   const emailRef = useRef(email);
   const languageRef = useRef<string>(language || 'cs'); // Default to Czech if not provided
+  const t = useTranslations('screeningPage');
 
   useEffect(() => {
     const getPaymentIntent = async () => {
@@ -48,6 +50,14 @@ export function StripeProvider({ amount, email, notes, language, children }: Str
           localStorage.setItem('payment_language', detectedLanguage);
         }
         
+        // Log the parameters being sent to the API
+        console.log('Creating payment intent with:', { 
+          amount, 
+          email: emailRef.current,
+          notes: notesRef.current,
+          language: detectedLanguage
+        });
+        
         const response = await fetch('/api/stripe/create-payment-intent', {
           method: 'POST',
           headers: {
@@ -64,13 +74,14 @@ export function StripeProvider({ amount, email, notes, language, children }: Str
         const data = await response.json();
         
         if (!response.ok) {
-          throw new Error(data.error || 'Failed to create payment intent');
+          console.error('Error from payment intent API:', data);
+          throw new Error(data.error || t?.payment?.errorMessage || 'Unknown error creating payment intent');
         }
         
         setClientSecret(data.clientSecret);
       } catch (err: any) {
         console.error('Error creating payment intent:', err);
-        setError(err.message || 'Failed to initialize payment');
+        setError(err.message || t?.payment?.errorMessage);
       } finally {
         setLoading(false);
       }
@@ -79,7 +90,7 @@ export function StripeProvider({ amount, email, notes, language, children }: Str
     if (amount > 0) {
       getPaymentIntent();
     }
-  }, [amount]); // Keep only amount in dependencies
+  }, [amount, t?.payment?.errorMessage]); // Keep only amount in dependencies
 
   // Update the refs when values change
   useEffect(() => {
@@ -98,7 +109,7 @@ export function StripeProvider({ amount, email, notes, language, children }: Str
     return (
       <div className="flex items-center justify-center p-8">
         <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
-        <span className="ml-2 text-zinc-600">Initializing payment...</span>
+        <span className="ml-2 text-zinc-600">{t?.payment?.processing}</span>
       </div>
     );
   }
@@ -106,9 +117,9 @@ export function StripeProvider({ amount, email, notes, language, children }: Str
   if (error) {
     return (
       <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-md">
-        <p className="font-semibold">Error initializing payment</p>
+        <p className="font-semibold">{t?.payment?.error}</p>
         <p className="text-sm">{error}</p>
-        <p className="text-sm mt-2">Please try refreshing the page or contact support.</p>
+        <p className="text-sm mt-2">{t?.payment?.errorMessage}</p>
       </div>
     );
   }
@@ -122,6 +133,9 @@ export function StripeProvider({ amount, email, notes, language, children }: Str
       stripe={stripePromise}
       options={{
         clientSecret,
+        locale: languageRef.current === 'cs' ? 'cs' : 
+                languageRef.current === 'sk' ? 'sk' : 
+                languageRef.current === 'de' ? 'de' : 'en',
         appearance: {
           theme: 'stripe',
           variables: {

@@ -79,7 +79,8 @@
     "title": "Komplexná lustrácia za výhodnú cenu",
     "description": "Objednajte komplexnú lustráciu osoby alebo firmy a získajte istotu a jistotu pri rozhodovaní.",
     "packageTitle": "Komplexná lustrácia",
-    "price": "65 €",
+    "price": "47 €",
+    "rawPrice": 47,
     "taxNote": "vrátane DPH",
     "packageDescription": "Kompletné overenie osoby alebo firmy vo všetkých dostupných registroch a databázach s odborným komentárom.",
     "benefits": [
@@ -174,6 +175,33 @@
   "cta": {
     "title": "Chráňte svoj majetok a čas",
     "description": "Investícia do dôkladnej kontroly sa vždy vyplatí. Objednajte ešte dnes komplexnú lustráciu a získajte istotu a jistotu pri rozhodovaní.",
-    "button": "Objednať lustráciu za 65 €"
+    "button": "Objednať lustráciu za 47 €"
+  },
+  "payment": {
+    "title": "Dokončite platbu",
+    "subtitle": "Platíte za:",
+    "emailLabel": "E-mail pre zaslanie výsledkov",
+    "emailPlaceholder": "vas@email.sk",
+    "emailError": "Zadajte platnú e-mailovú adresu",
+    "notesLabel": "Detaily k lustrácii",
+    "notesPlaceholder": "Uveďte koho/čo chcete lustrovať (napr. ACME s.r.o., IČO: 12345678) a ďalšie relevantné informácie",
+    "notesHelp": "Tieto informácie nám pomôžu efektívne vykonať lustráciu podľa vašej požiadavky.",
+    "companyIdError": "Skontrolujte prosím, či podľa týchto údajov je možné vyhľadať konkrétnu osobu / firmu. Malo by byť uvedené IČO.",
+    "terms": "Pokračovaním v platbe súhlasíte s našimi",
+    "termsLink": "Obchodnými podmienkami",
+    "and": "a",
+    "privacyLink": "Zásadami ochrany osobných údajov",
+    "error": "Chyba",
+    "errorMessage": "Pri spracovaní platby došlo k chybe. Skúste to prosím znova.",
+    "processing": "Spracovávam..."
+  },
+  "success": {
+    "title": "Platba úspešná!",
+    "message": "Ďakujeme za vašu platbu. Vaša objednávka bola úspešne spracovaná.",
+    "nextStepsTitle": "Čo sa stane ďalej?",
+    "step1": "Náš tím spracuje vašu požiadavku a začne proces lustrácie.",
+    "step2": "Obdržíte e-mail s potvrdením a detailmi o vašej objednávke.",
+    "step3": "Výsledky vám budú doručené podľa časového harmonogramu služby.",
+    "homeButton": "Späť na hlavnú stránku"
   }
 } 

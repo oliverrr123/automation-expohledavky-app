@@ -125,14 +125,17 @@ export function Process() {
                       <button
                         onClick={() => setActiveStep(step.key)}
                         className={cn(
-                          "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-300 shadow-sm hover:shadow w-[140px] justify-center",
+                          "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-300 shadow-sm hover:shadow justify-center",
                           activeStep === step.key
                             ? "bg-orange-500 text-white shadow-orange-500/25"
                             : "bg-white/80 backdrop-blur-sm hover:bg-white hover:scale-[1.02]",
                         )}
+                        style={{ width: "auto" }}
                       >
-                        <Icon className="h-5 w-5" />
-                        {step.title}
+                        <div className="flex-shrink-0 w-5 min-w-5 flex items-center justify-center">
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <span>{step.title}</span>
                       </button>
                       {/* Desktop arrow - hidden on last item */}
                       {!isLast && (

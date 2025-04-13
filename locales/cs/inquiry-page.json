@@ -26,6 +26,7 @@
     "sending": "Odesílání...",
     "captchaError": "Prosím potvrďte, že nejste robot.",
     "generalError": "Došlo k chybě při odesílání formuláře. Zkuste to prosím znovu.",
-    "success": "Vaše zpráva byla úspěšně odeslána. Budeme vás kontaktovat co nejdříve."
+    "success": "Vaše zpráva byla úspěšně odeslána. Budeme vás kontaktovat co nejdříve.",
+    "phoneError": "Prosím zadejte platné telefonní číslo"
   }
 } 

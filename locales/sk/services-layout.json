@@ -50,6 +50,84 @@
       "copyFailed": "Kopírovanie zlyhalo"
     }
   },
+  "serviceSidebarReasons": {
+    "default": [
+      "Profesionálne skúsenosti s vymáhaním pohľadávok",
+      "Bezplatná online konzultácia pre vašu pohľadávku",
+      "Diskrétny prístup k našim klientom",
+      "Navrhovanie možných riešení",
+      "Právna služba ako súčasť našich služieb"
+    ],
+    "debtCollection": [
+      "Úspešnosť vymáhania nad 90%",
+      "Rýchly a efektívny proces vymáhania",
+      "Žiadne vstupné náklady",
+      "Profesionálne právne zastúpenie",
+      "Transparentná komunikácia"
+    ],
+    "receivablesPurchase": [
+      "Okamžitá finančná likvidita",
+      "Transparentné ocenenie pohľadávok",
+      "Férové podmienky odkúpenia",
+      "Rýchly proces bez zbytočnej administratívy",
+      "Preberáme všetky riziká spojené s vymáhaním"
+    ],
+    "companyAcquisition": [
+      "Rýchly a diskrétny proces",
+      "Individuálne ocenenie vašej spoločnosti",
+      "Prevzatie všetkých záväzkov a pohľadávok",
+      "Profesionálne právne zabezpečenie transakcie",
+      "Okamžitá úhrada po dokončení transakcie"
+    ],
+    "companyLiquidation": [
+      "Kompletné zabezpečenie procesu likvidácie",
+      "Minimalizácia rizík pre konateľov",
+      "Rýchle a profesionálne riešenie",
+      "Pomoc s vymáhaním pohľadávok spoločnosti",
+      "Zabezpečenie všetkých právnych náležitostí"
+    ],
+    "crisisManagement": [
+      "Okamžitá analýza vašej situácie",
+      "Praktická implementácia krízových opatrení",
+      "Optimalizácia finančných tokov",
+      "Vyjednávanie s veriteľmi a stakeholdermi",
+      "Dlhodobý plán revitalizácie spoločnosti"
+    ],
+    "corporateReceivables": [
+      "Komplexná správa všetkých pohľadávok",
+      "Optimalizácia cash-flow vašej spoločnosti",
+      "Minimalizácia nákladov na vymáhanie",
+      "Pravidelný reporting a prehľad",
+      "Prevencia vzniku nevymožiteľných pohľadávok"
+    ],
+    "promissoryNotes": [
+      "Okamžité preplatenie schválených zmeniek",
+      "Expertíza v oblasti zmenečného práva",
+      "Férové ocenenie nominálnej hodnoty",
+      "Diskrétny a rýchly proces",
+      "Bez nutnosti čakať na splatnosť zmenky"
+    ]
+  },
+  "serviceSidebarTitles": {
+    "default": "Prečo nás kontaktovať?",
+    "debtCollection": "Prečo nám zveriť vaše pohľadávky?",
+    "receivablesPurchase": "Prečo predať pohľadávku nám?",
+    "companyAcquisition": "Prečo predať spoločnosť nám?",
+    "companyLiquidation": "Prečo zveriť likvidáciu nám?",
+    "crisisManagement": "Prečo zvoliť náš krízový manažment?",
+    "corporateReceivables": "Prečo zvoliť našu správu pohľadávok?",
+    "promissoryNotes": "Prečo predať zmenky nám?"
+  },
+  "serviceContactDescriptions": {
+    "default": "Vyplňte nižšie uvedený formulár a náš tím vás bude kontaktovať čo najskôr. Popíšte nám vašu situáciu a my vám navrhneme optimálne riešenie.",
+    "debtCollection": "Vyplňte nižšie uvedený formulár a náš tím vás bude kontaktovať čo najskôr. Popíšte nám detaily vašej pohľadávky a my vám navrhneme optimálny postup pre jej úspešné vymoženie.",
+    "receivablesPurchase": "Vyplňte nižšie uvedený formulár a náš tím vás bude kontaktovať čo najskôr. Popíšte detaily pohľadávky, ktorú chcete predať, a my vám pripravíme transparentnú ponuku na jej odkúpenie.",
+    "companyAcquisition": "Vyplňte nižšie uvedený formulár a náš tím vás bude kontaktovať čo najskôr. Popíšte nám detaily o vašej spoločnosti, ktorú zvažujete predať, a my vám pripravíme ponuku na odkúpenie.",
+    "companyLiquidation": "Vyplňte nižšie uvedený formulár a náš tím vás bude kontaktovať čo najskôr. Popíšte nám situáciu vašej spoločnosti a my vám navrhneme optimálny postup pre jej bezproblémovú likvidáciu.",
+    "crisisManagement": "Vyplňte nižšie uvedený formulár a náš tím vás bude kontaktovať čo najskôr. Popíšte aktuálnu krízovú situáciu vašej firmy a my vám navrhneme vhodné riešenie pre stabilizáciu a obnovenie zdravého chodu.",
+    "corporateReceivables": "Vyplňte nižšie uvedený formulár a náš tím vás bude kontaktovať čo najskôr. Popíšte potreby vašej firmy v oblasti správy pohľadávok a my vám predstavíme komplexné služby, ktoré vám ušetria čas aj zdroje.",
+    "promissoryNotes": "Vyplňte nižšie uvedený formulár a náš tím vás bude kontaktovať čo najskôr. Uveďte podrobnosti o zmenkách, ktoré chcete predať, a my vám pripravíme férovú ponuku na ich odkúpenie."
+  },
   "process": {
     "badge": "Ako to funguje",
     "title": "Náš proces spolupráce",

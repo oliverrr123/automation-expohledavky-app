@@ -79,7 +79,8 @@
     "title": "Comprehensive Screening at an Advantageous Price",
     "description": "Order a comprehensive screening of an individual or company and gain peace of mind and certainty in your decision-making.",
     "packageTitle": "Comprehensive Screening",
-    "price": "€65",
+    "price": "£40",
+    "rawPrice": 40,
     "taxNote": "including VAT",
     "packageDescription": "Complete verification of an individual or company in all available registries and databases with expert commentary.",
     "benefits": [
@@ -174,6 +175,33 @@
   "cta": {
     "title": "Protect Your Property and Time",
     "description": "Investment in thorough verification always pays off. Order a comprehensive screening today and gain peace of mind and certainty in your decision-making.",
-    "button": "Order Screening for €65"
+    "button": "Order Screening for £40"
+  },
+  "payment": {
+    "title": "Complete Your Payment",
+    "subtitle": "You're paying for:",
+    "emailLabel": "Email for results",
+    "emailPlaceholder": "your@email.com",
+    "emailError": "Please enter a valid email address",
+    "notesLabel": "Screening details",
+    "notesPlaceholder": "Specify who/what you want to screen (e.g. ACME Ltd., CRN: 12345678) and other relevant information",
+    "notesHelp": "This information will help us efficiently conduct the screening according to your requirements.",
+    "companyIdError": "Please check if we can identify the specific person/company based on these details. A company CRN number should be included.",
+    "terms": "By proceeding with your payment, you agree to our",
+    "termsLink": "Terms of Service",
+    "and": "and",
+    "privacyLink": "Privacy Policy",
+    "processing": "Processing...",
+    "error": "Payment Error",
+    "errorMessage": "An error occurred while processing your payment. Please try again or contact support."
+  },
+  "success": {
+    "title": "Payment Successful!",
+    "message": "Thank you for your payment. Your order has been processed successfully.",
+    "nextStepsTitle": "What happens next?",
+    "step1": "Our team will process your request and begin the screening process.",
+    "step2": "You will receive an email confirmation with details about your order.",
+    "step3": "Results will be delivered to you according to the service timeline.",
+    "homeButton": "Return to Homepage"
   }
 } 

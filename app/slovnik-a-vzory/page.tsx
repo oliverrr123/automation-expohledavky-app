@@ -10,6 +10,8 @@ import Link from "next/link"
 import { useEffect, useState, useRef, useMemo } from "react"
 import { useTranslations } from "@/lib/i18n"
 import { sanitizeHTML } from "@/lib/utils"
+import { getLocalizedPath } from "@/lib/route-mapping"
+import { getLanguageFromHostname } from "@/lib/domain-mapping"
 import csDictionaryTemplatesPage from '@/locales/cs/dictionary-templates-page.json'
 
 // Default translations for client-side rendering
@@ -75,6 +77,8 @@ type SearchableItem = TemplateItem | DictionaryItem;
 export default function SlovnikAVzoryPage() {
   // Add state to track if client-side rendered
   const [isClient, setIsClient] = useState(false)
+  // Add state to track current locale
+  const [locale, setLocale] = useState('cs')
   
   // Always call hooks unconditionally
   const clientTranslations = useTranslations('dictionaryTemplatesPage')
@@ -82,9 +86,26 @@ export default function SlovnikAVzoryPage() {
   // Use client translations or default translations based on client state
   const t = isClient ? clientTranslations : defaultTranslations
   
-  // Set isClient to true after hydration is complete
+  // Set isClient to true after hydration is complete and detect locale
   useEffect(() => {
     setIsClient(true)
+    
+    // Detect the current language
+    if (typeof window !== "undefined") {
+      const hostname = window.location.hostname
+      const detectedLocale = getLanguageFromHostname(hostname)
+      
+      if (detectedLocale) {
+        setLocale(detectedLocale)
+      } else {
+        // Check URL parameters for locale
+        const urlParams = new URLSearchParams(window.location.search)
+        const localeParam = urlParams.get('_locale')
+        if (localeParam && ['en', 'cs', 'sk', 'de'].includes(localeParam)) {
+          setLocale(localeParam)
+        }
+      }
+    }
   }, [])
   
   const [searchTerm, setSearchTerm] = useState("")
@@ -582,7 +603,7 @@ export default function SlovnikAVzoryPage() {
               {t.cta.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/poptavka">
+              <Link href={`/${isClient ? getLocalizedPath(locale, 'inquiry') : 'poptavka'}`}>
                 <Button
                   size="lg"
                   className="bg-orange-500 text-white font-semibold transition-all duration-500 hover:scale-[1.04] relative overflow-hidden group shadow-xl shadow-orange-500/20"

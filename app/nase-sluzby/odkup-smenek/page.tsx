@@ -7,6 +7,8 @@ import { ArrowRight, FileText, Repeat, PenTool, ScrollText, Zap, TrendingUp, Mic
 import { useTranslations } from "@/lib/i18n"
 import { useState, useEffect } from "react"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import { ContactForm } from "@/components/contact-form"
+import { Footer } from "@/components/footer"
 
 // Define type for icon mapping
 type IconComponent = typeof FileText;
@@ -32,6 +34,8 @@ export default function OdkupSmenekPage() {
   
   // Use translations with proper namespace
   const t = useTranslations('promissoryNotesPage')
+  // Load form translations
+  const formTranslations = useTranslations('servicesLayout')
   
   useEffect(() => {
     setIsClient(true)
@@ -298,6 +302,67 @@ export default function OdkupSmenekPage() {
           </div>
         </section>
       )}
+
+      {/* Contact Form Section */}
+      <section id="contact-form" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 max-w-5xl">
+          {isClient && (
+            <ContactForm
+              badge={t?.contactForm?.badge || formTranslations?.contactForm?.badge || "Odkup směnek"}
+              title={t?.contactForm?.title || formTranslations?.contactForm?.title || "Kontaktujte nás pro nezávaznou nabídku"}
+              description={t?.contactForm?.description || formTranslations?.serviceContactDescriptions?.promissoryNotes || "Vyplňte formulář níže a náš tým vás bude kontaktovat co nejdříve s nabídkou odkupu vašich směnek."}
+              fields={{
+                name: true,
+                email: true,
+                phone: true,
+                amount: true, // Include amount field for promissory notes purchase
+                message: true,
+              }}
+              formAction="PROMISSORY_NOTES_FORM"
+              showSidebar={true}
+              translations={{
+                form: {
+                  name: {
+                    label: "Jméno a příjmení",
+                    placeholder: "Vaše jméno a příjmení"
+                  },
+                  email: {
+                    label: "E-mail",
+                    placeholder: "vas@email.cz"
+                  },
+                  phone: {
+                    label: "Telefonní kontakt",
+                    placeholder: "+420 XXX XXX XXX"
+                  },
+                  amount: {
+                    label: "Nominální hodnota směnky",
+                    placeholder: "Částka v Kč"
+                  },
+                  message: {
+                    label: "Vaše zpráva",
+                    placeholder: "Popište detaily směnky (typ, datum splatnosti, výstavce, směnečný dlužník)..."
+                  },
+                  submitButton: "Odeslat poptávku",
+                  submitting: "Odesílání...",
+                  success: "Zpráva odeslána!",
+                  error: "Zkuste to prosím znovu",
+                  phoneError: "Zadejte platné telefonní číslo",
+                  generalError: "Došlo k chybě. Zkuste to prosím znovu."
+                }
+              }}
+              serviceName="Odkup směnek"
+              sidebarTitle={t?.contactForm?.sidebarTitle || formTranslations?.serviceSidebarTitles?.promissoryNotes || "Proč prodat směnky nám?"}
+              sidebarReasons={t?.contactForm?.sidebarReasons || formTranslations?.serviceSidebarReasons?.promissoryNotes || [
+                "Okamžité proplacení schválených směnek",
+                "Expertíza v oblasti směnečného práva",
+                "Férové ocenění nominální hodnoty",
+                "Diskrétní a rychlý proces",
+                "Bez nutnosti čekat na splatnost směnky"
+              ]}
+            />
+          )}
+        </div>
+      </section>
     </>
   )
 }

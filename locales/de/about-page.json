@@ -118,7 +118,7 @@
     "form": {
       "title": "Kontaktieren Sie uns",
       "fields": {
-        "name": {
+        "jmeno": {
           "label": "Name",
           "placeholder": "Ihr Name"
         },
@@ -126,16 +126,25 @@
           "label": "E-Mail",
           "placeholder": "ihre@email.de"
         },
-        "phone": {
+        "telefon": {
           "label": "Telefon",
           "placeholder": "+49 XXX XXX XXX"
         },
-        "message": {
+        "castka": {
+          "label": "Forderungsbetrag",
+          "placeholder": "Betrag in €"
+        },
+        "zprava": {
           "label": "Nachricht",
           "placeholder": "Beschreiben Sie uns Ihren Fall..."
         }
       },
-      "submitButton": "Nachricht senden"
+      "submitButton": "Nachricht senden",
+      "sending": "Senden...",
+      "success": "Vielen Dank für Ihre Kontaktaufnahme. Wir werden uns in Kürze bei Ihnen melden.",
+      "generalError": "Beim Absenden des Formulars ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+      "phoneError": "Bitte geben Sie eine gültige Telefonnummer ein",
+      "captchaError": "Bitte bestätigen Sie, dass Sie kein Roboter sind"
     }
   }
 } 

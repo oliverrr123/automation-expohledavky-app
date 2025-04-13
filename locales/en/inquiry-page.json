@@ -26,6 +26,7 @@
     "sending": "Sending...",
     "captchaError": "Please confirm you are not a robot.",
     "generalError": "An error occurred while submitting the form. Please try again.",
-    "success": "Your message has been successfully sent. We will contact you as soon as possible."
+    "success": "Your message has been successfully sent. We will contact you as soon as possible.",
+    "phoneError": "Please enter a valid phone number"
   }
 } 

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { getCurrentLocale } from '@/lib/i18n'
 import { Home } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { getLocalizedPath } from '@/lib/route-mapping'
 
 export default function NotFound() {
   const [locale, setLocale] = useState<string>('cs')
@@ -54,7 +55,7 @@ export default function NotFound() {
             </Button>
             
             <Button variant="outline" className="w-full" asChild>
-              <Link href="/blog" className="flex items-center justify-center gap-2">
+              <Link href={`/${getLocalizedPath(locale, 'blog')}`} className="flex items-center justify-center gap-2">
                 {uiStrings.checkBlog}
               </Link>
             </Button>

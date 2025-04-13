@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import { StripeProvider } from './StripeProvider';
 import { PaymentForm } from './PaymentForm';
 import { useTranslations } from '@/lib/i18n';
+import { getLocalizedPath } from '@/lib/route-mapping';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -96,11 +97,11 @@ export function PaymentModal({
           <div className="mt-6 pt-6 border-t border-gray-100 text-center">
             <p className="text-sm text-gray-500">
               {t?.payment?.terms}{' '}
-              <a href="/terms" className="text-orange-600 hover:underline">
+              <a href={`/${getLocalizedPath(detectedLanguage, 'terms')}`} className="text-orange-600 hover:underline">
                 {t?.payment?.termsLink}
               </a>{' '}
               {t?.payment?.and}{' '}
-              <a href="/privacy-policy" className="text-orange-600 hover:underline">
+              <a href={`/${getLocalizedPath(detectedLanguage, 'privacy-policy')}`} className="text-orange-600 hover:underline">
                 {t?.payment?.privacyLink}
               </a>
               .

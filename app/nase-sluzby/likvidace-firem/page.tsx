@@ -15,6 +15,7 @@ import deCompanyLiquidationPage from '@/locales/de/company-liquidation-page.json
 import { usePathname } from 'next/navigation'
 import { ContactForm } from "@/components/contact-form"
 import { Footer } from "@/components/footer"
+import { getLocalizedPath } from "@/lib/route-mapping"
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -396,7 +397,7 @@ export default function LikvidaceFiremPage() {
                     size="lg"
                     className="relative overflow-hidden border-2 border-white text-white bg-white/5 backdrop-blur-sm font-semibold transition-all duration-500 hover:scale-[1.04] hover:bg-white/20 shadow-xl shadow-black/20"
                   >
-                    <Link href="/nase-sluzby" className="relative">
+                    <Link href={`/${getLocalizedPath(isClient ? clientTranslations._locale : defaultLang, 'services')}`} className="relative">
                       <div
                         className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                         aria-hidden="true"

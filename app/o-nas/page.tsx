@@ -12,6 +12,7 @@ import { useState, useEffect } from "react"
 import { getCurrentLocale } from "@/lib/i18n"
 import type { FormEvent } from "react"
 import Script from "next/script"
+import { getLocalizedPath } from "@/lib/route-mapping"
 
 // Public site key is designed to be exposed in client-side code
 const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
@@ -290,7 +291,7 @@ export default function AboutUsPage() {
                   size="lg"
                   className="relative overflow-hidden border-2 border-white text-white bg-white/5 backdrop-blur-sm font-semibold transition-all duration-500 hover:scale-[1.04] hover:bg-white/20 shadow-xl shadow-black/20"
                 >
-                  <Link href="/nase-sluzby" className="relative">
+                  <Link href={`/${getLocalizedPath(getCurrentLocale(), 'services')}`} className="relative">
                     <div
                       className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                       aria-hidden="true"
@@ -436,7 +437,7 @@ export default function AboutUsPage() {
                   {isClient && (
                     <div className="mt-8">
                       <Button asChild className="bg-orange-500 hover:bg-orange-600">
-                        <Link href="/poptavka">{t?.success?.buttonText}</Link>
+                        <Link href={`/${getLocalizedPath(getCurrentLocale(), 'inquiry')}`}>{t?.success?.buttonText}</Link>
                       </Button>
                     </div>
                   )}

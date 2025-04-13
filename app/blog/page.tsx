@@ -4,6 +4,7 @@ import { Search, ArrowRight, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getAllPosts, getAllPostSlugs } from "@/lib/posts"
 import { getCurrentLocale } from "@/lib/server-locale"
+import { getLocalizedPath } from "@/lib/route-mapping"
 // Import translations for each language
 import csBlogPage from '@/locales/cs/blog-page.json'
 import skBlogPage from '@/locales/sk/blog-page.json'
@@ -78,13 +79,13 @@ export default async function BlogPage() {
                  'Welcome to our blog dedicated to receivables management, debt purchase, and collection. Here you will find expert articles with practical advice for businesses in the international legal environment.'}
               </p>
               <div className="mx-auto mb-8 max-w-xl">
-                <div className="relative z-[100] text-white px-3">
+                <div className="relative z-10 text-white px-3">
                   <SearchBox locale={locale} placeholderText={searchPlaceholder} />
                 </div>
               </div>
               <div className="text-center">
                 <Button asChild className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input h-11 rounded-md px-8 bg-transparent text-white hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105">
-                  <Link href="/o-nas">
+                  <Link href={`/${getLocalizedPath(locale, 'inquiry')}`}>
                     {locale === 'cs' ? 'Více o nás' :
                      locale === 'sk' ? 'Viac o nás' :
                      locale === 'de' ? 'Mehr über uns' :
@@ -182,13 +183,13 @@ export default async function BlogPage() {
                'Welcome to our blog dedicated to receivables management, debt purchase, and collection. Here you will find expert articles with practical advice for businesses in the international legal environment.'}
             </p>
             <div className="mx-auto mb-8 max-w-xl">
-              <div className="relative z-[100] text-white px-3">
+              <div className="relative z-10 text-white px-3">
                 <SearchBox locale={locale} placeholderText={searchPlaceholder} />
               </div>
             </div>
             <div className="text-center">
               <Button asChild className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input h-11 rounded-md px-8 bg-transparent text-white hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105">
-                <Link href="/o-nas">
+                <Link href={`/${getLocalizedPath(locale, 'about-us')}`}>
                   {locale === 'cs' ? 'Více o nás' :
                    locale === 'sk' ? 'Viac o nás' :
                    locale === 'de' ? 'Mehr über uns' :
@@ -347,7 +348,7 @@ export default async function BlogPage() {
                   size="lg"
                   className="bg-white text-orange-600 hover:bg-white/90 hover:text-orange-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                 >
-                  <Link href="/poptavka">
+                  <Link href={`/${getLocalizedPath(locale, 'inquiry')}`}>
                     {locale === 'cs' ? 'Nezávazně poptat' :
                      locale === 'sk' ? 'Nezáväzne dopytovať' :
                      locale === 'de' ? 'Unverbindlich anfragen' :
@@ -360,7 +361,7 @@ export default async function BlogPage() {
                   size="lg"
                   className="bg-transparent border-white text-white hover:bg-white/10 hover:text-white transition-all duration-300"
                 >
-                  <Link href="/kontakt">
+                  <Link href={`/${getLocalizedPath(locale, 'contact')}`}>
                     {locale === 'cs' ? 'Kontaktovat nás' :
                      locale === 'sk' ? 'Kontaktovať nás' :
                      locale === 'de' ? 'Kontaktieren Sie uns' :
@@ -410,4 +411,4 @@ export async function generateStaticParams() {
   console.log(`Total paths generated: ${paths.length}`);
   return paths;
 }
-
+  

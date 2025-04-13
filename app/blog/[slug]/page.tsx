@@ -7,6 +7,7 @@ import { getPostBySlug, getAllPostSlugs, getAllPosts } from '@/lib/posts';
 import MDXContent from '@/components/mdx-content';
 import { BlogImage } from '@/components/blog-image';
 import { headers } from 'next/headers';
+import { getLocalizedPath } from '@/lib/route-mapping';
 
 // Funkce pro získání lokalizace na serveru
 function getServerLocale(): string {
@@ -264,7 +265,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             ExPohledávky
           </Link>
           <span className="mx-2">/</span>
-          <Link href="/blog" className="hover:text-orange-500 transition-colors duration-300">
+          <Link href={`/${getLocalizedPath(locale, 'blog')}`} className="hover:text-orange-500 transition-colors duration-300">
             Blog
           </Link>
           <span className="mx-2">/</span>
@@ -276,7 +277,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
       <div className="container mt-8">
         <Button variant="ghost" className="mb-6" asChild>
-          <Link href="/blog" className="flex items-center gap-2">
+          <Link href={`/${getLocalizedPath(locale, 'blog')}`} className="flex items-center gap-2">
             <ArrowLeft className="h-4 w-4" />
             {uiStrings.backToBlog}
           </Link>
@@ -396,7 +397,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                       size="lg"
                       className="bg-white text-orange-600 hover:bg-white/90 hover:text-orange-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                     >
-                      <Link href="/poptavka">
+                      <Link href={`/${getLocalizedPath(locale, 'inquiry')}`}>
                         {uiStrings.inquireRequest}
                       </Link>
                     </Button>
@@ -406,7 +407,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                       size="lg"
                       className="bg-transparent border-white text-white hover:bg-white/10 hover:text-white transition-all duration-300"
                     >
-                      <Link href="/kontakt">
+                      <Link href={`/${getLocalizedPath(locale, 'contact')}`}>
                         {uiStrings.contactUs}
                       </Link>
                     </Button>

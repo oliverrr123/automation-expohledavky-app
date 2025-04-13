@@ -24,6 +24,7 @@ import { useTranslations } from "@/lib/i18n"
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { PaymentModal } from "@/components/stripe/PaymentModal"
 import { getLanguageFromHostname } from "@/lib/domain-mapping"
+import { getLocalizedPath } from "@/lib/route-mapping"
 
 // Icon mapping
 const iconMap: Record<string, React.ComponentType<any>> = {
@@ -480,7 +481,7 @@ export default function LustracePage() {
                 asChild
                 className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105"
               >
-                <Link href="/kontakt" className="flex items-center">
+                <Link href={`/${getLocalizedPath(currentLocale, 'contact')}`} className="flex items-center">
                   {t?.faq?.contactButton} <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

@@ -8,6 +8,7 @@ import { ArrowRight, CheckCircle, BarChart, FileText, Shield, Users, Briefcase, 
 import Link from "next/link"
 import { useTranslations } from "@/lib/i18n"
 import { useState, useEffect } from "react"
+import { getLocalizedPath } from "@/lib/route-mapping"
 import csCrisisManagementPage from '@/locales/cs/crisis-management-page.json'
 import enCrisisManagementPage from '@/locales/en/crisis-management-page.json'
 import skCrisisManagementPage from '@/locales/sk/crisis-management-page.json'
@@ -211,7 +212,7 @@ export default function KrizovyManagementPage() {
             <div className="text-center mt-12">
               <p className="text-gray-600 mb-6">
                 {t?.services?.note || "Tuto službu nabízíme samostatně a také jako součást naší služby"}{" "}
-                <Link href="/nase-sluzby/odkup-firem" className="text-orange-500 hover:text-orange-600 font-medium">
+                <Link href={`/${getLocalizedPath(isClient ? clientTranslations._locale : 'cs', 'services/company-purchase')}`} className="text-orange-500 hover:text-orange-600 font-medium">
                   {t?.services?.linkText || "Odkupu firem"}
                 </Link>
               </p>
@@ -334,7 +335,7 @@ export default function KrizovyManagementPage() {
                     size="lg"
                     className="relative overflow-hidden border-2 border-white text-white bg-white/5 backdrop-blur-sm font-semibold transition-all duration-500 hover:scale-[1.04] hover:bg-white/20 shadow-xl shadow-black/20"
                   >
-                    <Link href="/nase-sluzby" className="relative">
+                    <Link href={`/${getLocalizedPath(isClient ? clientTranslations._locale : 'cs', 'services')}`} className="relative">
                       <div
                         className="absolute inset-0 bg-black opacity-0 transition-opacity duration-500 group-hover:opacity-10"
                         aria-hidden="true"

@@ -12,6 +12,7 @@ import csCompanyAcquisitionPage from '@/locales/cs/company-acquisition-page.json
 import enCompanyAcquisitionPage from '@/locales/en/company-acquisition-page.json'
 import skCompanyAcquisitionPage from '@/locales/sk/company-acquisition-page.json'
 import deCompanyAcquisitionPage from '@/locales/de/company-acquisition-page.json'
+import { getLocalizedPath } from "@/lib/route-mapping"
 
 // Default translations to use before client-side hydration
 const defaultTranslations = csCompanyAcquisitionPage;
@@ -249,7 +250,7 @@ export default function OdkupFiremPage() {
                       variant="outline"
                       className="border-orange-500 text-orange-500 hover:bg-orange-50 transition-all duration-300"
                     >
-                      <a href="/nase-sluzby" className="flex items-center">
+                      <a href={`/${getLocalizedPath(isClient ? clientTranslations._locale : 'cs', 'services')}`} className="flex items-center">
                         {t.cta.secondaryButton}
                       </a>
                     </Button>

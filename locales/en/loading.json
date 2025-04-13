@@ -2,6 +2,12 @@
   "blog": {
     "loading": "Loading articles..."
   },
+  "dictionary": {
+    "loading": "Loading dictionary and templates..."
+  },
+  "inquiry": {
+    "loading": "Loading form..."
+  },
   "general": {
     "loading": "Loading..."
   }

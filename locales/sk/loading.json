@@ -2,6 +2,12 @@
   "blog": {
     "loading": "Načítanie článkov..."
   },
+  "dictionary": {
+    "loading": "Načítanie slovníka a vzorov..."
+  },
+  "inquiry": {
+    "loading": "Načítanie formulára..."
+  },
   "general": {
     "loading": "Načítanie..."
   }

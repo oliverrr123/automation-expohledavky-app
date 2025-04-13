@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, X } from "lucide-react";
 import { searchPosts, PostData } from "@/lib/posts";
 import { Button } from "@/components/ui/button";
 import { getCurrentLocale } from "@/lib/server-locale";
+import { getLocalizedPath } from '@/lib/route-mapping';
 
 export default async function SearchPage({
   searchParams,
@@ -104,7 +105,7 @@ export default async function SearchPage({
     <div className="min-h-screen bg-gray-50 pb-16 pt-28">
       <div className="container">
         <Button variant="ghost" className="mb-6" asChild>
-          <Link href="/blog" className="flex items-center gap-2">
+          <Link href={`/${getLocalizedPath(locale, 'blog')}`} className="flex items-center gap-2">
             <ArrowLeft className="h-4 w-4" />
             {localeStrings.backToBlog}
           </Link>
@@ -120,7 +121,7 @@ export default async function SearchPage({
               className="flex items-center gap-2 text-zinc-500 hover:text-orange-500 transition-colors"
               asChild
             >
-              <Link href="/blog">
+              <Link href={`/${getLocalizedPath(locale, 'blog')}`}>
                 <X size={18} />
                 <span>{localeStrings.clearSearch}</span>
               </Link>

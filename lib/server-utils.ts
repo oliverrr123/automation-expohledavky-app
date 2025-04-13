@@ -12,23 +12,28 @@ export function getInitialLocale(): string {
   // Server-side rendering case
   if (typeof window === 'undefined') {
     try {
-      // Try to access the headers for server components at request time
-      const { headers } = require('next/headers');
-      const headersList = headers();
-      const hostname = headersList.get('host') || '';
-      const domain = hostname.split(':')[0];
+      // Use a dynamic import instead of require for server components
+      // We'll need to handle this differently since this function is synchronous
+      // and dynamic imports are async
+      let hostname = '';
+      
+      // We'll need to detect the hostname using a different approach
+      // This is a simplified approach that works in most Next.js server contexts
+      const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+      const host = process.env.VERCEL_URL || 'localhost:3000';
+      hostname = host;
       
       // Determine locale from domain - STRICT mapping with no fallbacks
-      if (domain.includes('expohledavky.com')) return 'en';
-      if (domain.includes('expohledavky.sk')) return 'sk';
-      if (domain.includes('expohledavky.de')) return 'de';
-      if (domain.includes('expohledavky.cz')) return 'cs';
+      if (hostname.includes('expohledavky.com')) return 'en';
+      if (hostname.includes('expohledavky.sk')) return 'sk';
+      if (hostname.includes('expohledavky.de')) return 'de';
+      if (hostname.includes('expohledavky.cz')) return 'cs';
       
       // Development environment subdomains - STRICT mapping
-      if (domain.startsWith('en.')) return 'en';
-      if (domain.startsWith('sk.')) return 'sk';
-      if (domain.startsWith('de.')) return 'de';
-      if (domain.startsWith('cs.')) return 'cs';
+      if (hostname.startsWith('en.')) return 'en';
+      if (hostname.startsWith('sk.')) return 'sk';
+      if (hostname.startsWith('de.')) return 'de';
+      if (hostname.startsWith('cs.')) return 'cs';
       
       // For unknown domains, we don't want to make assumptions
       // Each specific domain has its own language, no defaults

@@ -590,15 +590,13 @@ export function useTranslations(namespace: string, locale?: string): any {
   // Check if we're in the browser environment
   const isBrowser = typeof window !== 'undefined';
   
-  // For server-side rendering, return empty structure without using hooks
-  // This prevents the "Should have a queue" React error
-  if (!isBrowser) {
-    return getEmptyStructure(namespace);
-  }
-  
   // For client-side only, use React state hooks
   // Using lazy initialization to avoid calling the function during render
   const [translationState, setTranslationState] = useState<Record<string, any>>(() => {
+    if (!isBrowser) {
+      return getEmptyStructure(namespace);
+    }
+    
     try {
       const currentLocale = locale || getCurrentLocale();
       // Convert namespace to camelCase (e.g., pricing-page -> pricingPage)
@@ -613,24 +611,24 @@ export function useTranslations(namespace: string, locale?: string): any {
   });
   
   useEffect(() => {
-    // Only run on client
-    if (!isBrowser) return;
-    
-    // Get translations directly
-    const currentLocale = locale || getCurrentLocale();
-    // Convert namespace to camelCase (e.g., pricing-page -> pricingPage)
-    const fixedNamespace = namespace.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-    
-    try {
-      // Get the locale dictionary
-      const localeDict = translations[currentLocale as keyof typeof translations] || {};
-      const nsKey = fixedNamespace as keyof typeof localeDict;
+    // Only update state if we're in the browser
+    if (isBrowser) {
+      // Get translations directly
+      const currentLocale = locale || getCurrentLocale();
+      // Convert namespace to camelCase (e.g., pricing-page -> pricingPage)
+      const fixedNamespace = namespace.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
       
-      // Safely set the translation object - always return at least an empty object
-      setTranslationState(localeDict[nsKey] || {});
-    } catch (error) {
-      console.error(`Translation error for namespace ${namespace} in locale ${currentLocale}:`, error);
-      setTranslationState({});
+      try {
+        // Get the locale dictionary
+        const localeDict = translations[currentLocale as keyof typeof translations] || {};
+        const nsKey = fixedNamespace as keyof typeof localeDict;
+        
+        // Safely set the translation object - always return at least an empty object
+        setTranslationState(localeDict[nsKey] || {});
+      } catch (error) {
+        console.error(`Translation error for namespace ${namespace} in locale ${currentLocale}:`, error);
+        setTranslationState({});
+      }
     }
   }, [namespace, locale, isBrowser]);
   

@@ -1,6 +1,10 @@
 import { getAllPosts, searchPosts } from '@/lib/posts';
 import { NextRequest, NextResponse } from 'next/server';
 
+// Tell Next.js this is a dynamic route that shouldn't be statically generated
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // Helper function to safely log errors without exposing sensitive details in production
 function logError(error: any, context: string) {
   // In development, log the full error

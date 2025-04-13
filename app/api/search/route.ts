@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllPosts } from '@/lib/posts';
 
+// This adds a configuration to tell Next.js this is a dynamic route that shouldn't be statically generated
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(request: NextRequest) {
   try {
     // Získat query parametr a locale

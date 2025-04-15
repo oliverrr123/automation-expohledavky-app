@@ -289,14 +289,14 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             <h1 className="mb-6 text-3xl font-bold text-zinc-900 md:text-4xl">{post.frontMatter.title}</h1>
 
             <div className="mb-6 flex flex-wrap items-center gap-4 border-b border-gray-200 pb-6">
-              <div className="flex items-center gap-4">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 w-full">
                 {post.frontMatter.category && (
                   <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-800">
                     {post.frontMatter.category}
                   </span>
                 )}
                 
-                <div className="flex items-center gap-4 text-sm text-zinc-500">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-zinc-500">
                   {post.frontMatter.date && (
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
@@ -447,7 +447,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                   <Share2 className="h-5 w-5" />
                   {uiStrings.shareArticle}
                 </h3>
-                <div className="flex gap-4">
+                <div className="flex flex-wrap gap-2">
                   {[
                     { platform: 'facebook', label: 'Facebook', icon: Facebook, color: 'text-orange-500' },
                     { platform: 'linkedin', label: 'LinkedIn', icon: Linkedin, color: 'text-orange-500' },
@@ -468,7 +468,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                         className="inline-flex items-center gap-2"
                       >
                         <item.icon className={`h-4 w-4 ${item.color}`} />
-                        {item.label}
+                        <span className="sm:inline">{item.label}</span>
                       </a>
                     </Button>
                   ))}

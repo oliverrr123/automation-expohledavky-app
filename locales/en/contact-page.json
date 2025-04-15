@@ -79,7 +79,8 @@
     },
     "map": {
       "title": "London, Covent Garden",
-      "address": "71-75 Shelton Street, WC2H 9JQ"
+      "address": "71-75 Shelton Street, WC2H 9JQ",
+      "viewOnGoogleMaps": "View on Google Maps"
     }
   },
   "faq": {

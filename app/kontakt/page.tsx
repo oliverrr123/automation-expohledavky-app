@@ -44,6 +44,14 @@ const mapUrls = {
   en: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3794.373087528779!2d-0.12827111545847228!3d51.51500093540498!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487604cb57fec9f9%3A0x2e42a59ca28651cb!2s71-75%20Shelton%20St%2C%20London%20WC2H%209JQ%2C%20UK!5e0!3m2!1sen!2scz!4v1742945021778!5m2!1sen!2scz"
 };
 
+// Direct Google Maps URLs by locale
+const directMapUrls = {
+  cs: "https://www.google.com/maps/place/Na+Str%C5%BEi+1702%2F65,+140+00+Praha+4-Nusle",
+  sk: "https://www.google.com/maps/place/Betliarska+22,+851+07+Petr%C5%BEalka,+Slovakia",
+  de: "https://www.google.com/maps/place/Sonnenhof+3,+94252+Bayerisch+Eisenstein,+Germany",
+  en: "https://www.google.com/maps/place/71-75+Shelton+St,+London+WC2H+9JQ,+UK"
+};
+
 // Type declaration for grecaptcha
 declare global {
   interface Window {
@@ -72,11 +80,42 @@ export default function ContactPage() {
     // Generate CSRF token when component mounts
     setCsrfToken(generateCSRFToken())
     
-    // Set the appropriate map URL based on locale
-    const currentLocale = getCurrentLocale();
-    if (currentLocale && mapUrls[currentLocale as keyof typeof mapUrls]) {
-      setMapUrl(mapUrls[currentLocale as keyof typeof mapUrls]);
-    }
+    // Set the appropriate map URL based on HOSTNAME directly
+    const updateMapsBasedOnHostname = () => {
+      // Using hostname directly instead of relying on getCurrentLocale
+      if (typeof window !== 'undefined') {
+        const hostname = window.location.hostname;
+        console.log("Current hostname:", hostname);
+        
+        let localeFromHostname = 'cs'; // default
+        
+        // Production domains - STRICT mapping
+        if (hostname.includes('expohledavky.com')) localeFromHostname = 'en';
+        else if (hostname.includes('expohledavky.sk')) localeFromHostname = 'sk';
+        else if (hostname.includes('expohledavky.de')) localeFromHostname = 'de';
+        else if (hostname.includes('expohledavky.cz')) localeFromHostname = 'cs';
+        
+        // Development environment - determine locale from subdomain
+        else if (hostname.startsWith('en.')) localeFromHostname = 'en';
+        else if (hostname.startsWith('sk.')) localeFromHostname = 'sk';
+        else if (hostname.startsWith('de.')) localeFromHostname = 'de';
+        else if (hostname.startsWith('cs.')) localeFromHostname = 'cs';
+        
+        console.log("Detected locale from hostname:", localeFromHostname);
+        
+        // Set URLs based on detected locale
+        setMapUrl(mapUrls[localeFromHostname as keyof typeof mapUrls]);
+        setDirectMapUrl(directMapUrls[localeFromHostname as keyof typeof directMapUrls]);
+        
+        console.log("Set map URL to:", mapUrls[localeFromHostname as keyof typeof mapUrls]);
+        console.log("Set direct map URL to:", directMapUrls[localeFromHostname as keyof typeof directMapUrls]);
+      }
+    };
+    
+    // Call immediately
+    updateMapsBasedOnHostname();
+    
+    // No need for interval now that we're directly using hostname
   }, [])
   
   const [formData, setFormData] = useState({
@@ -94,6 +133,7 @@ export default function ContactPage() {
 
   const [csrfToken, setCsrfToken] = useState("")
   const [mapUrl, setMapUrl] = useState(mapUrls.cs);
+  const [directMapUrl, setDirectMapUrl] = useState(directMapUrls.cs);
 
   useEffect(() => {
     // Generate a CSRF token on the client side
@@ -174,15 +214,16 @@ export default function ContactPage() {
     setFormStatus("submitting")
 
     try {
-      // Get reCAPTCHA Enterprise token
+      // Get reCAPTCHA token
       let recaptchaToken = "";
       
       if (window.grecaptcha) {
         try {
-          recaptchaToken = await new Promise((resolve, reject) => {
-            window.grecaptcha.ready(async () => {
+          recaptchaToken = await new Promise<string>((resolve, reject) => {
+            // Use type assertion to bypass TypeScript checking
+            (window.grecaptcha as any).ready(async () => {
               try {
-                const token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'CONTACT_FORM'});
+                const token = await (window.grecaptcha as any).execute(RECAPTCHA_SITE_KEY, {action: 'CONTACT_FORM'});
                 resolve(token);
               } catch (error) {
                 console.error("reCAPTCHA execution error:", error);
@@ -743,26 +784,37 @@ export default function ContactPage() {
 
                 <SectionWrapper animation="fade-right" delay={300}>
                   <div className="h-[300px] rounded-xl overflow-hidden shadow-md relative group transition-all duration-300 hover:shadow-xl">
-                    <iframe
-                      src={mapUrl}
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      sandbox="allow-scripts allow-same-origin allow-popups"
-                    ></iframe>
-                    
-                    {/* Map overlay with hover effect */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent flex items-end transition-opacity duration-300 hover:opacity-0">
-                      <div className="p-4 text-white w-full">
-                        <p className="font-medium">{t.contactForm?.map?.title}</p>
-                        <div className="flex items-center text-sm mt-1">
-                          <MapPin className="h-4 w-4 mr-1" /> {t.contactForm?.map?.address}
+                    <a 
+                      href={directMapUrl}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      aria-label={t.contactForm?.map?.viewOnGoogleMaps || "View on Google Maps"}
+                      className="block h-full w-full"
+                    >
+                      <iframe
+                        src={mapUrl}
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        sandbox="allow-scripts allow-same-origin allow-popups"
+                      ></iframe>
+                      
+                      {/* Map overlay with hover effect */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent flex items-end transition-opacity duration-300 hover:opacity-0">
+                        <div className="p-4 text-white w-full">
+                          <p className="font-medium">{t.contactForm?.map?.title}</p>
+                          <div className="flex items-center text-sm mt-1">
+                            <MapPin className="h-4 w-4 mr-1" /> {t.contactForm?.map?.address}
+                          </div>
+                          <div className="text-sm mt-2 text-white/80 flex items-center">
+                            <ArrowRight className="h-3 w-3 mr-1" /> {t.contactForm?.map?.viewOnGoogleMaps || "View on Google Maps"}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </a>
                   </div>
                 </SectionWrapper>
               </div>

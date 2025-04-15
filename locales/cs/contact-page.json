@@ -79,7 +79,8 @@
     },
     "map": {
       "title": "City Empiria, Praha 4",
-      "address": "Na strži 1702/65, 140 00"
+      "address": "Na strži 1702/65, 140 00",
+      "viewOnGoogleMaps": "Zobrazit na Google Mapách"
     }
   },
   "faq": {

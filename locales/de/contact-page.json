@@ -78,8 +78,9 @@
       "description": "Unser Team wird Ihnen innerhalb von 24 Stunden an Werktagen antworten. Für dringende Fälle zögern Sie nicht, uns telefonisch zu kontaktieren."
     },
     "map": {
-      "title": "Bayerisch Eisenstein, Deutschland",
-      "address": "Sonnenhof 3, 94252"
+      "title": "Bayerisch Eisenstein",
+      "address": "Sonnenhof 3, 94252",
+      "viewOnGoogleMaps": "In Google Maps anzeigen"
     }
   },
   "faq": {

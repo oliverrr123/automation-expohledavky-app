@@ -79,7 +79,8 @@
     },
     "map": {
       "title": "Bratislava, Petržalka",
-      "address": "Betliarska 22, 851 07"
+      "address": "Betliarska 22, 851 07",
+      "viewOnGoogleMaps": "Zobraziť na Google Mapách"
     }
   },
   "faq": {

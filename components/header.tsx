@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { Phone, Globe, Menu, ChevronDown } from "lucide-react"
+import { Phone, Globe, Menu, ChevronDown, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet"
 import { toast } from "sonner"
 import { LanguageSwitcher } from "./language-switcher"
 import { getLanguageFromHostname } from "@/lib/domain-mapping"
@@ -252,54 +252,52 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
 
             {/* Always show navigation items, with a fade-in effect when loaded */}
             <div className="flex xl:hidden">
-              <Sheet>
+              <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon" className="hover:bg-transparent">
                     <Menu className={`h-6 w-6 ${isScrolled ? "text-zinc-900" : "text-white"} bg-blue`} />
                     <span className="sr-only">{translations.mobileMenu.openMenu}</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right">
-                  <SheetHeader>
-                    <SheetTitle>{translations.mobileMenu.menuTitle}</SheetTitle>
+                <SheetContent side="right" className="overflow-y-auto p-0">
+                  <SheetHeader className="sticky top-0 bg-white px-6 pt-8 pb-4 z-40 border-b border-gray-100">
+                    <div className="flex items-center justify-between">
+                      <SheetTitle className="text-lg">{translations.mobileMenu.menuTitle}</SheetTitle>
+                      <SheetClose className="flex h-8 w-8 items-center justify-center">
+                        <X className="h-6 w-6 text-black" />
+                      </SheetClose>
+                    </div>
                   </SheetHeader>
-                  <nav className="mt-6">
+                  <nav className="px-6 pt-4 pb-16 overflow-y-auto">
                     {translations.navigation.map((item) => (
                       <div key={item.name}>
                         {item.hasDropdown ? (
-                          <div className="relative">
+                          <div className="mb-2">
                             <LocalizedLink
                               href={item.href}
-                              className="block py-3 text-base font-medium text-zinc-700"
+                              className="block py-3 text-base font-semibold text-zinc-800 border-b border-gray-100"
                               onClick={() => setIsOpen(false)}
                             >
                               {item.name}
                             </LocalizedLink>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <button className="absolute right-0 top-3">
-                                  <ChevronDown className="h-4 w-4" />
-                                </button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="start" className="w-56">
-                                {item.submenu?.map((subitem) => (
-                                  <DropdownMenuItem key={subitem.name} asChild>
-                                    <LocalizedLink
-                                      href={subitem.href}
-                                      target={subitem.target}
-                                      className="cursor-pointer"
-                                    >
-                                      {subitem.name}
-                                    </LocalizedLink>
-                                  </DropdownMenuItem>
-                                ))}
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+                            <div className="pl-4 mt-2 space-y-1 border-l border-gray-200">
+                              {item.submenu?.map((subitem) => (
+                                <LocalizedLink
+                                  key={subitem.name}
+                                  href={subitem.href}
+                                  target={subitem.target}
+                                  className="block py-2 text-sm text-zinc-600 hover:text-orange-500 transition-colors"
+                                  onClick={() => setIsOpen(false)}
+                                >
+                                  {subitem.name}
+                                </LocalizedLink>
+                              ))}
+                            </div>
                           </div>
                         ) : (
                           <LocalizedLink
                             href={item.href}
-                            className="block py-3 text-base font-medium text-zinc-700"
+                            className="block py-3 text-base font-medium text-zinc-700 hover:text-orange-500 transition-colors"
                             onClick={() => setIsOpen(false)}
                           >
                             {item.name}
@@ -307,9 +305,13 @@ export function Header({ isLandingPage = false }: { isLandingPage?: boolean }) {
                         )}
                       </div>
                     ))}
-                    <Button className="mt-6 w-full" variant="default">
-                      {translations.buttons.clientZone}
-                    </Button>
+                    <div className="mt-6">
+                      <Button className="w-full" variant="default">
+                        <LocalizedLink href={translations.buttons.clientLogin}>
+                          {translations.buttons.clientZone}
+                        </LocalizedLink>
+                      </Button>
+                    </div>
                   </nav>
                 </SheetContent>
               </Sheet>

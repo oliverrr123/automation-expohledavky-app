@@ -28,6 +28,16 @@ const COUNTRY_SUBDOMAIN_MAP: Record<string, string> = {
   AT: 'de.localhost:3000',
   CH: 'de.localhost:3000',
   DEFAULT: 'en.localhost:3000',
+  // Vercel preview domains
+  CZ_PREVIEW: 'cs.expohledavky-app.vercel.app',
+  SK_PREVIEW: 'sk.expohledavky-app.vercel.app',
+  DE_PREVIEW: 'de.expohledavky-app.vercel.app',
+  DEFAULT_PREVIEW: 'en.expohledavky-app.vercel.app',
+  // Oliver Cingl domains
+  CZ_CINGL: 'cs.expohledavky.olivercingl.com',
+  SK_CINGL: 'sk.expohledavky.olivercingl.com',
+  DE_CINGL: 'de.expohledavky.olivercingl.com',
+  DEFAULT_CINGL: 'en.expohledavky.olivercingl.com',
 }
 
 export function middleware(request: NextRequest) {
@@ -64,11 +74,13 @@ export function middleware(request: NextRequest) {
     }
   } else {
     // Production environment - determine locale from domain
-    if (hostname.includes('expohledavky.cz')) locale = 'cs';
-    else if (hostname.includes('expohledavky.sk')) locale = 'sk';
-    else if (hostname.includes('expohledavky.de')) locale = 'de';
-    else if (hostname.includes('expohledavky.com')) locale = 'en';
-    // No default for unknown domains
+    if (hostname.includes('expohledavky.cz') || hostname.startsWith('cs.expohledavky-app.vercel.app') || hostname === 'cs.expohledavky.olivercingl.com') locale = 'cs';
+    else if (hostname.includes('expohledavky.sk') || hostname.startsWith('sk.expohledavky-app.vercel.app') || hostname === 'sk.expohledavky.olivercingl.com') locale = 'sk';
+    else if (hostname.includes('expohledavky.de') || hostname.startsWith('de.expohledavky-app.vercel.app') || hostname === 'de.expohledavky.olivercingl.com') locale = 'de';
+    else if (hostname.includes('expohledavky.com') || hostname.startsWith('en.expohledavky-app.vercel.app') || hostname === 'en.expohledavky.olivercingl.com') locale = 'en';
+    // Fallback for the main Vercel preview domain
+    else if (hostname.includes('expohledavky-app.vercel.app') || hostname === 'expohledavky.olivercingl.com') locale = 'cs'; // Default to Czech
+    // No default for other unknown domains
   }
   
   // Only proceed if we could determine a valid locale

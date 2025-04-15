@@ -8,6 +8,7 @@ import { Toaster } from "sonner"
 import { headers } from "next/headers"
 import { getLocaleMetadata } from "@/lib/server-metadata"
 import Script from "next/script"
+import ElevenLabsCloseButton from '@/components/ElevenLabsCloseButton'
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -123,11 +124,41 @@ export default function RootLayout({
   return (
     <html lang={meta.language || ''} className={`scroll-smooth ${montserrat.variable}`}>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {/* Recommended meta tags for SEO */}
+        <meta httpEquiv="Content-Language" content={serverLocale} />
+        <meta property="og:locale" content={`${serverLocale}_${serverLocale.toUpperCase()}`} />
+        <meta charSet="utf-8" />
         <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon/favicon-16x16.png" type="image/png" sizes="16x16" />
         <link rel="icon" href="/favicon/favicon-32x32.png" type="image/png" sizes="32x32" />
         <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
         <link rel="manifest" href="/favicon/site.webmanifest" />
+        {/* Přímé vložení CSS pro ElevenLabs ConvAI zavírací tlačítko */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            /* ElevenLabs ConvAI overlay style */
+            elevenlabs-convai::before {
+              content: "×";
+              position: absolute;
+              top: 16px;
+              left: 16px;
+              width: 24px;
+              height: 24px;
+              background-color: white;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              z-index: 999999999 !important;
+              font-size: 24px;
+              font-weight: bold;
+              color: black;
+              pointer-events: auto;
+            }
+          `
+        }} />
         {/* Only set locale if it was explicitly detected from the domain */}
         {serverLocale && (
           <script dangerouslySetInnerHTML={{
@@ -148,6 +179,7 @@ export default function RootLayout({
         <Analytics />
         <SpeedInsights />
         <Toaster richColors position="top-center" />
+        <ElevenLabsCloseButton />
         
         {/* ElevenLabs ConvAI Agent - conditionally display based on locale */}
         {serverLocale === 'cs' && (

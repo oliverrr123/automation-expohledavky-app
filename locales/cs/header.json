@@ -37,8 +37,8 @@
     { "name": "Romania", "href": "https://excredit.ro/" }
   ],
   "buttons": {
-    "clientZone": "Klientská zóna",
-    "clientLogin": "klient-prihlaseni"
+    "clientZone": "Kontaktujte nás",
+    "clientLogin": "kontakt"
   },
   "mobileMenu": {
     "openMenu": "Otevřít menu",

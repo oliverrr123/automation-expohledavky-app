@@ -33,7 +33,11 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: |
+          # First update the package-lock.json file
+          npm install --package-lock-only natural-compare@1.4.0 strip-json-comments@2.0.1
+          # Then run npm ci with legacy peer deps
+          npm ci --legacy-peer-deps
       
       - name: Set environment variables
         run: |

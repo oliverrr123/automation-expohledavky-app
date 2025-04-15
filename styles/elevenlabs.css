@@ -1,0 +1,36 @@
+/* ElevenLabs ConvAI custom styles */
+
+/* Zabalení ikony do samostatného elementu pro lepší zachycení kliknutí */
+.elevenlabs-close-button {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 24px;
+  height: 24px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100001;
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.elevenlabs-close-button:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+/* Fixní styl pro kontejner widgetu */
+#convai-chat-widget-container {
+  position: relative !important;
+}
+
+/* Uprava stylu elevenlabs-convai elementu pro lepší kontrolu zobrazení */
+elevenlabs-convai {
+  transition: opacity 0.3s ease;
+} 

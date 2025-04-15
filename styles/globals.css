@@ -161,3 +161,52 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* ======= ElevenLabs ConvAI styling ======= */
+/* Styly pro zavírací tlačítko ElevenLabs ConvAI widgetu */
+body > elevenlabs-convai,
+body > div > elevenlabs-convai {
+  position: relative;
+  margin-left: 40px; /* Přidání okraje vlevo pro tlačítko zavření */
+}
+
+/* Samotné tlačítko zavření */
+body elevenlabs-convai::before {
+  content: "×";
+  position: absolute;
+  top: 50%;
+  left: -40px;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999999 !important;
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  color: #000;
+  opacity: 0.9;
+  transition: all 0.2s ease;
+}
+
+/* Hover efekt pro tlačítko */
+body elevenlabs-convai::before:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Přímý inline-style zásah do konverzačního okna */
+#convai-chat-widget-container {
+  position: relative !important;
+}
+
+/* Upravení shadowDOM stylu přes specifické selektory */
+:root {
+  --elevenlabs-close-button-displayed: block !important;
+}

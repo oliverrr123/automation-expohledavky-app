@@ -141,10 +141,11 @@ export default function RootLayout({
             elevenlabs-convai::before {
               content: "×";
               position: absolute;
-              top: 16px;
-              left: 16px;
-              width: 24px;
-              height: 24px;
+              top: 50%;
+              left: -40px;
+              transform: translateY(-50%);
+              width: 32px;
+              height: 32px;
               background-color: white;
               border-radius: 50%;
               display: flex;
@@ -156,6 +157,7 @@ export default function RootLayout({
               font-weight: bold;
               color: black;
               pointer-events: auto;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             }
           `
         }} />

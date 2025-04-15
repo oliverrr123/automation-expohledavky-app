@@ -42,9 +42,9 @@ export default function ElevenLabsCloseButton() {
                   const clickX = event.clientX;
                   const clickY = event.clientY;
                   
-                  // Kontrola, zda je kliknuto v oblasti levého horního rohu
-                  if (clickX >= rect.left && clickX <= rect.left + 50 && 
-                      clickY >= rect.top && clickY <= rect.top + 50) {
+                  // Kontrola, zda je kliknuto v oblasti nalevo od widgetu (nová pozice tlačítka)
+                  if (clickX >= rect.left - 60 && clickX <= rect.left - 20 && 
+                      clickY >= rect.top + (rect.height / 2) - 20 && clickY <= rect.top + (rect.height / 2) + 20) {
                     console.log('Kliknuto na zavírací tlačítko ElevenLabs ConvAI');
                     
                     // Skrýt widget

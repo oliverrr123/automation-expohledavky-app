@@ -116,11 +116,17 @@ const config = {
     failureMessage: "❌ Generování selhalo:",
     categories: [
       'Správa pohledávek',
-      'Finanční analýza',
+      'Finanční analýza klientů a rizik',
       'Vymáhání pohledávek',
-      'Etika vymáhání',
-      'Insolvence',
-      'Prevence'
+      'Etika a komunikace při vymáhání',
+      'Insolvence a oddlužení',
+      'Restrukturalizace firemních závazků',
+      'Lustrace a prověřování obchodních partnerů',
+      'Prevence neuhrazených pohledávek',
+      'Právní rámec pohledávek',
+      'Smluvní jistoty a zajištění pohledávek',
+      'Exekuce a výkon rozhodnutí',
+      'Firemní strategie řízení pohledávek'
     ],
     authors: [
       {
@@ -168,11 +174,17 @@ const config = {
     failureMessage: "❌ Generovanie zlyhalo:",
     categories: [
       'Správa pohľadávok',
-      'Finančná analýza',
+      'Finančná analýza klientov a rizík',
       'Vymáhanie pohľadávok',
-      'Etika vymáhania',
-      'Insolvencia',
-      'Prevencia'
+      'Etika a komunikácia pri vymáhaní',
+      'Insolvencia a oddlženie',
+      'Restrukturalizácia firemných záväzkov',
+      'Lustrácia a preverovanie obchodných partnerov',
+      'Prevencia nezaplatených pohľadávok',
+      'Právny rámec pohľadávok',
+      'Zmluvné istoty a zabezpečenie pohľadávok',
+      'Exekúcia a výkon rozhodnutí',
+      'Firemná stratégia riadenia pohľadávok'
     ],
     authors: [
       {
@@ -219,12 +231,18 @@ const config = {
     successMessage: "✅ Deutsche Inhaltsgenerierung abgeschlossen.",
     failureMessage: "❌ Generierung fehlgeschlagen:",
     categories: [
-      'Forderungsmanagement',
-      'Finanzanalyse',
-      'Inkasso',
-      'Inkasso-Ethik',
-      'Insolvenz',
-      'Prävention'
+      'Forderungsverwaltung',
+      'Finanzanalyse von Kunden und Risiken',
+      'Forderungseintreibung',
+      'Ethik und Kommunikation beim Inkasso',
+      'Insolvenz und Entschuldung',
+      'Restrukturierung von Unternehmensverbindlichkeiten',
+      'Überprüfung von Geschäftspartnern',
+      'Prävention unbezahlter Forderungen',
+      'Rechtlicher Rahmen der Forderungen',
+      'Vertragliche Sicherheiten und Forderungsabsicherung',
+      'Vollstreckung und Durchsetzung von Entscheidungen',
+      'Unternehmensstrategie im Forderungsmanagement'
     ],
     authors: [
       {
@@ -272,11 +290,17 @@ const config = {
     failureMessage: "❌ Generation failed:",
     categories: [
       'Receivables Management',
-      'Financial Analysis',
+      'Financial Analysis of Clients and Risks',
       'Debt Collection',
-      'Collection Ethics',
-      'Insolvency',
-      'Prevention'
+      'Ethics and Communication in Collection',
+      'Insolvency and Debt Relief',
+      'Restructuring of Corporate Liabilities',
+      'Background Checks of Business Partners',
+      'Prevention of Unpaid Receivables',
+      'Legal Framework of Claims',
+      'Contractual Securities and Claims Collateral',
+      'Enforcement and Execution of Judgments',
+      'Corporate Strategy in Receivables Management'
     ],
     authors: [
       {

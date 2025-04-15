@@ -138,30 +138,42 @@ export function Hero() {
                 className={`${montserrat.className} text-4xl sm:text-6xl font-black tracking-tight text-white mb-6 opacity-0 animate-fade-in-up`}
                 style={{ animationDelay: "200ms" }}
               >
-                <span
-                  className="relative inline-block"
-                  style={{
-                    background: "-webkit-linear-gradient(#fff, #ddd)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  <span className="absolute -inset-1.5 bg-orange-500/10 blur-xl" aria-hidden="true" />
-                  {t.headline1 || ''}
+                <span className="relative inline-block">
+                  {/* Desktop-only gradient */}
+                  <span className="hidden sm:inline" 
+                    style={{
+                      background: "-webkit-linear-gradient(#fff, #ddd)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    <span className="absolute -inset-1.5 bg-orange-500/10 blur-xl" aria-hidden="true" />
+                    {t.headline1 || ''}
+                  </span>
+                  {/* Mobile plain white text */}
+                  <span className="sm:hidden">
+                    {t.headline1 || ''}
+                  </span>
                 </span>
                 <br />
-                <span
-                  className="relative inline-block"
-                  style={{
-                    background: "-webkit-linear-gradient(#fff, #aaa)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  <span className="absolute -inset-1.5 bg-orange-500/10 blur-xl" aria-hidden="true" />
-                  {t.headline2 || ''}
+                <span className="relative inline-block">
+                  {/* Desktop-only gradient */}
+                  <span className="hidden sm:inline" 
+                    style={{
+                      background: "-webkit-linear-gradient(#fff, #aaa)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    <span className="absolute -inset-1.5 bg-orange-500/10 blur-xl" aria-hidden="true" />
+                    {t.headline2 || ''}
+                  </span>
+                  {/* Mobile plain white text */}
+                  <span className="sm:hidden">
+                    {t.headline2 || ''}
+                  </span>
                 </span>
               </h1>
               <p

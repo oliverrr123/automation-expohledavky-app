@@ -203,7 +203,7 @@ export default function ServiceLayout({
       <Footer />
       
       {/* reCAPTCHA Enterprise Script */}
-      <Script src={`https://www.google.com/recaptcha/enterprise.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
+      <Script src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
     </div>
   )
 }

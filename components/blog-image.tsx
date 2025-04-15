@@ -41,8 +41,17 @@ export function BlogImage({
       const parts = imageSrc.replace('/images/blog/', '').split('/');
       if (parts.length >= 2) {
         const imgLang = parts[0];
-        const imgFile = parts.slice(1).join('/');
-        return `/images/${imgLang}/${imgFile}`;
+        const fileName = parts.slice(1).join('/');
+        // Převést na nový formát
+        return `/images/${imgLang}/${fileName}`;
+      }
+    } else if (imageSrc.startsWith('/content/images/')) {
+      // Obsah z content/images/{lang}/... 
+      const parts = imageSrc.replace('/content/images/', '').split('/');
+      if (parts.length >= 2) {
+        const imgLang = parts[0];
+        const fileName = parts.slice(1).join('/');
+        return `/images/${imgLang}/${fileName}`;
       }
     } else if (imageSrc.startsWith('/images/')) {
       // Již ve správném formátu

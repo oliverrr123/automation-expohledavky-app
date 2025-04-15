@@ -2,35 +2,47 @@ import { NextRequest, NextResponse } from 'next/server';
 import { validateCSRFToken } from '@/lib/csrf';
 import { sendEmail } from '@/lib/email';
 
-// Verify reCAPTCHA v3 token
+// Verify reCAPTCHA Enterprise token
 async function verifyRecaptchaToken(token: string, action: string) {
   try {
     // Log token for debugging
     console.log(`Verifying reCAPTCHA token for action: ${action}`);
     console.log(`Using site key: ${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`);
-    console.log(`Secret key available: ${!!process.env.RECAPTCHA_SECRET_KEY}`);
+    console.log(`API Key available: ${!!process.env.RECAPTCHA_API_KEY}`);
   
     // Check if we have the required environment variables
-    if (!process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || !process.env.RECAPTCHA_SECRET_KEY) {
-      console.error('Missing NEXT_PUBLIC_RECAPTCHA_SITE_KEY or RECAPTCHA_SECRET_KEY environment variables');
+    if (!process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || !process.env.RECAPTCHA_API_KEY) {
+      console.error('Missing NEXT_PUBLIC_RECAPTCHA_SITE_KEY or RECAPTCHA_API_KEY environment variables');
       return { valid: false, score: 0, error: 'Missing reCAPTCHA configuration' };
     }
 
-    // Log the request for debugging
-    console.log('Sending request to reCAPTCHA API: https://www.google.com/recaptcha/api/siteverify');
+    // Get project ID from environment variable or use default
+    const projectId = process.env.RECAPTCHA_PROJECT_ID || 'ex-pohledavky';
+    console.log(`Using reCAPTCHA project ID: ${projectId}`);
 
-    // Send request to Google's reCAPTCHA v3 API
+    // Prepare request for Google reCAPTCHA Enterprise API
+    const requestBody = {
+      event: {
+        token: token,
+        expectedAction: action,
+        siteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+      }
+    };
+
+    // Log the request for debugging
+    console.log('Sending request to reCAPTCHA API:', 
+      `https://recaptchaenterprise.googleapis.com/v1/projects/${projectId}/assessments?key=${process.env.RECAPTCHA_API_KEY.substring(0, 5)}...`);
+    console.log('Request body:', JSON.stringify(requestBody, null, 2));
+
+    // Send request to Google's reCAPTCHA Enterprise API
     const response = await fetch(
-      'https://www.google.com/recaptcha/api/siteverify',
+      `https://recaptchaenterprise.googleapis.com/v1/projects/${projectId}/assessments?key=${process.env.RECAPTCHA_API_KEY}`,
       {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/x-www-form-urlencoded' 
+        headers: {
+          'Content-Type': 'application/json',
         },
-        body: new URLSearchParams({
-          secret: process.env.RECAPTCHA_SECRET_KEY,
-          response: token
-        })
+        body: JSON.stringify(requestBody),
       }
     );
 
@@ -39,10 +51,10 @@ async function verifyRecaptchaToken(token: string, action: string) {
       console.error(`reCAPTCHA API error: ${response.status} ${response.statusText}`);
       console.error('Error details:', errorText);
       
-      // Temporarily bypass verification for errors during testing
-      if (process.env.NODE_ENV === 'development') {
-        console.log('DEV MODE: Bypassing error and accepting form submission');
-        return { valid: true, score: 0.9, warning: 'API Error bypassed in development' };
+      // Temporarily bypass verification for 403 errors during testing
+      if (response.status === 403 && process.env.NODE_ENV === 'development') {
+        console.log('DEV MODE: Bypassing 403 error and accepting form submission');
+        return { valid: true, score: 0.9, warning: 'API Error 403 bypassed in development' };
       }
       
       return { valid: false, score: 0, error: `API error: ${response.status}` };
@@ -52,11 +64,11 @@ async function verifyRecaptchaToken(token: string, action: string) {
     console.log('reCAPTCHA verification response:', JSON.stringify(data, null, 2));
     
     // Check if token is valid and risk score is acceptable
-    if (data.success && data.score >= 0.5) {
-      return { valid: true, score: data.score };
+    if (data.tokenProperties?.valid && data.riskAnalysis?.score >= 0.5) {
+      return { valid: true, score: data.riskAnalysis?.score };
     }
     
-    return { valid: false, score: data.score || 0, error: data['error-codes']?.join(', ') };
+    return { valid: false, score: data.riskAnalysis?.score || 0 };
   } catch (error) {
     console.error('Error verifying reCAPTCHA token:', error);
     return { valid: false, score: 0, error: String(error) };

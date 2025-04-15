@@ -87,15 +87,15 @@ export default function AboutUsPage() {
       let recaptchaToken = "";
       
       // @ts-ignore - window.grecaptcha is added by the script
-      if (window.grecaptcha) {
+      if (window.grecaptcha && window.grecaptcha.enterprise) {
         try {
-          // @ts-ignore - window.grecaptcha.execute returns a promise
+          // @ts-ignore - window.grecaptcha.enterprise.execute returns a promise
           recaptchaToken = await new Promise((resolve, reject) => {
             // @ts-ignore
-            window.grecaptcha.ready(async () => {
+            window.grecaptcha.enterprise.ready(async () => {
               try {
                 // @ts-ignore
-                const token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: 'CONTACT_FORM'});
+                const token = await window.grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, {action: 'CONTACT_FORM'});
                 resolve(token);
               } catch (error) {
                 console.error("reCAPTCHA execution error:", error);
@@ -702,7 +702,7 @@ export default function AboutUsPage() {
       <Footer />
 
       {/* Google reCAPTCHA Enterprise Script */}
-      <Script src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
+      <Script src={`https://www.google.com/recaptcha/enterprise.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
     </div>
   )
 }

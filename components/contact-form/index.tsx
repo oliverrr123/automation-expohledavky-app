@@ -17,7 +17,7 @@ declare global {
     grecaptcha: {
       ready: (callback: () => void) => void;
       execute: (siteKey: string, options: { action: string }) => Promise<string>;
-      enterprise?: {
+      enterprise: {
         ready: (callback: () => void) => void;
         execute: (siteKey: string, options: { action: string }) => Promise<string>;
       };
@@ -132,12 +132,12 @@ export function ContactForm({
       // Get reCAPTCHA Enterprise token
       let recaptchaToken = "";
       
-      if (window.grecaptcha) {
+      if (window.grecaptcha && window.grecaptcha.enterprise) {
         try {
           recaptchaToken = await new Promise((resolve, reject) => {
-            window.grecaptcha.ready(async () => {
+            window.grecaptcha.enterprise.ready(async () => {
               try {
-                const token = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, {action: formAction});
+                const token = await window.grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, {action: formAction});
                 resolve(token);
               } catch (error) {
                 console.error("reCAPTCHA execution error:", error);
@@ -412,8 +412,8 @@ export function ContactForm({
         </SectionWrapper>
       </div>
 
-      {/* reCAPTCHA v3 Script */}
-      <Script src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
+      {/* reCAPTCHA Enterprise Script */}
+      <Script src={`https://www.google.com/recaptcha/enterprise.js?render=${RECAPTCHA_SITE_KEY}`} strategy="afterInteractive" />
     </section>
   )
 } 

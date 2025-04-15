@@ -315,41 +315,12 @@ export default function OdkupSmenekPage() {
                 name: true,
                 email: true,
                 phone: true,
-                amount: true, // Include amount field for promissory notes purchase
+                amount: false, // Remove amount field
                 message: true,
               }}
               formAction="PROMISSORY_NOTES_FORM"
               showSidebar={true}
-              translations={{
-                form: {
-                  name: {
-                    label: "Jméno a příjmení",
-                    placeholder: "Vaše jméno a příjmení"
-                  },
-                  email: {
-                    label: "E-mail",
-                    placeholder: "vas@email.cz"
-                  },
-                  phone: {
-                    label: "Telefonní kontakt",
-                    placeholder: "+420 XXX XXX XXX"
-                  },
-                  amount: {
-                    label: "Nominální hodnota směnky",
-                    placeholder: "Částka v Kč"
-                  },
-                  message: {
-                    label: "Vaše zpráva",
-                    placeholder: "Popište detaily směnky (typ, datum splatnosti, výstavce, směnečný dlužník)..."
-                  },
-                  submitButton: "Odeslat poptávku",
-                  submitting: "Odesílání...",
-                  success: "Zpráva odeslána!",
-                  error: "Zkuste to prosím znovu",
-                  phoneError: "Zadejte platné telefonní číslo",
-                  generalError: "Došlo k chybě. Zkuste to prosím znovu."
-                }
-              }}
+              translations={formTranslations?.contactForm?.form}
               serviceName="Odkup směnek"
               sidebarTitle={t?.contactForm?.sidebarTitle || formTranslations?.serviceSidebarTitles?.promissoryNotes || "Proč prodat směnky nám?"}
               sidebarReasons={t?.contactForm?.sidebarReasons || formTranslations?.serviceSidebarReasons?.promissoryNotes || [

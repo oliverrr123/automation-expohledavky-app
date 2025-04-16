@@ -1,9 +1,19 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function PaymentSuccessRedirect() {
+// Loading component to show while suspended
+function Loading() {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="animate-pulse text-gray-400">Wird geladen...</div>
+    </div>
+  );
+}
+
+// Inner component that uses searchParams
+function PaymentSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isTriggering, setIsTriggering] = useState(false);
@@ -52,5 +62,13 @@ export default function PaymentSuccessRedirect() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="animate-pulse text-gray-400">Wird geladen...</div>
     </div>
+  );
+}
+
+export default function PaymentSuccessRedirect() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <PaymentSuccessContent />
+    </Suspense>
   );
 }

@@ -312,8 +312,7 @@ export async function sendEmail(data: EmailData) {
         // Email to admin
         await transporter.sendMail({
             from: emailConfig.auth.user,
-            // to: emailConfig.auth.user,
-            to: data.email,
+            to: emailConfig.auth.user,
             subject: `${template.formSubject}${serviceNamePart}`,
             html: `
 <!DOCTYPE html>

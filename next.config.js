@@ -40,17 +40,6 @@ const nextConfig = {
   // Configuration for content image access
   async rewrites() {
     return {
-      beforeFiles: [
-        // Handle problematic routes by redirecting to functioning pages
-        {
-          source: '/lustrace/payment-success',
-          destination: '/lustrace',
-        },
-        {
-          source: '/nase-sluzby/odkup-firiem',
-          destination: '/nase-sluzby',
-        },
-      ],
       afterFiles: [
         // Simple image path
         {

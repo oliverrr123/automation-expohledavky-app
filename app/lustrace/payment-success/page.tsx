@@ -16,6 +16,9 @@ export const dynamic = 'force-dynamic';
 // Create a component that uses the params - this will be wrapped in Suspense
 function PaymentSuccessContent() {
   const [isLoading, setIsLoading] = useState(true)
+  const [emailSent, setEmailSent] = useState(false)
+  const [emailError, setEmailError] = useState<string | null>(null)
+  
   const searchParams = useSearchParams()
   const paymentIntentId = searchParams.get('payment_intent')
   const paymentStatus = searchParams.get('redirect_status')
@@ -78,6 +81,23 @@ function PaymentSuccessContent() {
           .catch(error => {
             console.error('Error updating payment intent with notes:', error);
           });
+          
+          // NEW: Manually trigger the email (because webhook might not work locally)
+          console.log('Manually triggering confirmation email...');
+          fetch(`/api/stripe/trigger-email?payment_intent_id=${paymentIntentId}`)
+          .then(response => response.json())
+          .then(data => {
+            console.log('Email trigger response:', data);
+            if (data.success) {
+              setEmailSent(true);
+            } else {
+              setEmailError(data.error || 'Unknown error');
+            }
+          })
+          .catch(error => {
+            console.error('Error triggering confirmation email:', error);
+            setEmailError(error.message || 'Failed to send confirmation email');
+          });
         } catch (err) {
           console.error('Could not update payment intent:', err);
         }
@@ -115,6 +135,18 @@ function PaymentSuccessContent() {
           <p className="text-gray-600 text-lg">
             {t?.success?.message || 'Thank you for your payment. Your order has been processed successfully.'}
           </p>
+          
+          {emailSent && (
+            <p className="mt-2 text-green-600 text-sm">
+              ✓ Confirmation email sent successfully
+            </p>
+          )}
+          
+          {emailError && (
+            <p className="mt-2 text-amber-600 text-sm">
+              Note: We couldn't send a confirmation email automatically. Our team will contact you shortly.
+            </p>
+          )}
         </div>
         
         {paymentIntentId && (

@@ -24,9 +24,9 @@ export function getInitialLocale(): string {
       hostname = host;
       
       // Determine locale from domain - STRICT mapping with no fallbacks
-      if (hostname.includes('expohledavky.com')) return 'en';
-      if (hostname.includes('expohledavky.sk')) return 'sk';
-      if (hostname.includes('expohledavky.de')) return 'de';
+      if (hostname.includes('exreceivables.com')) return 'en';
+      if (hostname.includes('expohladavky.sk')) return 'sk';
+      if (hostname.includes('exforderungen.de')) return 'de';
       if (hostname.includes('expohledavky.cz')) return 'cs';
       
       // Development environment subdomains - STRICT mapping
@@ -85,9 +85,9 @@ export function getInitialLocale(): string {
     const domain = hostname.split(':')[0];
     
     // Production domains - STRICT mapping
-    if (domain.includes('expohledavky.com')) return 'en';
-    if (domain.includes('expohledavky.sk')) return 'sk';
-    if (domain.includes('expohledavky.de')) return 'de';
+    if (domain.includes('exreceivables.com')) return 'en';
+    if (domain.includes('expohladavky.sk')) return 'sk';
+    if (domain.includes('exforderungen.de')) return 'de';
     if (domain.includes('expohledavky.cz')) return 'cs';
     
     // Development environment subdomains - STRICT mapping
@@ -122,9 +122,9 @@ export function getDomainBasedTranslations(
     const domain = hostname.split(':')[0];
     
     // Determine locale from domain - STRICT mapping with no fallbacks
-    if (domain.includes('expohledavky.com')) locale = 'en';
-    else if (domain.includes('expohledavky.sk')) locale = 'sk';
-    else if (domain.includes('expohledavky.de')) locale = 'de';
+    if (domain.includes('exreceivables.com')) locale = 'en';
+    else if (domain.includes('expohladavky.sk')) locale = 'sk';
+    else if (domain.includes('exforderungen.de')) locale = 'de';
     else if (domain.includes('expohledavky.cz')) locale = 'cs';
     
     // Development environment - determine locale from subdomain - STRICT mapping

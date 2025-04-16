@@ -1,10 +1,10 @@
 // Instead of importing from middleware, define the mapping directly here
 // This avoids circular dependencies and ensures compatibility with Pages Router
 export const DOMAIN_LANG_MAP: Record<string, string> = {
-  'expohledavky.com': 'en',
+  'exreceivables.com': 'en',
   'expohledavky.cz': 'cs',
-  'expohledavky.sk': 'sk',
-  'expohledavky.de': 'de',
+  'expohladavky.sk': 'sk',
+  'exforderungen.de': 'de',
   'en.localhost:3000': 'en',
   'cs.localhost:3000': 'cs',
   'sk.localhost:3000': 'sk',
@@ -37,9 +37,9 @@ export function getLanguageFromHostname(hostname: string): string {
   const domain = hostname.split(':')[0];
   
   // Check for production domains
-  if (domain.includes('expohledavky.com')) return 'en';
-  if (domain.includes('expohledavky.sk')) return 'sk';
-  if (domain.includes('expohledavky.de')) return 'de';
+  if (domain.includes('exreceivables.com')) return 'en';
+  if (domain.includes('expohladavky.sk')) return 'sk';
+  if (domain.includes('exforderungen.de')) return 'de';
   if (domain.includes('expohledavky.cz')) return 'cs';
   
   // Development environment - determine language from subdomain
@@ -86,10 +86,10 @@ export function getDomainForLanguage(lang: string): string {
   
   // Production environment - direct mapping with no defaults
   switch (lang) {
-    case 'en': return 'expohledavky.com';
+    case 'en': return 'exreceivables.com';
     case 'cs': return 'expohledavky.cz';
-    case 'sk': return 'expohledavky.sk';
-    case 'de': return 'expohledavky.de';
+    case 'sk': return 'expohladavky.sk';
+    case 'de': return 'exforderungen.de';
     default: return '';
   }
 } 

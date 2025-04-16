@@ -11,13 +11,13 @@ const COUNTRY_DOMAIN_MAP: Record<string, string> = {
   // Czech Republic
   CZ: 'expohledavky.cz',
   // Slovakia
-  SK: 'expohledavky.sk',
+  SK: 'expohladavky.sk',
   // Germany, Austria, Switzerland
-  DE: 'expohledavky.de',
-  AT: 'expohledavky.de',
-  CH: 'expohledavky.de',
+  DE: 'exforderungen.de',
+  AT: 'exforderungen.de',
+  CH: 'exforderungen.de',
   // English for all other countries
-  DEFAULT: 'expohledavky.com',
+  DEFAULT: 'exreceivables.com',
 }
 
 // Map of country codes to subdomains for development environment
@@ -75,9 +75,9 @@ export function middleware(request: NextRequest) {
   } else {
     // Production environment - determine locale from domain
     if (hostname.includes('expohledavky.cz') || hostname.startsWith('cs.expohledavky-app.vercel.app') || hostname === 'cs.expohledavky.olivercingl.com') locale = 'cs';
-    else if (hostname.includes('expohledavky.sk') || hostname.startsWith('sk.expohledavky-app.vercel.app') || hostname === 'sk.expohledavky.olivercingl.com') locale = 'sk';
-    else if (hostname.includes('expohledavky.de') || hostname.startsWith('de.expohledavky-app.vercel.app') || hostname === 'de.expohledavky.olivercingl.com') locale = 'de';
-    else if (hostname.includes('expohledavky.com') || hostname.startsWith('en.expohledavky-app.vercel.app') || hostname === 'en.expohledavky.olivercingl.com') locale = 'en';
+    else if (hostname.includes('expohladavky.sk') || hostname.startsWith('sk.expohledavky-app.vercel.app') || hostname === 'sk.expohledavky.olivercingl.com') locale = 'sk';
+    else if (hostname.includes('exforderungen.de') || hostname.startsWith('de.expohledavky-app.vercel.app') || hostname === 'de.expohledavky.olivercingl.com') locale = 'de';
+    else if (hostname.includes('exreceivables.com') || hostname.startsWith('en.expohledavky-app.vercel.app') || hostname === 'en.expohledavky.olivercingl.com') locale = 'en';
     // Fallback for the main Vercel preview domain
     else if (hostname.includes('expohledavky-app.vercel.app') || hostname === 'expohledavky.olivercingl.com') locale = 'cs'; // Default to Czech
     // No default for other unknown domains

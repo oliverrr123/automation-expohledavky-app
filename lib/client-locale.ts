@@ -22,9 +22,9 @@ export function getCurrentLocale(): string {
     const hostname = window.location.hostname;
     
     // Produkční domény
-    if (hostname.includes('expohledavky.com')) return 'en';
-    if (hostname.includes('expohledavky.sk')) return 'sk';
-    if (hostname.includes('expohledavky.de')) return 'de';
+    if (hostname.includes('exreceivables.com')) return 'en';
+    if (hostname.includes('expohladavky.sk')) return 'sk';
+    if (hostname.includes('exforderungen.de')) return 'de';
     if (hostname.includes('expohledavky.cz')) return 'cs';
     
     // Vývojové subdomény

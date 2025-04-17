@@ -21,15 +21,15 @@
       "title": "Směnka bez protestu",
       "description": "Vzor ke stažení zdarma",
       "content": "Vzor směnky bez protestu ke stažení zdarma. Náhled vyplněné směnky včetně prázdného vzoru pro stažení a vyplnění.",
-      "imageUrl": "https://expohledavky.cz/uploads/vzory/smenka-bez-protestu.jpg",
+      "imageUrl": "/documents/smenka-bez-protestu.jpg",
       "imageAlt": "Směnka bez protestu",
       "downloadOptions": [
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/smenka-bez-protestu-k-vyplneni.doc",
+          "url": "/documents/smenka-bez-protestu-k-vyplneni.doc",
           "label": "Stáhnout DOC"
         },
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/smenka-bez-protestu-k-vyplneni.pdf",
+          "url": "/documents/smenka-bez-protestu-k-vyplneni.pdf",
           "label": "Stáhnout PDF"
         }
       ],
@@ -41,11 +41,11 @@
       "title": "Smlouva o zápůjčce",
       "description": "Vzor ke stažení zdarma",
       "content": "Vzor smlouvy o zápůjčce ke stažení zdarma. Dokument je připraven k vyplnění a použití pro vaše potřeby.",
-      "imageUrl": "https://expohledavky.cz/uploads/vzory/smlouva-o-zapujcce.jpg",
+      "imageUrl": "/documents/smlouva-o-zapujcce.jpg",
       "imageAlt": "Smlouva o zápůjčce",
       "downloadOptions": [
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/smlouva-o-zapujcce-k-vyplneni.doc",
+          "url": "/documents/smlouva-o-zapujcce.doc",
           "label": "Stáhnout DOC"
         }
       ],
@@ -57,15 +57,15 @@
       "title": "Uznání dluhu a dohoda o splátkách",
       "description": "Vzor ke stažení zdarma",
       "content": "Vzor uznání dluhu a dohody o splátkách ke stažení zdarma. Náhled vyplněného dokumentu včetně prázdného vzoru.",
-      "imageUrl": "https://expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.jpg",
+      "imageUrl": "/documents/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.jpg",
       "imageAlt": "Uznání dluhu a dohoda o splátkách",
       "downloadOptions": [
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.doc",
+          "url": "/documents/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.doc",
           "label": "Stáhnout DOC"
         },
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.pdf",
+          "url": "/documents/uznani-dluhu-a-dohoda-o-splatkach-vzor.pdf",
           "label": "Stáhnout PDF"
         }
       ],

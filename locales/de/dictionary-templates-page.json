@@ -21,15 +21,15 @@
       "title": "Wechsel ohne Protest",
       "description": "Vorlage zum kostenlosen Download",
       "content": "Vorlage für einen Wechsel ohne Protest zum kostenlosen Download. Vorschau eines ausgefüllten Wechsels inklusive leerer Vorlage zum Download und Ausfüllen.",
-      "imageUrl": "https://expohledavky.cz/uploads/vzory/smenka-bez-protestu.jpg",
+      "imageUrl": "/documents/smenka-bez-protestu.jpg",
       "imageAlt": "Wechsel ohne Protest",
       "downloadOptions": [
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/smenka-bez-protestu-k-vyplneni.doc",
+          "url": "/documents/smenka-bez-protestu-k-vyplneni.doc",
           "label": "DOC herunterladen"
         },
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/smenka-bez-protestu-k-vyplneni.pdf",
+          "url": "/documents/smenka-bez-protestu-k-vyplneni.pdf",
           "label": "PDF herunterladen"
         }
       ],
@@ -41,11 +41,11 @@
       "title": "Darlehensvertrag",
       "description": "Vorlage zum kostenlosen Download",
       "content": "Vorlage für einen Darlehensvertrag zum kostenlosen Download. Das Dokument ist zum Ausfüllen und zur Verwendung für Ihre Bedürfnisse vorbereitet.",
-      "imageUrl": "https://expohledavky.cz/uploads/vzory/smlouva-o-zapujcce.jpg",
+      "imageUrl": "/documents/smlouva-o-zapujcce.jpg",
       "imageAlt": "Darlehensvertrag",
       "downloadOptions": [
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/smlouva-o-zapujcce-k-vyplneni.doc",
+          "url": "/documents/smlouva-o-zapujcce.doc",
           "label": "DOC herunterladen"
         }
       ],
@@ -57,15 +57,15 @@
       "title": "Schuldanerkenntnis und Ratenzahlungsvereinbarung",
       "description": "Vorlage zum kostenlosen Download",
       "content": "Vorlage für eine Schuldanerkenntnis und Ratenzahlungsvereinbarung zum kostenlosen Download. Vorschau eines ausgefüllten Dokuments inklusive leerer Vorlage.",
-      "imageUrl": "https://expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.jpg",
+      "imageUrl": "/documents/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.jpg",
       "imageAlt": "Schuldanerkenntnis und Ratenzahlungsvereinbarung",
       "downloadOptions": [
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.doc",
+          "url": "/documents/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.doc",
           "label": "DOC herunterladen"
         },
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.pdf",
+          "url": "/documents/uznani-dluhu-a-dohoda-o-splatkach-vzor.pdf",
           "label": "PDF herunterladen"
         }
       ],

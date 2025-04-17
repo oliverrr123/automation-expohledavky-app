@@ -21,15 +21,15 @@
       "title": "Promissory note without protest",
       "description": "Template for free download",
       "content": "Template of promissory note without protest for free download. Preview of a filled promissory note including a blank template for download and completion.",
-      "imageUrl": "https://expohledavky.cz/uploads/vzory/smenka-bez-protestu.jpg",
+      "imageUrl": "/documents/smenka-bez-protestu.jpg",
       "imageAlt": "Promissory note without protest",
       "downloadOptions": [
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/smenka-bez-protestu-k-vyplneni.doc",
+          "url": "/documents/smenka-bez-protestu-k-vyplneni.doc",
           "label": "Download DOC"
         },
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/smenka-bez-protestu-k-vyplneni.pdf",
+          "url": "/documents/smenka-bez-protestu-k-vyplneni.pdf",
           "label": "Download PDF"
         }
       ],
@@ -41,11 +41,11 @@
       "title": "Loan agreement",
       "description": "Template for free download",
       "content": "Template of loan agreement for free download. The document is ready to be filled in and used for your needs.",
-      "imageUrl": "https://expohledavky.cz/uploads/vzory/smlouva-o-zapujcce.jpg",
+      "imageUrl": "/documents/smlouva-o-zapujcce.jpg",
       "imageAlt": "Loan agreement",
       "downloadOptions": [
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/smlouva-o-zapujcce-k-vyplneni.doc",
+          "url": "/documents/smlouva-o-zapujcce.doc",
           "label": "Download DOC"
         }
       ],
@@ -57,15 +57,15 @@
       "title": "Acknowledgement of debt and installment agreement",
       "description": "Template for free download",
       "content": "Template of acknowledgement of debt and installment agreement for free download. Preview of a filled document including a blank template.",
-      "imageUrl": "https://expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.jpg",
+      "imageUrl": "/documents/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.jpg",
       "imageAlt": "Acknowledgement of debt and installment agreement",
       "downloadOptions": [
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.doc",
+          "url": "/documents/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.doc",
           "label": "Download DOC"
         },
         {
-          "url": "https://www.expohledavky.cz/uploads/vzory/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.pdf",
+          "url": "/documents/uznani-dluhu-a-dohoda-o-splatkach-vzor.pdf",
           "label": "Download PDF"
         }
       ],

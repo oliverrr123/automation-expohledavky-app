@@ -22,7 +22,7 @@
         { "name": "Likvidace firem", "href": "nase-sluzby/likvidace-firem" },
         { "name": "Krizový management", "href": "nase-sluzby/krizovy-management" },
         { "name": "Odkup směnek", "href": "nase-sluzby/odkup-smenek" },
-        { "name": "Partner v Lichtenštejnsku", "href": "https://expohledavky.cz/firstAdvisoryGroup.pdf", "target": "_blank" }
+        { "name": "Partner v Lichtenštejnsku", "href": "/documents/firstAdvisoryGroup.pdf", "target": "_blank" }
       ]
     },
     { "name": "Ceník", "href": "cenik" },

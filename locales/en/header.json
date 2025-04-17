@@ -20,8 +20,7 @@
         { "name": "Purchase & Sale of Receivables", "href": "services/receivables-purchase" },
         { "name": "Company Acquisition", "href": "services/company-purchase" },
         { "name": "Company Liquidation", "href": "services/company-liquidation" },
-        { "name": "Crisis Management", "href": "our-services/crisis-management" },
-        { "name": "Purchase of Bills of Exchange", "href": "our-services/purchase-bills-exchange" },
+        { "name": "Crisis Management", "href": "services/crisis-management" },
         { "name": "Promissory Notes Purchase", "href": "services/promissory-notes" },
         { "name": "Partner in Liechtenstein", "href": "/documents/firstAdvisoryGroup.pdf", "target": "_blank" }
       ]

@@ -39,12 +39,6 @@ export default function SearchBox({
   // Fetch suggestions when search query changes
   useEffect(() => {
     const fetchSuggestions = async () => {
-      if (searchQuery.trim().length < 2) {
-        setSuggestions([]);
-        setShowSuggestions(false);
-        return;
-      }
-      
       setIsLoading(true);
       
       try {
@@ -283,7 +277,7 @@ export default function SearchBox({
                 )}</span>
                 {post.locale !== locale && <span>{getLocaleFlag(post.locale)}</span>}
               </div>
-              <h4 className="font-medium text-zinc-900">
+              <h4 className="font-medium text-left text-zinc-900">
                 {highlightMatch(post.frontMatter.title, searchQuery)}
               </h4>
               {post.frontMatter.description && (

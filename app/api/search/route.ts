@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     
     console.log(`Searching for "${query}" in locale "${locale}"`);
     
-    if (!query || query.trim().length < 2) {
+    if (!query) {
       return NextResponse.json({ results: [] });
     }
     

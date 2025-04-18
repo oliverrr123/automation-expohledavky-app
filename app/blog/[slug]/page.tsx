@@ -13,13 +13,15 @@ import { getLocalizedPath } from '@/lib/route-mapping';
 function getServerLocale(): string {
   // Získání informací z hlaviček (hostname)
   const headersList = headers();
-  const hostname = headersList.get('host') || '';
+  // Prioritize x-forwarded-host, fall back to host
+  const hostname = headersList.get('x-forwarded-host') || headersList.get('host') || ''; 
   const domain = hostname.split(':')[0];
+  console.log(`getServerLocale: Checking domain from headers: ${domain}`); // Add logging
   
   // Vyhodnocení domény
-  if (domain.includes('expohledavky.com')) return 'en';
-  if (domain.includes('expohledavky.sk')) return 'sk';
-  if (domain.includes('expohledavky.de')) return 'de';
+  if (domain.includes('exreceivables.com')) return 'en';
+  if (domain.includes('expohladavky.sk')) return 'sk';
+  if (domain.includes('exforderungen.de')) return 'de';
   if (domain.includes('expohledavky.cz')) return 'cs';
   
   // Vývoj - subdomény
@@ -48,7 +50,6 @@ export async function generateStaticParams() {
       }
       
       const localePaths = slugs.map(slug => ({
-        locale: locale, 
         slug: slug
       }));
       paths.push(...localePaths);
@@ -63,8 +64,9 @@ export async function generateStaticParams() {
 
 // Metadata for SEO
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  // Get the locale from server context
-  const locale = getServerLocale();
+  // Get the locale from server context (uses the updated getServerLocale)
+  const locale = getServerLocale(); 
+  console.log(`generateMetadata: Using locale ${locale}`); // Add logging
   const post = await getPostBySlug(params.slug, locale);
   
   // Handle case when post doesn't exist
@@ -94,24 +96,19 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string, locale: string } }) {
-  // --- Add detailed logging --- 
-  console.log('--- BlogPostPage ---');
-  console.log('Received params:', JSON.stringify(params));
-  // --- End detailed logging --- 
-
-  // Use params.locale directly
-  const locale = params.locale;
-  console.log(`Using locale from params: ${locale}`); // Log the locale being used
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  // REINSTATE getServerLocale call
+  const locale = getServerLocale();
+  console.log(`Using locale from getServerLocale: ${locale}`); // Update log message
   
-  // Get post content based on locale from params
+  // Get post content based on runtime locale
   const post = await getPostBySlug(params.slug, locale);
   console.log(`Result of getPostBySlug for locale ${locale}:`, post ? 'Found' : 'Not Found'); // Log the outcome
   
-  // If the article doesn't exist for the specific locale provided in params, show error page
+  // If the article doesn't exist for the detected runtime locale, show error page
   if (!post) {
-    // Log information for debugging purposes - Use params.locale explicitly
-    console.log(`Post ${params.slug} not found for locale ${params.locale}.`);
+    // Log information for debugging purposes - Use runtime locale
+    console.log(`Post ${params.slug} not found for runtime locale ${locale}.`);
     
     return notFound();
   }
@@ -148,7 +145,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string,
     });
   }
 
-  // Create sharing URLs - use appropriate domain based on locale from params
+  // Create sharing URLs - use appropriate domain based on runtime locale
   const domain = locale === 'cs' ? 'expohledavky.cz' :
                  locale === 'sk' ? 'expohladavky.sk' :
                  locale === 'de' ? 'exforderungen.de' :

@@ -43,7 +43,7 @@ const COUNTRY_SUBDOMAIN_MAP: Record<string, string> = {
 export function middleware(request: NextRequest) {
   const isDev = process.env.NODE_ENV === 'development';
   
-  // Get hostname (e.g. expohledavky.com, expohledavky.cz, localhost:3000)
+  // Get hostname (e.g. exreceivables.com, expohledavky.cz, localhost:3000)
   const hostname = request.headers.get('host') || '';
   
   // Skip processing if it's a static asset or API request

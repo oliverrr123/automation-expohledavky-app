@@ -30,9 +30,9 @@ function getServerLocale(): string {
     const domain = hostname.split(':')[0];
     
     // Production domains - STRICT mapping with no fallbacks
-    if (domain.includes('expohledavky.com')) return 'en';
-    if (domain.includes('expohledavky.sk')) return 'sk';
-    if (domain.includes('expohledavky.de')) return 'de';
+    if (domain.includes('exreceivables.com')) return 'en';
+    if (domain.includes('expohladavky.sk')) return 'sk';
+    if (domain.includes('exforderungen.de')) return 'de';
     if (domain.includes('expohledavky.cz')) return 'cs';
     
     // Development environment subdomains - STRICT mapping

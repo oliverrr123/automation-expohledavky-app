@@ -90,9 +90,9 @@ export default function ContactPage() {
         let localeFromHostname = 'cs'; // default
         
         // Production domains - STRICT mapping
-        if (hostname.includes('expohledavky.com')) localeFromHostname = 'en';
-        else if (hostname.includes('expohledavky.sk')) localeFromHostname = 'sk';
-        else if (hostname.includes('expohledavky.de')) localeFromHostname = 'de';
+        if (hostname.includes('exreceivables.com')) localeFromHostname = 'en';
+        else if (hostname.includes('expohladavky.sk')) localeFromHostname = 'sk';
+        else if (hostname.includes('exforderungen.de')) localeFromHostname = 'de';
         else if (hostname.includes('expohledavky.cz')) localeFromHostname = 'cs';
         
         // Development environment - determine locale from subdomain

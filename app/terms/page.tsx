@@ -103,7 +103,7 @@ export default function TermsOfServicePage() {
               <div className="bg-white rounded-xl shadow-sm p-8">
                 <h2 className="text-2xl font-bold mb-4">{t?.sections?.contact?.title || "10. Contact Us"}</h2>
                 <div className="prose prose-zinc max-w-none">
-                  <p>{t?.sections?.contact?.content || "If you have any questions about these Terms, please contact us at info@expohledavky.com."}</p>
+                  <p>{t?.sections?.contact?.content || "If you have any questions about these Terms, please contact us at info@exreceivables.com."}</p>
                 </div>
               </div>
             </SectionWrapper>

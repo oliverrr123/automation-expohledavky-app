@@ -95,11 +95,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string, locale: string } }) {
+  // --- Add detailed logging --- 
+  console.log('--- BlogPostPage ---');
+  console.log('Received params:', JSON.stringify(params));
+  // --- End detailed logging --- 
+
   // Use params.locale directly
   const locale = params.locale;
+  console.log(`Using locale from params: ${locale}`); // Log the locale being used
   
   // Get post content based on locale from params
   const post = await getPostBySlug(params.slug, locale);
+  console.log(`Result of getPostBySlug for locale ${locale}:`, post ? 'Found' : 'Not Found'); // Log the outcome
   
   // If the article doesn't exist for the specific locale provided in params, show error page
   if (!post) {

@@ -127,95 +127,100 @@ export function middleware(request: NextRequest) {
   // Step 1: For non-Czech locales, we need to map the route to the Czech structure
   // since our app directory uses Czech paths
   if (locale !== 'cs') {
-    // Get the clean path without leading slash
-    const pathWithoutLeadingSlash = pathname.startsWith('/') ? pathname.slice(1) : pathname;
-    
-    // Create a rewrite URL that will be modified if a mapping is found
-    const url = request.nextUrl.clone();
-    let shouldRewrite = false;
-    
-    // Case 1: For English (canonical) routes
-    if (locale === 'en') {
-      // The pathname is in English/canonical form, find the Czech equivalent
-      const canonicalPath = pathWithoutLeadingSlash;
-      const czechPath = CANONICAL_TO_LOCALIZED['cs'][canonicalPath];
+    // Skip rewrite attempts for blog post slugs, as they are handled by the dynamic route itself
+    if (pathname.startsWith('/blog/') && !pathname.startsWith('/blog/search')) {
+       // Proceed without rewrite, just set headers/cookies later
+    } else {
+      // Get the clean path without leading slash
+      const pathWithoutLeadingSlash = pathname.startsWith('/') ? pathname.slice(1) : pathname;
       
-      if (czechPath) {
-        url.pathname = `/${czechPath}`;
-        shouldRewrite = true;
-      }
-    } 
-    // Case 2: For German routes
-    else if (locale === 'de') {
-      // Convert German path to canonical (English), then to Czech
-      const canonicalPath = getCanonicalPath('de', pathWithoutLeadingSlash);
+      // Create a rewrite URL that will be modified if a mapping is found
+      const url = request.nextUrl.clone();
+      let shouldRewrite = false;
       
-      if (canonicalPath) {
+      // Case 1: For English (canonical) routes
+      if (locale === 'en') {
+        // The pathname is in English/canonical form, find the Czech equivalent
+        const canonicalPath = pathWithoutLeadingSlash;
         const czechPath = CANONICAL_TO_LOCALIZED['cs'][canonicalPath];
         
         if (czechPath) {
           url.pathname = `/${czechPath}`;
           shouldRewrite = true;
         }
-      }
-      
-      // Direct conversion for common paths
-      // This is a fallback for paths not in route mapping
-      if (!shouldRewrite) {
-        // Try some common direct conversions
-        if (pathWithoutLeadingSlash === 'uber-uns') {
-          url.pathname = '/o-nas';
-          shouldRewrite = true;
-        } else if (pathWithoutLeadingSlash === 'unsere-leistungen') {
-          url.pathname = '/nase-sluzby';
-          shouldRewrite = true;
-        }
-      }
-    }
-    // Case 3: For Slovak routes
-    else if (locale === 'sk') {
-      // Convert Slovak path to canonical (English), then to Czech
-      const canonicalPath = getCanonicalPath('sk', pathWithoutLeadingSlash);
-      
-      if (canonicalPath) {
-        const czechPath = CANONICAL_TO_LOCALIZED['cs'][canonicalPath];
+      } 
+      // Case 2: For German routes
+      else if (locale === 'de') {
+        // Convert German path to canonical (English), then to Czech
+        const canonicalPath = getCanonicalPath('de', pathWithoutLeadingSlash);
         
-        if (czechPath) {
-          url.pathname = `/${czechPath}`;
-          shouldRewrite = true;
+        if (canonicalPath) {
+          const czechPath = CANONICAL_TO_LOCALIZED['cs'][canonicalPath];
+          
+          if (czechPath) {
+            url.pathname = `/${czechPath}`;
+            shouldRewrite = true;
+          }
+        }
+        
+        // Direct conversion for common paths
+        // This is a fallback for paths not in route mapping
+        if (!shouldRewrite) {
+          // Try some common direct conversions
+          if (pathWithoutLeadingSlash === 'uber-uns') {
+            url.pathname = '/o-nas';
+            shouldRewrite = true;
+          } else if (pathWithoutLeadingSlash === 'unsere-leistungen') {
+            url.pathname = '/nase-sluzby';
+            shouldRewrite = true;
+          }
+        }
+      }
+      // Case 3: For Slovak routes
+      else if (locale === 'sk') {
+        // Convert Slovak path to canonical (English), then to Czech
+        const canonicalPath = getCanonicalPath('sk', pathWithoutLeadingSlash);
+        
+        if (canonicalPath) {
+          const czechPath = CANONICAL_TO_LOCALIZED['cs'][canonicalPath];
+          
+          if (czechPath) {
+            url.pathname = `/${czechPath}`;
+            shouldRewrite = true;
+          }
+        }
+        
+        // Direct mapping for common Slovak paths
+        // As Slovak is similar to Czech, we might be able to use the path directly
+        if (!shouldRewrite) {
+          // Try using the same path, as many Slovak paths match Czech ones
+          if (pathWithoutLeadingSlash === 'o-nas' || 
+              pathWithoutLeadingSlash === 'nase-sluzby' ||
+              pathWithoutLeadingSlash === 'blog' ||
+              pathWithoutLeadingSlash === 'kontakt') {
+            // Same path can be used directly
+            shouldRewrite = false; // No rewrite needed, existing files should work
+          }
         }
       }
       
-      // Direct mapping for common Slovak paths
-      // As Slovak is similar to Czech, we might be able to use the path directly
-      if (!shouldRewrite) {
-        // Try using the same path, as many Slovak paths match Czech ones
-        if (pathWithoutLeadingSlash === 'o-nas' || 
-            pathWithoutLeadingSlash === 'nase-sluzby' ||
-            pathWithoutLeadingSlash === 'blog' ||
-            pathWithoutLeadingSlash === 'kontakt') {
-          // Same path can be used directly
-          shouldRewrite = false; // No rewrite needed, existing files should work
-        }
+      // Apply rewrite if a mapping was found
+      if (shouldRewrite) {
+        // Create a response for setting cookies
+        const response = NextResponse.rewrite(url);
+        
+        // Set locale cookie
+        response.cookies.set(LOCALE_COOKIE, locale, {
+          path: '/',
+          maxAge: 60 * 60 * 24 * 365, // 1 year
+          sameSite: 'strict',
+        });
+        
+        // Set X-Locale header
+        response.headers.set('X-Locale', locale);
+        
+        return response;
       }
-    }
-    
-    // Apply rewrite if a mapping was found
-    if (shouldRewrite) {
-      // Create a response for setting cookies
-      const response = NextResponse.rewrite(url);
-      
-      // Set locale cookie
-      response.cookies.set(LOCALE_COOKIE, locale, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 365, // 1 year
-        sameSite: 'strict',
-      });
-      
-      // Set X-Locale header
-      response.headers.set('X-Locale', locale);
-      
-      return response;
     }
   }
   

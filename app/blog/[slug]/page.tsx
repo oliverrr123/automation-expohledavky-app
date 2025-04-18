@@ -48,6 +48,7 @@ export async function generateStaticParams() {
       }
       
       const localePaths = slugs.map(slug => ({
+        locale: locale, 
         slug: slug
       }));
       paths.push(...localePaths);
@@ -93,11 +94,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  // Get the locale from server context
-  const locale = getServerLocale();
+export default async function BlogPostPage({ params }: { params: { slug: string, locale: string } }) {
+  // Use params.locale directly
+  const locale = params.locale;
   
-  // Get post content based on locale
+  // Get post content based on locale from params
   const post = await getPostBySlug(params.slug, locale);
   
   // If the article doesn't exist, show error page
@@ -155,7 +156,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     });
   }
 
-  // Create sharing URLs - use appropriate domain based on locale
+  // Create sharing URLs - use appropriate domain based on locale from params
   const domain = locale === 'cs' ? 'expohledavky.cz' :
                  locale === 'sk' ? 'expohladavky.sk' :
                  locale === 'de' ? 'exforderungen.de' :

@@ -6,6 +6,8 @@ import { getCurrentLocale } from '@/lib/i18n'
 import { Home } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getLocalizedPath } from '@/lib/route-mapping'
+import { Header } from '@/components/header'
+import { Footer } from '@/components/footer'
 
 export default function NotFound() {
   const [locale, setLocale] = useState<string>('cs')
@@ -39,29 +41,34 @@ export default function NotFound() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-32 pb-16">
-      <div className="container max-w-xl mx-auto px-4">
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-3xl font-bold text-zinc-900 mb-4">{uiStrings.title}</h1>
-          <p className="text-zinc-600 mb-6">{uiStrings.message}</p>
-          <p className="text-zinc-700 mb-8">{uiStrings.suggestion}</p>
-          
-          <div className="flex flex-col space-y-4">
-            <Button variant="default" className="w-full" asChild>
-              <Link href="/" className="flex items-center justify-center gap-2">
-                <Home className="h-4 w-4" />
-                {uiStrings.backToHome}
-              </Link>
-            </Button>
+    <>
+      <Header />
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-32 pb-16">
+        <div className="container max-w-xl mx-auto px-4">
+          <div className="bg-white rounded-lg shadow-md p-8 text-center">
+            <h1 className="text-6xl font-bold text-orange-500 mb-4">404</h1>
+            <h2 className="text-3xl font-bold text-zinc-900 mb-4">{uiStrings.title}</h2>
+            <p className="text-zinc-600 mb-6">{uiStrings.message}</p>
+            <p className="text-zinc-700 mb-8">{uiStrings.suggestion}</p>
             
-            <Button variant="outline" className="w-full" asChild>
-              <Link href={`/${getLocalizedPath(locale, 'blog')}`} className="flex items-center justify-center gap-2">
-                {uiStrings.checkBlog}
-              </Link>
-            </Button>
+            <div className="flex flex-col space-y-4">
+              <Button variant="default" className="w-full" asChild>
+                <Link href="/" className="flex items-center justify-center gap-2">
+                  <Home className="h-4 w-4" />
+                  {uiStrings.backToHome}
+                </Link>
+              </Button>
+              
+              <Button variant="outline" className="w-full" asChild>
+                <Link href={`/${getLocalizedPath(locale, 'blog')}`} className="flex items-center justify-center gap-2">
+                  {uiStrings.checkBlog}
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   )
 } 

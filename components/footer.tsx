@@ -9,6 +9,7 @@ import type { LucideIcon } from "lucide-react"
 import { getCurrentLocale } from "@/lib/i18n"
 import { getLanguageFromHostname } from "@/lib/domain-mapping"
 import { getLocalizedPath } from "@/lib/route-mapping"
+import Logo from "@/components/Logo"
 
 // Define types for the translations
 interface PhoneContact {
@@ -77,6 +78,7 @@ interface FooterTranslations {
   };
   copyright: {
     text: string;
+    createdBy: string;
     privacyPolicy: string;
   };
 }
@@ -342,6 +344,12 @@ export function Footer() {
 
         <div className="mt-12 border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
           <p>{translations.copyright.text}</p>
+          <div className="flex items-center space-x-2 mt-4 md:mt-0">
+            <span className="text-gray-400">{translations.copyright.createdBy}</span>
+            <Link href="https://agentas.cz" target="_blank" rel="noopener noreferrer">
+              <Logo isDark={false} />
+            </Link>
+          </div>
           <div className="mt-4 md:mt-0">
             <Link href={`/${getLocalizedPath(currentLocale, 'privacy-policy')}`} className="hover:text-white">
               {translations.copyright.privacyPolicy}

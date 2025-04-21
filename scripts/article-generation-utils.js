@@ -502,6 +502,53 @@ For example:
 - Customer Screening: Red Flags to Watch
 - Risk Management: Preventing Bad Debt
 
+Here's a comprehensive list of headline examples for inspiration by category:
+
+DEBT COLLECTION & RECOVERY:
+- Debt Collection: When to Outsource?
+- Receivables: How to Manage Aging Accounts?
+- Late Payment: 3 Effective Strategies
+- Collection Calls: Professional Communication Techniques
+- Payment Terms: How to Optimize Compliance?
+- Invoice: Best Practices for Faster Payments
+- Reminder Letters: Creating Effective Templates
+- Debt Recovery: International Best Practices
+- Cash Flow: Managing During Collection Delays
+- Credit Policy: Creating Effective Guidelines
+- Mediation: Alternative to Legal Action?
+- Collection Agencies: How to Choose Right?
+- Default Interest: How to Calculate Correctly?
+
+LEGAL ACTION & ENFORCEMENT:
+- Legal Action: When Is It Worth Pursuing?
+- Enforcement: Key Steps to Success
+- Creditor Rights: Understanding Your Position
+- Statute of Limitations: Avoiding Debt Expiration
+- Court Proceedings: Preparation Checklist
+- Judgments: Converting to Actual Payment
+- Bankruptcy: Navigating Creditor Claims
+- Execution Title: How to Obtain One?
+- Small Claims: Cost-Effective Recovery Option
+- Settlement: Negotiating Favorable Terms
+- Legal Costs: Can They Be Recovered?
+- Cross-Border Collection: Jurisdiction Challenges
+- Debt Sale: When to Consider?
+
+PREVENTION & RISK MANAGEMENT:
+- Credit Check: Essential Pre-Agreement Steps
+- Customer Screening: Red Flags to Watch
+- Contract Terms: Security Against Defaults
+- Security Interest: Types and Applications
+- Financial Analysis: Evaluating Client Risk
+- Debtor Registers: Effective Utilization
+- Collateral: When and How to Require?
+- Payment Guarantee: Best Practices
+- Risk Management: Preventing Bad Debt
+- Due Diligence: Comprehensive Client Assessment
+- Credit Insurance: Is It Worth the Cost?
+- Early Warning Signs: Detecting Payment Problems
+- Credit Scoring: Implementing Effective Systems
+
 Choose from these keyword categories for inspiration:
 - Debt Collection & Recovery: Debt, Collection, Receivables, Late Payment, Payment Terms, Invoice
 - Legal & Enforcement: Legal Action, Enforcement, Court, Judgment, Mediation, Bankruptcy, Execution
@@ -530,6 +577,50 @@ Například:
 - Smlouva: 5 klauzulí pro ochranu věřitele
 - Upomínka: Jak ji správně formulovat?
 - Registr dlužníků: Jak ho efektivně využít?
+
+Zde je obsáhlý seznam příkladů headlinů pro inspiraci podle kategorií:
+
+VYMÁHÁNÍ POHLEDÁVEK:
+- Dluh: Jak ho vymoci legálně?
+- Věřitel: Co dělat, když dlužník mlčí?
+- Faktura nezaplacena: Jak postupovat?
+- Vymáhání dluhu: Mimosoudně nebo soudně?
+- Upomínka: Jak ji správně formulovat?
+- Předžalobní výzva: Jaké má náležitosti?
+- Pohledávky: Kdy je postoupit specialistovi?
+- Promlčení: Jak mu předejít u pohledávek?
+- Inkaso: 5 kroků k rychlejšímu plnění
+- Platební morálka: Jak ji podpořit u klientů?
+
+EXEKUCE A INSOLVENCE:
+- Exekuce: Jaké má práva věřitel?
+- Exekuce: Kdy začít jednat?
+- Insolvence: Jak podat návrh na dlužníka?
+- Insolvence: Co to je a kdy nastává?
+- Exekuční titul: Jak ho získat?
+- Oddlužení: Co znamená pro věřitele?
+- Konkurz: Jak se přihlásit s pohledávkou?
+- Rozhodčí řízení: Výhody pro vymáhání
+- Platební rozkaz: Postup podání
+- Reorganizace: Dopad na pohledávky věřitelů
+- Soudní poplatky: Kolik stojí vymáhání?
+- Zabavení majetku: Postup a omezení
+- Exekuce platu: Kalkulace srážek ze mzdy
+
+LUSTRACE A PREVENCE:
+- Lustrace: Jak zjistit majetek dlužníka?
+- Bonita klienta: Jak ji ověřit zdarma?
+- Prevence neplacení: 3 klíčové kroky
+- Zajištění pohledávek: Jaké jsou možnosti?
+- Insolvenční rejstřík: Jak ho správně používat?
+- Zástavní právo: Kdy a jak ho zřídit?
+- Registr dlužníků: Efektivní využití
+- Finanční analýza: Předcházení rizikovým klientům
+- Pojištění pohledávek: Kdy se vyplatí?
+- Směnka: Výhody a rizika zajištění
+- Scoring klientů: Interní systém hodnocení
+- Zálohové platby: Strategie implementace
+- Obchodní podmínky: Klauzule proti neplatičům
 
 Inspirujte se těmito kategoriemi klíčových slov:
 - Vymáhání pohledávek: Dluh, Pohledávky, Věřitel, Faktura, Upomínka, Vymáhání
@@ -560,6 +651,53 @@ Napríklad:
 - Zabezpečenie pohľadávok: Najlepšie nástroje
 - Bonita klienta: Ako ju jednoducho overiť?
 
+Tu je rozsiahly zoznam príkladov headlinov pre inšpiráciu podľa kategórií:
+
+VYMÁHANIE POHĽADÁVOK:
+- Pohľadávky: Kedy ich odovzdať na vymáhanie?
+- Dlžník: Čo robiť pri neplatení?
+- Faktúra: Čo po vypršaní splatnosti?
+- Upomienka: Ako ju správne napísať?
+- Mimosúdne vymáhanie: Kedy sa oplatí?
+- Premlčanie: Ako mu predísť včas?
+- Postúpenie pohľadávky: Výhody a riziká
+- Uznanie dlhu: Ako ho právne zabezpečiť?
+- Platobná disciplína: Ako ju zlepšiť?
+- Advokát: Kedy poveriť vymáhaním?
+- Mandate inkaso: Ako ho efektívne zaviesť?
+- Telefonické vymáhanie: Profesionálny postup
+- Predžalobná výzva: Čo musí obsahovať?
+
+EXEKÚCIE A INSOLVENCIA:
+- Exekúcia: Aké práva má veriteľ?
+- Exekútor: Ako s ním efektívne komunikovať?
+- Exekučný titul: Ako ho získať?
+- Konkurz: Ako sa prihlásiť s pohľadávkou?
+- Reštrukturalizácia: Dopad na veriteľov
+- Oddlženie: Čo znamená pre podnikateľa?
+- Platobný rozkaz: Ako ho správne podať?
+- Súdne konanie: Kedy sa oplatí?
+- Dobrovoľná dražba: Postup pre veriteľa
+- Splátkový kalendár: Kedy ho akceptovať?
+- Náklady exekúcie: Kto ich hradí?
+- Exekučná imunita: Čo nemôže exekútor zabaviť?
+- Dražba: Ako sa jej zúčastniť ako veriteľ?
+
+PREVENCIA A LUSTRÁCIA:
+- Lustrácia: Ako preveriť obchodného partnera?
+- Bonita klienta: Metódy preverovania
+- Registre dlžníkov: Ako ich správne využiť?
+- Zabezpečenie pohľadávok: Najlepšie nástroje
+- Záložné právo: Výhody pre veriteľa
+- Obchodný register: Čo všetko odhalí?
+- Finančná analýza: Ako odhaliť rizikového klienta?
+- Poistenie pohľadávok: Kedy sa oplatí?
+- Zmenka: Ako ju správne použiť?
+- Zálohové platby: Optimálne nastavenie
+- Kreditný limit: Ako ho správne stanoviť?
+- Notárska zápisnica: Výhody priamej vykonateľnosti
+- Monitorovanie klientov: Systematický prístup
+
 Inšpirujte sa týmito kategóriami kľúčových slov:
 - Vymáhanie pohľadávok: Pohľadávky, Dlžník, Faktúra, Upomienka, Veriteľ, Vymáhanie
 - Exekúcie a insolvencia: Exekúcia, Exekútor, Insolvencia, Konkurz, Oddlženie, Reštrukturalizácia
@@ -588,6 +726,53 @@ Zum Beispiel:
 - Mahnbescheid: Wie stellt man ihn richtig?
 - Schuldnerregister: Effektive Nutzung erklärt
 - Vertragsgestaltung: Klauseln zum Gläubigerschutz
+
+Hier ist eine umfassende Liste von Überschrift-Beispielen zur Inspiration nach Kategorien:
+
+INKASSO UND FORDERUNGSMANAGEMENT:
+- Inkasso: Wann lohnt sich ein Dienstleister?
+- Forderungen: Wie optimiert man die Beitreibung?
+- Zahlungsverzug: Sofort reagieren oder warten?
+- Mahnwesen: Effizienter Ablauf erklärt
+- Zahlungsmoral: Wie kann man sie verbessern?
+- Mahngebühren: Was ist rechtlich durchsetzbar?
+- Forderungsverkauf: Vor- und Nachteile
+- Mahnschreiben: Wie formuliert man wirksam?
+- Telefon-Inkasso: Professionelle Gesprächsführung
+- Kundenbeziehung: Balance zwischen Inkasso und Service
+- Liquidität: Maßnahmen zur Verbesserung
+- Außergerichtliche Einigung: Verhandlungstechniken
+- Zahlungsfristen: Optimale Gestaltung
+
+VOLLSTRECKUNG UND INSOLVENZVERFAHREN:
+- Vollstreckung: Die wichtigsten Schritte
+- Mahnbescheid: Wie stellt man ihn richtig?
+- Zwangsvollstreckung: Wann ist sie sinnvoll?
+- Insolvenzantrag: Optimales Timing für Gläubiger
+- Insolvenzverfahren: Was Gläubiger wissen müssen
+- Gläubigerausschuss: Rolle und Einfluss
+- Vollstreckungstitel: Wege zur Beschaffung
+- Gerichtsvollzieher: Effektive Zusammenarbeit
+- Pfändung: Grenzen und Möglichkeiten
+- Verwertung: Optionen für gesicherte Gläubiger
+- Insolvenzplan: Chancen für Gläubiger
+- Restschuldbefreiung: Auswirkungen auf Gläubiger
+- Vergleich: Alternative zur Vollstreckung?
+
+PRÄVENTION UND BONITÄTSPRÜFUNG:
+- Bonitätsprüfung: Wie funktioniert sie richtig?
+- Schuldnerregister: Effektive Nutzung erklärt
+- Gläubigerschutz: 4 präventive Maßnahmen
+- Sicherheiten: Welche sind am zuverlässigsten?
+- Vertragsgestaltung: Klauseln zum Gläubigerschutz
+- Eigentumsvorbehand: Absicherung für Lieferanten
+- Bürgschaft: Sinnvolle Gestaltung und Absicherung
+- Kreditlimit: Wie bestimmt man es richtig?
+- Schuldnerauskünfte: Legale Informationsquellen
+- Bilanzanalyse: Frühwarnsignale erkennen
+- Zahlungskonditionen: Optimierung für Sicherheit
+- Forderungsversicherung: Kosten-Nutzen-Analyse
+- Monitoring: Systematische Überwachung von Kunden
 
 Lassen Sie sich von diesen Kategorien von Schlüsselwörtern inspirieren:
 - Inkasso und Forderungsmanagement: Inkasso, Forderungen, Zahlungsverzug, Mahnwesen, Zahlungsmoral
@@ -757,8 +942,10 @@ Geben Sie NUR die Überschrift im Format "Schlüsselwort: Frage/Lösung" zurück
         `Gläubigerausschuss: Rolle und Einfluss`,
         `Vollstreckungstitel: Wege zur Beschaffung`,
         `Gerichtsvollzieher: Effektive Zusammenarbeit`,
+        `Pfändung: Grenzen und Möglichkeiten`,
         `Verwertung: Optionen für gesicherte Gläubiger`,
         `Insolvenzplan: Chancen für Gläubiger`,
+        `Restschuldbefreiung: Auswirkungen auf Gläubiger`,
         `Vergleich: Alternative zur Vollstreckung?`,
         
         // Prävention und Bonitätsprüfung
@@ -767,11 +954,14 @@ Geben Sie NUR die Überschrift im Format "Schlüsselwort: Frage/Lösung" zurück
         `Gläubigerschutz: 4 präventive Maßnahmen`,
         `Sicherheiten: Welche sind am zuverlässigsten?`,
         `Vertragsgestaltung: Klauseln zum Gläubigerschutz`,
+        `Eigentumsvorbehand: Absicherung für Lieferanten`,
+        `Bürgschaft: Sinnvolle Gestaltung und Absicherung`,
         `Kreditlimit: Wie bestimmt man es richtig?`,
         `Schuldnerauskünfte: Legale Informationsquellen`,
+        `Bilanzanalyse: Frühwarnsignale erkennen`,
         `Zahlungskonditionen: Optimierung für Sicherheit`,
-        `Geschäftspartnerprüfung: Grundlegende Schritte`,
-        `Schuldanerkenntnis: Rechtssichere Gestaltung`
+        `Forderungsversicherung: Kosten-Nutzen-Analyse`,
+        `Monitoring: Systematische Überwachung von Kunden`
       ]
     };
     

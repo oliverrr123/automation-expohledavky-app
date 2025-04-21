@@ -566,28 +566,152 @@ Geben Sie NUR die Überschrift im Format "Schlüsselwort: Frage/Lösung" zurück
     // Fallback headlines based on category and language
     let fallbackTopics = {
       en: [
+        // Debt Collection & Recovery
         `Debt Collection: When to Outsource?`,
         `Receivables: How to Manage Aging Accounts?`,
         `Late Payment: 3 Effective Strategies`,
-        `Insolvency: What Creditors Need to Know`
+        `Insolvency: What Creditors Need to Know`,
+        `Invoicing: Preventing Payment Delays`,
+        `Collection Calls: Professional Communication Techniques`,
+        `Payment Terms: How to Optimize Compliance?`,
+        `Credit Policy: Creating Effective Guidelines`,
+        `Default Interest: How to Calculate Correctly?`,
+        `Debtor: How to Handle Non-Communication?`,
+        
+        // Legal & Enforcement
+        `Legal Action: When Is It Worth Pursuing?`,
+        `Enforcement: Key Steps to Success`,
+        `Creditor Rights: Understanding Your Position`,
+        `Statute of Limitations: Avoiding Debt Expiration`,
+        `Court Proceedings: Preparation Checklist`,
+        `Judgments: Converting to Actual Payment`,
+        `Mediation: Alternative to Legal Action?`,
+        `Bankruptcy: Navigating Creditor Claims`,
+        `Execution Title: How to Obtain One?`,
+        `Settlement: Negotiating Favorable Terms`,
+        
+        // Prevention & Risk Management
+        `Credit Check: Essential Pre-Agreement Steps`,
+        `Customer Screening: Red Flags to Watch`,
+        `Contract Terms: Security Against Defaults`,
+        `Security Interest: Types and Applications`,
+        `Financial Analysis: Evaluating Client Risk`,
+        `Debtor Registers: Effective Utilization`,
+        `Collateral: When and How to Require?`,
+        `Payment Guarantee: Best Practices`,
+        `Risk Management: Preventing Bad Debt`,
+        `Due Diligence: Comprehensive Client Assessment`
       ],
       cs: [
-        `Pohledávky: Kdy je čas na vymáhání?`,
-        `Exekuce: Jak se bránit jako věřitel?`,
-        `Dlužník: Co když odmítá komunikovat?`,
-        `Insolvence: Jaký dopad má na věřitele?`
+        // Vymáhání pohledávek
+        `Dluh: Jak ho vymoci legálně?`,
+        `Věřitel: Co dělat, když dlužník mlčí?`,
+        `Faktura nezaplacena: Jak postupovat?`,
+        `Vymáhání dluhu: Mimosoudně nebo soudně?`,
+        `Upomínka: Jak ji správně formulovat?`,
+        `Předžalobní výzva: Jaké má náležitosti?`,
+        `Pohledávky: Kdy je postoupit specialistovi?`,
+        `Promlčení: Jak mu předejít u pohledávek?`,
+        `Inkaso: 5 kroků k rychlejšímu plnění`,
+        `Platební morálka: Jak ji podpořit u klientů?`,
+        
+        // Exekuce a insolvence
+        `Exekuce: Jaké má práva věřitel?`,
+        `Exekuce: Kdy začít jednat?`,
+        `Insolvence: Jak podat návrh na dlužníka?`,
+        `Insolvence: Co to je a kdy nastává?`,
+        `Exekuční titul: Jak ho získat?`,
+        `Oddlužení: Co znamená pro věřitele?`,
+        `Konkurz: Jak se přihlásit s pohledávkou?`,
+        `Soudní řízení: Jak se správně připravit?`,
+        `Náklady exekuce: Kdo je skutečně platí?`,
+        `Rozhodčí řízení: Je lepší než soud?`,
+        
+        // Lustrace a prevence
+        `Lustrace: Jak zjistit majetek dlužníka?`,
+        `Bonita klienta: Jak ji ověřit zdarma?`,
+        `Prevence neplacení: 3 klíčové kroky`,
+        `Zajištění pohledávek: Jaké jsou možnosti?`,
+        `Registr dlužníků: Jak ho efektivně využít?`,
+        `Zástava: Kdy ji požadovat a jak funguje?`,
+        `Platební morálka: Varovné signály klienta`,
+        `Smlouva: 5 klauzulí pro ochranu věřitele`,
+        `Due diligence: Prověření obchodního partnera`,
+        `Uznání dluhu: Jak ho právně ošetřit?`
       ],
       sk: [
+        // Vymáhanie pohľadávok
         `Pohľadávky: Kedy ich odovzdať na vymáhanie?`,
         `Exekúcia: Aké práva má veriteľ?`,
         `Dlžník: Čo robiť pri neplatení?`,
-        `Insolvencia: Ako podať návrh efektívne?`
+        `Insolvencia: Ako podať návrh efektívne?`,
+        `Upomienka: Ako ju správne napísať?`,
+        `Predžalobná výzva: Čo musí obsahovať?`,
+        `Faktúra: Čo robiť po uplynutí splatnosti?`,
+        `Vymáhanie: 5 krokov k úspešnému procesu`,
+        `Veriteľ: Ako chrániť svoje práva?`,
+        `Mimosúdne vymáhanie: Kedy sa vyplatí?`,
+        
+        // Exekúcie a insolvencia
+        `Exekútor: Ako s ním efektívne komunikovať?`,
+        `Exekučný titul: Ako ho získať?`,
+        `Konkurz: Ako sa prihlásiť s pohľadávkou?`,
+        `Reštrukturalizácia: Čo to znamená pre veriteľa?`,
+        `Súdne konanie: Kedy sa oplatí?`,
+        `Dobrovoľná dražba: Postup pre veriteľa`,
+        `Oddlženie: Dopad na podnikateľské pohľadávky`,
+        `Exekučná imunita: Čo nemôže exekútor zabaviť?`,
+        `Splátkový kalendár: Kedy ho akceptovať?`,
+        `Náklady exekúcie: Kto ich hradí?`,
+        
+        // Prevencia a lustrácia
+        `Lustrácia: Ako preveriť obchodného partnera?`,
+        `Platobná disciplína: Ako ju zlepšiť?`,
+        `Registre dlžníkov: Ako ich správne využiť?`,
+        `Zabezpečenie pohľadávok: Najlepšie nástroje`,
+        `Uznanie dlhu: Prečo je dôležité?`,
+        `Zmluvná pokuta: Aká výška je vymáhateľná?`,
+        `Záložné právo: Kedy a ako ho zriadiť?`,
+        `Bonita klienta: Ako ju jednoducho overiť?`,
+        `Obchodný register: Čo všetko odhalí?`,
+        `Notárska zápisnica: Výhody priamej vykonateľnosti`
       ],
       de: [
+        // Inkasso und Forderungsmanagement
         `Inkasso: Wann lohnt sich ein Dienstleister?`,
         `Forderungen: Wie optimiert man die Beitreibung?`,
         `Zahlungsverzug: Sofort reagieren oder warten?`,
-        `Insolvenz: Welche Rechte haben Gläubiger?`
+        `Insolvenz: Welche Rechte haben Gläubiger?`,
+        `Mahnwesen: Effizienter Ablauf erklärt`,
+        `Zahlungserinnerung: Wie formuliert man richtig?`,
+        `Zahlungsmoral: Wie kann man sie verbessern?`,
+        `Forderungsausfall: Wirksame Präventionsmaßnahmen`,
+        `Mahngebühren: Was ist rechtlich durchsetzbar?`,
+        `Schuldnerbeziehung: Professionelle Kommunikation`,
+        
+        // Vollstreckung und Insolvenzverfahren
+        `Vollstreckung: Die wichtigsten Schritte`,
+        `Mahnbescheid: Wie stellt man ihn richtig?`,
+        `Zwangsvollstreckung: Wann ist sie sinnvoll?`,
+        `Insolvenzantrag: Optimales Timing für Gläubiger`,
+        `Gläubigerausschuss: Rolle und Einfluss`,
+        `Vollstreckungstitel: Wege zur Beschaffung`,
+        `Gerichtsvollzieher: Effektive Zusammenarbeit`,
+        `Verwertung: Optionen für gesicherte Gläubiger`,
+        `Insolvenzplan: Chancen für Gläubiger`,
+        `Vergleich: Alternative zur Vollstreckung?`,
+        
+        // Prävention und Bonitätsprüfung
+        `Bonitätsprüfung: Wie funktioniert sie richtig?`,
+        `Schuldnerregister: Effektive Nutzung erklärt`,
+        `Gläubigerschutz: 4 präventive Maßnahmen`,
+        `Sicherheiten: Welche sind am zuverlässigsten?`,
+        `Vertragsgestaltung: Klauseln zum Gläubigerschutz`,
+        `Kreditlimit: Wie bestimmt man es richtig?`,
+        `Schuldnerauskünfte: Legale Informationsquellen`,
+        `Zahlungskonditionen: Optimierung für Sicherheit`,
+        `Geschäftspartnerprüfung: Grundlegende Schritte`,
+        `Schuldanerkenntnis: Rechtssichere Gestaltung`
       ]
     };
     

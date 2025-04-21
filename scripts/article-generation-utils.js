@@ -81,7 +81,7 @@ Zahrňte:
 - Jasné nadpisy (## pro hlavní sekce, ### pro podsekce)
 - Odrážky nebo číslované seznamy, kde je to vhodné
 
-PŘÍSNĚ SE VYHNĚTE jakýmkoli zmínkám o umělé inteligenci nebo jazykových modelech.`;
+PŘÍSNĚ SE VYHNĚTE jakýmkoľvek zmínkám o umělé inteligenci nebo jazykových modelech.`;
 
     } else if (language === 'sk') {
       // Slovak prompts
@@ -490,10 +490,25 @@ async function generateRandomTopic(openai, category, language) {
     if (language === 'en') {
       prompt = `Generate a headline for a professional article about "${category}".
 The headline MUST follow this format: "Strong Keyword: Short Question or Solution"
-For example: "Debt Collection: When to Outsource?" or "Late Payment: 3 Effective Recovery Strategies"
+For example:
+- Debt Collection: When to Outsource?
+- Late Payment: 3 Effective Recovery Strategies
+- Receivables: How to Manage Aging Accounts?
+- Insolvency: What Creditors Need to Know?
+- Collection Calls: Professional Communication Techniques
+- Enforcement: Key Steps to Success
+- Creditor Rights: Understanding Your Position
+- Credit Check: Essential Pre-Agreement Steps
+- Customer Screening: Red Flags to Watch
+- Risk Management: Preventing Bad Debt
+
+Choose from these keyword categories for inspiration:
+- Debt Collection & Recovery: Debt, Collection, Receivables, Late Payment, Payment Terms, Invoice
+- Legal & Enforcement: Legal Action, Enforcement, Court, Judgment, Mediation, Bankruptcy, Execution
+- Prevention & Risk: Credit Check, Due Diligence, Contract Terms, Security Interest, Collateral, Guarantee
 
 The headline should be:
-1. Starting with a strong, searchable keyword (like Debt, Collection, Receivables, Insolvency, etc.)
+1. Starting with a strong, searchable keyword (like those shown in examples)
 2. Followed by a specific question or solution (max 4-6 words)
 3. Relevant for business professionals
 4. Focus on practical problems businesses face
@@ -504,10 +519,25 @@ Return ONLY the headline in the format "Keyword: Question/Solution" - nothing el
     } else if (language === 'cs') {
       prompt = `Vygenerujte headline pro odborný článek o "${category}".
 Headline MUSÍ dodržet tento formát: "Silné klíčové slovo: Krátká otázka nebo řešení"
-Například: "Exekuce: Jak se bránit jako věřitel?" nebo "Pohledávky: Kdy je čas na vymáhání?"
+Například:
+- Dluh: Jak ho vymoci legálně?
+- Věřitel: Co dělat, když dlužník mlčí?
+- Pohledávky: Kdy je postoupit specialistovi?
+- Exekuce: Jaké má práva věřitel?
+- Insolvence: Jak podat návrh na dlužníka?
+- Lustrace: Jak zjistit majetek dlužníka?
+- Faktura nezaplacena: Jak postupovat?
+- Smlouva: 5 klauzulí pro ochranu věřitele
+- Upomínka: Jak ji správně formulovat?
+- Registr dlužníků: Jak ho efektivně využít?
+
+Inspirujte se těmito kategoriemi klíčových slov:
+- Vymáhání pohledávek: Dluh, Pohledávky, Věřitel, Faktura, Upomínka, Vymáhání
+- Exekuce a insolvence: Exekuce, Insolvence, Oddlužení, Konkurz, Exekuční titul, Soudní řízení
+- Lustrace a prevence: Lustrace, Bonita, Prevence, Zajištění, Registr dlužníků, Zástava
 
 Headline by měl:
-1. Začínat silným, vyhledávaným klíčovým slovem (např. Dluh, Exekuce, Pohledávky, Insolvence, apod.)
+1. Začínat silným, vyhledávaným klíčovým slovem (např. podobným jako v příkladech výše)
 2. Následovat konkrétní otázkou nebo řešením (max 4-6 slov)
 3. Být relevantní pro obchodní profesionály
 4. Zaměřit se na praktické problémy firem
@@ -518,10 +548,25 @@ Vraťte POUZE headline ve formátu "Klíčové slovo: Otázka/Řešení" - nic j
     } else if (language === 'sk') {
       prompt = `Vygenerujte headline pre odborný článok o "${category}".
 Headline MUSÍ dodržať tento formát: "Silné kľúčové slovo: Krátka otázka alebo riešenie"
-Napríklad: "Exekúcia: Aké práva má veriteľ?" alebo "Pohľadávky: Kedy ich odovzdať na vymáhanie?"
+Napríklad:
+- Pohľadávky: Kedy ich odovzdať na vymáhanie?
+- Exekúcia: Aké práva má veriteľ?
+- Dlžník: Čo robiť pri neplatení?
+- Faktúra: Čo robiť po uplynutí splatnosti?
+- Upomienka: Ako ju správne napísať?
+- Lustrácia: Ako preveriť obchodného partnera?
+- Konkurz: Ako sa prihlásiť s pohľadávkou?
+- Veriteľ: Ako chrániť svoje práva?
+- Zabezpečenie pohľadávok: Najlepšie nástroje
+- Bonita klienta: Ako ju jednoducho overiť?
+
+Inšpirujte sa týmito kategóriami kľúčových slov:
+- Vymáhanie pohľadávok: Pohľadávky, Dlžník, Faktúra, Upomienka, Veriteľ, Vymáhanie
+- Exekúcie a insolvencia: Exekúcia, Exekútor, Insolvencia, Konkurz, Oddlženie, Reštrukturalizácia
+- Prevencia a lustrácia: Lustrácia, Platobná disciplína, Registre dlžníkov, Zabezpečenie, Záložné právo
 
 Headline by mal:
-1. Začínať silným, vyhľadávaným kľúčovým slovom (napr. Dlh, Exekúcia, Pohľadávky, Insolvencia, apod.)
+1. Začínať silným, vyhľadávaným kľúčovým slovom (napr. podobným ako v príkladoch vyššie)
 2. Nasledovať konkrétnou otázkou alebo riešením (max 4-6 slov)
 3. Byť relevantný pre obchodných profesionálov
 4. Zamerať sa na praktické problémy firiem
@@ -532,10 +577,25 @@ Vráťte IBA headline vo formáte "Kľúčové slovo: Otázka/Riešenie" - nič 
     } else if (language === 'de') {
       prompt = `Generieren Sie eine Überschrift für einen Fachartikel über "${category}".
 Die Überschrift MUSS diesem Format folgen: "Starkes Schlüsselwort: Kurze Frage oder Lösung"
-Zum Beispiel: "Inkasso: Wann lohnt sich ein Dienstleister?" oder "Forderungen: Wie optimiert man die Beitreibung?"
+Zum Beispiel:
+- Inkasso: Wann lohnt sich ein Dienstleister?
+- Forderungen: Wie optimiert man die Beitreibung?
+- Zahlungsverzug: Sofort reagieren oder warten?
+- Mahnwesen: Effizienter Ablauf erklärt
+- Insolvenz: Welche Rechte haben Gläubiger?
+- Vollstreckung: Die wichtigsten Schritte
+- Bonitätsprüfung: Wie funktioniert sie richtig?
+- Mahnbescheid: Wie stellt man ihn richtig?
+- Schuldnerregister: Effektive Nutzung erklärt
+- Vertragsgestaltung: Klauseln zum Gläubigerschutz
+
+Lassen Sie sich von diesen Kategorien von Schlüsselwörtern inspirieren:
+- Inkasso und Forderungsmanagement: Inkasso, Forderungen, Zahlungsverzug, Mahnwesen, Zahlungsmoral
+- Vollstreckung und Insolvenzverfahren: Vollstreckung, Mahnbescheid, Insolvenzantrag, Zwangsvollstreckung
+- Prävention und Bonitätsprüfung: Bonitätsprüfung, Schuldnerregister, Sicherheiten, Zahlungskonditionen
 
 Die Überschrift sollte:
-1. Mit einem starken, suchbaren Schlüsselwort beginnen (wie Schulden, Inkasso, Forderungen, Insolvenz, usw.)
+1. Mit einem starken, suchbaren Schlüsselwort beginnen (wie in den Beispielen oben)
 2. Gefolgt von einer spezifischen Frage oder Lösung (max. 4-6 Wörter)
 3. Relevant für Geschäftsfachleute sein
 4. Sich auf praktische Probleme von Unternehmen konzentrieren

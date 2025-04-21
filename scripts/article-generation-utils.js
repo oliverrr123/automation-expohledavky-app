@@ -336,44 +336,39 @@ async function generateMetadata(openai, topic, category, language) {
   try {
     console.log(`Generating metadata for ${language} article on "${topic}"...`);
     
+    // We'll use the topic directly as the title since it's already in the "keyword: question" format
+    const title = topic;
+    
     let prompt;
     
     if (language === 'en') {
-      prompt = `Generate metadata for an article titled "${topic}" in the category "${category}".
-Include:
-1. Title (max 60 chars)
-2. Subtitle (max 100 chars)
-3. Description (max 160 chars)
-4. Tags (5-7 relevant keywords, comma separated)
-5. Read time (in "X minute read" format)
-Respond in JSON format with keys: title, subtitle, description, tags, readTime.`;
+      prompt = `For an article with headline "${topic}" in the category "${category}", generate:
+1. Subtitle (max 100 chars) - a short explanatory phrase that expands on the headline
+2. Description (max 160 chars) - SEO-optimized summary that explains what readers will learn
+3. Tags (5-7 relevant keywords, comma separated)
+4. Read time (in "X minute read" format)
+Respond in JSON format with keys: subtitle, description, tags, readTime.`;
     } else if (language === 'cs') {
-      prompt = `Vygenerujte metadata pro článek s názvem "${topic}" v kategorii "${category}".
-Zahrňte:
-1. Titulek (max 60 znaků)
-2. Podtitulek (max 100 znaků)
-3. Popis (max 160 znaků)
-4. Tagy (5-7 relevantních klíčových slov, oddělených čárkou)
-5. Doba čtení (ve formátu "X minut čtení")
-Odpovězte ve formátu JSON s klíči: title, subtitle, description, tags, readTime.`;
+      prompt = `Pro článek s headlinem "${topic}" v kategorii "${category}" vygenerujte:
+1. Podtitulek (max 100 znaků) - krátkou vysvětlující frázi, která rozšiřuje headline
+2. Popis (max 160 znaků) - SEO optimalizované shrnutí, které vysvětluje, co se čtenáři dozví
+3. Tagy (5-7 relevantních klíčových slov, oddělených čárkou)
+4. Doba čtení (ve formátu "X minut čtení")
+Odpovězte ve formátu JSON s klíči: subtitle, description, tags, readTime.`;
     } else if (language === 'sk') {
-      prompt = `Vygenerujte metadáta pre článok s názvom "${topic}" v kategórii "${category}".
-Zahrňte:
-1. Titulok (max 60 znakov)
-2. Podtitulok (max 100 znakov)
-3. Popis (max 160 znakov)
-4. Tagy (5-7 relevantných kľúčových slov, oddelených čiarkou)
-5. Čas čítania (vo formáte "X minút čítania")
-Odpovedzte vo formáte JSON s kľúčmi: title, subtitle, description, tags, readTime.`;
+      prompt = `Pre článok s headlinom "${topic}" v kategórii "${category}" vygenerujte:
+1. Podtitulok (max 100 znakov) - krátku vysvetľujúcu frázu, ktorá rozširuje headline
+2. Popis (max 160 znakov) - SEO optimalizované zhrnutie, ktoré vysvetľuje, čo sa čitatelia dozvedia
+3. Tagy (5-7 relevantných kľúčových slov, oddelených čiarkou)
+4. Čas čítania (vo formáte "X minút čítania")
+Odpovedzte vo formáte JSON s kľúčmi: subtitle, description, tags, readTime.`;
     } else if (language === 'de') {
-      prompt = `Generieren Sie Metadaten für einen Artikel mit dem Titel "${topic}" in der Kategorie "${category}".
-Beinhalten Sie:
-1. Titel (max. 60 Zeichen)
-2. Untertitel (max. 100 Zeichen)
-3. Beschreibung (max. 160 Zeichen)
-4. Tags (5-7 relevante Schlüsselwörter, durch Kommas getrennt)
-5. Lesezeit (im Format "X Minuten Lesezeit")
-Antworten Sie im JSON-Format mit den Schlüsseln: title, subtitle, description, tags, readTime.`;
+      prompt = `Für einen Artikel mit der Überschrift "${topic}" in der Kategorie "${category}" generieren Sie:
+1. Untertitel (max. 100 Zeichen) - einen kurzen erklärenden Satz, der die Überschrift erweitert
+2. Beschreibung (max. 160 Zeichen) - SEO-optimierte Zusammenfassung, die erklärt, was die Leser lernen werden
+3. Tags (5-7 relevante Schlüsselwörter, durch Kommas getrennt)
+4. Lesezeit (im Format "X Minuten Lesezeit")
+Antworten Sie im JSON-Format mit den Schlüsseln: subtitle, description, tags, readTime.`;
     } else {
       throw new Error(`Unsupported language: ${language}`);
     }
@@ -389,7 +384,13 @@ Antworten Sie im JSON-Format mit den Schlüsseln: title, subtitle, description, 
       response_format: { type: "json_object" }
     });
     
-    const metadata = JSON.parse(completion.choices[0].message.content);
+    const metadataResponse = JSON.parse(completion.choices[0].message.content);
+    
+    // Combine with our pre-set title (the original topic/headline)
+    const metadata = {
+      title: title, // Using the topic directly as title since it's already in the right format
+      ...metadataResponse
+    };
     
     // Ensure tags are in string format if they aren't already
     if (metadata.tags && typeof metadata.tags !== 'string' && !Array.isArray(metadata.tags)) {
@@ -401,11 +402,11 @@ Antworten Sie im JSON-Format mit den Schlüsseln: title, subtitle, description, 
     console.error("Error generating metadata:", error);
     // Fallback metadata
     return {
-      title: topic,
-      subtitle: `Professional insights on ${topic}`,
-      description: `Learn about ${topic} in the context of ${category} with practical advice for businesses.`,
-      tags: `${category}, business, professional, advice, management`,
-      readTime: "8 minute read"
+      title: topic, // Use the topic (already formatted as headline) directly
+      subtitle: `Professional insights on ${topic.split(':')[0]}`, // Use the keyword part
+      description: `Learn about ${topic} with practical advice for businesses in ${category}.`,
+      tags: `${category}, ${topic.split(':')[0].toLowerCase()}, business, professional, advice`,
+      readTime: "5 minute read"
     };
   }
 }
@@ -487,41 +488,61 @@ async function generateRandomTopic(openai, category, language) {
     let prompt;
     
     if (language === 'en') {
-      prompt = `Generate an original, thought-provoking topic for a professional article about "${category}".
-The topic should be:
-1. Relevant for business professionals
-2. Focused on practical and strategic aspects
-3. Suitable for an in-depth expert article of 1500-2000 words
-4. Specific enough to provide valuable insights
-5. Innovative and exploring new perspectives
-Avoid topics related to AI or technology. Return only the topic name.`;
+      prompt = `Generate a headline for a professional article about "${category}".
+The headline MUST follow this format: "Strong Keyword: Short Question or Solution"
+For example: "Debt Collection: When to Outsource?" or "Late Payment: 3 Effective Recovery Strategies"
+
+The headline should be:
+1. Starting with a strong, searchable keyword (like Debt, Collection, Receivables, Insolvency, etc.)
+2. Followed by a specific question or solution (max 4-6 words)
+3. Relevant for business professionals
+4. Focus on practical problems businesses face
+5. Match search queries people actually type into Google
+6. Be clear, direct, and engaging
+
+Return ONLY the headline in the format "Keyword: Question/Solution" - nothing else.`;
     } else if (language === 'cs') {
-      prompt = `Vygenerujte originální, podnětné téma pro odborný článek o "${category}".
-Téma by mělo být:
-1. Relevantní pro obchodní profesionály
-2. Zaměřené na praktické a strategické aspekty
-3. Vhodné pro hloubkový odborný článek o délce 1500-2000 slov
-4. Dostatečně specifické, aby poskytovalo hodnotné poznatky
-5. Inovativní a zkoumající nové perspektivy
-Vyhněte se tématům souvisejícím s AI nebo technologiemi. Vraťte pouze název tématu.`;
+      prompt = `Vygenerujte headline pro odborný článek o "${category}".
+Headline MUSÍ dodržet tento formát: "Silné klíčové slovo: Krátká otázka nebo řešení"
+Například: "Exekuce: Jak se bránit jako věřitel?" nebo "Pohledávky: Kdy je čas na vymáhání?"
+
+Headline by měl:
+1. Začínat silným, vyhledávaným klíčovým slovem (např. Dluh, Exekuce, Pohledávky, Insolvence, apod.)
+2. Následovat konkrétní otázkou nebo řešením (max 4-6 slov)
+3. Být relevantní pro obchodní profesionály
+4. Zaměřit se na praktické problémy firem
+5. Odpovídat tomu, co lidé skutečně vyhledávají na Googlu
+6. Být jasný, přímý a poutavý
+
+Vraťte POUZE headline ve formátu "Klíčové slovo: Otázka/Řešení" - nic jiného.`;
     } else if (language === 'sk') {
-      prompt = `Vygenerujte originálnu, podnetnú tému pre odborný článok o "${category}".
-Téma by malo byť:
-1. Relevantné pre obchodných profesionálov
-2. Zamerané na praktické a strategické aspekty
-3. Vhodné pre hĺbkový odborný článok s dĺžkou 1500-2000 slov
-4. Dostatočne špecifické, aby poskytovalo hodnotné poznatky
-5. Inovatívne a skúmajúce nové perspektívy
-Vyhnite sa témam súvisiacim s AI alebo technológiami. Vráťte iba názov témy.`;
+      prompt = `Vygenerujte headline pre odborný článok o "${category}".
+Headline MUSÍ dodržať tento formát: "Silné kľúčové slovo: Krátka otázka alebo riešenie"
+Napríklad: "Exekúcia: Aké práva má veriteľ?" alebo "Pohľadávky: Kedy ich odovzdať na vymáhanie?"
+
+Headline by mal:
+1. Začínať silným, vyhľadávaným kľúčovým slovom (napr. Dlh, Exekúcia, Pohľadávky, Insolvencia, apod.)
+2. Nasledovať konkrétnou otázkou alebo riešením (max 4-6 slov)
+3. Byť relevantný pre obchodných profesionálov
+4. Zamerať sa na praktické problémy firiem
+5. Zodpovedať tomu, čo ľudia skutočne vyhľadávajú na Googli
+6. Byť jasný, priamy a pútavý
+
+Vráťte IBA headline vo formáte "Kľúčové slovo: Otázka/Riešenie" - nič iné.`;
     } else if (language === 'de') {
-      prompt = `Generieren Sie ein originelles, zum Nachdenken anregendes Thema für einen Fachartikel über "${category}".
-Das Thema sollte:
-1. Relevant für Geschäftsfachleute sein
-2. Sich auf praktische und strategische Aspekte konzentrieren
-3. Geeignet für einen vertiefenden Fachartikel von 1500-2000 Wörtern sein
-4. Spezifisch genug sein, um wertvolle Erkenntnisse zu liefern
-5. Innovativ sein und neue Perspektiven erkunden
-Vermeiden Sie Themen im Zusammenhang mit KI oder Technologie. Geben Sie nur den Themennamen zurück.`;
+      prompt = `Generieren Sie eine Überschrift für einen Fachartikel über "${category}".
+Die Überschrift MUSS diesem Format folgen: "Starkes Schlüsselwort: Kurze Frage oder Lösung"
+Zum Beispiel: "Inkasso: Wann lohnt sich ein Dienstleister?" oder "Forderungen: Wie optimiert man die Beitreibung?"
+
+Die Überschrift sollte:
+1. Mit einem starken, suchbaren Schlüsselwort beginnen (wie Schulden, Inkasso, Forderungen, Insolvenz, usw.)
+2. Gefolgt von einer spezifischen Frage oder Lösung (max. 4-6 Wörter)
+3. Relevant für Geschäftsfachleute sein
+4. Sich auf praktische Probleme von Unternehmen konzentrieren
+5. Suchbegriffen entsprechen, die Menschen tatsächlich bei Google eingeben
+6. Klar, direkt und ansprechend sein
+
+Geben Sie NUR die Überschrift im Format "Schlüsselwort: Frage/Lösung" zurück - nichts anderes.`;
     } else {
       throw new Error(`Unsupported language: ${language}`);
     }
@@ -529,7 +550,7 @@ Vermeiden Sie Themen im Zusammenhang mit KI oder Technologie. Geben Sie nur den 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
-        { role: "system", content: "You are a specialist in generating business content ideas." },
+        { role: "system", content: "You are a specialist in generating engaging headlines for business content." },
         { role: "user", content: prompt }
       ],
       temperature: 0.9,
@@ -537,36 +558,36 @@ Vermeiden Sie Themen im Zusammenhang mit KI oder Technologie. Geben Sie nur den 
     });
     
     const topic = completion.choices[0].message.content.trim();
-    console.log(`Generated topic: ${topic}`);
+    console.log(`Generated headline: ${topic}`);
     
     return topic;
   } catch (error) {
     console.error("Error generating topic:", error);
-    // Fallback topics based on category and language
+    // Fallback headlines based on category and language
     let fallbackTopics = {
       en: [
-        `Strategic Approaches to Modern ${category}`,
-        `Optimizing ${category} Processes for Small Businesses`,
-        `Legal Aspects of ${category} in International Business`,
-        `Building Client Relationships Through Effective ${category}`
+        `Debt Collection: When to Outsource?`,
+        `Receivables: How to Manage Aging Accounts?`,
+        `Late Payment: 3 Effective Strategies`,
+        `Insolvency: What Creditors Need to Know`
       ],
       cs: [
-        `Strategické přístupy k moderní ${category}`,
-        `Optimalizace procesů ${category} pro malé podniky`,
-        `Právní aspekty ${category} v mezinárodním obchodě`,
-        `Budování vztahů s klienty prostřednictvím efektivního ${category}`
+        `Pohledávky: Kdy je čas na vymáhání?`,
+        `Exekuce: Jak se bránit jako věřitel?`,
+        `Dlužník: Co když odmítá komunikovat?`,
+        `Insolvence: Jaký dopad má na věřitele?`
       ],
       sk: [
-        `Strategické prístupy k modernej ${category}`,
-        `Optimalizácia procesov ${category} pre malé podniky`,
-        `Právne aspekty ${category} v medzinárodnom obchode`,
-        `Budovanie vzťahov s klientmi prostredníctvom efektívneho ${category}`
+        `Pohľadávky: Kedy ich odovzdať na vymáhanie?`,
+        `Exekúcia: Aké práva má veriteľ?`,
+        `Dlžník: Čo robiť pri neplatení?`,
+        `Insolvencia: Ako podať návrh efektívne?`
       ],
       de: [
-        `Strategische Ansätze zum modernen ${category}`,
-        `Optimierung von ${category}-Prozessen für kleine Unternehmen`,
-        `Rechtliche Aspekte von ${category} im internationalen Geschäft`,
-        `Aufbau von Kundenbeziehungen durch effektives ${category}`
+        `Inkasso: Wann lohnt sich ein Dienstleister?`,
+        `Forderungen: Wie optimiert man die Beitreibung?`,
+        `Zahlungsverzug: Sofort reagieren oder warten?`,
+        `Insolvenz: Welche Rechte haben Gläubiger?`
       ]
     };
     

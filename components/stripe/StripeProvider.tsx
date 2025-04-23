@@ -4,6 +4,13 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Loader2 } from 'lucide-react';
 import { useTranslations } from '@/lib/i18n';
 
+// Define context for clientSecret
+interface StripeContextProps {
+  clientSecret: string | null;
+}
+const StripeContext = React.createContext<StripeContextProps>({ clientSecret: null });
+export const useStripeContext = () => React.useContext(StripeContext);
+
 // Load Stripe outside of render to avoid multiple instances
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -129,27 +136,29 @@ export function StripeProvider({ amount, email, notes, language, children }: Str
   }
 
   return (
-    <Elements
-      stripe={stripePromise}
-      options={{
-        clientSecret,
-        locale: languageRef.current === 'cs' ? 'cs' : 
-                languageRef.current === 'sk' ? 'sk' : 
-                languageRef.current === 'de' ? 'de' : 'en',
-        appearance: {
-          theme: 'stripe',
-          variables: {
-            colorPrimary: '#f97316',
-            colorBackground: '#ffffff',
-            colorText: '#1e293b',
-            colorDanger: '#ef4444',
-            fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-            borderRadius: '8px',
+    <StripeContext.Provider value={{ clientSecret }}>
+      <Elements
+        stripe={stripePromise}
+        options={{
+          clientSecret,
+          locale: languageRef.current === 'cs' ? 'cs' : 
+                  languageRef.current === 'sk' ? 'sk' : 
+                  languageRef.current === 'de' ? 'de' : 'en',
+          appearance: {
+            theme: 'stripe',
+            variables: {
+              colorPrimary: '#f97316',
+              colorBackground: '#ffffff',
+              colorText: '#1e293b',
+              colorDanger: '#ef4444',
+              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+              borderRadius: '8px',
+            },
           },
-        },
-      }}
-    >
-      {children}
-    </Elements>
+        }}
+      >
+        {children}
+      </Elements>
+    </StripeContext.Provider>
   );
 } 

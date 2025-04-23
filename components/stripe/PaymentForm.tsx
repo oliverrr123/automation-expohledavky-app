@@ -3,6 +3,7 @@ import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useTranslations } from '@/lib/i18n';
+import { useStripeContext } from './StripeProvider'; // Import context hook
 
 interface PaymentFormProps {
   onPaymentSuccess?: () => void;
@@ -25,7 +26,9 @@ export function PaymentForm({
 }: PaymentFormProps) {
   const stripe = useStripe();
   const elements = useElements();
+  const { clientSecret } = useStripeContext(); // Use context to get clientSecret
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false); // New state for update API call
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState<string | undefined>();
@@ -78,7 +81,9 @@ export function PaymentForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !clientSecret) {
+      console.error('Stripe.js, Elements, or clientSecret not loaded.');
+      setErrorMessage(t?.payment?.setupError || 'Payment setup error. Please refresh.');
       return;
     }
 
@@ -89,117 +94,95 @@ export function PaymentForm({
     } else {
       setEmailError(undefined);
     }
-    
+
     // Validate company identification number in notes - only on first attempt
     if (!validateCompanyId(notes) && !companyIdWarningShown) {
       const lang = language || 'cs';
       setNotesError(t?.payment?.companyIdError);
-      
-      // Mark that we've shown the warning
       setCompanyIdWarningShown(true);
-      
-      // Scroll to the notes textarea with smooth behavior
       if (notesRef.current) {
         notesRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
         notesRef.current.focus();
       }
-      
       return;
     } else {
       setNotesError(undefined);
     }
 
     setIsLoading(true);
+    setIsUpdating(true); // Start update indicator
     setErrorMessage(undefined);
 
     try {
-      // Store in cookies as a fallback
-      try {
-        await fetch('/api/stripe/update-notes', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            email,
-            notes
-          }),
-        });
-        
-        // Try to directly update the payment intent if possible
-        // Get the clientSecret from the payment element
-        const element = elements.getElement(PaymentElement);
-        if (element) {
-          try {
-            // Get any data-* attributes from the iframe that might contain the client secret
-            const iframe = document.querySelector('iframe[src*="elements"]');
-            if (iframe) {
-              const src = iframe.getAttribute('src');
-              if (src && src.includes('client_secret=')) {
-                const clientSecret = new URLSearchParams(src.split('?')[1]).get('client_secret');
-                if (clientSecret) {
-                  // Get payment intent ID from the client secret
-                  const paymentIntentId = clientSecret.split('_secret_')[0];
-                  // Update the payment intent
-                  await fetch('/api/stripe/update-payment-intent', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      paymentIntentId,
-                      notes,
-                      email
-                    }),
-                  });
-                  console.log('Successfully updated payment intent with description');
-                }
-              }
-            }
-          } catch (e) {
-            console.error('Error updating payment intent description:', e);
-          }
-        }
-        
-        console.log("Notes stored in cookies for payment");
-      } catch (updateError) {
-        console.error('Could not store notes data:', updateError);
-        // Continue with payment even if metadata update fails
+      // --- Step 1: Update Payment Intent Metadata ---
+      const paymentIntentId = clientSecret.split('_secret_')[0];
+      if (!paymentIntentId) {
+        throw new Error('Could not extract Payment Intent ID from client secret.');
       }
 
-      // Now confirm the payment - pass the notes directly in metadata to the receipt_email field
-      const { error } = await stripe.confirmPayment({
+      console.log(`Attempting to update metadata for Payment Intent: ${paymentIntentId}`);
+      const updateResponse = await fetch('/api/stripe/update-payment-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          paymentIntentId,
+          notes,
+          email
+        }),
+      });
+
+      const updateData = await updateResponse.json();
+
+      if (!updateResponse.ok) {
+        console.error('Error updating payment intent:', updateData);
+        throw new Error(updateData.error || 'Failed to save details before payment.');
+      }
+      console.log('Successfully updated payment intent metadata.');
+      setIsUpdating(false); // Finish update indicator
+
+      // --- Step 2: Confirm Payment --- 
+      console.log('Proceeding to confirm payment.');
+      const { error: confirmError } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: `${window.location.origin}/lustrace/payment-success?email=${encodeURIComponent(email)}&notes=${encodeURIComponent(notes)}`,
-          payment_method_data: {
-            billing_details: {
-              email: email,
-              name: `Notes: ${notes}`, // Keep the name to make sure it propagates
-            },
-          },
+          // Pass email for Stripe receipt and fraud detection
           receipt_email: email,
+          // Redirect URL after successful payment
+          return_url: `${window.location.origin}/${language}/lustrace/payment-success?email=${encodeURIComponent(email)}&notes=${encodeURIComponent(notes)}`, 
         },
+        // We handle the redirect manually or via the return_url, 
+        // so we set redirect to 'if_required'
         redirect: 'if_required',
       });
 
-      if (error) {
-        setErrorMessage(error.message);
+      if (confirmError) {
+        // This will point to an element in the Payment Element hierarchy
+        console.error('Stripe confirmPayment error:', confirmError);
+        setErrorMessage(confirmError.message || 'An unexpected error occurred during payment.');
         if (onPaymentError) {
-          onPaymentError(error.message || t?.payment?.errorMessage);
+          onPaymentError(confirmError.message || t?.payment?.errorMessage);
         }
       } else {
+        // Payment succeeded or requires further action (like 3DS)
+        // If redirect: 'if_required', Stripe.js handles the redirect.
+        // If no redirect happens, it means success without further action.
+        console.log('Payment confirmation successful (or requires further action handled by Stripe).');
         if (onPaymentSuccess) {
+          // Note: onPaymentSuccess might redirect away before this logs completely
           onPaymentSuccess();
         }
       }
     } catch (error: any) {
+      console.error('Error during payment process:', error);
       setErrorMessage(error.message || t?.payment?.errorMessage);
       if (onPaymentError) {
         onPaymentError(error.message || t?.payment?.errorMessage);
       }
     } finally {
       setIsLoading(false);
+      setIsUpdating(false); // Ensure update indicator is off on error/finally
     }
   };
 
@@ -261,26 +244,27 @@ export function PaymentForm({
         </div>
       </div>
       
-      <PaymentElement />
+      <div className="p-4 border border-gray-200 rounded-md bg-gray-50">
+        <PaymentElement />
+      </div>
       
       {errorMessage && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+        <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-md text-sm">
           {errorMessage}
         </div>
       )}
       
-      <Button
-        type="submit"
-        disabled={!stripe || isLoading}
+      <Button 
+        type="submit" 
+        disabled={!stripe || !elements || isLoading} 
         className="w-full bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 hover:scale-105 h-14"
       >
         {isLoading ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> {t?.payment?.processing}
-          </>
-        ) : (
-          buttonText
-        )}
+          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+        ) : null}
+        {isUpdating ? t?.payment?.savingDetails || 'Saving Details...' : 
+         isLoading ? t?.payment?.processing || 'Processing...' : 
+         buttonText}
       </Button>
     </form>
   );

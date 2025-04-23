@@ -81,7 +81,7 @@ Zahrňte:
 - Jasné nadpisy (## pro hlavní sekce, ### pro podsekce)
 - Odrážky nebo číslované seznamy, kde je to vhodné
 
-PŘÍSNĚ SE VYHNĚTE jakýmkoli zmínkám o umělé inteligenci nebo jazykových modelech.`;
+PŘÍSNĚ SE VYHNĚTE jakýmkoľvek zmínkám o umělé inteligenci nebo jazykových modelech.`;
 
     } else if (language === 'sk') {
       // Slovak prompts
@@ -336,44 +336,39 @@ async function generateMetadata(openai, topic, category, language) {
   try {
     console.log(`Generating metadata for ${language} article on "${topic}"...`);
     
+    // We'll use the topic directly as the title since it's already in the "keyword: question" format
+    const title = topic;
+    
     let prompt;
     
     if (language === 'en') {
-      prompt = `Generate metadata for an article titled "${topic}" in the category "${category}".
-Include:
-1. Title (max 60 chars)
-2. Subtitle (max 100 chars)
-3. Description (max 160 chars)
-4. Tags (5-7 relevant keywords, comma separated)
-5. Read time (in "X minute read" format)
-Respond in JSON format with keys: title, subtitle, description, tags, readTime.`;
+      prompt = `For an article with headline "${topic}" in the category "${category}", generate:
+1. Subtitle (max 100 chars) - a short explanatory phrase that expands on the headline
+2. Description (max 160 chars) - SEO-optimized summary that explains what readers will learn
+3. Tags (5-7 relevant keywords, comma separated)
+4. Read time (in "X minute read" format)
+Respond in JSON format with keys: subtitle, description, tags, readTime.`;
     } else if (language === 'cs') {
-      prompt = `Vygenerujte metadata pro článek s názvem "${topic}" v kategorii "${category}".
-Zahrňte:
-1. Titulek (max 60 znaků)
-2. Podtitulek (max 100 znaků)
-3. Popis (max 160 znaků)
-4. Tagy (5-7 relevantních klíčových slov, oddělených čárkou)
-5. Doba čtení (ve formátu "X minut čtení")
-Odpovězte ve formátu JSON s klíči: title, subtitle, description, tags, readTime.`;
+      prompt = `Pro článek s headlinem "${topic}" v kategorii "${category}" vygenerujte:
+1. Podtitulek (max 100 znaků) - krátkou vysvětlující frázi, která rozšiřuje headline
+2. Popis (max 160 znaků) - SEO optimalizované shrnutí, které vysvětluje, co se čtenáři dozví
+3. Tagy (5-7 relevantních klíčových slov, oddělených čárkou)
+4. Doba čtení (ve formátu "X minut čtení")
+Odpovězte ve formátu JSON s klíči: subtitle, description, tags, readTime.`;
     } else if (language === 'sk') {
-      prompt = `Vygenerujte metadáta pre článok s názvom "${topic}" v kategórii "${category}".
-Zahrňte:
-1. Titulok (max 60 znakov)
-2. Podtitulok (max 100 znakov)
-3. Popis (max 160 znakov)
-4. Tagy (5-7 relevantných kľúčových slov, oddelených čiarkou)
-5. Čas čítania (vo formáte "X minút čítania")
-Odpovedzte vo formáte JSON s kľúčmi: title, subtitle, description, tags, readTime.`;
+      prompt = `Pre článok s headlinom "${topic}" v kategórii "${category}" vygenerujte:
+1. Podtitulok (max 100 znakov) - krátku vysvetľujúcu frázu, ktorá rozširuje headline
+2. Popis (max 160 znakov) - SEO optimalizované zhrnutie, ktoré vysvetľuje, čo sa čitatelia dozvedia
+3. Tagy (5-7 relevantných kľúčových slov, oddelených čiarkou)
+4. Čas čítania (vo formáte "X minút čítania")
+Odpovedzte vo formáte JSON s kľúčmi: subtitle, description, tags, readTime.`;
     } else if (language === 'de') {
-      prompt = `Generieren Sie Metadaten für einen Artikel mit dem Titel "${topic}" in der Kategorie "${category}".
-Beinhalten Sie:
-1. Titel (max. 60 Zeichen)
-2. Untertitel (max. 100 Zeichen)
-3. Beschreibung (max. 160 Zeichen)
-4. Tags (5-7 relevante Schlüsselwörter, durch Kommas getrennt)
-5. Lesezeit (im Format "X Minuten Lesezeit")
-Antworten Sie im JSON-Format mit den Schlüsseln: title, subtitle, description, tags, readTime.`;
+      prompt = `Für einen Artikel mit der Überschrift "${topic}" in der Kategorie "${category}" generieren Sie:
+1. Untertitel (max. 100 Zeichen) - einen kurzen erklärenden Satz, der die Überschrift erweitert
+2. Beschreibung (max. 160 Zeichen) - SEO-optimierte Zusammenfassung, die erklärt, was die Leser lernen werden
+3. Tags (5-7 relevante Schlüsselwörter, durch Kommas getrennt)
+4. Lesezeit (im Format "X Minuten Lesezeit")
+Antworten Sie im JSON-Format mit den Schlüsseln: subtitle, description, tags, readTime.`;
     } else {
       throw new Error(`Unsupported language: ${language}`);
     }
@@ -389,7 +384,13 @@ Antworten Sie im JSON-Format mit den Schlüsseln: title, subtitle, description, 
       response_format: { type: "json_object" }
     });
     
-    const metadata = JSON.parse(completion.choices[0].message.content);
+    const metadataResponse = JSON.parse(completion.choices[0].message.content);
+    
+    // Combine with our pre-set title (the original topic/headline)
+    const metadata = {
+      title: title, // Using the topic directly as title since it's already in the right format
+      ...metadataResponse
+    };
     
     // Ensure tags are in string format if they aren't already
     if (metadata.tags && typeof metadata.tags !== 'string' && !Array.isArray(metadata.tags)) {
@@ -401,11 +402,11 @@ Antworten Sie im JSON-Format mit den Schlüsseln: title, subtitle, description, 
     console.error("Error generating metadata:", error);
     // Fallback metadata
     return {
-      title: topic,
-      subtitle: `Professional insights on ${topic}`,
-      description: `Learn about ${topic} in the context of ${category} with practical advice for businesses.`,
-      tags: `${category}, business, professional, advice, management`,
-      readTime: "8 minute read"
+      title: topic, // Use the topic (already formatted as headline) directly
+      subtitle: `Professional insights on ${topic.split(':')[0]}`, // Use the keyword part
+      description: `Learn about ${topic} with practical advice for businesses in ${category}.`,
+      tags: `${category}, ${topic.split(':')[0].toLowerCase()}, business, professional, advice`,
+      readTime: "5 minute read"
     };
   }
 }
@@ -487,41 +488,306 @@ async function generateRandomTopic(openai, category, language) {
     let prompt;
     
     if (language === 'en') {
-      prompt = `Generate an original, thought-provoking topic for a professional article about "${category}".
-The topic should be:
-1. Relevant for business professionals
-2. Focused on practical and strategic aspects
-3. Suitable for an in-depth expert article of 1500-2000 words
-4. Specific enough to provide valuable insights
-5. Innovative and exploring new perspectives
-Avoid topics related to AI or technology. Return only the topic name.`;
+      prompt = `Generate a headline for a professional article about "${category}".
+The headline MUST follow this format: "Strong Keyword: Short Question or Solution"
+For example:
+- Debt Collection: When to Outsource?
+- Late Payment: 3 Effective Recovery Strategies
+- Receivables: How to Manage Aging Accounts?
+- Insolvency: What Creditors Need to Know?
+- Collection Calls: Professional Communication Techniques
+- Enforcement: Key Steps to Success
+- Creditor Rights: Understanding Your Position
+- Credit Check: Essential Pre-Agreement Steps
+- Customer Screening: Red Flags to Watch
+- Risk Management: Preventing Bad Debt
+
+Here's a comprehensive list of headline examples for inspiration by category:
+
+DEBT COLLECTION & RECOVERY:
+- Debt Collection: When to Outsource?
+- Receivables: How to Manage Aging Accounts?
+- Late Payment: 3 Effective Strategies
+- Collection Calls: Professional Communication Techniques
+- Payment Terms: How to Optimize Compliance?
+- Invoice: Best Practices for Faster Payments
+- Reminder Letters: Creating Effective Templates
+- Debt Recovery: International Best Practices
+- Cash Flow: Managing During Collection Delays
+- Credit Policy: Creating Effective Guidelines
+- Mediation: Alternative to Legal Action?
+- Collection Agencies: How to Choose Right?
+- Default Interest: How to Calculate Correctly?
+
+LEGAL ACTION & ENFORCEMENT:
+- Legal Action: When Is It Worth Pursuing?
+- Enforcement: Key Steps to Success
+- Creditor Rights: Understanding Your Position
+- Statute of Limitations: Avoiding Debt Expiration
+- Court Proceedings: Preparation Checklist
+- Judgments: Converting to Actual Payment
+- Bankruptcy: Navigating Creditor Claims
+- Execution Title: How to Obtain One?
+- Small Claims: Cost-Effective Recovery Option
+- Settlement: Negotiating Favorable Terms
+- Legal Costs: Can They Be Recovered?
+- Cross-Border Collection: Jurisdiction Challenges
+- Debt Sale: When to Consider?
+
+PREVENTION & RISK MANAGEMENT:
+- Credit Check: Essential Pre-Agreement Steps
+- Customer Screening: Red Flags to Watch
+- Contract Terms: Security Against Defaults
+- Security Interest: Types and Applications
+- Financial Analysis: Evaluating Client Risk
+- Debtor Registers: Effective Utilization
+- Collateral: When and How to Require?
+- Payment Guarantee: Best Practices
+- Risk Management: Preventing Bad Debt
+- Due Diligence: Comprehensive Client Assessment
+- Credit Insurance: Is It Worth the Cost?
+- Early Warning Signs: Detecting Payment Problems
+- Credit Scoring: Implementing Effective Systems
+
+Choose from these keyword categories for inspiration:
+- Debt Collection & Recovery: Debt, Collection, Receivables, Late Payment, Payment Terms, Invoice
+- Legal & Enforcement: Legal Action, Enforcement, Court, Judgment, Mediation, Bankruptcy, Execution
+- Prevention & Risk: Credit Check, Due Diligence, Contract Terms, Security Interest, Collateral, Guarantee
+
+The headline should be:
+1. Starting with a strong, searchable keyword (like those shown in examples)
+2. Followed by a specific question or solution (max 4-6 words)
+3. Relevant for business professionals
+4. Focus on practical problems businesses face
+5. Match search queries people actually type into Google
+6. Be clear, direct, and engaging
+
+Return ONLY the headline in the format "Keyword: Question/Solution" - nothing else.`;
     } else if (language === 'cs') {
-      prompt = `Vygenerujte originální, podnětné téma pro odborný článek o "${category}".
-Téma by mělo být:
-1. Relevantní pro obchodní profesionály
-2. Zaměřené na praktické a strategické aspekty
-3. Vhodné pro hloubkový odborný článek o délce 1500-2000 slov
-4. Dostatečně specifické, aby poskytovalo hodnotné poznatky
-5. Inovativní a zkoumající nové perspektivy
-Vyhněte se tématům souvisejícím s AI nebo technologiemi. Vraťte pouze název tématu.`;
+      prompt = `Vygenerujte headline pro odborný článek o "${category}".
+Headline MUSÍ dodržet tento formát: "Silné klíčové slovo: Krátká otázka nebo řešení"
+Například:
+- Dluh: Jak ho vymoci legálně?
+- Věřitel: Co dělat, když dlužník mlčí?
+- Pohledávky: Kdy je postoupit specialistovi?
+- Exekuce: Jaké má práva věřitel?
+- Insolvence: Jak podat návrh na dlužníka?
+- Lustrace: Jak zjistit majetek dlužníka?
+- Faktura nezaplacena: Jak postupovat?
+- Smlouva: 5 klauzulí pro ochranu věřitele
+- Upomínka: Jak ji správně formulovat?
+- Registr dlužníků: Jak ho efektivně využít?
+
+Zde je obsáhlý seznam příkladů headlinů pro inspiraci podle kategorií:
+
+VYMÁHÁNÍ POHLEDÁVEK:
+- Dluh: Jak ho vymoci legálně?
+- Věřitel: Co dělat, když dlužník mlčí?
+- Faktura nezaplacena: Jak postupovat?
+- Vymáhání dluhu: Mimosoudně nebo soudně?
+- Upomínka: Jak ji správně formulovat?
+- Předžalobní výzva: Jaké má náležitosti?
+- Pohledávky: Kdy je postoupit specialistovi?
+- Promlčení: Jak mu předejít u pohledávek?
+- Inkaso: 5 kroků k rychlejšímu plnění
+- Platební morálka: Jak ji podpořit u klientů?
+
+EXEKUCE A INSOLVENCE:
+- Exekuce: Jaké má práva věřitel?
+- Exekuce: Kdy začít jednat?
+- Insolvence: Jak podat návrh na dlužníka?
+- Insolvence: Co to je a kdy nastává?
+- Exekuční titul: Jak ho získat?
+- Oddlužení: Co znamená pro věřitele?
+- Konkurz: Jak se přihlásit s pohledávkou?
+- Rozhodčí řízení: Výhody pro vymáhání
+- Platební rozkaz: Postup podání
+- Reorganizace: Dopad na pohledávky věřitelů
+- Soudní poplatky: Kolik stojí vymáhání?
+- Zabavení majetku: Postup a omezení
+- Exekuce platu: Kalkulace srážek ze mzdy
+
+LUSTRACE A PREVENCE:
+- Lustrace: Jak zjistit majetek dlužníka?
+- Bonita klienta: Jak ji ověřit zdarma?
+- Prevence neplacení: 3 klíčové kroky
+- Zajištění pohledávek: Jaké jsou možnosti?
+- Insolvenční rejstřík: Jak ho správně používat?
+- Zástavní právo: Kdy a jak ho zřídit?
+- Registr dlužníků: Efektivní využití
+- Finanční analýza: Předcházení rizikovým klientům
+- Pojištění pohledávek: Kdy se vyplatí?
+- Směnka: Výhody a rizika zajištění
+- Scoring klientů: Interní systém hodnocení
+- Zálohové platby: Strategie implementace
+- Obchodní podmínky: Klauzule proti neplatičům
+
+Inspirujte se těmito kategoriemi klíčových slov:
+- Vymáhání pohledávek: Dluh, Pohledávky, Věřitel, Faktura, Upomínka, Vymáhání
+- Exekuce a insolvence: Exekuce, Insolvence, Oddlužení, Konkurz, Exekuční titul, Soudní řízení
+- Lustrace a prevence: Lustrace, Bonita, Prevence, Zajištění, Registr dlužníků, Zástava
+
+Headline by měl:
+1. Začínat silným, vyhledávaným klíčovým slovem (např. podobným jako v příkladech výše)
+2. Následovat konkrétní otázkou nebo řešením (max 4-6 slov)
+3. Být relevantní pro obchodní profesionály
+4. Zaměřit se na praktické problémy firem
+5. Odpovídat tomu, co lidé skutečně vyhledávají na Googlu
+6. Být jasný, přímý a poutavý
+
+Vraťte POUZE headline ve formátu "Klíčové slovo: Otázka/Řešení" - nic jiného.`;
     } else if (language === 'sk') {
-      prompt = `Vygenerujte originálnu, podnetnú tému pre odborný článok o "${category}".
-Téma by malo byť:
-1. Relevantné pre obchodných profesionálov
-2. Zamerané na praktické a strategické aspekty
-3. Vhodné pre hĺbkový odborný článok s dĺžkou 1500-2000 slov
-4. Dostatočne špecifické, aby poskytovalo hodnotné poznatky
-5. Inovatívne a skúmajúce nové perspektívy
-Vyhnite sa témam súvisiacim s AI alebo technológiami. Vráťte iba názov témy.`;
+      prompt = `Vygenerujte headline pre odborný článok o "${category}".
+Headline MUSÍ dodržať tento formát: "Silné kľúčové slovo: Krátka otázka alebo riešenie"
+Napríklad:
+- Pohľadávky: Kedy ich odovzdať na vymáhanie?
+- Exekúcia: Aké práva má veriteľ?
+- Dlžník: Čo robiť pri neplatení?
+- Faktúra: Čo robiť po uplynutí splatnosti?
+- Upomienka: Ako ju správne napísať?
+- Lustrácia: Ako preveriť obchodného partnera?
+- Konkurz: Ako sa prihlásiť s pohľadávkou?
+- Veriteľ: Ako chrániť svoje práva?
+- Zabezpečenie pohľadávok: Najlepšie nástroje
+- Bonita klienta: Ako ju jednoducho overiť?
+
+Tu je rozsiahly zoznam príkladov headlinov pre inšpiráciu podľa kategórií:
+
+VYMÁHANIE POHĽADÁVOK:
+- Pohľadávky: Kedy ich odovzdať na vymáhanie?
+- Dlžník: Čo robiť pri neplatení?
+- Faktúra: Čo po vypršaní splatnosti?
+- Upomienka: Ako ju správne napísať?
+- Mimosúdne vymáhanie: Kedy sa oplatí?
+- Premlčanie: Ako mu predísť včas?
+- Postúpenie pohľadávky: Výhody a riziká
+- Uznanie dlhu: Ako ho právne zabezpečiť?
+- Platobná disciplína: Ako ju zlepšiť?
+- Advokát: Kedy poveriť vymáhaním?
+- Mandate inkaso: Ako ho efektívne zaviesť?
+- Telefonické vymáhanie: Profesionálny postup
+- Predžalobná výzva: Čo musí obsahovať?
+
+EXEKÚCIE A INSOLVENCIA:
+- Exekúcia: Aké práva má veriteľ?
+- Exekútor: Ako s ním efektívne komunikovať?
+- Exekučný titul: Ako ho získať?
+- Konkurz: Ako sa prihlásiť s pohľadávkou?
+- Reštrukturalizácia: Dopad na veriteľov
+- Oddlženie: Čo znamená pre podnikateľa?
+- Platobný rozkaz: Ako ho správne podať?
+- Súdne konanie: Kedy sa oplatí?
+- Dobrovoľná dražba: Postup pre veriteľa
+- Splátkový kalendár: Kedy ho akceptovať?
+- Náklady exekúcie: Kto ich hradí?
+- Exekučná imunita: Čo nemôže exekútor zabaviť?
+- Dražba: Ako sa jej zúčastniť ako veriteľ?
+
+PREVENCIA A LUSTRÁCIA:
+- Lustrácia: Ako preveriť obchodného partnera?
+- Bonita klienta: Metódy preverovania
+- Registre dlžníkov: Ako ich správne využiť?
+- Zabezpečenie pohľadávok: Najlepšie nástroje
+- Záložné právo: Výhody pre veriteľa
+- Obchodný register: Čo všetko odhalí?
+- Finančná analýza: Ako odhaliť rizikového klienta?
+- Poistenie pohľadávok: Kedy sa oplatí?
+- Zmenka: Ako ju správne použiť?
+- Zálohové platby: Optimálne nastavenie
+- Kreditný limit: Ako ho správne stanoviť?
+- Notárska zápisnica: Výhody priamej vykonateľnosti
+- Monitorovanie klientov: Systematický prístup
+
+Inšpirujte sa týmito kategóriami kľúčových slov:
+- Vymáhanie pohľadávok: Pohľadávky, Dlžník, Faktúra, Upomienka, Veriteľ, Vymáhanie
+- Exekúcie a insolvencia: Exekúcia, Exekútor, Insolvencia, Konkurz, Oddlženie, Reštrukturalizácia
+- Prevencia a lustrácia: Lustrácia, Platobná disciplína, Registre dlžníkov, Zabezpečenie, Záložné právo
+
+Headline by mal:
+1. Začínať silným, vyhľadávaným kľúčovým slovom (napr. podobným ako v príkladoch vyššie)
+2. Nasledovať konkrétnou otázkou alebo riešením (max 4-6 slov)
+3. Byť relevantný pre obchodných profesionálov
+4. Zamerať sa na praktické problémy firiem
+5. Zodpovedať tomu, čo ľudia skutočne vyhľadávajú na Googli
+6. Byť jasný, priamy a pútavý
+
+Vráťte IBA headline vo formáte "Kľúčové slovo: Otázka/Riešenie" - nič iné.`;
     } else if (language === 'de') {
-      prompt = `Generieren Sie ein originelles, zum Nachdenken anregendes Thema für einen Fachartikel über "${category}".
-Das Thema sollte:
-1. Relevant für Geschäftsfachleute sein
-2. Sich auf praktische und strategische Aspekte konzentrieren
-3. Geeignet für einen vertiefenden Fachartikel von 1500-2000 Wörtern sein
-4. Spezifisch genug sein, um wertvolle Erkenntnisse zu liefern
-5. Innovativ sein und neue Perspektiven erkunden
-Vermeiden Sie Themen im Zusammenhang mit KI oder Technologie. Geben Sie nur den Themennamen zurück.`;
+      prompt = `Generieren Sie eine Überschrift für einen Fachartikel über "${category}".
+Die Überschrift MUSS diesem Format folgen: "Starkes Schlüsselwort: Kurze Frage oder Lösung"
+Zum Beispiel:
+- Inkasso: Wann lohnt sich ein Dienstleister?
+- Forderungen: Wie optimiert man die Beitreibung?
+- Zahlungsverzug: Sofort reagieren oder warten?
+- Mahnwesen: Effizienter Ablauf erklärt
+- Insolvenz: Welche Rechte haben Gläubiger?
+- Vollstreckung: Die wichtigsten Schritte
+- Bonitätsprüfung: Wie funktioniert sie richtig?
+- Mahnbescheid: Wie stellt man ihn richtig?
+- Schuldnerregister: Effektive Nutzung erklärt
+- Vertragsgestaltung: Klauseln zum Gläubigerschutz
+
+Hier ist eine umfassende Liste von Überschrift-Beispielen zur Inspiration nach Kategorien:
+
+INKASSO UND FORDERUNGSMANAGEMENT:
+- Inkasso: Wann lohnt sich ein Dienstleister?
+- Forderungen: Wie optimiert man die Beitreibung?
+- Zahlungsverzug: Sofort reagieren oder warten?
+- Mahnwesen: Effizienter Ablauf erklärt
+- Zahlungsmoral: Wie kann man sie verbessern?
+- Mahngebühren: Was ist rechtlich durchsetzbar?
+- Forderungsverkauf: Vor- und Nachteile
+- Mahnschreiben: Wie formuliert man wirksam?
+- Telefon-Inkasso: Professionelle Gesprächsführung
+- Kundenbeziehung: Balance zwischen Inkasso und Service
+- Liquidität: Maßnahmen zur Verbesserung
+- Außergerichtliche Einigung: Verhandlungstechniken
+- Zahlungsfristen: Optimale Gestaltung
+
+VOLLSTRECKUNG UND INSOLVENZVERFAHREN:
+- Vollstreckung: Die wichtigsten Schritte
+- Mahnbescheid: Wie stellt man ihn richtig?
+- Zwangsvollstreckung: Wann ist sie sinnvoll?
+- Insolvenzantrag: Optimales Timing für Gläubiger
+- Insolvenzverfahren: Was Gläubiger wissen müssen
+- Gläubigerausschuss: Rolle und Einfluss
+- Vollstreckungstitel: Wege zur Beschaffung
+- Gerichtsvollzieher: Effektive Zusammenarbeit
+- Pfändung: Grenzen und Möglichkeiten
+- Verwertung: Optionen für gesicherte Gläubiger
+- Insolvenzplan: Chancen für Gläubiger
+- Restschuldbefreiung: Auswirkungen auf Gläubiger
+- Vergleich: Alternative zur Vollstreckung?
+
+PRÄVENTION UND BONITÄTSPRÜFUNG:
+- Bonitätsprüfung: Wie funktioniert sie richtig?
+- Schuldnerregister: Effektive Nutzung erklärt
+- Gläubigerschutz: 4 präventive Maßnahmen
+- Sicherheiten: Welche sind am zuverlässigsten?
+- Vertragsgestaltung: Klauseln zum Gläubigerschutz
+- Eigentumsvorbehand: Absicherung für Lieferanten
+- Bürgschaft: Sinnvolle Gestaltung und Absicherung
+- Kreditlimit: Wie bestimmt man es richtig?
+- Schuldnerauskünfte: Legale Informationsquellen
+- Bilanzanalyse: Frühwarnsignale erkennen
+- Zahlungskonditionen: Optimierung für Sicherheit
+- Forderungsversicherung: Kosten-Nutzen-Analyse
+- Monitoring: Systematische Überwachung von Kunden
+
+Lassen Sie sich von diesen Kategorien von Schlüsselwörtern inspirieren:
+- Inkasso und Forderungsmanagement: Inkasso, Forderungen, Zahlungsverzug, Mahnwesen, Zahlungsmoral
+- Vollstreckung und Insolvenzverfahren: Vollstreckung, Mahnbescheid, Insolvenzantrag, Zwangsvollstreckung
+- Prävention und Bonitätsprüfung: Bonitätsprüfung, Schuldnerregister, Sicherheiten, Zahlungskonditionen
+
+Die Überschrift sollte:
+1. Mit einem starken, suchbaren Schlüsselwort beginnen (wie in den Beispielen oben)
+2. Gefolgt von einer spezifischen Frage oder Lösung (max. 4-6 Wörter)
+3. Relevant für Geschäftsfachleute sein
+4. Sich auf praktische Probleme von Unternehmen konzentrieren
+5. Suchbegriffen entsprechen, die Menschen tatsächlich bei Google eingeben
+6. Klar, direkt und ansprechend sein
+
+Geben Sie NUR die Überschrift im Format "Schlüsselwort: Frage/Lösung" zurück - nichts anderes.`;
     } else {
       throw new Error(`Unsupported language: ${language}`);
     }
@@ -529,7 +795,7 @@ Vermeiden Sie Themen im Zusammenhang mit KI oder Technologie. Geben Sie nur den 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
-        { role: "system", content: "You are a specialist in generating business content ideas." },
+        { role: "system", content: "You are a specialist in generating engaging headlines for business content." },
         { role: "user", content: prompt }
       ],
       temperature: 0.9,
@@ -537,36 +803,165 @@ Vermeiden Sie Themen im Zusammenhang mit KI oder Technologie. Geben Sie nur den 
     });
     
     const topic = completion.choices[0].message.content.trim();
-    console.log(`Generated topic: ${topic}`);
+    console.log(`Generated headline: ${topic}`);
     
     return topic;
   } catch (error) {
     console.error("Error generating topic:", error);
-    // Fallback topics based on category and language
+    // Fallback headlines based on category and language
     let fallbackTopics = {
       en: [
-        `Strategic Approaches to Modern ${category}`,
-        `Optimizing ${category} Processes for Small Businesses`,
-        `Legal Aspects of ${category} in International Business`,
-        `Building Client Relationships Through Effective ${category}`
+        // Debt Collection & Recovery
+        `Debt Collection: When to Outsource?`,
+        `Receivables: How to Manage Aging Accounts?`,
+        `Late Payment: 3 Effective Strategies`,
+        `Insolvency: What Creditors Need to Know`,
+        `Invoicing: Preventing Payment Delays`,
+        `Collection Calls: Professional Communication Techniques`,
+        `Payment Terms: How to Optimize Compliance?`,
+        `Credit Policy: Creating Effective Guidelines`,
+        `Default Interest: How to Calculate Correctly?`,
+        `Debtor: How to Handle Non-Communication?`,
+        
+        // Legal & Enforcement
+        `Legal Action: When Is It Worth Pursuing?`,
+        `Enforcement: Key Steps to Success`,
+        `Creditor Rights: Understanding Your Position`,
+        `Statute of Limitations: Avoiding Debt Expiration`,
+        `Court Proceedings: Preparation Checklist`,
+        `Judgments: Converting to Actual Payment`,
+        `Mediation: Alternative to Legal Action?`,
+        `Bankruptcy: Navigating Creditor Claims`,
+        `Execution Title: How to Obtain One?`,
+        `Settlement: Negotiating Favorable Terms`,
+        
+        // Prevention & Risk Management
+        `Credit Check: Essential Pre-Agreement Steps`,
+        `Customer Screening: Red Flags to Watch`,
+        `Contract Terms: Security Against Defaults`,
+        `Security Interest: Types and Applications`,
+        `Financial Analysis: Evaluating Client Risk`,
+        `Debtor Registers: Effective Utilization`,
+        `Collateral: When and How to Require?`,
+        `Payment Guarantee: Best Practices`,
+        `Risk Management: Preventing Bad Debt`,
+        `Due Diligence: Comprehensive Client Assessment`
       ],
       cs: [
-        `Strategické přístupy k moderní ${category}`,
-        `Optimalizace procesů ${category} pro malé podniky`,
-        `Právní aspekty ${category} v mezinárodním obchodě`,
-        `Budování vztahů s klienty prostřednictvím efektivního ${category}`
+        // Vymáhání pohledávek
+        `Dluh: Jak ho vymoci legálně?`,
+        `Věřitel: Co dělat, když dlužník mlčí?`,
+        `Faktura nezaplacena: Jak postupovat?`,
+        `Vymáhání dluhu: Mimosoudně nebo soudně?`,
+        `Upomínka: Jak ji správně formulovat?`,
+        `Předžalobní výzva: Jaké má náležitosti?`,
+        `Pohledávky: Kdy je postoupit specialistovi?`,
+        `Promlčení: Jak mu předejít u pohledávek?`,
+        `Inkaso: 5 kroků k rychlejšímu plnění`,
+        `Platební morálka: Jak ji podpořit u klientů?`,
+        
+        // Exekuce a insolvence
+        `Exekuce: Jaké má práva věřitel?`,
+        `Exekuce: Kdy začít jednat?`,
+        `Insolvence: Jak podat návrh na dlužníka?`,
+        `Insolvence: Co to je a kdy nastává?`,
+        `Exekuční titul: Jak ho získat?`,
+        `Oddlužení: Co znamená pro věřitele?`,
+        `Konkurz: Jak se přihlásit s pohledávkou?`,
+        `Soudní řízení: Jak se správně připravit?`,
+        `Náklady exekuce: Kdo je skutečně platí?`,
+        `Rozhodčí řízení: Je lepší než soud?`,
+        
+        // Lustrace a prevence
+        `Lustrace: Jak zjistit majetek dlužníka?`,
+        `Bonita klienta: Jak ji ověřit zdarma?`,
+        `Prevence neplacení: 3 klíčové kroky`,
+        `Zajištění pohledávek: Jaké jsou možnosti?`,
+        `Registr dlužníků: Jak ho efektivně využít?`,
+        `Zástava: Kdy ji požadovat a jak funguje?`,
+        `Platební morálka: Varovné signály klienta`,
+        `Smlouva: 5 klauzulí pro ochranu věřitele`,
+        `Due diligence: Prověření obchodního partnera`,
+        `Uznání dluhu: Jak ho právně ošetřit?`
       ],
       sk: [
-        `Strategické prístupy k modernej ${category}`,
-        `Optimalizácia procesov ${category} pre malé podniky`,
-        `Právne aspekty ${category} v medzinárodnom obchode`,
-        `Budovanie vzťahov s klientmi prostredníctvom efektívneho ${category}`
+        // Vymáhanie pohľadávok
+        `Pohľadávky: Kedy ich odovzdať na vymáhanie?`,
+        `Exekúcia: Aké práva má veriteľ?`,
+        `Dlžník: Čo robiť pri neplatení?`,
+        `Insolvencia: Ako podať návrh efektívne?`,
+        `Upomienka: Ako ju správne napísať?`,
+        `Predžalobná výzva: Čo musí obsahovať?`,
+        `Faktúra: Čo robiť po uplynutí splatnosti?`,
+        `Vymáhanie: 5 krokov k úspešnému procesu`,
+        `Veriteľ: Ako chrániť svoje práva?`,
+        `Mimosúdne vymáhanie: Kedy sa vyplatí?`,
+        
+        // Exekúcie a insolvencia
+        `Exekútor: Ako s ním efektívne komunikovať?`,
+        `Exekučný titul: Ako ho získať?`,
+        `Konkurz: Ako sa prihlásiť s pohľadávkou?`,
+        `Reštrukturalizácia: Čo to znamená pre veriteľa?`,
+        `Súdne konanie: Kedy sa oplatí?`,
+        `Dobrovoľná dražba: Postup pre veriteľa`,
+        `Oddlženie: Dopad na podnikateľské pohľadávky`,
+        `Exekučná imunita: Čo nemôže exekútor zabaviť?`,
+        `Splátkový kalendár: Kedy ho akceptovať?`,
+        `Náklady exekúcie: Kto ich hradí?`,
+        
+        // Prevencia a lustrácia
+        `Lustrácia: Ako preveriť obchodného partnera?`,
+        `Platobná disciplína: Ako ju zlepšiť?`,
+        `Registre dlžníkov: Ako ich správne využiť?`,
+        `Zabezpečenie pohľadávok: Najlepšie nástroje`,
+        `Uznanie dlhu: Prečo je dôležité?`,
+        `Zmluvná pokuta: Aká výška je vymáhateľná?`,
+        `Záložné právo: Kedy a ako ho zriadiť?`,
+        `Bonita klienta: Ako ju jednoducho overiť?`,
+        `Obchodný register: Čo všetko odhalí?`,
+        `Notárska zápisnica: Výhody priamej vykonateľnosti`
       ],
       de: [
-        `Strategische Ansätze zum modernen ${category}`,
-        `Optimierung von ${category}-Prozessen für kleine Unternehmen`,
-        `Rechtliche Aspekte von ${category} im internationalen Geschäft`,
-        `Aufbau von Kundenbeziehungen durch effektives ${category}`
+        // Inkasso und Forderungsmanagement
+        `Inkasso: Wann lohnt sich ein Dienstleister?`,
+        `Forderungen: Wie optimiert man die Beitreibung?`,
+        `Zahlungsverzug: Sofort reagieren oder warten?`,
+        `Insolvenz: Welche Rechte haben Gläubiger?`,
+        `Mahnwesen: Effizienter Ablauf erklärt`,
+        `Zahlungserinnerung: Wie formuliert man richtig?`,
+        `Zahlungsmoral: Wie kann man sie verbessern?`,
+        `Forderungsausfall: Wirksame Präventionsmaßnahmen`,
+        `Mahngebühren: Was ist rechtlich durchsetzbar?`,
+        `Schuldnerbeziehung: Professionelle Kommunikation`,
+        
+        // Vollstreckung und Insolvenzverfahren
+        `Vollstreckung: Die wichtigsten Schritte`,
+        `Mahnbescheid: Wie stellt man ihn richtig?`,
+        `Zwangsvollstreckung: Wann ist sie sinnvoll?`,
+        `Insolvenzantrag: Optimales Timing für Gläubiger`,
+        `Gläubigerausschuss: Rolle und Einfluss`,
+        `Vollstreckungstitel: Wege zur Beschaffung`,
+        `Gerichtsvollzieher: Effektive Zusammenarbeit`,
+        `Pfändung: Grenzen und Möglichkeiten`,
+        `Verwertung: Optionen für gesicherte Gläubiger`,
+        `Insolvenzplan: Chancen für Gläubiger`,
+        `Restschuldbefreiung: Auswirkungen auf Gläubiger`,
+        `Vergleich: Alternative zur Vollstreckung?`,
+        
+        // Prävention und Bonitätsprüfung
+        `Bonitätsprüfung: Wie funktioniert sie richtig?`,
+        `Schuldnerregister: Effektive Nutzung erklärt`,
+        `Gläubigerschutz: 4 präventive Maßnahmen`,
+        `Sicherheiten: Welche sind am zuverlässigsten?`,
+        `Vertragsgestaltung: Klauseln zum Gläubigerschutz`,
+        `Eigentumsvorbehand: Absicherung für Lieferanten`,
+        `Bürgschaft: Sinnvolle Gestaltung und Absicherung`,
+        `Kreditlimit: Wie bestimmt man es richtig?`,
+        `Schuldnerauskünfte: Legale Informationsquellen`,
+        `Bilanzanalyse: Frühwarnsignale erkennen`,
+        `Zahlungskonditionen: Optimierung für Sicherheit`,
+        `Forderungsversicherung: Kosten-Nutzen-Analyse`,
+        `Monitoring: Systematische Überwachung von Kunden`
       ]
     };
     

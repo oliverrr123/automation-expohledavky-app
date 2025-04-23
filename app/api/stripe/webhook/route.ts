@@ -207,13 +207,37 @@ async function sendCustomerEmail(email: string, amount: number, notes: string, l
       </body>
       </html>`;
 
-    // The HTML email template for admin - includes additional payment details
+    // Determine localized texts for admin email
+    let adminSubject: string;
+    let adminCallToAction: string;
+
+    switch(language) {
+      case 'sk':
+        adminSubject = `Nová požiadavka na lustráciu pre ${email}`;
+        adminCallToAction = 'Prosím, zahajte spracovanie tejto požiadavky.';
+        break;
+      case 'de':
+        adminSubject = `Neue Anfrage zur Hintergrundprüfung für ${email}`;
+        adminCallToAction = 'Bitte beginnen Sie mit der Bearbeitung dieser Anfrage.';
+        break;
+      case 'en':
+        adminSubject = `New Background Check Request for ${email}`;
+        adminCallToAction = 'Please begin processing this request.';
+        break;
+      case 'cs':
+      default:
+        adminSubject = `Nový požadavek na lustraci pro ${email}`;
+        adminCallToAction = 'Prosím, zahajte zpracování tohoto požadavku.';
+        break;
+    }
+
+    // The HTML email template for admin - includes additional payment details AND call to action
     const adminHtmlTemplate = `<!DOCTYPE html>
       <html lang="${language}">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Payment Notification - Admin Copy</title>
+        <title>Nová lustrace k vyřízení / New Background Check Request</title> 
         <style>
           body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; margin: 0; padding: 0; }
           .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -231,37 +255,34 @@ async function sendCustomerEmail(email: string, amount: number, notes: string, l
           .payment-details table td:first-child { font-weight: 500; color: #3d85c6; width: 30%; }
           .notes-box { background-color: #f9fafb; padding: 15px; border-radius: 4px; border: 1px solid #e5e7eb; margin-top: 20px; white-space: pre-line; }
           .email-footer { padding: 20px 30px; background-color: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center; color: #6b7280; font-size: 14px; }
+          .call-to-action { padding: 15px; background-color: #fffbeb; border: 1px solid #fef3c7; border-radius: 4px; margin-top: 20px; text-align: center; font-weight: bold; color: #92400e; }
           @media screen and (max-width: 600px) { .email-container { width: 100%; border-radius: 0; } .email-header, .email-body, .email-footer { padding: 15px; } }
         </style>
       </head>
       <body>
         <div class="email-container">
           <div class="email-header"><h1>${
-            language === 'cs' ? 'Nová platba za lustraci' :
-            language === 'sk' ? 'Nová platba za lustráciu' :
-            language === 'de' ? 'Neue Zahlung für Hintergrundprüfung' :
-            'New Payment for Background Check'
+            language === 'cs' ? 'Nový požadavek na lustraci' :
+            language === 'sk' ? 'Nová požiadavka na lustráciu' :
+            language === 'de' ? 'Neue Anfrage zur Hintergrundprüfung' :
+            'New Background Check Request'
           }</h1></div>
           <div class="email-body">
             <p>${
-              language === 'cs' ? 'Byla přijata nová platba za lustraci přes Stripe.' :
-              language === 'sk' ? 'Bola prijatá nová platba za lustráciu cez Stripe.' :
-              language === 'de' ? 'Eine neue Zahlung für die Hintergrundprüfung wurde über Stripe erhalten.' :
-              'A new payment for background check service has been received via Stripe.'
+              language === 'cs' ? 'Byl přijat nový požadavek na lustraci.' :
+              language === 'sk' ? 'Bola prijatá nová požiadavka na lustráciu.' :
+              language === 'de' ? 'Eine neue Anfrage zur Hintergrundprüfung wurde erhalten.' :
+              'A new background check request has been received.'
             }</p>
-            <div class="amount-box"><strong>${
-              language === 'cs' ? 'Částka:' :
-              language === 'sk' ? 'Suma:' :
-              language === 'de' ? 'Betrag:' :
-              'Amount:'
-            }</strong><div class="amount-value">${amountFormatted}</div></div>
+            
+            <div class="call-to-action">${adminCallToAction}</div>
             
             <div class="payment-details">
               <h3>${
-                language === 'cs' ? 'Detaily platby' :
-                language === 'sk' ? 'Detaily platby' :
-                language === 'de' ? 'Zahlungsdetails' :
-                'Payment Details'
+                language === 'cs' ? 'Detaily platby a požadavku' :
+                language === 'sk' ? 'Detaily platby a požiadavky' :
+                language === 'de' ? 'Zahlungs- und Anfragedetails' :
+                'Payment and Request Details'
               }</h3>
               <table>
                 <tr>
@@ -345,7 +366,7 @@ async function sendCustomerEmail(email: string, amount: number, notes: string, l
       const ownerInfo = await transporter.sendMail({
         from: emailConfig.auth.user,
         to: ownerEmail,
-        subject: `${template.subject} - ${email}`,
+        subject: adminSubject,
         html: adminHtmlTemplate,
       });
       console.log('✅ Site owner email sent successfully:', ownerInfo.messageId);
@@ -499,18 +520,17 @@ export async function POST(request: Request) {
           - All metadata: ${JSON.stringify(paymentIntent.metadata || {})}
         `);
         
-        // Send confirmation email to customer
+        // Send the confirmation emails
         if (email && email !== 'Not provided') {
-          console.log('📧 Attempting to send confirmation email to:', email);
-          console.log('Email config being used:', emailConfigs[language as keyof typeof emailConfigs]?.host || 'unknown');
-          try {
-            const result = await sendCustomerEmail(email, amount, notes, language, paymentIntent);
-            console.log('Email send result:', result);
-          } catch (err) {
-            console.error('❌ Top-level email sending error:', err);
-          }
+          console.log('📧 Triggering email sending process...');
+          const emailResult = await sendCustomerEmail(email, amount, notes, language, paymentIntent);
+          console.log('✅ Email sending process finished. Result:', emailResult);
+          // Clear cookies after successful processing
+          cookieStore.delete('payment_email');
+          cookieStore.delete('payment_notes');
+          console.log('🍪 Cleared payment cookies.');
         } else {
-          console.log('⚠️ No email address provided, skipping email notification');
+          console.error('❌ Cannot send email, email address not found!');
         }
         
         break;

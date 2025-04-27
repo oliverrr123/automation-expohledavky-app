@@ -1,6 +1,83 @@
 {
   "title": "EX Forderungen - umfassende Lösung für Ihre Forderungen",
-  "description": "Wir sind Experten für Forderungsmanagement. Wir bearbeiten Forderungen außergerichtlich, gerichtlich und im Vollstreckungsverfahren.",
-  "keywords": "Rechnung, Schuldschein, Forderung, Schulden, Unternehmensübernahme, Inkasso, Vollstreckung",
-  "language": "de"
+  "description": "Wir sind Experten im Forderungsmanagement. Wir bearbeiten Forderungen außergerichtlich, gerichtlich und im Vollstreckungsverfahren.",
+  "keywords": "Rechnung, Wechsel, Forderung, Schulden, Firmenübernahme, Inkasso, Vollstreckung",
+  "language": "de",
+  "pages": {
+    "about": {
+      "title": "Über uns | EX Forderungen",
+      "description": "Lernen Sie unser Team von Forderungsexperten kennen. Unsere Erfahrung und unser Ansatz im Forderungsmanagement.",
+      "keywords": "über uns, team, experten, forderungen, erfahrung"
+    },
+    "services": {
+      "title": "Unsere Leistungen | EX Forderungen",
+      "description": "Umfassende Forderungsdienstleistungen: Inkasso, Verwaltung, Kauf und Verkauf von Forderungen, Firmenliquidation und Krisenmanagement.",
+      "keywords": "leistungen, inkasso, forderungsverwaltung, forderungskauf, firmenliquidation, krisenmanagement"
+    },
+    "debt-collection": {
+      "title": "Inkasso | EX Forderungen",
+      "description": "Professionelles Inkasso außergerichtlich und gerichtlich. Erfahrene Anwälte und Vollstreckungsbeamte.",
+      "keywords": "inkasso, vollstreckung, gerichtliches verfahren, außergerichtliches inkasso"
+    },
+    "corporate-receivables": {
+      "title": "Verwaltung von Firmenforderungen | EX Forderungen",
+      "description": "Umfassende Verwaltung von Firmenforderungen. Professioneller Ansatz und effiziente Lösung.",
+      "keywords": "forderungsverwaltung, firmenforderungen, schuldenverwaltung, forderungsmanagement"
+    },
+    "receivables-purchase": {
+      "title": "Kauf und Verkauf von Forderungen | EX Forderungen",
+      "description": "Professioneller Kauf und Verkauf von Forderungen. Schnelle und transparente Lösung für Ihre Forderungen.",
+      "keywords": "forderungskauf, forderungsverkauf, schuldenkauf, schuldenverkauf"
+    },
+    "company-purchase": {
+      "title": "Firmenübernahme | EX Forderungen",
+      "description": "Professionelle Firmenübernahme. Umfassende Lösung einschließlich Forderungsübertragung.",
+      "keywords": "firmenübernahme, firmenverkauf, gesellschaftsübertragung, unternehmenskauf"
+    },
+    "company-liquidation": {
+      "title": "Firmenliquidation | EX Forderungen",
+      "description": "Professionelle Firmenliquidation. Umfassende Lösungen einschließlich Liquidationsbilanz.",
+      "keywords": "firmenliquidation, unternehmensliquidation, liquidationsbilanz"
+    },
+    "crisis-management": {
+      "title": "Krisenmanagement | EX Forderungen",
+      "description": "Lösungen für Krisensituationen in Unternehmen. Restrukturierung, Sanierung und Prozessoptimierung.",
+      "keywords": "krisenmanagement, restrukturierung, sanierung, optimierung"
+    },
+    "promissory-notes": {
+      "title": "Wechselkauf | EX Forderungen",
+      "description": "Professioneller Wechselkauf. Schnelle und vorteilhafte Lösung für Ihre Wechsel.",
+      "keywords": "wechselkauf, wechselverkauf, wechsel, wechselrecht"
+    },
+    "liechtenstein-partner": {
+      "title": "Partner in Liechtenstein | EX Forderungen",
+      "description": "Zusammenarbeit mit liechtensteinischen Partnern. Internationale Forderungslösungen.",
+      "keywords": "liechtenstein, internationale forderungen, ausländischer partner, internationale zusammenarbeit"
+    },
+    "screening": {
+      "title": "Screening | EX Forderungen",
+      "description": "Umfassende Unternehmens- und Personenscreening. Bonitätsanalyse, Historie und Risikofaktoren.",
+      "keywords": "screening, bonitätsanalyse, risikofaktoren, unternehmenshistorie"
+    },
+    "blog": {
+      "title": "Blog | EX Forderungen",
+      "description": "Fachartikel zum Forderungsmanagement und Inkasso. Praktische Ratschläge für Unternehmen und Unternehmer.",
+      "keywords": "blog, artikel, forderungen, inkasso, ratschläge"
+    },
+    "contact": {
+      "title": "Kontakt | EX Forderungen",
+      "description": "Kontaktieren Sie uns für eine Beratung zu Ihren Forderungen. Wir helfen Ihnen gerne.",
+      "keywords": "kontakt, beratung, beratungsdienst, forderungen"
+    },
+    "pricing": {
+      "title": "Preisliste | EX Forderungen",
+      "description": "Transparente Preisliste unserer Dienstleistungen. Übersichtliche Preise für Inkasso und weitere Dienstleistungen.",
+      "keywords": "preisliste, preise, inkasso, dienstleistungen, dienstleistungspreise"
+    },
+    "dictionaries": {
+      "title": "Wörterbücher und Vorlagen | EX Forderungen",
+      "description": "Nützliche Wörterbücher und Dokumentenvorlagen für die Arbeit mit Forderungen.",
+      "keywords": "wörterbücher, vorlagen, dokumente, forderungen, rechtsvorlagen"
+    }
+  }
 } 

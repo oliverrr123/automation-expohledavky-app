@@ -50,7 +50,7 @@ function getServerLocale(): string {
   }
 }
 
-export const generateMetadata = (): Metadata => {
+export const generateMetadata = ({ params }: { params: { pathname?: string } }): Metadata => {
   // Get domain-specific server locale
   const serverLocale = getServerLocale();
   
@@ -81,13 +81,38 @@ export const generateMetadata = (): Metadata => {
     };
   }
   
-  // Get locale-specific metadata only if we have a valid locale
+  // Get locale-specific metadata
   const meta = getLocaleMetadata(serverLocale);
   
+  // Get the current pathname and determine the page type
+  const pathname = params?.pathname || '';
+  let pageType = 'home';
+  
+  if (pathname.includes('/o-nas') || pathname.includes('/about-us') || pathname.includes('/uber-uns')) {
+    pageType = 'about';
+  } else if (pathname.includes('/nase-sluzby') || pathname.includes('/our-services') || pathname.includes('/unsere-leistungen')) {
+    pageType = 'services';
+  } else if (pathname.includes('/vymahani-pohledavek') || pathname.includes('/debt-collection') || pathname.includes('/inkasso')) {
+    pageType = 'debt-collection';
+  } else if (pathname.includes('/likvidace-firem') || pathname.includes('/company-liquidation') || pathname.includes('/firmenliquidation')) {
+    pageType = 'company-liquidation';
+  } else if (pathname.includes('/krizovy-management') || pathname.includes('/crisis-management') || pathname.includes('/krisenmanagement')) {
+    pageType = 'crisis-management';
+  } else if (pathname.includes('/lustrace') || pathname.includes('/screening')) {
+    pageType = 'screening';
+  } else if (pathname.includes('/blog')) {
+    pageType = 'blog';
+  } else if (pathname.includes('/kontakt') || pathname.includes('/contact') || pathname.includes('/kontakt')) {
+    pageType = 'contact';
+  }
+  
+  // Get page-specific metadata if available
+  const pageMeta = meta.pages?.[pageType] || {};
+  
   return {
-    title: meta.title,
-    description: meta.description,
-    keywords: meta.keywords,
+    title: pageMeta.title || meta.title,
+    description: pageMeta.description || meta.description,
+    keywords: pageMeta.keywords || meta.keywords,
     generator: 'v0.dev',
     icons: {
       icon: [

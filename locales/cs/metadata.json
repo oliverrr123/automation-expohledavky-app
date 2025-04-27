@@ -2,5 +2,82 @@
   "title": "EX Pohledávky - komplexní řešení vašich pohledávek",
   "description": "Jsme experti na řešení pohledávek. Pohledávky řešíme mimosoudně, soudně a exekučně.",
   "keywords": "faktura, směnka, pohledávka, dluhy, odkup firem, dluží mi, exekuce",
-  "language": "cs"
+  "language": "cs",
+  "pages": {
+    "about": {
+      "title": "O nás | EX Pohledávky",
+      "description": "Poznejte tým expertů na řešení pohledávek. Naše zkušenosti a přístup k práci s pohledávkami.",
+      "keywords": "o nás, tým, experti, pohledávky, zkušenosti"
+    },
+    "services": {
+      "title": "Naše služby | EX Pohledávky",
+      "description": "Komplexní služby v oblasti pohledávek: vymáhání, správa, odkup a prodej pohledávek, likvidace firem a krizový management.",
+      "keywords": "služby, vymáhání pohledávek, správa pohledávek, odkup pohledávek, likvidace firem, krizový management"
+    },
+    "debt-collection": {
+      "title": "Vymáhání pohledávek | EX Pohledávky",
+      "description": "Profesionální vymáhání pohledávek mimosoudně i soudně. Zkušení právníci a exekutoři.",
+      "keywords": "vymáhání pohledávek, exekuce, soudní vymáhání, mimosoudní vymáhání"
+    },
+    "corporate-receivables": {
+      "title": "Správa firemních pohledávek | EX Pohledávky",
+      "description": "Komplexní správa firemních pohledávek. Profesionální přístup a efektivní řešení.",
+      "keywords": "správa pohledávek, firemní pohledávky, správa dluhů, pohledávkový management"
+    },
+    "receivables-purchase": {
+      "title": "Odkup a prodej pohledávek | EX Pohledávky",
+      "description": "Profesionální odkup a prodej pohledávek. Rychlé a transparentní řešení pro vaše pohledávky.",
+      "keywords": "odkup pohledávek, prodej pohledávek, odkup dluhů, prodej dluhů"
+    },
+    "company-purchase": {
+      "title": "Odkup firem | EX Pohledávky",
+      "description": "Profesionální odkup firem a společností. Komplexní řešení včetně převodu pohledávek.",
+      "keywords": "odkup firem, prodej firmy, převod společnosti, odkup podniku"
+    },
+    "company-liquidation": {
+      "title": "Likvidace firem | EX Pohledávky",
+      "description": "Profesionální likvidace firem a společností. Komplexní řešení včetně likvidačního zůstatku.",
+      "keywords": "likvidace firem, likvidace společnosti, likvidační zůstatek"
+    },
+    "crisis-management": {
+      "title": "Krizový management | EX Pohledávky",
+      "description": "Řešení krizových situací ve firmách. Restrukturalizace, sanace a optimalizace procesů.",
+      "keywords": "krizový management, restrukturalizace, sanace, optimalizace"
+    },
+    "promissory-notes": {
+      "title": "Odkup směnek | EX Pohledávky",
+      "description": "Profesionální odkup směnek. Rychlé a výhodné řešení pro vaše směnky.",
+      "keywords": "odkup směnek, prodej směnek, směnky, směnečné právo"
+    },
+    "liechtenstein-partner": {
+      "title": "Partner v Lichtenštejnsku | EX Pohledávky",
+      "description": "Spolupráce s lichtenštejnskými partnery. Mezinárodní řešení pohledávek.",
+      "keywords": "Lichtenštejnsko, mezinárodní pohledávky, zahraniční partner, mezinárodní spolupráce"
+    },
+    "screening": {
+      "title": "Lustrace | EX Pohledávky",
+      "description": "Komplexní lustrace firem a osob. Analýza bonity, historie a rizikových faktorů.",
+      "keywords": "lustrace, analýza bonity, rizikové faktory, historie firmy"
+    },
+    "blog": {
+      "title": "Blog | EX Pohledávky",
+      "description": "Odborné články o správě a vymáhání pohledávek. Praktické rady pro firmy a podnikatele.",
+      "keywords": "blog, články, pohledávky, vymáhání, rady"
+    },
+    "contact": {
+      "title": "Kontakt | EX Pohledávky",
+      "description": "Kontaktujte nás pro konzultaci ohledně vašich pohledávek. Rádi vám pomůžeme.",
+      "keywords": "kontakt, konzultace, poradenství, pohledávky"
+    },
+    "pricing": {
+      "title": "Ceník | EX Pohledávky",
+      "description": "Transparentní ceník našich služeb. Přehledné ceny za vymáhání pohledávek a další služby.",
+      "keywords": "ceník, ceny, vymáhání pohledávek, služby, ceník služeb"
+    },
+    "dictionaries": {
+      "title": "Slovníky a vzory | EX Pohledávky",
+      "description": "Užitečné slovníky pojmů a vzory dokumentů pro práci s pohledávkami.",
+      "keywords": "slovníky, vzory, dokumenty, pohledávky, právní vzory"
+    }
+  }
 } 

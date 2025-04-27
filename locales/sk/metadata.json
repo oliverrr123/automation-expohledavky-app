@@ -2,5 +2,82 @@
   "title": "EX Pohľadávky - komplexné riešenie vašich pohľadávok",
   "description": "Sme experti na riešenie pohľadávok. Pohľadávky riešime mimosúdne, súdne a exekučne.",
   "keywords": "faktúra, zmenka, pohľadávka, dlhy, odkúpenie firiem, dlhuje mi, exekúcia",
-  "language": "sk"
+  "language": "sk",
+  "pages": {
+    "about": {
+      "title": "O nás | EX Pohľadávky",
+      "description": "Spoznajte tím expertov na riešenie pohľadávok. Naše skúsenosti a prístup k práci s pohľadávkami.",
+      "keywords": "o nás, tím, experti, pohľadávky, skúsenosti"
+    },
+    "services": {
+      "title": "Naše služby | EX Pohľadávky",
+      "description": "Komplexné služby v oblasti pohľadávok: vymáhanie, správa, odkup a predaj pohľadávok, likvidácia firiem a krízový manažment.",
+      "keywords": "služby, vymáhanie pohľadávok, správa pohľadávok, odkup pohľadávok, likvidácia firiem, krízový manažment"
+    },
+    "debt-collection": {
+      "title": "Vymáhanie pohľadávok | EX Pohľadávky",
+      "description": "Profesionálne vymáhanie pohľadávok mimosúdne aj súdne. Skúsení právnici a exekútori.",
+      "keywords": "vymáhanie pohľadávok, exekúcia, súdne vymáhanie, mimosúdne vymáhanie"
+    },
+    "corporate-receivables": {
+      "title": "Správa firemných pohľadávok | EX Pohľadávky",
+      "description": "Komplexná správa firemných pohľadávok. Profesionálny prístup a efektívne riešenie.",
+      "keywords": "správa pohľadávok, firemné pohľadávky, správa dlhov, pohľadávkový manažment"
+    },
+    "receivables-purchase": {
+      "title": "Odkup a predaj pohľadávok | EX Pohľadávky",
+      "description": "Profesionálny odkup a predaj pohľadávok. Rýchle a transparentné riešenie pre vaše pohľadávky.",
+      "keywords": "odkup pohľadávok, predaj pohľadávok, odkup dlhov, predaj dlhov"
+    },
+    "company-purchase": {
+      "title": "Odkup firiem | EX Pohľadávky",
+      "description": "Profesionálny odkup firiem a spoločností. Komplexné riešenie vrátane prevodu pohľadávok.",
+      "keywords": "odkup firiem, predaj firmy, prevod spoločnosti, odkup podniku"
+    },
+    "company-liquidation": {
+      "title": "Likvidácia firiem | EX Pohľadávky",
+      "description": "Profesionálna likvidácia firiem a spoločností. Komplexné riešenie vrátane likvidačného zostatku.",
+      "keywords": "likvidácia firiem, likvidácia spoločnosti, likvidačný zostatok"
+    },
+    "crisis-management": {
+      "title": "Krízový manažment | EX Pohľadávky",
+      "description": "Riešenie krízových situácií vo firmách. Reštrukturalizácia, sanácia a optimalizácia procesov.",
+      "keywords": "krízový manažment, reštrukturalizácia, sanácia, optimalizácia"
+    },
+    "promissory-notes": {
+      "title": "Odkup zmeniek | EX Pohľadávky",
+      "description": "Profesionálny odkup zmeniek. Rýchle a výhodné riešenie pre vaše zmenky.",
+      "keywords": "odkup zmeniek, predaj zmeniek, zmenky, zmenkové právo"
+    },
+    "liechtenstein-partner": {
+      "title": "Partner v Lichtenštajnsku | EX Pohľadávky",
+      "description": "Spolupráca s lichtenštajnskými partnermi. Medzinárodné riešenie pohľadávok.",
+      "keywords": "Lichtenštajnsko, medzinárodné pohľadávky, zahraničný partner, medzinárodná spolupráca"
+    },
+    "screening": {
+      "title": "Lustrácia | EX Pohľadávky",
+      "description": "Komplexná lustrácia firiem a osôb. Analýza bonity, histórie a rizikových faktorov.",
+      "keywords": "lustrácia, analýza bonity, rizikové faktory, história firmy"
+    },
+    "blog": {
+      "title": "Blog | EX Pohľadávky",
+      "description": "Odborné články o správe a vymáhaní pohľadávok. Praktické rady pre firmy a podnikateľov.",
+      "keywords": "blog, články, pohľadávky, vymáhanie, rady"
+    },
+    "contact": {
+      "title": "Kontakt | EX Pohľadávky",
+      "description": "Kontaktujte nás pre konzultáciu ohľadom vašich pohľadávok. Radi vám pomôžeme.",
+      "keywords": "kontakt, konzultácia, poradenstvo, pohľadávky"
+    },
+    "pricing": {
+      "title": "Cenník | EX Pohľadávky",
+      "description": "Transparentný cenník našich služieb. Prehľadné ceny za vymáhanie pohľadávok a ďalšie služby.",
+      "keywords": "cenník, ceny, vymáhanie pohľadávok, služby, cenník služieb"
+    },
+    "dictionaries": {
+      "title": "Slovníky a vzory | EX Pohľadávky",
+      "description": "Užitočné slovníky pojmov a vzory dokumentov pre prácu s pohľadávkami.",
+      "keywords": "slovníky, vzory, dokumenty, pohľadávky, právne vzory"
+    }
+  }
 } 

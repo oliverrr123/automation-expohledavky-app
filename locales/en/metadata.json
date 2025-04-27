@@ -2,5 +2,82 @@
   "title": "EX Receivables - comprehensive solution for your receivables",
   "description": "We are experts in receivables management. We handle receivables through out-of-court, court, and enforcement proceedings.",
   "keywords": "invoice, promissory note, receivable, debt, company acquisition, debt collection, enforcement",
-  "language": "en"
+  "language": "en",
+  "pages": {
+    "about": {
+      "title": "About Us | EX Receivables",
+      "description": "Meet our team of receivables experts. Our experience and approach to receivables management.",
+      "keywords": "about us, team, experts, receivables, experience"
+    },
+    "services": {
+      "title": "Our Services | EX Receivables",
+      "description": "Comprehensive receivables services: collection, management, purchase and sale of receivables, company liquidation, and crisis management.",
+      "keywords": "services, debt collection, receivables management, receivables purchase, company liquidation, crisis management"
+    },
+    "debt-collection": {
+      "title": "Debt Collection | EX Receivables",
+      "description": "Professional debt collection through out-of-court and court proceedings. Experienced lawyers and enforcement officers.",
+      "keywords": "debt collection, enforcement, court proceedings, out-of-court collection"
+    },
+    "corporate-receivables": {
+      "title": "Corporate Receivables Management | EX Receivables",
+      "description": "Comprehensive corporate receivables management. Professional approach and efficient solution.",
+      "keywords": "receivables management, corporate receivables, debt management, receivables administration"
+    },
+    "receivables-purchase": {
+      "title": "Purchase and Sale of Receivables | EX Receivables",
+      "description": "Professional purchase and sale of receivables. Fast and transparent solution for your receivables.",
+      "keywords": "receivables purchase, receivables sale, debt purchase, debt sale"
+    },
+    "company-purchase": {
+      "title": "Company Acquisition | EX Receivables",
+      "description": "Professional company acquisition. Comprehensive solution including receivables transfer.",
+      "keywords": "company acquisition, company sale, business transfer, business purchase"
+    },
+    "company-liquidation": {
+      "title": "Company Liquidation | EX Receivables",
+      "description": "Professional company liquidation services. Comprehensive solutions including liquidation balance.",
+      "keywords": "company liquidation, business liquidation, liquidation balance"
+    },
+    "crisis-management": {
+      "title": "Crisis Management | EX Receivables",
+      "description": "Solutions for crisis situations in companies. Restructuring, rehabilitation, and process optimization.",
+      "keywords": "crisis management, restructuring, rehabilitation, optimization"
+    },
+    "promissory-notes": {
+      "title": "Promissory Note Purchase | EX Receivables",
+      "description": "Professional promissory note purchase. Fast and advantageous solution for your promissory notes.",
+      "keywords": "promissory note purchase, promissory note sale, promissory notes, bill of exchange"
+    },
+    "liechtenstein-partner": {
+      "title": "Partner in Liechtenstein | EX Receivables",
+      "description": "Cooperation with Liechtenstein partners. International receivables solutions.",
+      "keywords": "liechtenstein, international receivables, foreign partner, international cooperation"
+    },
+    "screening": {
+      "title": "Screening | EX Receivables",
+      "description": "Comprehensive company and individual screening. Creditworthiness analysis, history, and risk factors.",
+      "keywords": "screening, creditworthiness analysis, risk factors, company history"
+    },
+    "blog": {
+      "title": "Blog | EX Receivables",
+      "description": "Expert articles on receivables management and collection. Practical advice for businesses and entrepreneurs.",
+      "keywords": "blog, articles, receivables, debt collection, advice"
+    },
+    "contact": {
+      "title": "Contact | EX Receivables",
+      "description": "Contact us for a consultation about your receivables. We're happy to help.",
+      "keywords": "contact, consultation, advisory, receivables"
+    },
+    "pricing": {
+      "title": "Pricing | EX Receivables",
+      "description": "Transparent pricing for our services. Clear rates for debt collection and other services.",
+      "keywords": "pricing, rates, debt collection, services, service rates"
+    },
+    "dictionaries": {
+      "title": "Dictionaries and Templates | EX Receivables",
+      "description": "Useful dictionaries and document templates for working with receivables.",
+      "keywords": "dictionaries, templates, documents, receivables, legal templates"
+    }
+  }
 } 

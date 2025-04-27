@@ -1,6 +1,37 @@
 import { DOMAIN_LANG_MAP } from './domain-mapping';
 import Cookies from 'js-cookie';
 
+// Import translations directly
+import csMetadata from '@/locales/cs/metadata.json';
+import enMetadata from '@/locales/en/metadata.json';
+import skMetadata from '@/locales/sk/metadata.json';
+import deMetadata from '@/locales/de/metadata.json';
+
+// Define types for metadata
+type PageMetadata = {
+  title: string;
+  description: string;
+  keywords: string;
+};
+
+type Metadata = {
+  title: string;
+  description: string;
+  keywords: string;
+  language: string;
+  pages: {
+    [key: string]: PageMetadata;
+  };
+};
+
+// Server-side metadata by locale
+const metadata: Record<string, Metadata> = {
+  cs: csMetadata,
+  en: enMetadata,
+  sk: skMetadata,
+  de: deMetadata
+};
+
 // Cookie name for storing the locale (keep in sync with middleware.ts)
 const LOCALE_COOKIE = 'NEXT_LOCALE';
 
@@ -458,4 +489,31 @@ function createEmptyTranslationStructure(namespace: string): any {
       // Generic empty structure
       return {};
   }
+}
+
+/**
+ * Get metadata for a specific locale (server-side compatible version)
+ */
+export function getLocaleMetadata(locale: string): Metadata {
+  if (!locale) return { 
+    language: 'cs',
+    title: '',
+    description: '',
+    keywords: '',
+    pages: {}
+  };
+  
+  // Return only the metadata for the requested locale, no fallbacks
+  if (locale && metadata[locale]) {
+    return metadata[locale];
+  }
+  
+  // If metadata isn't available for this locale, return empty object with language
+  return { 
+    language: locale,
+    title: '',
+    description: '',
+    keywords: '',
+    pages: {}
+  };
 } 

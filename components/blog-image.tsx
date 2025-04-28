@@ -70,16 +70,17 @@ export function BlogImage({
   // Finální URL obrázku
   const imageSrc = error ? fallbackSrc : normalizeSrc(src);
   
-  // Použití klasického img tagu místo Next.js Image
   return (
     <div className={`overflow-hidden ${className}`}>
       <img
         src={imageSrc}
         alt={alt}
         style={{ 
-          maxWidth: '100%',
+          width: '100%',
+          objectFit: 'contain',
+          objectPosition: 'center',
           height: 'auto',
-          aspectRatio: `${width}/${height}`
+          maxHeight: '100%'
         }}
         onError={() => setError(true)}
         loading="lazy"

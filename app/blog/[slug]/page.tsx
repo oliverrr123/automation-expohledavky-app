@@ -482,7 +482,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                               <BlogImage
                                 src={relatedPost.frontMatter.image}
                                 alt={relatedPost.frontMatter.title}
-                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                className="w-full h-full object-contain"
                                 locale={locale}
                               />
                             </div>

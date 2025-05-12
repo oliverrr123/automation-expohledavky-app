@@ -1,0 +1,38 @@
+{
+  "badge": "Profesionálne služby",
+  "title": "Naše služby",
+  "subtitle": "Využite profesionálne služby bez rizík!",
+  "linkText": "Detail služby",
+  "services": [
+    {
+      "title": "Vymáhanie pohľadávok",
+      "description": "Ponúkame vymáhanie pohľadávok v širokom spektre oblastí vrátane účtovnej evidencie alebo nezaplatených faktúr.",
+      "href": "/nase-sluzby/vymahanie-pohladavok"
+    },
+    {
+      "title": "Správa firemných pohľadávok",
+      "description": "Ponúkame outsourcing správy pohľadávok, vďaka ktorému bude o vaše pohľadávky riadne a hlavne úspešne postarané.",
+      "href": "/nase-sluzby/sprava-firemnych-pohladavok"
+    },
+    {
+      "title": "Odkúp a predaj pohľadávok",
+      "description": "Ak už s dlžníkom nemáte trpezlivosť a nevadí vám, že prídete o časť svojich peňazí, je táto služba určená práve vám.",
+      "href": "/nase-sluzby/odkup-predaj-pohladavok"
+    },
+    {
+      "title": "Odkúp firiem",
+      "description": "Ponúkame odkúpenie firiem za najlepšiu cenu. Každému vyhotovíme analýzu, na základe ktorej predložíme individuálnu ponuku.",
+      "href": "/nase-sluzby/odkup-firiem"
+    },
+    {
+      "title": "Odkúp zmeniek",
+      "description": "Ponuka služieb odkúpu zmenky vás môže zbaviť starostí s upomínaním dlžníkov a výdavkov na úhradu právnych služieb.",
+      "href": "/nase-sluzby/odkup-zmeniek"
+    },
+    {
+      "title": "Krízový manažment",
+      "description": "Pomôžeme vám prekonať krízové situácie v podnikaní a navrhneme efektívne stratégie pre stabilizáciu a následný rast vášho podniku.",
+      "href": "/nase-sluzby/krizovy-manazment"
+    }
+  ]
+} 

@@ -1,0 +1,170 @@
+{
+  "contactForm": {
+    "badge": "Wir sind bereit, Ihnen zu helfen",
+    "title": "Kontaktformular",
+    "description": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die Details Ihrer Forderung und wir werden die optimale Lösung vorschlagen.",
+    "form": {
+      "name": {
+        "label": "Vollständiger Name",
+        "placeholder": "Ihr vollständiger Name"
+      },
+      "email": {
+        "label": "E-Mail",
+        "placeholder": "ihre@email.de"
+      },
+      "phone": {
+        "label": "Telefonnummer",
+        "placeholder": "+49 XXX XXX XXX"
+      },
+      "amount": {
+        "label": "Forderungsbetrag",
+        "placeholder": "Betrag in EUR"
+      },
+      "message": {
+        "label": "Ihre Nachricht",
+        "placeholder": "Beschreiben Sie die Details Ihrer Forderung, geben Sie alle bekannten Informationen an..."
+      },
+      "submitButton": "Nachricht senden",
+      "submitting": "Wird gesendet...",
+      "success": "Nachricht gesendet!",
+      "error": "Bitte versuchen Sie es erneut"
+    }
+  },
+  "contactSidebar": {
+    "title": "Warum uns kontaktieren?",
+    "reasons": [
+      "Professionelle Erfahrung mit Inkasso",
+      "Kostenlose Online-Beratung für Ihre Forderung",
+      "Diskreter Umgang mit unseren Kunden",
+      "Vorschläge für mögliche Lösungen",
+      "Rechtsdienstleistung als Teil unserer Dienstleistungen"
+    ],
+    "contact": {
+      "title": "Haben Sie Fragen? Kontaktieren Sie uns:",
+      "phone": "+49 1517 0283999",
+      "email": "info@exforderungen.de"
+    },
+    "toast": {
+      "emailCopied": "E-Mail kopiert",
+      "phoneCopied": "Telefonnummer kopiert",
+      "copyFailed": "Kopieren fehlgeschlagen"
+    }
+  },
+  "serviceSidebarReasons": {
+    "default": [
+      "Professionelle Erfahrung mit Inkasso",
+      "Kostenlose Online-Beratung für Ihre Forderung",
+      "Diskreter Umgang mit unseren Kunden",
+      "Vorschläge für mögliche Lösungen",
+      "Rechtsdienstleistung als Teil unserer Dienstleistungen"
+    ],
+    "debtCollection": [
+      "Erfolgsquote über 90%",
+      "Schneller und effizienter Inkassoprozess",
+      "Keine Vorauszahlung",
+      "Professionelle rechtliche Vertretung",
+      "Transparente Kommunikation"
+    ],
+    "receivablesPurchase": [
+      "Sofortige finanzielle Liquidität",
+      "Transparente Bewertung der Forderungen",
+      "Faire Kaufkonditionen",
+      "Schneller Prozess ohne unnötige Verwaltung",
+      "Wir übernehmen alle mit dem Inkasso verbundenen Risiken"
+    ],
+    "companyAcquisition": [
+      "Schneller und diskreter Prozess",
+      "Individuelle Bewertung Ihres Unternehmens",
+      "Übernahme aller Verbindlichkeiten und Forderungen",
+      "Professionelle rechtliche Abwicklung der Transaktion",
+      "Sofortige Zahlung nach Abschluss der Transaktion"
+    ],
+    "companyLiquidation": [
+      "Komplette Abwicklung des Liquidationsprozesses",
+      "Minimierung der Risiken für Geschäftsführer",
+      "Schnelle und professionelle Lösung",
+      "Unterstützung bei der Eintreibung von Unternehmensforderungen",
+      "Sicherstellung aller rechtlichen Anforderungen"
+    ],
+    "crisisManagement": [
+      "Sofortige Analyse Ihrer Situation",
+      "Praktische Umsetzung von Krisenmaßnahmen",
+      "Optimierung der Finanzströme",
+      "Verhandlungen mit Gläubigern und Stakeholdern",
+      "Langfristiger Revitalisierungsplan für das Unternehmen"
+    ],
+    "corporateReceivables": [
+      "Umfassende Verwaltung aller Forderungen",
+      "Optimierung des Cashflows Ihres Unternehmens",
+      "Minimierung der Inkassokosten",
+      "Regelmäßige Berichterstattung und Übersicht",
+      "Prävention von uneinbringlichen Forderungen"
+    ],
+    "promissoryNotes": [
+      "Sofortige Zahlung für genehmigte Wechsel",
+      "Expertise im Wechselrecht",
+      "Faire Bewertung des Nennwertes",
+      "Diskreter und schneller Prozess",
+      "Keine Wartezeit bis zur Fälligkeit des Wechsels"
+    ]
+  },
+  "serviceSidebarTitles": {
+    "default": "Warum uns kontaktieren?",
+    "debtCollection": "Warum uns Ihre Forderungen anvertrauen?",
+    "receivablesPurchase": "Warum Ihre Forderung an uns verkaufen?",
+    "companyAcquisition": "Warum Ihr Unternehmen an uns verkaufen?",
+    "companyLiquidation": "Warum die Liquidation uns anvertrauen?",
+    "crisisManagement": "Warum unser Krisenmanagement wählen?",
+    "corporateReceivables": "Warum unsere Forderungsverwaltung wählen?",
+    "promissoryNotes": "Warum Wechsel an uns verkaufen?"
+  },
+  "serviceContactDescriptions": {
+    "default": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie Ihre Situation und wir werden die optimale Lösung vorschlagen.",
+    "debtCollection": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die Details Ihrer Forderung und wir werden das optimale Verfahren für ihre erfolgreiche Eintreibung vorschlagen.",
+    "receivablesPurchase": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die Details der Forderung, die Sie verkaufen möchten, und wir werden ein transparentes Angebot für ihren Kauf vorbereiten.",
+    "companyAcquisition": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die Details Ihres Unternehmens, das Sie verkaufen möchten, und wir werden ein Angebot für dessen Übernahme vorbereiten.",
+    "companyLiquidation": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die Situation Ihres Unternehmens und wir werden Ihnen das optimale Verfahren für seine problemlose Liquidation vorschlagen.",
+    "crisisManagement": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die aktuelle Krisensituation Ihres Unternehmens und wir werden eine geeignete Lösung zur Stabilisierung und Wiederherstellung eines gesunden Betriebs vorschlagen.",
+    "corporateReceivables": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Beschreiben Sie die Bedürfnisse Ihres Unternehmens im Bereich Forderungsmanagement und wir werden Ihnen umfassende Dienstleistungen vorstellen, die Zeit und Ressourcen sparen.",
+    "promissoryNotes": "Füllen Sie das untenstehende Formular aus und unser Team wird Sie so schnell wie möglich kontaktieren. Geben Sie Details zu den Wechseln an, die Sie verkaufen möchten, und wir werden ein faires Angebot für deren Kauf vorbereiten."
+  },
+  "process": {
+    "badge": "Wie es funktioniert",
+    "title": "Unser Kooperationsprozess",
+    "description": "Machen Sie sich mit dem Inkassoprozess und den einzelnen Schritten vertraut, die wir unternehmen, um Ihre Finanzen erfolgreich zurückzugewinnen.",
+    "steps": [
+      {
+        "key": "kontrola",
+        "title": "Analyse",
+        "description": "Nach dem Senden Ihrer Forderung an unsere E-Mail wird unsere spezialisierte Abteilung alle Dokumente analysieren und das optimale Vorgehen bewerten, insbesondere ob die Forderung für den Kauf oder das Inkasso geeignet ist.",
+        "additionalText": "Um alles richtig einschätzen zu können, ist es notwendig, dass Sie uns alle bekannten Kontaktinformationen über den Schuldner mitteilen, wie Wohnsitz, Geschäftsort, Beschäftigung, Telefon und E-Mail. Wir sind keine Detektei oder ein Gerichtsvollzieher, daher haben wir keinen Zugang zu diesen Informationen."
+      },
+      {
+        "key": "zastoupeni",
+        "title": "Vertretung",
+        "description": "Wenn die von Ihnen bereitgestellten Unterlagen vollständig sind und es möglich ist, die Forderung einzuziehen, senden wir Ihnen umgehend einen angemessenen Vertragsentwurf für die Vertretung bei der Eintreibung Ihrer finanziellen Forderung gegen den Schuldner.",
+        "additionalText": "Aufgrund der aktuellen ungünstigen Situation mit der COVID-19-Krankheit versuchen wir, alle persönlichen Kontakte zu minimieren, und haben daher die meisten Prozesse, einschließlich der Vertragsunterzeichnung, so eingerichtet, dass sie hauptsächlich per Telefon und E-Mail-Kommunikation stattfinden. Dies spart nicht nur Ihre Zeit, sondern vor allem die Gesundheit von uns allen."
+      },
+      {
+        "key": "vyzva",
+        "title": "Vorgerichtliche Mahnung",
+        "description": "Falls das Inkasso auch nach etwa 14-21 Tagen nicht erfolgreich ist, werden wir das Versenden einer vorgerichtlichen Mahnung vorschlagen.",
+        "additionalText": "Die vorgerichtliche Mahnung wird von unserer externen Anwaltskanzlei versandt, und basierend auf unserer langjährigen Erfahrung zahlen viele Schuldner die Schulden nur, weil ein Anwalt eingeschaltet wurde. Die vorgerichtliche Mahnung informiert den Schuldner auch darüber, dass durch die Verzögerung der Schuldzahlung die Forderungen aufgrund der Kosten für Gerichtsverfahren und möglicherweise auch Vollstreckungskosten 'teurer' werden.",
+        "fee": "Das Versenden einer vorgerichtlichen Mahnung wird mit einer Gebühr von 2.000 CZK berechnet."
+      },
+      {
+        "key": "zaloba",
+        "title": "Klage",
+        "description": "Wenn der Schuldner die Schuld auf Grundlage der vorgerichtlichen Mahnung nicht freiwillig erfüllt, wird gegen ihn Klage eingereicht, oder vielmehr ein Antrag auf Erlass eines elektronischen Zahlungsbefehls. Mit der Einreichung der Klage beginnt die Gerichtsphase der Eintreibung Ihrer Forderung.",
+        "additionalText": "In der Klage beschreibt der Kläger den Grund für die Forderung und dokumentiert ihn mit Beweisen. Die Vorbereitung der Klage sowie die weitere Vertretung im Gerichtsverfahren wird selbstverständlich von unserer externen Anwaltskanzlei übernommen.",
+        "fee": "Für die Einleitung des Gerichtsverfahrens ist es notwendig, die mit dem Gerichtsverfahren verbundenen Kosten zu zahlen (vollständige Vertretung durch einen Anwalt, Gerichtsgebühren und Gebühren des Inkassobeauftragten). Die Höhe der Kosten wird individuell nach der Höhe der Forderung festgelegt."
+      },
+      {
+        "key": "exekuce",
+        "title": "Vollstreckung",
+        "description": "Wenn Ihr Schuldner auch auf der Grundlage des erlassenen Zahlungsbefehls nicht nachkommt, wählen wir den am besten geeigneten Gerichtsvollzieher aus und übergeben ihm die Gerichtsentscheidung. Damit geht der gesamte Prozess des Inkassos und des Gerichtsverfahrens in die letzte Phase über, in der der Gerichtsvollzieher alle verfügbaren Vermögenswerte Ihres Schuldners beschlagnahmen wird (bewegliches und unbewegliches Vermögen, Bankkonto, pfändbares finanzielles Einkommen, Geschäftsanteile und andere).",
+        "success": "In dieser Phase besteht bereits eine sehr hohe Wahrscheinlichkeit für die erfolgreiche Beitreibung Ihrer Forderung."
+      }
+    ]
+  }
+} 

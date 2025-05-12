@@ -1,0 +1,60 @@
+{
+  "title": "Ochrana osobných údajov",
+  "introduction": "Na tejto stránke nájdete prehľad hlavných princípov ochrany osobných a ďalších spracovávaných údajov.",
+  "importantNote": "Ochrana Vašich osobných údajov je pre nás dôležitá. Vaše osobné údaje spracovávame v súlade s príslušnými právnymi predpismi na ochranu osobných údajov, najmä v súlade s Nariadením Európskeho parlamentu a Rady EÚ 2016/679 zo dňa 27. apríla 2016 o ochrane fyzických osôb v súvislosti so spracovaním osobných údajov a o voľnom pohybe týchto údajov.",
+  "sections": {
+    "whatIsPersonalData": {
+      "title": "1. Čo sú osobné údaje?",
+      "content": "Osobnými údajmi sú všetky informácie o identifikovanej alebo identifikovateľnej fyzickej osobe, ako je napr. meno, bydlisko, e-mailová adresa, telefónne číslo či IP adresa."
+    },
+    "whoProcessesData": {
+      "title": "2. Kto spracováva Vaše údaje?",
+      "content": "Sme spoločnosť EX Pohľadávky s.r.o., so sídlom Betliarska 22, 851 07, Bratislava, Slovenská republika."
+    },
+    "whatDataWeProcess": {
+      "title": "3. Aké osobné údaje spracovávame?",
+      "introCustomer": "V prípade, že ste naším zákazníkom/užívateľom našich služieb, spracovávame osobné údaje, ktoré nám poskytnete v súvislosti s využívaním našich služieb.",
+      "customerDataList": [
+        "meno a priezvisko;",
+        "rodné číslo;",
+        "dátum narodenia;",
+        "adresu trvalého bydliska;",
+        "e-mailovú adresu;",
+        "telefónne číslo;",
+        "fakturačné a platobné údaje"
+      ],
+      "introVisitor": "V prípade, že ste návštevníkom našich webových stránok, môžeme spracovávať najmä nižšie uvedené údaje.",
+      "visitorDataList": [
+        "IP adresa;",
+        "údaje získané prostredníctvom súborov cookies."
+      ]
+    },
+    "whyWeProcess": {
+      "title": "4. Prečo Vaše osobné údaje spracovávame?",
+      "content": "V závislosti od toho, či ste naším zákazníkom, návštevníkom našich webových stránok alebo obchodným partnerom, môžeme Vaše osobné údaje spracovávať pre rôzne účely."
+    },
+    "dataSources": {
+      "title": "5. Aké zdroje využívame na získanie Vašich údajov?",
+      "content1": "Osobné údaje, ktoré o Vás budeme spracovávať, väčšinou získavame priamo od Vás pri uzatváraní zmluvy či v priebehu trvania zmluvného vzťahu medzi nami.",
+      "content2": "V odôvodnených prípadoch o Vás môžeme vyhľadávať informácie aj z otvorených zdrojov, zoznamov a registrov."
+    },
+    "dataRetention": {
+      "title": "6. Ako dlho Vaše údaje spracovávame?",
+      "content": "Vaše osobné údaje budeme spracovávať iba po dobu, ktorá je nevyhnutná vzhľadom k účelu ich spracovania."
+    },
+    "dataSecurity": {
+      "title": "7. Ako sú moje osobné údaje zabezpečené?",
+      "content1": "Spracovávané osobné údaje sú zabezpečené štandardnými postupmi a technológiami, ktoré ich chránia pred neoprávneným prístupom.",
+      "content2": "Bez ohľadu na vyššie uvedené prosím vezmite na vedomie, že v prostredí internetu nie je objektívne možné úplne zaručiť bezpečnosť osobných údajov."
+    },
+    "yourRights": {
+      "title": "8. Aké práva máte v súvislosti s ochranou osobných údajov?",
+      "introText": "V súvislosti so spracovaním Vašich osobných údajov máte právo na prístup k údajom, právo na opravu, právo na výmaz, právo na obmedzenie spracovania, právo na prenositeľnosť údajov, právo odvolať súhlas, právo vzniesť námietku a právo podať sťažnosť."
+    },
+    "contact": {
+      "title": "9. Ako nás môžete kontaktovať?",
+      "content1": "V prípade akejkoľvek otázky na ochranu osobných údajov prosím využite kontaktný formulár alebo e-mail: info@expohladavky.sk",
+      "content2": "V tejto súvislosti by sme Vás chceli upozorniť, že môžeme chcieť, aby ste nám vhodným spôsobom preukázali Vašu totožnosť, aby sme si mohli overiť Vašu identitu."
+    }
+  }
+} 

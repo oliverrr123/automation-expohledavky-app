@@ -1,0 +1,182 @@
+{
+  "header": {
+    "title": "Slovník a vzory",
+    "description": "Prinášame vám užitočné informácie o právnych pojmoch z oblasti pohľadávok a vzory dokumentov na stiahnutie zadarmo."
+  },
+  "search": {
+    "placeholder": "Hľadať pojmy a vzory...",
+    "button": "Hľadať",
+    "typeLabels": {
+      "document": "Vzor",
+      "dictionary": "Pojem"
+    }
+  },
+  "tabs": {
+    "templates": "Vzory na stiahnutie",
+    "dictionary": "Slovník pojmov"
+  },
+  "templates": [
+    {
+      "id": "smenka-bez-protestu",
+      "title": "Zmenka bez protestu",
+      "description": "Vzor na stiahnutie zadarmo",
+      "content": "Vzor zmenky bez protestu na stiahnutie zadarmo. Náhľad vyplnenej zmenky vrátane prázdneho vzoru na stiahnutie a vyplnenie.",
+      "imageUrl": "/documents/smenka-bez-protestu.jpg",
+      "imageAlt": "Zmenka bez protestu",
+      "downloadOptions": [
+        {
+          "url": "/documents/smenka-bez-protestu-k-vyplneni.doc",
+          "label": "Stiahnuť DOC"
+        },
+        {
+          "url": "/documents/smenka-bez-protestu-k-vyplneni.pdf",
+          "label": "Stiahnuť PDF"
+        }
+      ],
+      "headerBackground": "bg-orange-50",
+      "headerTextColor": "text-orange-700"
+    },
+    {
+      "id": "smlouva-o-zapujcce",
+      "title": "Zmluva o pôžičke",
+      "description": "Vzor na stiahnutie zadarmo",
+      "content": "Vzor zmluvy o pôžičke na stiahnutie zadarmo. Dokument je pripravený na vyplnenie a použitie pre vaše potreby.",
+      "imageUrl": "/documents/smlouva-o-zapujcce.jpg",
+      "imageAlt": "Zmluva o pôžičke",
+      "downloadOptions": [
+        {
+          "url": "/documents/smlouva-o-zapujcce.doc",
+          "label": "Stiahnuť DOC"
+        }
+      ],
+      "headerBackground": "bg-blue-50",
+      "headerTextColor": "text-blue-700"
+    },
+    {
+      "id": "uznani-dluhu",
+      "title": "Uznanie dlhu a dohoda o splátkach",
+      "description": "Vzor na stiahnutie zadarmo",
+      "content": "Vzor uznania dlhu a dohody o splátkach na stiahnutie zadarmo. Náhľad vyplneného dokumentu vrátane prázdneho vzoru.",
+      "imageUrl": "/documents/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.jpg",
+      "imageAlt": "Uznanie dlhu a dohoda o splátkach",
+      "downloadOptions": [
+        {
+          "url": "/documents/uznani-dluhu-a-dohoda-o-splatkach-k-vyplneni.doc",
+          "label": "Stiahnuť DOC"
+        },
+        {
+          "url": "/documents/uznani-dluhu-a-dohoda-o-splatkach-vzor.pdf",
+          "label": "Stiahnuť PDF"
+        }
+      ],
+      "headerBackground": "bg-green-50",
+      "headerTextColor": "text-green-700"
+    }
+  ],
+  "dictionaryTerms": [
+    {
+      "id": "pohledavka",
+      "title": "Pohľadávka",
+      "description": "Čo je to pohľadávka?",
+      "content": "Pohľadávka je právo veriteľa (fyzickej či právnickej osoby) požadovať od dlžníka plnenie vzniknuté z určitého záväzku. Pohľadávka môže byť peňažná aj nepeňažná.",
+      "type": "dictionary",
+      "letter": "P",
+      "background": "orange-50",
+      "textColor": "text-orange-700",
+      "buttonColor": "text-orange-600 hover:text-orange-800 hover:bg-orange-50",
+      "updateDate": "12.10.2021",
+      "detailLetter": {
+        "background": "bg-orange-100",
+        "textColor": "text-orange-700"
+      },
+      "detailContent": {
+        "intro": "Pohľadávka je právo veriteľa (fyzickej či právnickej osoby) požadovať od dlžníka plnenie vzniknuté z určitého záväzku. Pohľadávka môže byť peňažná aj nepeňažná. Veriteľ má v čase splatnosti právo vymáhať pohľadávku od dlžníka a ten má povinnosť tento záväzok voči veriteľovi vyrovnať.",
+        "sections": [
+          {
+            "title": "Aký je rozdiel medzi pohľadávkou a dlhom?",
+            "content": "Pohľadávka je vlastne právo plnenia plynúce z určitého záväzku, ktoré má určitá osoba (veriteľ) voči inému účastníkovi záväzku (dlžníkovi). Naopak proti pohľadávke stojí takzvaný dlh – teda povinnosť účastníka záväzku niečo dať, niečoho sa zdržať, niečo urobiť či niečo strpieť."
+          },
+          {
+            "title": "Typy pohľadávok podľa doby splatnosti",
+            "content": "Krátkodobá pohľadávka je splatná do 12 mesiacov. Dlhodobá pohľadávka má dobu splatnosti dlhšiu ako 12 mesiacov.",
+            "isList": true,
+            "items": [
+              {
+                "bold": "Krátkodobá pohľadávka",
+                "text": " je splatná do 12 mesiacov."
+              },
+              {
+                "bold": "Dlhodobá pohľadávka",
+                "text": " má dobu splatnosti dlhšiu ako 12 mesiacov."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "smenka",
+      "title": "Zmenka",
+      "description": "Čo je to zmenka?",
+      "content": "Zmenka je cenný papier obsahujúci bezpodmienečný platobný príkaz alebo sľub zaplatiť určitú sumu. Existuje niekoľko druhov zmeniek, ako je zabezpečovacia zmenka, vlastná zmenka, cudzia zmenka a ďalšie.",
+      "type": "dictionary",
+      "letter": "Z",
+      "background": "blue-50",
+      "textColor": "text-blue-700",
+      "buttonColor": "text-blue-600 hover:text-blue-800 hover:bg-blue-50",
+      "updateDate": "12.10.2021",
+      "detailLetter": {
+        "background": "bg-blue-100",
+        "textColor": "text-blue-700"
+      },
+      "detailContent": {
+        "intro": "Zmenka je cenný papier obsahujúci bezpodmienečný platobný príkaz alebo sľub zaplatiť určitú sumu.",
+        "sections": [
+          {
+            "title": "Zabezpečovacia zmenka",
+            "content": "Zmenka môže slúžiť aj ako zabezpečenie peňažného záväzku a je možné ju uplatniť potom, čo povinnosť na základe pôvodného peňažného záväzku nebola splnená."
+          },
+          {
+            "title": "Vlastná zmenka",
+            "content": "Tvorená na základe dvoch zmenkových účastníkov – emitent (vystaviteľ) a remitent (osoba, na ktorej rad alebo meno je zmenka vydaná). Obsahuje bezpodmienečný platobný sľub („Zaplatím\")."
+          }
+        ]
+      }
+    },
+    {
+      "id": "prevzeti-dluhu",
+      "title": "Prevzatie dlhu",
+      "description": "Čo znamená prevzatie dlhu?",
+      "content": "Prevzatie dlhu je právny inštitút, keď tretia osoba preberá dlh od pôvodného dlžníka. K prevzatiu dlhu je potrebný súhlas veriteľa.",
+      "type": "dictionary",
+      "letter": "P",
+      "background": "green-50",
+      "textColor": "text-green-700",
+      "buttonColor": "text-green-600 hover:text-green-800 hover:bg-green-50",
+      "updateDate": "12.10.2021",
+      "detailLetter": {
+        "background": "bg-green-100",
+        "textColor": "text-green-700"
+      },
+      "detailContent": {
+        "intro": "Prevzatie dlhu je právny inštitút, keď tretia osoba preberá dlh od pôvodného dlžníka. K prevzatiu dlhu je potrebný súhlas veriteľa.",
+        "sections": [
+          {
+            "title": "",
+            "content": "Obsah tejto stránky je momentálne vo výstavbe. Čoskoro tu nájdete podrobné informácie o prevzatí dlhu."
+          }
+        ]
+      }
+    }
+  ],
+  "cta": {
+    "title": "Potrebujete pomoc s vašimi pohľadávkami?",
+    "description": "Naši špecialisti vám radi pomôžu s riešením vašich pohľadávok. Kontaktujte nás pre nezáväznú konzultáciu.",
+    "button": "Kontaktujte nás"
+  },
+  "detailedDictionary": {
+    "title": "Podrobný slovník pojmov"
+  },
+  "download": "Stiahnuť",
+  "readMore": "Čítať viac"
+} 

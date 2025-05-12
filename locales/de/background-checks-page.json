@@ -1,0 +1,135 @@
+{
+  "hero": {
+    "badge": "Unsere Dienstleistungen",
+    "title": "Umfassende Hintergrundüberprüfungen",
+    "subtitle": "Überprüfen Sie, mit wem Sie es zu tun haben, bevor Sie einen Vertrag unterschreiben"
+  },
+  "mainSection": {
+    "badge": "Professioneller Service",
+    "title": "Hintergrundüberprüfungen für Ihre Sicherheit",
+    "paragraphs": [
+      "Vermieten Sie eine Immobilie? Wissen Sie, wem Sie Ihre Wohnung vermieten? Eine Hintergrundüberprüfung ist eine vorbeugende Maßnahme gegen potenzielle zukünftige Probleme.",
+      "Unser umfassender Hintergrundüberprüfungsservice bietet Ihnen wichtige Informationen über Personen und Unternehmen, mit denen Sie eine Geschäftsbeziehung eingehen möchten. Wir überprüfen Daten in öffentlichen Registern, Vollstreckungs- und Insolvenzregistern sowie anderen verfügbaren Datenbanken."
+    ],
+    "button": "Überprüfung bestellen"
+  },
+  "whatis": {
+    "badge": "Informationen",
+    "title": "Was ist eine Hintergrundüberprüfung",
+    "description": "Eine Hintergrundüberprüfung ist eine umfassende Überprüfung einer Person oder eines Unternehmens in allen verfügbaren Registern und Datenbanken. Sie erhalten Einblick in Vermögensverhältnisse, mögliche Vollstreckungen, Insolvenzen und andere wichtige Informationen.",
+    "importance": {
+      "title": "Warum sind Hintergrundüberprüfungen wichtig?",
+      "description": "Vermieten Sie eine Immobilie? Schließen Sie eine Geschäftsvereinbarung ab? Möchten Sie wissen, mit wem Sie einen Vertrag abschließen? Eine Hintergrundüberprüfung liefert Ihnen wichtige Informationen, die Ihnen helfen, eine fundierte Entscheidung zu treffen und Ihre Interessen zu schützen.",
+      "details": "Unsere umfassende Hintergrundüberprüfung umfasst die Überprüfung im Grundbuch, Insolvenzregister, zentralen Vollstreckungsregister, Handelsregister und anderen öffentlichen Datenbanken."
+    }
+  },
+  "benefits": {
+    "badge": "Vorteile",
+    "title": "Vorteile von Hintergrundüberprüfungen",
+    "description": "Eine Hintergrundüberprüfung ist eine vorbeugende Maßnahme, die Ihnen in Zukunft erhebliche Kosten und Zeit ersparen kann. Die Investition in eine Hintergrundüberprüfung zahlt sich durch sicherere Geschäftsbeziehungen und innere Ruhe vielfach aus.",
+    "items": [
+      {
+        "icon": "Zap",
+        "title": "Schnelle Bearbeitung",
+        "description": "Wir bearbeiten die meisten Überprüfungen innerhalb von 24 Stunden nach Bestellung"
+      },
+      {
+        "icon": "Shield",
+        "title": "Risikoschutz",
+        "description": "Minimieren Sie das Risiko, Verträge mit problematischen Partnern abzuschließen"
+      },
+      {
+        "icon": "Eye",
+        "title": "Übersichtlichkeit",
+        "description": "Sie erhalten die Ergebnisse der Überprüfung in einem klaren und verständlichen Format mit Fachkommentar"
+      },
+      {
+        "icon": "Lock",
+        "title": "Diskretion",
+        "description": "Wir garantieren 100% Vertraulichkeit Ihrer Daten und der Überprüfungsergebnisse"
+      }
+    ]
+  },
+  "content": {
+    "badge": "Inhalt",
+    "title": "Was umfasst unsere Hintergrundüberprüfung?",
+    "description": "Unsere umfassende Hintergrundüberprüfung umfasst die Überprüfung in allen wichtigen Registern und Datenbanken.",
+    "items": [
+      "Überprüfung im Insolvenzregister",
+      "Überprüfung im Zentralen Vollstreckungsregister",
+      "Überprüfung im Handelsregister",
+      "Überprüfung im Gewerberegister",
+      "Überprüfung im Grundbuch",
+      "Überprüfung des Eigentums an beweglichen Sachen",
+      "Überprüfung im Schuldnerverzeichnis",
+      "Analyse potenzieller Risiken und Streitigkeiten",
+      "Fachkommentar zu den Überprüfungsergebnissen",
+      "Umfassender Abschlussbericht"
+    ],
+    "note": "Die Ergebnisse der Überprüfung sind nur für Ihre Information und Entscheidungsfindung bestimmt. Alle Informationen werden gemäß DSGVO und anderen gesetzlichen Bestimmungen verarbeitet. Die Überprüfung erfolgt ausschließlich auf Grundlage öffentlich zugänglicher Quellen."
+  },
+  "pricing": {
+    "badge": "Preisgestaltung",
+    "title": "Umfassende Hintergrundüberprüfung zu einem günstigen Preis",
+    "prices": [
+      {
+        "title": "Umfassende Hintergrundüberprüfung",
+        "price": "59 €",
+        "description": "Vollständige Überprüfung einer Person oder eines Unternehmens in allen verfügbaren Registern und Datenbanken.",
+        "includes": [
+          "Insolvenzregister",
+          "Zentrales Vollstreckungsregister",
+          "Handelsregister",
+          "Grundbuch",
+          "Andere verfügbare Register",
+          "Umfassender Abschlussbericht"
+        ],
+        "button": "Überprüfung bestellen"
+      }
+    ]
+  },
+  "process": {
+    "title": "Wie es funktioniert",
+    "steps": [
+      {
+        "title": "Bestellung einer Hintergrundüberprüfung",
+        "description": "Füllen Sie einfach ein Online-Formular mit Informationen über die Person oder das Unternehmen aus, die Sie überprüfen lassen möchten."
+      },
+      {
+        "title": "Bearbeitung der Hintergrundüberprüfung",
+        "description": "Unser Team prüft alle verfügbaren Register und Datenbanken und erstellt einen umfassenden Bericht."
+      },
+      {
+        "title": "Zustellung der Ergebnisse",
+        "description": "Innerhalb von 24 Stunden an Werktagen erhalten Sie einen vollständigen Bericht mit den Ergebnissen der Hintergrundüberprüfung."
+      }
+    ]
+  },
+  "faq": {
+    "badge": "FAQ",
+    "title": "Häufig gestellte Fragen",
+    "description": "Hier finden Sie Antworten auf die häufigsten Fragen zu unserem Hintergrundüberprüfungsservice.",
+    "questions": [
+      {
+        "question": "Wie lange dauert die Bearbeitung einer Hintergrundüberprüfung?",
+        "answer": "Wir bearbeiten die meisten Hintergrundüberprüfungen innerhalb von 24 Stunden an Werktagen nach Bestellung und Zahlung."
+      },
+      {
+        "question": "Welche Informationen benötige ich für die Bestellung einer Hintergrundüberprüfung?",
+        "answer": "Für eine Hintergrundüberprüfung einer natürlichen Person benötigen Sie Vor- und Nachnamen sowie das Geburtsdatum. Für eine Unternehmensüberprüfung reicht die Handelsregisternummer aus."
+      },
+      {
+        "question": "Sind Hintergrundüberprüfungen legal?",
+        "answer": "Ja, unsere Hintergrundüberprüfungen werden ausschließlich auf Grundlage öffentlich zugänglicher Informationen und Register gemäß den geltenden Rechtsvorschriften und der DSGVO durchgeführt."
+      },
+      {
+        "question": "Wie erhalte ich die Ergebnisse der Hintergrundüberprüfung?",
+        "answer": "Wir senden Ihnen die Ergebnisse der Hintergrundüberprüfung per E-Mail in Form eines umfassenden Berichts im PDF-Format zu. Der Bericht enthält alle ermittelten Informationen und einen Fachkommentar zu den Ergebnissen."
+      },
+      {
+        "question": "Kann ich eine Hintergrundüberprüfung für arbeitsrechtliche Zwecke verwenden?",
+        "answer": "Hintergrundüberprüfungen sind in erster Linie für die Überprüfung der Vertrauenswürdigkeit bei Immobilienvermietungen und Geschäftsbeziehungen gedacht. Für arbeitsrechtliche Zwecke empfehlen wir, einen Anwalt bezüglich der Informationen zu konsultieren, die Sie in diesem Kontext rechtmäßig verwenden können."
+      }
+    ]
+  }
+} 

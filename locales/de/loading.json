@@ -1,0 +1,14 @@
+{
+  "blog": {
+    "loading": "Artikel werden geladen..."
+  },
+  "dictionary": {
+    "loading": "Wörterbuch und Vorlagen werden geladen..."
+  },
+  "inquiry": {
+    "loading": "Formular wird geladen..."
+  },
+  "general": {
+    "loading": "Wird geladen..."
+  }
+} 

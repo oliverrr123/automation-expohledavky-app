@@ -1,0 +1,51 @@
+{
+  "hero": {
+    "badge": "Naše služby",
+    "title": "Vymáhanie pohľadávok",
+    "subtitle": "Profesionálne riešenie pre efektívne vymáhanie vašich pohľadávok"
+  },
+  "mainSection": {
+    "badge": "Komplexné riešenie",
+    "title": "Vymáhanie pohľadávok",
+    "paragraphs": [
+      "Ponúkame vymáhanie pohľadávok v širokom spektre oblastí vrátane účtovnej evidencie alebo nezaplatených faktúr.",
+      "Každú pohľadávku odborne posúdime a následne navrhneme najvhodnejší postup riešenia zahŕňajúci okrem iného komplexný právny rozbor. V rámci vymáhania dlhov pohľadávok sa špecializujeme na faktúry, pôžičky, zmenky, mzdy, nájom či náhradu škody."
+    ],
+    "button": "Nezáväzný dopyt",
+    "specialization": {
+      "title": "Špecializujeme sa na:",
+      "items": [
+        "vymáhanie faktúr za dodaný tovar a odvedenú prácu",
+        "vymáhanie uznania dlhu z akéhokoľvek dôvodu vzniku",
+        "vymáhanie dlhu zo zmluvy o pôžičke peňazí",
+        "vymáhanie nároku na náhradu škody",
+        "vymáhanie nezaplateného nájomného",
+        "vymáhanie zmenky",
+        "a ďalšie..."
+      ]
+    }
+  },
+  "form": {
+    "fields": {
+      "jmeno": "Meno a priezvisko",
+      "email": "Email",
+      "telefon": "Telefón",
+      "castka": "Výška pohľadávky (€)",
+      "zprava": "Správa"
+    },
+    "statuses": {
+      "idle": "Odoslať dopyt",
+      "submitting": "Odosielanie...",
+      "success": "Odoslané!",
+      "error": "Chyba!"
+    }
+  },
+  "process": {
+    "tabs": {
+      "kontrola": "Kontrola",
+      "komunikace": "Komunikácia",
+      "soud": "Súd",
+      "exekuce": "Exekúcia"
+    }
+  }
+} 

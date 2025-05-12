@@ -219,9 +219,7 @@ export default async function BlogPage() {
                       src={allPosts[0].frontMatter.image || "/placeholder.jpg"}
                       alt={allPosts[0].frontMatter.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      style={{ objectFit: 'contain', objectPosition: 'center' }}
-                      className="w-full h-full"
+                      className="object-cover"
                     />
                   </div>
                   <div className="flex flex-col justify-center p-6 lg:py-12">
@@ -283,9 +281,7 @@ export default async function BlogPage() {
                         src={post.frontMatter.image || "/placeholder.jpg"}
                         alt={post.frontMatter.title}
                         fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        style={{ objectFit: 'contain', objectPosition: 'center' }}
-                        className="w-full h-full"
+                        className="object-cover"
                       />
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                         <div className="rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white inline">

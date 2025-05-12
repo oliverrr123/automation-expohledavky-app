@@ -1,0 +1,135 @@
+{
+  "hero": {
+    "badge": "Naše služby",
+    "title": "Komplexné lustrácie osôb a firiem",
+    "subtitle": "Overte si, s kým rokujete, skôr než podpíšete zmluvu"
+  },
+  "mainSection": {
+    "badge": "Profesionálna služba",
+    "title": "Lustrácie pre vašu bezpečnosť",
+    "paragraphs": [
+      "Prenajímate nehnuteľnosť? Viete, komu prenajímate svoj byt? Lustrácia je preventívne opatrenie proti potenciálnym budúcim problémom.",
+      "Naša komplexná lustračná služba vám poskytne dôležité informácie o osobách a firmách, s ktorými sa chystáte vstúpiť do obchodného vzťahu. Preveríme údaje vo verejných registroch, exekučných a konkurzných registroch a iných dostupných databázach."
+    ],
+    "button": "Objednať lustráciu"
+  },
+  "whatis": {
+    "badge": "Informácie",
+    "title": "Čo je lustrácia",
+    "description": "Lustrácia je komplexné preverenie osoby alebo spoločnosti vo všetkých dostupných registroch a databázach. Získate prehľad o majetkových pomeroch, možných exekúciách, konkurzoch a ďalších dôležitých informáciách.",
+    "importance": {
+      "title": "Prečo je lustrácia dôležitá?",
+      "description": "Prenajímate nehnuteľnosť? Uzatvárate obchodnú dohodu? Chcete vedieť, s kým uzatvárate zmluvu? Lustrácia vám poskytne dôležité informácie, ktoré vám pomôžu urobiť informované rozhodnutie a ochrániť vaše záujmy.",
+      "details": "Naša komplexná lustrácia zahŕňa preverenie v katastri nehnuteľností, registri konkurzov, centrálnom registri exekúcií, obchodnom registri a ďalších verejných databázach."
+    }
+  },
+  "benefits": {
+    "badge": "Výhody",
+    "title": "Výhody lustrácie",
+    "description": "Lustrácia je preventívne opatrenie, ktoré vám môže v budúcnosti ušetriť značné náklady a čas. Investícia do lustrácie sa mnohonásobne vráti v podobe bezpečnejších obchodných vzťahov a vnútorného pokoja.",
+    "items": [
+      {
+        "icon": "Zap",
+        "title": "Rýchle spracovanie",
+        "description": "Väčšinu lustrácií spracujeme do 24 hodín od objednania"
+      },
+      {
+        "icon": "Shield",
+        "title": "Ochrana pred rizikom",
+        "description": "Minimalizujte riziko uzatvárania zmlúv s problémovými partnermi"
+      },
+      {
+        "icon": "Eye",
+        "title": "Prehľadnosť",
+        "description": "Výsledky lustrácie dostanete v prehľadnom a zrozumiteľnom formáte s odborným komentárom"
+      },
+      {
+        "icon": "Lock",
+        "title": "Diskrétnosť",
+        "description": "Garantujeme 100% dôvernosť vašich údajov aj výsledkov lustrácie"
+      }
+    ]
+  },
+  "content": {
+    "badge": "Obsah",
+    "title": "Čo zahŕňa naša lustrácia?",
+    "description": "Naša komplexná lustrácia zahŕňa preverenie vo všetkých dôležitých registroch a databázach.",
+    "items": [
+      "Preverenie v registri konkurzov",
+      "Preverenie v centrálnom registri exekúcií",
+      "Preverenie v obchodnom registri",
+      "Preverenie v živnostenskom registri",
+      "Preverenie v katastri nehnuteľností",
+      "Preverenie vlastníctva hnuteľných vecí",
+      "Preverenie v registri dlžníkov",
+      "Analýza možných rizík a sporov",
+      "Odborný komentár k výsledkom lustrácie",
+      "Komplexná záverečná správa"
+    ],
+    "note": "Výsledky lustrácie slúžia len pre vašu informáciu a rozhodovanie. Všetky informácie sú spracované v súlade s GDPR a ďalšími právnymi predpismi. Lustrácia prebieha výlučne na základe verejne dostupných zdrojov."
+  },
+  "pricing": {
+    "badge": "Cenová ponuka",
+    "title": "Komplexná lustrácia za výhodnú cenu",
+    "prices": [
+      {
+        "title": "Komplexná lustrácia",
+        "price": "59 €",
+        "description": "Kompletné preverenie osoby alebo firmy vo všetkých dostupných registroch a databázach.",
+        "includes": [
+          "Register konkurzov",
+          "Centrálny register exekúcií",
+          "Obchodný register",
+          "Kataster nehnuteľností",
+          "Ostatné dostupné registre",
+          "Komplexná záverečná správa"
+        ],
+        "button": "Objednať lustráciu"
+      }
+    ]
+  },
+  "process": {
+    "title": "Ako to funguje",
+    "steps": [
+      {
+        "title": "Objednanie lustrácie",
+        "description": "Jednoducho vyplníte online formulár s informáciami o osobe alebo firme, ktorú chcete preveriť."
+      },
+      {
+        "title": "Spracovanie lustrácie",
+        "description": "Náš tím preverí všetky dostupné registre a databázy a vypracuje komplexnú správu."
+      },
+      {
+        "title": "Doručenie výsledkov",
+        "description": "Do 24 hodín v pracovné dni dostanete kompletnú správu s výsledkami lustrácie."
+      }
+    ]
+  },
+  "faq": {
+    "badge": "FAQ",
+    "title": "Často kladené otázky",
+    "description": "Tu nájdete odpovede na najčastejšie otázky týkajúce sa našej lustračnej služby.",
+    "questions": [
+      {
+        "question": "Ako dlho trvá spracovanie lustrácie?",
+        "answer": "Väčšinu lustrácií spracujeme do 24 hodín v pracovné dni od objednania a úhrady."
+      },
+      {
+        "question": "Aké informácie potrebujem pre objednanie lustrácie?",
+        "answer": "Pre lustráciu fyzickej osoby potrebujete meno, priezvisko a dátum narodenia. Pre lustráciu firmy postačuje IČO."
+      },
+      {
+        "question": "Je lustrácia legálna?",
+        "answer": "Áno, naše lustrácie prebiehajú výlučne na základe verejne dostupných informácií a registrov v súlade s platnými právnymi predpismi a GDPR."
+      },
+      {
+        "question": "Ako dostanem výsledky lustrácie?",
+        "answer": "Výsledky lustrácie vám zašleme e-mailom vo forme komplexnej správy vo formáte PDF. Správa obsahuje všetky zistené informácie a odborný komentár k výsledkom."
+      },
+      {
+        "question": "Môžem použiť lustráciu pre pracovnoprávne účely?",
+        "answer": "Lustrácie sú primárne určené na preverenie dôveryhodnosti pri prenájmoch nehnuteľností a obchodných vzťahoch. Pre pracovnoprávne účely odporúčame konzultovať s právnikom, aké informácie môžete v tomto kontexte legálne využiť."
+      }
+    ]
+  }
+} 

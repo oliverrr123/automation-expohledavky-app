@@ -1,0 +1,206 @@
+{
+  "hero": {
+    "badge": "Sicherheit zuerst",
+    "title": "Umfassende Überprüfung von Personen und Unternehmen",
+    "subtitle": "Vermieten Sie eine Wohnung? Kennen Sie den potenziellen Mieter? Die Überprüfung ist eine präventive Maßnahme gegen mögliche zusätzliche Kosten und Zeitverluste.",
+    "primaryButton": "Überprüfung bestellen",
+    "secondaryButton": "Weitere Informationen"
+  },
+  "intro": {
+    "badge": "Was ist eine Überprüfung",
+    "title": "Umfassende Schuldneranalyse",
+    "description": "Eine Überprüfung ist eine umfassende Verifizierung einer Person oder eines Unternehmens in allen verfügbaren Registern und Datenbanken. Dies gibt Ihnen ein vollständiges Bild eines potenziellen Mieters, Geschäftspartners oder Mitarbeiters.",
+    "subtitle": "Warum ist eine Überprüfung wichtig?",
+    "paragraph1": "Vermieten Sie Immobilien oder gehen Sie eine Geschäftspartnerschaft ein? Sie wissen nicht, wem Sie Ihr Eigentum anvertrauen oder mit wem Sie einen Vertrag abschließen? Die Überprüfung liefert Ihnen wichtige Informationen, die Ihnen bei der Entscheidungsfindung helfen und potenzielle Probleme verhindern.",
+    "paragraph2": "Unsere umfassende Überprüfung umfasst die Verifizierung im Grundbuch, Insolvenzregister, zentralen Vollstreckungsregister und anderen Registern. Dies gibt Ihnen einen vollständigen Überblick über die finanzielle Situation und Kreditwürdigkeit der überprüften Person oder des Unternehmens.",
+    "imageAlt": "Dokumentenüberprüfung",
+    "imageCaption": "Umfassende Verifizierung in allen verfügbaren Registern"
+  },
+  "benefits": {
+    "badge": "Vorteile der Überprüfung",
+    "title": "Warum unseren Service nutzen?",
+    "description": "Die Überprüfung ist eine präventive Maßnahme, die Ihnen in Zukunft erhebliche Kosten und Zeit sparen kann. Die Investition in eine gründliche Verifizierung zahlt sich immer aus.",
+    "items": [
+      {
+        "icon": "Shield",
+        "title": "Schutz Ihres Eigentums",
+        "description": "Vermeiden Sie Probleme mit nichtzahlenden Mietern oder unzuverlässigen Geschäftspartnern."
+      },
+      {
+        "icon": "Clock",
+        "title": "Zeit- und Geldersparnis",
+        "description": "Vermeiden Sie langwierige Gerichtsverfahren und Kosten der Schuldeneintreibung."
+      },
+      {
+        "icon": "Search",
+        "title": "Umfassende Verifizierung",
+        "description": "Erhalten Sie Informationen aus allen verfügbaren Registern und Datenbanken an einem Ort."
+      },
+      {
+        "icon": "FileText",
+        "title": "Professionelle Bearbeitung",
+        "description": "Sie erhalten die Überprüfungsergebnisse in einem klaren und verständlichen Format mit Expertenkommentar."
+      },
+      {
+        "icon": "Home",
+        "title": "Ideal für Vermieter",
+        "description": "Erfahren Sie, ob Ihr potenzieller Mieter Schulden oder Vollstreckungsverfahren hat."
+      },
+      {
+        "icon": "User",
+        "title": "Geschäftspartnerüberprüfung",
+        "description": "Überprüfen Sie die Kreditwürdigkeit und finanzielle Stabilität Ihrer Geschäftspartner."
+      }
+    ]
+  },
+  "included": {
+    "badge": "Inhalt der Überprüfung",
+    "title": "Was beinhaltet unsere Überprüfung?",
+    "description": "Unsere umfassende Überprüfung umfasst die Verifizierung in allen wichtigen Registern und Datenbanken.",
+    "items": [
+      "Überprüfung im Insolvenzregister",
+      "Prüfung im zentralen Vollstreckungsregister",
+      "Überprüfung im Grundbuch",
+      "Prüfung im Schuldnerregister",
+      "Überprüfung im Handelsregister",
+      "Prüfung im Gewerberegister",
+      "Überprüfung im Umsatzsteuerregister",
+      "Prüfung in der Nichtzahlerdatenbank",
+      "Überprüfung im Fahrzeugregister",
+      "Prüfung in der SOLUS-Datenbank",
+      "Überprüfung in der BRKI/NRKI-Datenbank",
+      "Expertenkommentar zu den Überprüfungsergebnissen"
+    ],
+    "disclaimerTitle": "Wichtiger Hinweis",
+    "disclaimerText": "Die Überprüfungsergebnisse dienen ausschließlich Ihrer Information und Entscheidungsfindung. Alle Informationen werden gemäß DSGVO und anderen rechtlichen Bestimmungen verarbeitet. Die Überprüfung erfolgt ausschließlich auf Grundlage öffentlich zugänglicher Informationen und Register."
+  },
+  "pricing": {
+    "badge": "Überprüfung bestellen",
+    "title": "Umfassende Überprüfung zu einem vorteilhaften Preis",
+    "description": "Bestellen Sie eine umfassende Überprüfung einer Person oder eines Unternehmens und gewinnen Sie Sicherheit und Gewissheit in Ihrer Entscheidungsfindung.",
+    "packageTitle": "Umfassende Überprüfung",
+    "price": "47 €",
+    "rawPrice": 47,
+    "taxNote": "inkl. MwSt.",
+    "packageDescription": "Vollständige Verifizierung einer Person oder eines Unternehmens in allen verfügbaren Registern und Datenbanken mit Expertenkommentar.",
+    "benefits": [
+      "Ergebnisse innerhalb von 24 Stunden an Werktagen",
+      "Klarer Bericht mit Expertenkommentar",
+      "Verifizierung in allen verfügbaren Registern",
+      "Sichere Verarbeitung gemäß DSGVO"
+    ],
+    "orderButton": "Überprüfung bestellen"
+  },
+  "process": {
+    "title": "Wie funktioniert es?",
+    "steps": [
+      {
+        "number": "1",
+        "title": "Bestellung und Zahlung",
+        "description": "Füllen Sie das Bestellformular aus und zahlen Sie online."
+      },
+      {
+        "number": "2",
+        "title": "Überprüfungsbearbeitung",
+        "description": "Unsere Spezialisten führen eine umfassende Verifizierung in allen verfügbaren Registern durch."
+      },
+      {
+        "number": "3",
+        "title": "Ergebnislieferung",
+        "description": "Innerhalb von 24 Stunden an Werktagen erhalten Sie einen vollständigen Bericht mit den Überprüfungsergebnissen."
+      },
+      {
+        "number": "4",
+        "title": "Ergebnisberatung",
+        "description": "Bei Bedarf helfen Ihnen unsere Spezialisten bei der Interpretation der Ergebnisse."
+      }
+    ],
+    "orderLink": "Zum Bestellformular"
+  },
+  "testimonials": {
+    "badge": "Referenzen",
+    "title": "Was unsere Kunden sagen",
+    "description": "Lesen Sie, wie unser Service unseren Kunden bei der Entscheidungsfindung geholfen hat.",
+    "items": [
+      {
+        "text": "Dank der Überprüfung habe ich erfahren, dass mein potenzieller Mieter mehrere Vollstreckungsverfahren hat. Das hat mir viele Probleme und Zeit bei der Mieteinziehung erspart.",
+        "author": "Hans Schmidt",
+        "position": "Wohnungsvermieter"
+      },
+      {
+        "text": "Ich nutze den Service regelmäßig bei der Überprüfung neuer Geschäftspartner. Das hat mir mehrmals geholfen, die Zusammenarbeit mit problematischen Unternehmen zu vermeiden.",
+        "author": "Maria Weber",
+        "position": "Geschäftsführerin"
+      },
+      {
+        "text": "Schnelle und professionelle Bearbeitung. Ich hatte die Ergebnisse am nächsten Tag und konnte schnell entscheiden. Definitiv empfehlenswert.",
+        "author": "Thomas Müller",
+        "position": "Immobilienmakler"
+      }
+    ]
+  },
+  "faq": {
+    "badge": "Häufig gestellte Fragen",
+    "title": "Antworten auf Ihre Fragen",
+    "description": "Hier finden Sie Antworten auf die häufigsten Fragen zu unserem Überprüfungsservice.",
+    "items": [
+      {
+        "question": "Wie lange dauert die Bearbeitung der Überprüfung?",
+        "answer": "Die Standardbearbeitungszeit beträgt innerhalb von 24 Stunden an Werktagen. Bei dringendem Bedarf kontaktieren Sie uns, und wir werden versuchen, den Prozess zu beschleunigen."
+      },
+      {
+        "question": "Welche Informationen benötige ich für die Bestellung einer Überprüfung?",
+        "answer": "Für die Überprüfung einer Person benötigen wir Vor- und Nachname sowie Geburtsdatum. Für die Überprüfung eines Unternehmens reicht die Unternehmens-ID aus. Je mehr Informationen Sie angeben, desto genauer können wir die Ergebnisse liefern."
+      },
+      {
+        "question": "Ist die Überprüfung legal?",
+        "answer": "Ja, unsere Überprüfung erfolgt ausschließlich auf Grundlage öffentlich zugänglicher Informationen und Register gemäß geltendem Recht und DSGVO."
+      },
+      {
+        "question": "Wie erhalte ich die Überprüfungsergebnisse?",
+        "answer": "Wir senden Ihnen die Überprüfungsergebnisse per E-Mail in Form eines klaren Berichts im PDF-Format. Der Bericht enthält alle gefundenen Informationen und einen Expertenkommentar zu den Ergebnissen."
+      },
+      {
+        "question": "Kann ich die Überprüfung für Beschäftigungszwecke nutzen?",
+        "answer": "Die Überprüfung ist hauptsächlich für die Verifizierung der Kreditwürdigkeit bei Immobilienvermietung und Geschäftsbeziehungen gedacht. Für Beschäftigungszwecke empfehlen wir, sich mit einem Anwalt darüber zu beraten, welche Informationen Sie in diesem Zusammenhang gemäß Arbeitsrecht verwenden können."
+      },
+      {
+        "question": "Was, wenn ich eine Überprüfung für mehrere Personen oder Unternehmen benötige?",
+        "answer": "Wenn Sie an einer Überprüfung mehrerer Personen oder Unternehmen interessiert sind, kontaktieren Sie uns unter info@expohledavky.cz. Wir erstellen Ihnen gerne ein individuelles Angebot mit Mengenrabatt."
+      }
+    ],
+    "contactText": "Haben Sie weitere Fragen? Zögern Sie nicht, uns zu kontaktieren.",
+    "contactButton": "Kontaktieren Sie uns"
+  },
+  "cta": {
+    "title": "Schützen Sie Ihr Eigentum und Ihre Zeit",
+    "description": "Die Investition in eine gründliche Verifizierung zahlt sich immer aus. Bestellen Sie noch heute eine umfassende Überprüfung und gewinnen Sie Sicherheit und Gewissheit in Ihrer Entscheidungsfindung.",
+    "button": "Überprüfung für 47 € bestellen"
+  },
+  "payment": {
+    "title": "Zahlung abschließen",
+    "subtitle": "Sie zahlen für:",
+    "emailLabel": "E-Mail für Ergebnisse",
+    "emailPlaceholder": "ihre@email.de",
+    "emailError": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "notesLabel": "Details zur Überprüfung",
+    "notesPlaceholder": "Geben Sie an, wen/was Sie überprüfen möchten (z.B. ACME GmbH, HRN: XXX12345) und weitere relevante Informationen",
+    "notesHelp": "Diese Informationen helfen uns, die Überprüfung effizient nach Ihren Anforderungen durchzuführen.",
+    "companyIdError": "Bitte überprüfen Sie, ob wir anhand dieser Angaben die spezifische Person/Firma identifizieren können. Die Handelsregisternummer (HRN) sollte enthalten sein.",
+    "terms": "Mit der Fortsetzung Ihrer Zahlung stimmen Sie unseren",
+    "termsLink": "Allgemeinen Geschäftsbedingungen",
+    "privacyLink": "Datenschutzrichtlinien",
+    "processing": "Wird verarbeitet...",
+    "error": "Zahlungsfehler",
+    "errorMessage": "Bei der Verarbeitung Ihrer Zahlung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."
+  },
+  "success": {
+    "title": "Zahlung erfolgreich!",
+    "message": "Vielen Dank für Ihre Zahlung. Ihre Bestellung wurde erfolgreich verarbeitet.",
+    "nextStepsTitle": "Was passiert als nächstes?",
+    "step1": "Unser Team wird Ihre Anfrage bearbeiten und den Überprüfungsprozess starten.",
+    "step2": "Sie erhalten eine E-Mail-Bestätigung mit Details zu Ihrer Bestellung.",
+    "step3": "Die Ergebnisse werden Ihnen gemäß dem Service-Zeitplan zugestellt.",
+    "homeButton": "Zurück zur Startseite"
+  }
+} 

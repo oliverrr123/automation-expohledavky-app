@@ -1,0 +1,24 @@
+{
+  "title": "Naše reference",
+  "subtitle": "Co o nás říkají naši klienti?",
+  "testimonials": [
+    {
+      "author": "Ing. Jan Dvořák",
+      "text": "Společnost EX Pohledávky nám zajišťuje kompletní služby splehlivě, přičemž můžeme s potěšením konstatovat, že jsme poznali jen velmi vstřícný přístup a ochotu. Rádi se na společnost obracíme s jakýmkoli problémem a víme, že se dočkáme vždy kvalitního výsledku."
+    },
+    {
+      "author": "Jan Decker",
+      "company": "thimble.cz",
+      "text": "EX Pohledávky jsou vždy zárukou profesionálních služeb v oblasti vymáhání pohledávek. Díky skvělé práci pana Chromyho je naše cash-flow velice dobré a nemusíme ztrácet čas doprošováním se o úhrady faktur."
+    },
+    {
+      "author": "Petra Novotná",
+      "text": "Se společností EX Pohledávky, která pro naší slopečnost zajišťuje kompletní agendu vymáhání pohledávek, jsem maximálně spokojena. Cennou devizou je pružnost, rychlost a spolehlovost společnosti."
+    }
+  ],
+  "ariaLabels": {
+    "previousTestimonial": "Previous testimonial",
+    "nextTestimonial": "Next testimonial",
+    "goToSlide": "Go to slide"
+  }
+} 

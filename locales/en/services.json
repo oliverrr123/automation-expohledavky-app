@@ -1,0 +1,38 @@
+{
+  "badge": "Professional services",
+  "title": "Our services",
+  "subtitle": "Use professional services without risks!",
+  "linkText": "Service details",
+  "services": [
+    {
+      "title": "Debt collection",
+      "description": "We offer debt collection in a wide range of areas including accounting records or unpaid invoices.",
+      "href": "/services/debt-collection"
+    },
+    {
+      "title": "Corporate receivables management",
+      "description": "We offer outsourcing of receivables management, thanks to which your receivables will be properly and successfully taken care of.",
+      "href": "/services/corporate-receivables"
+    },
+    {
+      "title": "Purchase and sale of receivables",
+      "description": "If you no longer have patience with the debtor and don't mind losing part of your money, this service is just for you.",
+      "href": "/services/receivables-purchase"
+    },
+    {
+      "title": "Company purchase",
+      "description": "We offer to purchase companies at the best price. We will prepare an analysis for everyone, based on which we will submit an individual offer.",
+      "href": "/services/company-purchase"
+    },
+    {
+      "title": "Purchase of promissory notes",
+      "description": "The offer of promissory note purchase services can relieve you of the worries of reminding debtors and expenses for legal services.",
+      "href": "/services/promissory-notes"
+    },
+    {
+      "title": "Crisis Management",
+      "description": "We help you overcome crisis situations in business and design effective strategies for stabilization and subsequent growth of your company.",
+      "href": "/services/crisis-management"
+    }
+  ]
+} 

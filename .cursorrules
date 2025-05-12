@@ -1,0 +1,34 @@
+# .cursorrules for exreceivables.com Next.js Project
+
+# Project Overview
+# This is a Next.js project for exreceivables.com, operating in 4 countries with domains:
+# - expohledavky.cz (Czech)
+# - expohladavky.sk (Slovak)
+# - exforderungen.de (German)
+# - exreceivables.com (English, UK)
+# All sites share one repo, with translations in locales/ folder and localized routes.
+
+# Translation System
+# Translations are stored in JSON files in the locales/ folder (e.g., cs.json, sk.json, de.json, en.json).
+# Pages use i18n to fetch translations dynamically based on the site's language.
+# Example: For a Czech page, only use locales/cs.json; for English, only use locales/en.json.
+
+# Localized Routing
+# Routes are language-specific:
+# - Czech: /o-nas, /kontakt, etc.
+# - Slovak: /o-nas, /kontakt, etc.
+# - German: /uber-uns, /kontakt, etc.
+# - English: /about-us, /contact, etc.
+# When suggesting route names or links, match the language of the target domain.
+
+# SEO Optimization
+# Each domain must only render content in its designated language:
+# - expohledavky.cz: Czech only
+# - expohladavky.sk: Slovak only
+# - exforderungen.de: German only
+# - exreceivables.com: English only
+# Avoid mixing languages in page content, metadata, or URLs to ensure SEO performance.
+
+# Context Awareness
+# When assisting, consider the current domain and language context provided by the developer.
+# If unclear, ask: "Which domain/language are you working on (CZ, SK, DE, UK)?"

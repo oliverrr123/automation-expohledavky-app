@@ -1,0 +1,75 @@
+{
+  "title": "CENNÍK",
+  "subtitle": "Základné sadzby platné od 1. 4. 2025 (v EUR)",
+  "pricingTable": {
+    "header": {
+      "specification": "Špecifikácia jednotlivých oddelení pri spracovaní každej pohľadávky",
+      "rate": "Sadzba za úkon – spracovanie jednej pohľadávky"
+    },
+    "rows": [
+      {
+        "service": "Administratíva – sprocesovanie pohľadávky",
+        "price": "50 EUR"
+      },
+      {
+        "service": "Lustračné oddelenie",
+        "price": "47 EUR"
+      },
+      {
+        "service": "Vymáhanie inkasnými špecialistami",
+        "price": "100 EUR" 
+      },
+      {
+        "service": "Právne oddelenie",
+        "price": "150 EUR"
+      },
+      {
+        "service": "Právne poradenstvo v oblasti vymáhania pohľadávok",
+        "price": "od 154 EUR/hodina"
+      },
+      {
+        "service": "Súdna žaloba – 15% z výšky pohľadávky",
+        "price": "minimálne však 750 EUR"
+      },
+      {
+        "service": "Doložka právnej vykonateľnosti u notára",
+        "price": "minimálne 600 EUR"
+      },
+      {
+        "service": "Výjazd za dlžníkom",
+        "price": "1,52 EUR/km + 25 EUR/hodina"
+      }
+    ]
+  },
+  "notes": [
+    "Pri úkonoch v cudzom jazyku sa hodinová sadzba navyšuje o 30 %.",
+    "Ceny sú uvedené bez DPH."
+  ],
+  "contactForm": {
+    "title": "Kontaktný formulár",
+    "fields": {
+      "name": {
+        "label": "Meno a priezvisko",
+        "placeholder": "Meno a priezvisko"
+      },
+      "email": {
+        "label": "Váš e-mail",
+        "placeholder": "Váš e-mail"
+      },
+      "phone": {
+        "label": "Telefónny kontakt",
+        "placeholder": "Telefónny kontakt"
+      },
+      "amount": {
+        "label": "Výška pohľadávky",
+        "placeholder": "Výška pohľadávky"
+      },
+      "message": {
+        "label": "Vaša správa",
+        "placeholder": "Vaša správa... uveďte všetky známe podrobnosti k Vašej pohľadávke..."
+      }
+    },
+    "submitButton": "Odoslať správu",
+    "successMessage": "Správa bola odoslaná. Ďakujeme!"
+  }
+} 

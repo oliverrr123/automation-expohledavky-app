@@ -1,0 +1,75 @@
+{
+  "title": "PRICING",
+  "subtitle": "Basic rates valid from April 1, 2025 (in GBP)",
+  "pricingTable": {
+    "header": {
+      "specification": "Specification of individual departments in processing each receivable",
+      "rate": "Rate per action - processing one receivable"
+    },
+    "rows": [
+      {
+        "service": "Administration - processing of receivable",
+        "price": "£43"
+      },
+      {
+        "service": "Investigation department",
+        "price": "£40"
+      },
+      {
+        "service": "Collection by debt specialists",
+        "price": "£85" 
+      },
+      {
+        "service": "Legal department",
+        "price": "£128"
+      },
+      {
+        "service": "Legal consulting in debt collection",
+        "price": "from £131/hour"
+      },
+      {
+        "service": "Court action - 15% of the receivable amount",
+        "price": "minimum of £638"
+      },
+      {
+        "service": "Legal enforceability clause by a notary",
+        "price": "minimum of £510"
+      },
+      {
+        "service": "Visit to the debtor",
+        "price": "£1.29/km + £21/hour"
+      }
+    ]
+  },
+  "notes": [
+    "For actions in a foreign language, the hourly rate increases by 30%.",
+    "Prices are quoted without VAT."
+  ],
+  "contactForm": {
+    "title": "Contact Form",
+    "fields": {
+      "name": {
+        "label": "Full name",
+        "placeholder": "Full name"
+      },
+      "email": {
+        "label": "Your email",
+        "placeholder": "Your email"
+      },
+      "phone": {
+        "label": "Phone contact",
+        "placeholder": "Phone contact"
+      },
+      "amount": {
+        "label": "Receivable amount",
+        "placeholder": "Receivable amount"
+      },
+      "message": {
+        "label": "Your message",
+        "placeholder": "Your message... provide all known details about your receivable..."
+      }
+    },
+    "submitButton": "Send message",
+    "successMessage": "Message has been sent. Thank you!"
+  }
+} 

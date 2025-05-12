@@ -1,0 +1,75 @@
+{
+  "title": "PREISLISTE",
+  "subtitle": "Grundtarife gültig ab 1. April 2025 (in EUR)",
+  "pricingTable": {
+    "header": {
+      "specification": "Spezifikation der einzelnen Abteilungen bei der Bearbeitung jeder Forderung",
+      "rate": "Satz pro Vorgang - Bearbeitung einer Forderung"
+    },
+    "rows": [
+      {
+        "service": "Administration - Bearbeitung der Forderung",
+        "price": "50 EUR"
+      },
+      {
+        "service": "Ermittlungsabteilung",
+        "price": "47 EUR"
+      },
+      {
+        "service": "Eintreibung durch Inkassospezialisten",
+        "price": "100 EUR" 
+      },
+      {
+        "service": "Rechtsabteilung",
+        "price": "150 EUR"
+      },
+      {
+        "service": "Rechtliche Beratung im Bereich Forderungseinzug",
+        "price": "ab 154 EUR/Stunde"
+      },
+      {
+        "service": "Gerichtsklage - 15% der Forderungssumme",
+        "price": "mindestens 750 EUR"
+      },
+      {
+        "service": "Vollstreckbarkeitsklausel beim Notar",
+        "price": "mindestens 600 EUR"
+      },
+      {
+        "service": "Besuch beim Schuldner",
+        "price": "1,52 EUR/km + 25 EUR/Stunde"
+      }
+    ]
+  },
+  "notes": [
+    "Bei Tätigkeiten in einer Fremdsprache erhöht sich der Stundensatz um 30%.",
+    "Preise verstehen sich ohne Mehrwertsteuer."
+  ],
+  "contactForm": {
+    "title": "Kontaktformular",
+    "fields": {
+      "name": {
+        "label": "Vor- und Nachname",
+        "placeholder": "Vor- und Nachname"
+      },
+      "email": {
+        "label": "Ihre E-Mail",
+        "placeholder": "Ihre E-Mail"
+      },
+      "phone": {
+        "label": "Telefonkontakt",
+        "placeholder": "Telefonkontakt"
+      },
+      "amount": {
+        "label": "Forderungshöhe",
+        "placeholder": "Forderungshöhe"
+      },
+      "message": {
+        "label": "Ihre Nachricht",
+        "placeholder": "Ihre Nachricht... geben Sie alle bekannten Details zu Ihrer Forderung an..."
+      }
+    },
+    "submitButton": "Nachricht senden",
+    "successMessage": "Nachricht wurde gesendet. Vielen Dank!"
+  }
+} 

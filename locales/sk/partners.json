@@ -1,0 +1,15 @@
+{
+  "rankingText": "Podľa nezávislého testu recenzného portálu {entuzioLink} patríme medzi najlepšie firmy na vymáhanie pohľadávok.",
+  "entuzioLinkText": "Entuzio.cz",
+  "entuzioUrl": "https://entuzio.cz/agentury-na-vymahani-pohledavek-a-dluhu/",
+  "partners": [
+    { "name": "Partner 1", "logo": "/images/partners/logo-01.png" },
+    { "name": "Partner 2", "logo": "/images/partners/logo-02.png" },
+    { "name": "Partner 3", "logo": "/images/partners/logo-03.png" },
+    { "name": "Partner 4", "logo": "/images/partners/logo-04.png" },
+    { "name": "Partner 5", "logo": "/images/partners/logo-05.png" },
+    { "name": "Partner 6", "logo": "/images/partners/logo-06.png" },
+    { "name": "Partner 7", "logo": "/images/partners/logo-07.png" },
+    { "name": "Partner 9", "logo": "/images/partners/benefit.png" }
+  ]
+} 

@@ -1,0 +1,61 @@
+{
+  "hero": {
+    "badge": "Unsere Dienstleistungen",
+    "title": "Ankauf und Verkauf von Forderungen",
+    "subtitle": "Schnelle und effektive Lösung für Gläubiger, die ihre Forderungen verkaufen möchten"
+  },
+  "mainSection": {
+    "badge": "Umfassende Lösung",
+    "title": "Ankauf und Verkauf von Forderungen",
+    "paragraphs": [
+      "Der Forderungsankauf ist derzeit ein beliebter Service für alle Gläubiger. Wenn Sie sich nicht mehr mit der Forderung beschäftigen möchten und es Ihnen nichts ausmacht, einen Teil Ihres Geldes zu verlieren, ist dieser Service genau das Richtige für Sie.",
+      "Wir sind auf den Ankauf von Forderungen sowohl von natürlichen als auch von juristischen Personen spezialisiert. Dank unserer hohen Erfolgsquote können wir einen attraktiven Kaufpreis anbieten, der dem aktuellen Stand der Forderung entspricht, und Sie haben mit der Eintreibung selbst nichts mehr zu tun."
+    ],
+    "button": "Unverbindliche Anfrage"
+  },
+  "process": {
+    "badge": "Ankaufsprozess",
+    "title": "Dem Forderungsankauf geht eine Prüfung voraus, die Folgendes umfasst:",
+    "steps": [
+      {
+        "icon": "FileText",
+        "title": "Geschichte der Forderungsentstehung",
+        "description": "Wir analysieren gründlich die Umstände der Entstehung der Forderung und ihre Entwicklung im Laufe der Zeit."
+      },
+      {
+        "icon": "CheckCircle",
+        "title": "Untersuchung der zugehörigen Unterlagen",
+        "description": "Wir prüfen sorgfältig alle mit der Forderung verbundenen Dokumente."
+      },
+      {
+        "icon": "DollarSign",
+        "title": "Preisvorschlag für den Ankauf",
+        "description": "Auf Grundlage der Analyse schlagen wir einen fairen Preis für den Ankauf der Forderung vor."
+      }
+    ],
+    "note": "Wir arbeiten auch mit privaten Vollstreckungsbeamten in ganz Tschechien zusammen, so dass wir in der Lage sind, die Beitreibung in kürzerer Zeit durchzuführen."
+  },
+  "benefits": {
+    "badge": "Vorteile des Forderungsverkaufs",
+    "title": "Warum sollten Sie Ihre Forderungen verkaufen?",
+    "description": "Der Verkauf von Forderungen bietet zahlreiche Vorteile, die Ihnen helfen, Ihren Cashflow zu verbessern und sich auf Ihr Kerngeschäft zu konzentrieren",
+    "items": [
+      {
+        "title": "Sofortige Liquidität",
+        "description": "Sie erhalten sofort finanzielle Mittel, ohne auf die Zahlung durch den Schuldner warten zu müssen."
+      },
+      {
+        "title": "Keine weiteren Sorgen",
+        "description": "Sie überlassen die gesamte Eintreibung uns und können sich auf Ihr Geschäft konzentrieren."
+      },
+      {
+        "title": "Einkommensgarantie",
+        "description": "Sie erhalten einen garantierten Betrag, unabhängig davon, ob die Forderung erfolgreich eingetrieben werden kann."
+      },
+      {
+        "title": "Kostenersparnis",
+        "description": "Sie müssen nicht in Rechtsdienstleistungen und andere mit der Eintreibung verbundene Kosten investieren."
+      }
+    ]
+  }
+} 

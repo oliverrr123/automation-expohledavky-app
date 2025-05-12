@@ -1,0 +1,207 @@
+{
+  "hero": {
+    "badge": "Bezpečnost na prvním místě",
+    "title": "Komplexní lustrace osob a firem",
+    "subtitle": "Pronajímáte byt? Víte komu chcete váš byt pronajmout? Lustrace je předběžné opatření k případným dalším nákladům a ztrátám času.",
+    "primaryButton": "Objednat lustraci",
+    "secondaryButton": "Více informací"
+  },
+  "intro": {
+    "badge": "Co je lustrace",
+    "title": "Komplexní analýza dlužníka",
+    "description": "Lustrace je komplexní prověření osoby nebo firmy ve všech dostupných registrech a databázích. Získáte tak ucelený obraz o potenciálním nájemníkovi, obchodním partnerovi nebo zaměstnanci.",
+    "subtitle": "Proč je lustrace důležitá?",
+    "paragraph1": "Pronajímáte nemovitost nebo uzavíráte obchodní partnerství? Nevíte, komu svěřujete svůj majetek nebo s kým uzavíráte smlouvu? Lustrace vám poskytne klíčové informace, které vám pomohou učinit informované rozhodnutí a předejít případným problémům.",
+    "paragraph2": "Naše komplexní lustrace zahrnuje prověření v katastru nemovitostí, insolvenčním rejstříku, centrální evidenci exekucí a dalších registrech. Získáte tak kompletní přehled o finanční situaci a důvěryhodnosti prověřované osoby nebo firmy.",
+    "imageAlt": "Lustrace dokumentů",
+    "imageCaption": "Komplexní prověření ve všech dostupných registrech"
+  },
+  "benefits": {
+    "badge": "Výhody lustrace",
+    "title": "Proč využít naši službu?",
+    "description": "Lustrace je preventivní opatření, které vám může ušetřit značné náklady a čas v budoucnu. Investice do důkladného prověření se vždy vyplatí.",
+    "items": [
+      {
+        "icon": "Shield",
+        "title": "Ochrana vašeho majetku",
+        "description": "Předejděte problémům s neplatícími nájemníky nebo nespolehlivými obchodními partnery."
+      },
+      {
+        "icon": "Clock",
+        "title": "Úspora času a peněz",
+        "description": "Vyhněte se zdlouhavým soudním sporům a nákladům na vymáhání pohledávek."
+      },
+      {
+        "icon": "Search",
+        "title": "Komplexní prověření",
+        "description": "Získáte informace ze všech dostupných registrů a databází na jednom místě."
+      },
+      {
+        "icon": "FileText",
+        "title": "Profesionální zpracování",
+        "description": "Výsledky lustrace dostanete v přehledné a srozumitelné formě s odborným komentářem."
+      },
+      {
+        "icon": "Home",
+        "title": "Ideální pro pronajímatele",
+        "description": "Zjistěte, zda váš potenciální nájemník nemá dluhy nebo exekuce."
+      },
+      {
+        "icon": "User",
+        "title": "Prověření obchodních partnerů",
+        "description": "Ověřte si důvěryhodnost a finanční stabilitu vašich obchodních partnerů."
+      }
+    ]
+  },
+  "included": {
+    "badge": "Obsah lustrace",
+    "title": "Co obsahuje naše lustrace?",
+    "description": "Naše komplexní lustrace zahrnuje prověření ve všech klíčových registrech a databázích.",
+    "items": [
+      "Prověření v insolvenčním rejstříku",
+      "Kontrola v centrální evidenci exekucí",
+      "Prověření v katastru nemovitostí",
+      "Kontrola v registru dlužníků",
+      "Prověření v obchodním rejstříku",
+      "Kontrola v živnostenském rejstříku",
+      "Prověření v registru plátců DPH",
+      "Kontrola v databázi neplatičů",
+      "Prověření v registru vozidel",
+      "Kontrola v databázi SOLUS",
+      "Prověření v databázi BRKI/NRKI",
+      "Odborný komentář k výsledkům lustrace"
+    ],
+    "disclaimerTitle": "Důležité upozornění",
+    "disclaimerText": "Výsledky lustrace jsou určeny pouze pro vaši informaci a rozhodování. Veškeré informace jsou zpracovávány v souladu s GDPR a dalšími právními předpisy. Lustrace je prováděna pouze na základě veřejně dostupných informací a registrů."
+  },
+  "pricing": {
+    "badge": "Objednat lustraci",
+    "title": "Komplexní lustrace za výhodnou cenu",
+    "description": "Objednejte si komplexní lustraci osoby nebo firmy a získejte klid a jistotu při vašem rozhodování.",
+    "packageTitle": "Komplexní lustrace",
+    "price": "1 199 Kč",
+    "rawPrice": 1199,
+    "taxNote": "včetně DPH",
+    "packageDescription": "Kompletní prověření osoby nebo firmy ve všech dostupných registrech a databázích s odborným komentářem.",
+    "benefits": [
+      "Výsledky do 24 hodin v pracovní dny",
+      "Přehledná zpráva s odborným komentářem",
+      "Prověření ve všech dostupných registrech",
+      "Bezpečné zpracování v souladu s GDPR"
+    ],
+    "orderButton": "Objednat lustraci"
+  },
+  "process": {
+    "title": "Jak to funguje?",
+    "steps": [
+      {
+        "number": "1",
+        "title": "Objednávka a platba",
+        "description": "Vyplníte objednávkový formulář a provedete platbu online."
+      },
+      {
+        "number": "2",
+        "title": "Zpracování lustrace",
+        "description": "Naši specialisté provedou komplexní prověření ve všech dostupných registrech."
+      },
+      {
+        "number": "3",
+        "title": "Doručení výsledků",
+        "description": "Do 24 hodin v pracovní dny obdržíte kompletní zprávu s výsledky lustrace."
+      },
+      {
+        "number": "4",
+        "title": "Konzultace výsledků",
+        "description": "V případě potřeby vám naši specialisté pomohou s interpretací výsledků."
+      }
+    ],
+    "orderLink": "Přejít na objednávkový formulář"
+  },
+  "testimonials": {
+    "badge": "Reference",
+    "title": "Co říkají naši klienti",
+    "description": "Přečtěte si, jak naše služba pomohla našim klientům při jejich rozhodování.",
+    "items": [
+      {
+        "text": "Díky lustraci jsem zjistil, že můj potenciální nájemník má několik exekucí. Ušetřil jsem si tak spoustu problémů a času s vymáháním nájemného.",
+        "author": "Jan Novák",
+        "position": "Pronajímatel bytu"
+      },
+      {
+        "text": "Službu využívám pravidelně při prověřování nových obchodních partnerů. Několikrát mi to pomohlo vyhnout se spolupráci s problematickými firmami.",
+        "author": "Petra Svobodová",
+        "position": "Jednatelka společnosti"
+      },
+      {
+        "text": "Rychlé a profesionální zpracování. Výsledky jsem měl k dispozici již druhý den a mohl jsem se tak rychle rozhodnout. Určitě doporučuji.",
+        "author": "Martin Dvořák",
+        "position": "Realitní makléř"
+      }
+    ]
+  },
+  "faq": {
+    "badge": "Často kladené otázky",
+    "title": "Odpovědi na vaše otázky",
+    "description": "Zde najdete odpovědi na nejčastější otázky týkající se naší služby lustrace.",
+    "items": [
+      {
+        "question": "Jak dlouho trvá zpracování lustrace?",
+        "answer": "Standardní doba zpracování je do 24 hodin v pracovní dny. V případě urgentní potřeby nás kontaktujte a pokusíme se proces urychlit."
+      },
+      {
+        "question": "Jaké údaje potřebuji pro objednání lustrace?",
+        "answer": "Pro lustraci fyzické osoby potřebujeme jméno, příjmení a datum narození. Pro lustraci firmy stačí IČO. Čím více údajů nám poskytnete, tím přesnější výsledky můžeme dodat."
+      },
+      {
+        "question": "Je lustrace legální?",
+        "answer": "Ano, naše lustrace je prováděna pouze na základě veřejně dostupných informací a registrů v souladu s platnou legislativou a GDPR."
+      },
+      {
+        "question": "Jak obdržím výsledky lustrace?",
+        "answer": "Výsledky lustrace vám zašleme na váš e-mail ve formě přehledné zprávy ve formátu PDF. Zpráva obsahuje všechny zjištěné informace a odborný komentář k výsledkům."
+      },
+      {
+        "question": "Mohu lustraci využít pro pracovněprávní účely?",
+        "answer": "Lustrace je primárně určena pro ověření důvěryhodnosti při pronájmu nemovitostí a obchodních vztazích. Pro pracovněprávní účely doporučujeme konzultovat s právníkem, jaké informace můžete v daném kontextu využít v souladu s pracovním právem."
+      },
+      {
+        "question": "Co když potřebuji lustraci více osob nebo firem?",
+        "answer": "V případě zájmu o lustraci více osob nebo firem nás kontaktujte na info@expohledavky.cz. Rádi vám připravíme individuální nabídku s množstevní slevou."
+      }
+    ],
+    "contactText": "Máte další otázky? Neváhejte nás kontaktovat.",
+    "contactButton": "Kontaktujte nás"
+  },
+  "cta": {
+    "title": "Ochraňte svůj majetek a čas",
+    "description": "Investice do důkladného prověření se vždy vyplatí. Objednejte si komplexní lustraci ještě dnes a získejte klid a jistotu při vašem rozhodování.",
+    "button": "Objednat lustraci za 1 199 Kč"
+  },
+  "payment": {
+    "title": "Dokončete platbu",
+    "subtitle": "Platíte za:",
+    "emailLabel": "E-mail pro zaslání výsledků",
+    "emailPlaceholder": "vase@email.cz",
+    "emailError": "Zadejte platnou e-mailovou adresu",
+    "notesLabel": "Detaily k lustraci",
+    "notesPlaceholder": "Uveďte koho/co chcete lustrovat (např. ACME s.r.o., IČO: 12345678) a další relevantní informace",
+    "notesHelp": "Tyto informace nám pomohou efektivně provést lustraci dle vašeho požadavku.",
+    "companyIdError": "Zkontrolujte prosím, zda podle těchto detailů je možné dohledat konkrétní osobu / firmu. Mělo by být uvedeno IČO.",
+    "terms": "Pokračováním v platbě souhlasíte s našimi",
+    "termsLink": "Obchodními podmínkami",
+    "and": "a",
+    "privacyLink": "Zásadami ochrany osobních údajů",
+    "processing": "Zpracovává se...",
+    "error": "Chyba při platbě",
+    "errorMessage": "Došlo k chybě při zpracování platby. Prosím zkuste to znovu nebo kontaktujte podporu."
+  },
+  "success": {
+    "title": "Platba úspěšná!",
+    "message": "Děkujeme za vaši platbu. Vaše objednávka byla úspěšně zpracována.",
+    "nextStepsTitle": "Co se stane dál?",
+    "step1": "Náš tým zpracuje váš požadavek a zahájí proces lustrace.",
+    "step2": "Obdržíte e-mail s potvrzením a detaily o vaší objednávce.",
+    "step3": "Výsledky vám budou doručeny podle časového harmonogramu služby.",
+    "homeButton": "Zpět na hlavní stránku"
+  }
+} 

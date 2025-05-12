@@ -1,0 +1,53 @@
+{
+  "topBar": {
+    "hours": "9:30 – 16:00",
+    "country": "Slovenská republika"
+  },
+  "company": {
+    "prefix": "EX",
+    "name": "POHĽADÁVKY"
+  },
+  "navigation": [
+    { "name": "Úvod", "href": "/" },
+    { "name": "O nás", "href": "o-nas" },
+    {
+      "name": "Naše služby",
+      "href": "nase-sluzby",
+      "hasDropdown": true,
+      "submenu": [
+        { "name": "Vymáhanie pohľadávok", "href": "nase-sluzby/vymahanie-pohladavok" },
+        { "name": "Správa firemných pohľadávok", "href": "nase-sluzby/sprava-firemnych-pohladavok" },
+        { "name": "Odkúp a predaj pohľadávok", "href": "nase-sluzby/odkup-predaj-pohladavok" },
+        { "name": "Odkúp firiem", "href": "nase-sluzby/odkup-firiem" },
+        { "name": "Likvidácia firiem", "href": "nase-sluzby/likvidacia-firiem" },
+        { "name": "Krízový manažment", "href": "nase-sluzby/krizovy-manazment" },
+        { "name": "Odkup zmeniek", "href": "nase-sluzby/odkup-zmeniek" },
+        { "name": "Partner v Lichtenštajnsku", "href": "/documents/firstAdvisoryGroup.pdf", "target": "_blank" }
+      ]
+    },
+    { "name": "Cenník", "href": "cennik" },
+    { "name": "Slovník a vzory", "href": "slovnik-a-vzory" },
+    { "name": "Lustrácia", "href": "lustracia" },
+    { "name": "Blog", "href": "blog" },
+    { "name": "Kontakt", "href": "kontakt" }
+  ],
+  "countries": [
+    { "name": "United Kingdom", "href": "https://exreceivables.com/" },
+    { "name": "Česká republika", "href": "https://expohledavky.cz/" },
+    { "name": "Romania", "href": "https://excredit.ro/" }
+  ],
+  "buttons": {
+    "clientZone": "Kontaktujte nás",
+    "clientLogin": "kontakt"
+  },
+  "mobileMenu": {
+    "openMenu": "Otvoriť menu",
+    "menuTitle": "Menu"
+  },
+  "phone": {
+    "number": "+421911696596",
+    "display": "+421 911 696 596",
+    "successMessage": "Telefónne číslo skopírované",
+    "errorMessage": "Kopírovanie zlyhalo"
+  }
+} 

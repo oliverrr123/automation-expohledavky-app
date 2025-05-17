@@ -6,8 +6,6 @@ import { getCurrentLocale } from '@/lib/client-locale';
 interface BlogImageProps {
   src: string;
   alt: string;
-  width?: number;
-  height?: number;
   className?: string;
   locale?: string;
 }
@@ -15,8 +13,6 @@ interface BlogImageProps {
 export function BlogImage({ 
   src, 
   alt, 
-  width = 1600, 
-  height = 900, 
   className = 'rounded-lg shadow-md',
   locale: propLocale
 }: BlogImageProps) {
@@ -79,7 +75,6 @@ export function BlogImage({
         style={{ 
           maxWidth: '100%',
           height: 'auto',
-          aspectRatio: `${width}/${height}`
         }}
         onError={() => setError(true)}
         loading="lazy"

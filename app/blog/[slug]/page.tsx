@@ -317,7 +317,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             {/* Featured Image */}
             {post.frontMatter.image && (
               <div className="mb-8 overflow-hidden rounded-xl">
-                <div className="relative aspect-[21/9]">
+                <div className="relative">
                   <BlogImage
                     src={post.frontMatter.image}
                     alt={post.frontMatter.title}

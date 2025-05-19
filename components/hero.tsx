@@ -112,6 +112,8 @@ export function Hero() {
               fill
               className="object-cover object-center animate-zoom-out"
               priority
+              sizes="100vw"
+              fetchPriority="high"
             />
           </div>
 

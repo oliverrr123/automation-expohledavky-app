@@ -87,6 +87,7 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cssnano": "^7.0.7",
     "eslint": "8.57.1",
     "eslint-config-next": "15.2.4",
     "natural-compare": "^1.4.0",

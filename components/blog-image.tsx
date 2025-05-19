@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { getCurrentLocale } from '@/lib/client-locale';
+import Image from 'next/image';
 
 interface BlogImageProps {
   src: string;
@@ -66,18 +67,21 @@ export function BlogImage({
   // Finální URL obrázku
   const imageSrc = error ? fallbackSrc : normalizeSrc(src);
   
-  // Použití klasického img tagu místo Next.js Image
+  // Použití Next.js Image komponenty místo klasického img tagu
   return (
     <div className={`overflow-hidden ${className}`}>
-      <img
+      <Image
         src={imageSrc}
         alt={alt}
+        width={800}
+        height={600}
         style={{ 
           maxWidth: '100%',
           height: 'auto',
         }}
         onError={() => setError(true)}
         loading="lazy"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />
     </div>
   );

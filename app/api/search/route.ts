@@ -82,6 +82,7 @@ export async function GET(request: NextRequest) {
         category: post.frontMatter.category,
         date: post.frontMatter.date,
         tags: post.frontMatter.tags,
+        image: post.frontMatter.image,
       }
     }));
     

@@ -37,97 +37,117 @@ async function generateArticleContent(openai, topic, category, uniqueApproach, l
     // Language-specific prompts
     if (language === 'en') {
       // English prompts
-      systemPrompt = `You are an expert in ${category} with extensive industry experience. Your articles are detailed, authoritative, and backed by real-world experience and research.`;
+      systemPrompt = `You are an expert in ${category} with extensive industry experience. Your articles are detailed, authoritative, and backed by real-world experience and research. You write in a clear, direct, and professional style, avoiding generalizations and focusing on concrete, practical information.`;
       
       userPrompt = `Write a comprehensive article on "${topic}" for business professionals in ${category}.
 
 The article should:
-1. Be 1500-2000 words with a professional, engaging tone
+1. Be 1500-2000 words with a professional, factual tone that builds trust
 2. Follow this structure:
-   - Introduction establishing the topic's importance
+   - Introduction establishing the topic's importance with a concrete business scenario
    - Main thesis: ${uniqueApproach.mainThesis}
    - Detailed sections covering: ${uniqueApproach.keyPoints.join(', ')}
-   - Your unique perspective: ${uniqueApproach.uniquePerspective}
-   - Practical advice and actionable takeaways
-   - Conclusion reinforcing the main thesis
+   - Your expert perspective: ${uniqueApproach.uniquePerspective}
+   - Practical, actionable advice with real-world examples
+   - Conclusion with a clear call to action for the reader
 
-Include:
-- 1-2 quotes from fictional industry experts
-- 2-3 specific statistics or data points to support your arguments
-- Clear headings (## for main sections, ### for subsections)
-- Bullet points or numbered lists where appropriate
+Guidelines:
+- Use ONLY verifiable information or logical reasoning based on business practice
+- DO NOT include fictional experts, companies, or made-up statistics
+- AVOID generic phrases like "is key to success" - use specific, concrete language instead
+- Break up long text blocks and keep paragraphs short (3-5 sentences maximum)
+- Use clear headings (## for main sections, ### for subsections)
+- Include bullet points or numbered lists for key points and takeaways
+- Add 2-3 specific examples from common business practice (e.g., dealing with unpaid invoices, cash flow problems, customer negotiations)
+- Optimize for SEO with relevant keywords naturally incorporated throughout the text
+- End with a meaningful call to action that offers readers a clear next step
 
 STRICTLY AVOID any mention of AI, artificial intelligence, or language models.`;
 
     } else if (language === 'cs') {
       // Czech prompts
-      systemPrompt = `Jste odborník v oblasti ${category} s rozsáhlými zkušenostmi z praxe. Vaše články jsou detailní, autoritativní a podložené skutečnými zkušenostmi.`;
+      systemPrompt = `Jste odborník v oblasti ${category} s rozsáhlými zkušenostmi z praxe. Vaše články jsou detailní, autoritativní a podložené skutečnými zkušenostmi. Píšete jasným, přímým a profesionálním stylem, vyhýbáte se obecným frázím a soustředíte se na konkrétní, praktické informace.`;
       
       userPrompt = `Napište komplexní článek na téma: "${topic}" pro obchodní profesionály v oblasti ${category}.
 
 Článek by měl:
-1. Mít 1500-2000 slov s profesionálním, poutavým tónem
+1. Mít 1500-2000 slov s profesionálním, faktickým tónem, který buduje důvěru
 2. Sledovat tuto strukturu:
-   - Úvod stanovující důležitost tématu
+   - Úvod stanovující důležitost tématu s konkrétním obchodním scénářem
    - Hlavní teze: ${uniqueApproach.mainThesis}
    - Detailní sekce pokrývající: ${uniqueApproach.keyPoints.join(', ')}
-   - Váš jedinečný pohled: ${uniqueApproach.uniquePerspective}
-   - Praktické rady a realizovatelné závěry
-   - Závěr posilující hlavní tezi
+   - Váš odborný pohled: ${uniqueApproach.uniquePerspective}
+   - Praktické, realizovatelné rady s příklady z reálné praxe
+   - Závěr s jasnou výzvou k akci pro čtenáře
 
-Zahrňte:
-- 1-2 citáty od fiktivních odborníků z oboru
-- 2-3 konkrétní statistiky nebo datové body na podporu vašich argumentů
-- Jasné nadpisy (## pro hlavní sekce, ### pro podsekce)
-- Odrážky nebo číslované seznamy, kde je to vhodné
+Pokyny:
+- Používejte POUZE ověřitelné informace nebo logické úvahy založené na obchodní praxi
+- NEUVÁDĚJTE fiktivní odborníky, společnosti ani smyšlené statistiky
+- VYHNĚTE SE obecným frázím jako "je klíčem k úspěchu" - místo toho používejte konkrétní jazyk
+- Rozdělte dlouhé bloky textu a udržujte krátké odstavce (maximálně 3-5 vět)
+- Používejte jasné nadpisy (## pro hlavní sekce, ### pro podsekce)
+- Zahrňte odrážky nebo číslované seznamy pro klíčové body
+- Přidejte 2-3 konkrétní příklady z běžné firemní praxe (např. řešení neuhrazených faktur, problémů s cash flow, vyjednávání se zákazníky)
+- Optimalizujte pro SEO s relevantními klíčovými slovy přirozeně začleněnými do textu (např. vymáhání pohledávek, exekuce, promlčení, restrukturalizace)
+- Zakončete smysluplnou výzvou k akci, která nabídne čtenářům jasný další krok
 
-PŘÍSNĚ SE VYHNĚTE jakýmkoľvek zmínkám o umělé inteligenci nebo jazykových modelech.`;
+PŘÍSNĚ SE VYHNĚTE jakýmkoli zmínkám o umělé inteligenci nebo jazykových modelech.`;
 
     } else if (language === 'sk') {
       // Slovak prompts
-      systemPrompt = `Ste odborník v oblasti ${category} s rozsiahlymi skúsenosťami z praxe. Vaše články sú detailné, autoritatívne a podložené skutočnými skúsenosťami.`;
+      systemPrompt = `Ste odborník v oblasti ${category} s rozsiahlymi skúsenosťami z praxe. Vaše články sú detailné, autoritatívne a podložené skutočnými skúsenosťami. Píšete jasným, priamym a profesionálnym štýlom, vyhýbate sa všeobecným frázam a sústreďujete sa na konkrétne, praktické informácie.`;
       
       userPrompt = `Napíšte komplexný článok na tému: "${topic}" pre obchodných profesionálov v oblasti ${category}.
 
 Článok by mal:
-1. Mať 1500-2000 slov s profesionálnym, pútavým tónom
+1. Mať 1500-2000 slov s profesionálnym, faktickým tónom, ktorý buduje dôveru
 2. Sledovať túto štruktúru:
-   - Úvod stanovujúci dôležitosť témy
+   - Úvod stanovujúci dôležitosť témy s konkrétnym obchodným scenárom
    - Hlavná téza: ${uniqueApproach.mainThesis}
    - Detailné sekcie pokrývajúce: ${uniqueApproach.keyPoints.join(', ')}
-   - Váš jedinečný pohľad: ${uniqueApproach.uniquePerspective}
-   - Praktické rady a realizovateľné závery
-   - Záver posilňujúci hlavnú tézu
+   - Váš odborný pohľad: ${uniqueApproach.uniquePerspective}
+   - Praktické, realizovateľné rady s príkladmi z reálnej praxe
+   - Záver s jasnou výzvou na akciu pre čitateľov
 
-Zahrňte:
-- 1-2 citáty od fiktívnych odborníkov z odboru
-- 2-3 konkrétne štatistiky alebo dátové body na podporu vašich argumentov
-- Jasné nadpisy (## pre hlavné sekcie, ### pre podsekcie)
-- Odrážky alebo číslované zoznamy, kde je to vhodné
+Pokyny:
+- Používajte IBA overiteľné informácie alebo logické úvahy založené na obchodnej praxi
+- NEUVÁDZAJTE fiktívnych odborníkov, spoločnosti ani vymyslené štatistiky
+- VYHNITE SA všeobecným frázam ako "je kľúčom k úspechu" - namiesto toho používajte konkrétny jazyk
+- Rozdeľte dlhé bloky textu a udržiavajte krátke odseky (maximálne 3-5 viet)
+- Používajte jasné nadpisy (## pre hlavné sekcie, ### pre podsekcie)
+- Zahrňte odrážky alebo číslované zoznamy pre kľúčové body
+- Pridajte 2-3 konkrétne príklady z bežnej firemnej praxe (napr. riešenie neuhradených faktúr, problémov s cash flow, vyjednávanie so zákazníkmi)
+- Optimalizujte pre SEO s relevantnými kľúčovými slovami prirodzene začlenenými do textu (napr. vymáhanie pohľadávok, exekúcia, premlčanie, reštrukturalizácia)
+- Zakončite zmysluplnou výzvou na akciu, ktorá ponúkne čitateľom jasný ďalší krok
 
 STRIKTNE SA VYHNITE akýmkoľvek zmienkam o umelej inteligencii alebo jazykových modeloch.`;
 
     } else if (language === 'de') {
       // German prompts
-      systemPrompt = `Sie sind ein Experte auf dem Gebiet ${category} mit umfangreicher Branchenerfahrung. Ihre Artikel sind detailliert, maßgeblich und durch reale Erfahrungen gestützt.`;
+      systemPrompt = `Sie sind ein Experte auf dem Gebiet ${category} mit umfangreicher Branchenerfahrung. Ihre Artikel sind detailliert, maßgeblich und durch reale Erfahrungen gestützt. Sie schreiben in einem klaren, direkten und professionellen Stil, vermeiden Verallgemeinerungen und konzentrieren sich auf konkrete, praktische Informationen.`;
       
       userPrompt = `Schreiben Sie einen umfassenden Artikel zum Thema: "${topic}" für Geschäftsfachleute im Bereich ${category}.
 
 Der Artikel sollte:
-1. 1500-2000 Wörter mit einem professionellen, ansprechenden Ton haben
+1. 1500-2000 Wörter mit einem professionellen, sachlichen Ton haben, der Vertrauen aufbaut
 2. Dieser Struktur folgen:
-   - Einleitung, die die Bedeutung des Themas hervorhebt
+   - Einleitung, die die Bedeutung des Themas mit einem konkreten Geschäftsszenario hervorhebt
    - Hauptthese: ${uniqueApproach.mainThesis}
    - Detaillierte Abschnitte zu: ${uniqueApproach.keyPoints.join(', ')}
-   - Ihre einzigartige Perspektive: ${uniqueApproach.uniquePerspective}
-   - Praktische Ratschläge und umsetzbare Erkenntnisse
-   - Schlussfolgerung, die die Hauptthese verstärkt
+   - Ihre Expertenperspektive: ${uniqueApproach.uniquePerspective}
+   - Praktische, umsetzbare Ratschläge mit Beispielen aus der Praxis
+   - Schlussfolgerung mit einer klaren Handlungsaufforderung für den Leser
 
-Berücksichtigen Sie:
-- 1-2 Zitate von fiktiven Branchenexperten
-- 2-3 spezifische Statistiken oder Datenpunkte zur Unterstützung Ihrer Argumente
-- Klare Überschriften (## für Hauptabschnitte, ### für Unterabschnitte)
-- Aufzählungspunkte oder nummerierte Listen, wo angebracht
+Richtlinien:
+- Verwenden Sie NUR überprüfbare Informationen oder logische Schlussfolgerungen basierend auf der Geschäftspraxis
+- Führen Sie KEINE fiktiven Experten, Unternehmen oder erfundene Statistiken an
+- VERMEIDEN Sie allgemeine Phrasen wie "ist der Schlüssel zum Erfolg" - verwenden Sie stattdessen spezifische, konkrete Sprache
+- Teilen Sie lange Textblöcke auf und halten Sie Absätze kurz (maximal 3-5 Sätze)
+- Verwenden Sie klare Überschriften (## für Hauptabschnitte, ### für Unterabschnitte)
+- Fügen Sie Aufzählungspunkte oder nummerierte Listen für Schlüsselpunkte ein
+- Fügen Sie 2-3 spezifische Beispiele aus der gängigen Geschäftspraxis hinzu (z.B. Umgang mit unbezahlten Rechnungen, Cashflow-Problemen, Kundenverhandlungen)
+- Optimieren Sie für SEO mit relevanten Schlüsselwörtern, die natürlich in den Text eingebettet sind (z.B. Forderungsmanagement, Vollstreckung, Verjährung, Restrukturierung)
+- Schließen Sie mit einer sinnvollen Handlungsaufforderung, die den Lesern einen klaren nächsten Schritt bietet
 
 VERMEIDEN SIE STRIKT jegliche Erwähnung von künstlicher Intelligenz oder Sprachmodellen.`;
     } else {
@@ -419,32 +439,36 @@ async function generateUniqueApproach(openai, topic, category, language) {
     let prompt;
     
     if (language === 'en') {
-      prompt = `For the topic "${topic}" in the category "${category}", suggest a unique approach for an expert article.
+      prompt = `For the topic "${topic}" in the category "${category}", suggest a professional, fact-based approach for an expert article.
 Provide:
-1. A compelling main thesis that provides clear direction
-2. 5-6 key points to cover that would provide depth and comprehensive coverage
-3. A unique perspective that differentiates it from standard treatments
+1. A clear, practical main thesis that addresses a specific business need or challenge
+2. 5-6 key points to cover that would provide depth and comprehensive coverage, focusing on verifiable facts and practical advice
+3. A professional perspective that offers genuine value to business readers
+Avoid generic statements and focus on concrete, actionable insights.
 Respond in JSON format with keys: mainThesis, keyPoints, uniquePerspective.`;
     } else if (language === 'cs') {
-      prompt = `Pro téma "${topic}" v kategorii "${category}" navrhněte jedinečný přístup pro odborný článek.
+      prompt = `Pro téma "${topic}" v kategorii "${category}" navrhněte profesionální, faktický přístup pro odborný článek.
 Poskytněte:
-1. Přesvědčivou hlavní tezi, která poskytuje jasný směr
-2. 5-6 klíčových bodů k pokrytí, které poskytnou hloubku a komplexní pokrytí
-3. Jedinečnou perspektivu, která jej odliší od standardních pojednání
+1. Jasnou, praktickou hlavní tezi, která řeší konkrétní obchodní potřebu nebo výzvu
+2. 5-6 klíčových bodů k pokrytí, které poskytnou hloubku a komplexní pohled, zaměřené na ověřitelná fakta a praktické rady
+3. Profesionální perspektivu, která nabízí skutečnou hodnotu obchodním čtenářům
+Vyhněte se obecným tvrzením a zaměřte se na konkrétní, proveditelné poznatky.
 Odpovězte ve formátu JSON s klíči: mainThesis, keyPoints, uniquePerspective.`;
     } else if (language === 'sk') {
-      prompt = `Pre tému "${topic}" v kategórii "${category}" navrhnite jedinečný prístup pre odborný článok.
+      prompt = `Pre tému "${topic}" v kategórii "${category}" navrhnite profesionálny, faktický prístup pre odborný článok.
 Poskytnite:
-1. Presvedčivú hlavnú tézu, ktorá poskytuje jasný smer
-2. 5-6 kľúčových bodov na pokrytie, ktoré poskytnú hĺbku a komplexné pokrytie
-3. Jedinečnú perspektívu, ktorá ho odlíši od štandardných pojednávaní
+1. Jasnú, praktickú hlavnú tézu, ktorá rieši konkrétnu obchodnú potrebu alebo výzvu
+2. 5-6 kľúčových bodov na pokrytie, ktoré poskytnú hĺbku a komplexný pohľad, zamerané na overiteľné fakty a praktické rady
+3. Profesionálnu perspektívu, ktorá ponúka skutočnú hodnotu obchodným čitateľom
+Vyhnite sa všeobecným tvrdeniam a zamerajte sa na konkrétne, realizovateľné poznatky.
 Odpovedzte vo formáte JSON s kľúčmi: mainThesis, keyPoints, uniquePerspective.`;
     } else if (language === 'de') {
-      prompt = `Für das Thema "${topic}" in der Kategorie "${category}" schlagen Sie einen einzigartigen Ansatz für einen Fachartikel vor.
+      prompt = `Für das Thema "${topic}" in der Kategorie "${category}" schlagen Sie einen professionellen, faktenbasierten Ansatz für einen Fachartikel vor.
 Bieten Sie:
-1. Eine überzeugende Hauptthese, die eine klare Richtung vorgibt
-2. 5-6 Schlüsselpunkte zur Abdeckung, die Tiefe und umfassende Abdeckung bieten würden
-3. Eine einzigartige Perspektive, die ihn von Standardbehandlungen unterscheidet
+1. Eine klare, praktische Hauptthese, die auf ein spezifisches Geschäftsbedürfnis oder eine Herausforderung eingeht
+2. 5-6 Schlüsselpunkte zur Abdeckung, die Tiefe und umfassende Betrachtung bieten würden, mit Fokus auf überprüfbare Fakten und praktische Ratschläge
+3. Eine professionelle Perspektive, die Geschäftslesern einen echten Mehrwert bietet
+Vermeiden Sie allgemeine Aussagen und konzentrieren Sie sich auf konkrete, umsetzbare Erkenntnisse.
 Antworten Sie im JSON-Format mit den Schlüsseln: mainThesis, keyPoints, uniquePerspective.`;
     } else {
       throw new Error(`Unsupported language: ${language}`);
@@ -453,10 +477,10 @@ Antworten Sie im JSON-Format mit den Schlüsseln: mainThesis, keyPoints, uniqueP
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
-        { role: "system", content: "You are a content strategy specialist for professional articles." },
+        { role: "system", content: "You are a professional business content strategist who focuses on fact-based, practical content for business audiences. You avoid generic advice and focus on specific, actionable insights." },
         { role: "user", content: prompt }
       ],
-      temperature: 0.8,
+      temperature: 0.7,
       max_tokens: 800,
       response_format: { type: "json_object" }
     });
@@ -466,16 +490,16 @@ Antworten Sie im JSON-Format mit den Schlüsseln: mainThesis, keyPoints, uniqueP
     console.error("Error generating unique approach:", error);
     // Fallback approach
     return {
-      mainThesis: `A strategic approach to ${topic} can significantly improve outcomes for businesses.`,
+      mainThesis: `Effective management of ${topic} requires concrete steps that directly impact a company's financial health and operational stability.`,
       keyPoints: [
-        "Legal framework and compliance",
-        "Financial implications",
-        "Effective communication strategies",
-        "Risk management and prevention",
-        "Long-term relationship maintenance",
-        "Industry best practices"
+        "Regulatory requirements and compliance framework",
+        "Financial impact assessment and measurable outcomes",
+        "Step-by-step implementation process",
+        "Risk identification and mitigation strategies",
+        "Documentation and record-keeping requirements",
+        "Integration with existing business processes"
       ],
-      uniquePerspective: `A balanced approach that combines legal rigor with relationship preservation.`
+      uniquePerspective: `A practical approach focusing on measurable outcomes rather than theoretical frameworks, with emphasis on implementation efficiency and cost-effectiveness.`
     };
   }
 }
@@ -673,7 +697,7 @@ EXEKÚCIE A INSOLVENCIA:
 - Exekútor: Ako s ním efektívne komunikovať?
 - Exekučný titul: Ako ho získať?
 - Konkurz: Ako sa prihlásiť s pohľadávkou?
-- Reštrukturalizácia: Dopad na veriteľov
+- Reštrukturalizácia: Čo to znamená pre veriteľa?
 - Oddlženie: Čo znamená pre podnikateľa?
 - Platobný rozkaz: Ako ho správne podať?
 - Súdne konanie: Kedy sa oplatí?
@@ -878,7 +902,7 @@ Geben Sie NUR die Überschrift im Format "Schlüsselwort: Frage/Lösung" zurück
         `Prevence neplacení: 3 klíčové kroky`,
         `Zajištění pohledávek: Jaké jsou možnosti?`,
         `Registr dlužníků: Jak ho efektivně využít?`,
-        `Zástava: Kdy ji požadovat a jak funguje?`,
+        `Zástavní právo: Kdy a jak ho zřídit?`,
         `Platební morálka: Varovné signály klienta`,
         `Smlouva: 5 klauzulí pro ochranu věřitele`,
         `Due diligence: Prověření obchodního partnera`,

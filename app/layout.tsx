@@ -252,8 +252,9 @@ export default function RootLayout({
         {/* ElevenLabs ConvAI Widget Script - loaded once for all locales */}
         <Script 
           src="https://elevenlabs.io/convai-widget/index.js" 
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           async
+          defer
           type="text/javascript"
         />
       </body>

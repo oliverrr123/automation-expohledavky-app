@@ -189,8 +189,67 @@ VERMEIDEN SIE STRIKT jegliche Erwähnung von künstlicher Intelligenz oder Sprac
     return articleContent;
   } catch (error) {
     console.error("Error generating article content:", error);
-    // Return a fallback message if the API call fails
-    return `# ${topic}\n\nThis article explores various aspects of ${topic} within the context of ${category}.\n\n## Key Points\n${uniqueApproach.keyPoints.map(point => `- ${point}`).join('\n')}\n\n## Unique Perspective\n${uniqueApproach.uniquePerspective}\n\n*Note: This is a placeholder content due to an error in content generation.*`;
+    // Return a fallback message if the API call fails - now language-specific
+    let fallbackContent = '';
+    
+    if (language === 'cs') {
+      fallbackContent = `# ${topic}
+
+Tento článek se zabývá různými aspekty tématu ${topic} v kontextu ${category}.
+
+Hlavní teze je: ${uniqueApproach.mainThesis}
+
+## Klíčové body
+${uniqueApproach.keyPoints.map(point => `- ${point}`).join('\n')}
+
+## Unikátní perspektiva
+${uniqueApproach.uniquePerspective}
+
+*Poznámka: Toto je náhradní obsah kvůli chybě při generování obsahu.*`;
+    } else if (language === 'sk') {
+      fallbackContent = `# ${topic}
+
+Tento článok sa zaoberá rôznymi aspektmi témy ${topic} v kontexte ${category}.
+
+Hlavná téza je: ${uniqueApproach.mainThesis}
+
+## Kľúčové body
+${uniqueApproach.keyPoints.map(point => `- ${point}`).join('\n')}
+
+## Unikátna perspektíva
+${uniqueApproach.uniquePerspective}
+
+*Poznámka: Toto je náhradný obsah kvôli chybe pri generovaní obsahu.*`;
+    } else if (language === 'de') {
+      fallbackContent = `# ${topic}
+
+Dieser Artikel behandelt verschiedene Aspekte von ${topic} im Kontext von ${category}.
+
+Die Hauptthese ist: ${uniqueApproach.mainThesis}
+
+## Wichtige Punkte
+${uniqueApproach.keyPoints.map(point => `- ${point}`).join('\n')}
+
+## Einzigartige Perspektive
+${uniqueApproach.uniquePerspective}
+
+*Hinweis: Dies ist ein Platzhalterinhalt aufgrund eines Fehlers bei der Inhaltsgenerierung.*`;
+    } else {
+      // English fallback
+      fallbackContent = `# ${topic}
+
+This article explores various aspects of ${topic} within the context of ${category}.
+
+## Key Points
+${uniqueApproach.keyPoints.map(point => `- ${point}`).join('\n')}
+
+## Unique Perspective
+${uniqueApproach.uniquePerspective}
+
+*Note: This is a placeholder content due to an error in content generation.*`;
+    }
+    
+    return fallbackContent;
   }
 }
 
@@ -396,7 +455,10 @@ Antworten Sie im JSON-Format mit den Schlüsseln: subtitle, description, tags, r
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
-        { role: "system", content: "You are a metadata specialist for professional business articles." },
+        { role: "system", content: language === 'cs' ? "Jste specialista na metadata pro profesionální obchodní články." :
+                                   language === 'sk' ? "Ste špecialista na metadáta pre profesionálne obchodné články." :
+                                   language === 'de' ? "Sie sind ein Spezialist für Metadaten für professionelle Geschäftsartikel." :
+                                   "You are a metadata specialist for professional business articles." },
         { role: "user", content: prompt }
       ],
       temperature: 0.7,
@@ -420,14 +482,45 @@ Antworten Sie im JSON-Format mit den Schlüsseln: subtitle, description, tags, r
     return metadata;
   } catch (error) {
     console.error("Error generating metadata:", error);
-    // Fallback metadata
-    return {
-      title: topic, // Use the topic (already formatted as headline) directly
-      subtitle: `Professional insights on ${topic.split(':')[0]}`, // Use the keyword part
-      description: `Learn about ${topic} with practical advice for businesses in ${category}.`,
-      tags: `${category}, ${topic.split(':')[0].toLowerCase()}, business, professional, advice`,
-      readTime: "5 minute read"
-    };
+    // Fallback metadata - now language-specific
+    let fallbackMetadata = {};
+    
+    if (language === 'cs') {
+      fallbackMetadata = {
+        title: topic,
+        subtitle: `Profesionální poznatky o ${topic.split(':')[0]}`,
+        description: `Naučte se o ${topic} s praktickými radami pro firmy v oblasti ${category}.`,
+        tags: `${category}, ${topic.split(':')[0].toLowerCase()}, podnikání, profesionální, rady`,
+        readTime: "5 minut čtení"
+      };
+    } else if (language === 'sk') {
+      fallbackMetadata = {
+        title: topic,
+        subtitle: `Profesionálne poznatky o ${topic.split(':')[0]}`,
+        description: `Naučte sa o ${topic} s praktickými radami pre firmy v oblasti ${category}.`,
+        tags: `${category}, ${topic.split(':')[0].toLowerCase()}, podnikanie, profesionálne, rady`,
+        readTime: "5 minút čítania"
+      };
+    } else if (language === 'de') {
+      fallbackMetadata = {
+        title: topic,
+        subtitle: `Professionelle Einblicke in ${topic.split(':')[0]}`,
+        description: `Lernen Sie über ${topic} mit praktischen Ratschlägen für Unternehmen im Bereich ${category}.`,
+        tags: `${category}, ${topic.split(':')[0].toLowerCase()}, Geschäft, professionell, Beratung`,
+        readTime: "5 Minuten Lesezeit"
+      };
+    } else {
+      // English fallback
+      fallbackMetadata = {
+        title: topic,
+        subtitle: `Professional insights on ${topic.split(':')[0]}`,
+        description: `Learn about ${topic} with practical advice for businesses in ${category}.`,
+        tags: `${category}, ${topic.split(':')[0].toLowerCase()}, business, professional, advice`,
+        readTime: "5 minute read"
+      };
+    }
+    
+    return fallbackMetadata;
   }
 }
 
@@ -477,7 +570,10 @@ Antworten Sie im JSON-Format mit den Schlüsseln: mainThesis, keyPoints, uniqueP
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
-        { role: "system", content: "You are a professional business content strategist who focuses on fact-based, practical content for business audiences. You avoid generic advice and focus on specific, actionable insights." },
+        { role: "system", content: language === 'cs' ? "Jste profesionální stratég obchodního obsahu, který se zaměřuje na faktický, praktický obsah pro obchodní publikum. Vyhýbáte se obecným radám a zaměřujete se na konkrétní, proveditelné poznatky." :
+                                   language === 'sk' ? "Ste profesionálny stratég obchodného obsahu, ktorý sa zameriava na faktický, praktický obsah pre obchodné publikum. Vyhýbate sa všeobecným radám a zameriavate sa na konkrétne, realizovateľné poznatky." :
+                                   language === 'de' ? "Sie sind ein professioneller Geschäftsinhalts-Stratege, der sich auf faktenbasierte, praktische Inhalte für Geschäftszielgruppen konzentriert. Sie vermeiden allgemeine Ratschläge und konzentrieren sich auf spezifische, umsetzbare Erkenntnisse." :
+                                   "You are a professional business content strategist who focuses on fact-based, practical content for business audiences. You avoid generic advice and focus on specific, actionable insights." },
         { role: "user", content: prompt }
       ],
       temperature: 0.7,
@@ -488,19 +584,65 @@ Antworten Sie im JSON-Format mit den Schlüsseln: mainThesis, keyPoints, uniqueP
     return JSON.parse(completion.choices[0].message.content);
   } catch (error) {
     console.error("Error generating unique approach:", error);
-    // Fallback approach
-    return {
-      mainThesis: `Effective management of ${topic} requires concrete steps that directly impact a company's financial health and operational stability.`,
-      keyPoints: [
-        "Regulatory requirements and compliance framework",
-        "Financial impact assessment and measurable outcomes",
-        "Step-by-step implementation process",
-        "Risk identification and mitigation strategies",
-        "Documentation and record-keeping requirements",
-        "Integration with existing business processes"
-      ],
-      uniquePerspective: `A practical approach focusing on measurable outcomes rather than theoretical frameworks, with emphasis on implementation efficiency and cost-effectiveness.`
-    };
+    // Fallback approach - now language-specific
+    let fallbackApproach = {};
+    
+    if (language === 'cs') {
+      fallbackApproach = {
+        mainThesis: `Efektivní řízení ${topic} vyžaduje konkrétní kroky, které přímo ovlivňují finanční zdraví a provozní stabilitu společnosti.`,
+        keyPoints: [
+          "Regulatorní požadavky a rámec compliance",
+          "Hodnocení finančního dopadu a měřitelné výsledky",
+          "Postupný proces implementace",
+          "Identifikace rizik a strategie jejich zmírnění",
+          "Požadavky na dokumentaci a vedení záznamů",
+          "Integrace s existujícími obchodními procesy"
+        ],
+        uniquePerspective: `Praktický přístup zaměřený na měřitelné výsledky spíše než na teoretické rámce, s důrazem na efektivitu implementace a nákladovou efektivnost.`
+      };
+    } else if (language === 'sk') {
+      fallbackApproach = {
+        mainThesis: `Efektívne riadenie ${topic} vyžaduje konkrétne kroky, ktoré priamo ovplyvňujú finančné zdravie a prevádzkovú stabilitu spoločnosti.`,
+        keyPoints: [
+          "Regulačné požiadavky a rámec compliance",
+          "Hodnotenie finančného dopadu a merateľné výsledky",
+          "Postupný proces implementácie",
+          "Identifikácia rizík a stratégie ich zmierňovania",
+          "Požiadavky na dokumentáciu a vedenie záznamov",
+          "Integrácia s existujúcimi obchodnými procesmi"
+        ],
+        uniquePerspective: `Praktický prístup zameraný na merateľné výsledky skôr ako na teoretické rámce, s dôrazom na efektívnosť implementácie a nákladovú efektívnosť.`
+      };
+    } else if (language === 'de') {
+      fallbackApproach = {
+        mainThesis: `Effektives Management von ${topic} erfordert konkrete Schritte, die sich direkt auf die finanzielle Gesundheit und operative Stabilität des Unternehmens auswirken.`,
+        keyPoints: [
+          "Regulatorische Anforderungen und Compliance-Rahmen",
+          "Bewertung der finanziellen Auswirkungen und messbare Ergebnisse",
+          "Schrittweiser Implementierungsprozess",
+          "Risikoidentifikation und Minderungsstrategien",
+          "Dokumentations- und Aufzeichnungsanforderungen",
+          "Integration in bestehende Geschäftsprozesse"
+        ],
+        uniquePerspective: `Ein praktischer Ansatz, der sich auf messbare Ergebnisse statt auf theoretische Rahmen konzentriert, mit Schwerpunkt auf Implementierungseffizienz und Kosteneffektivität.`
+      };
+    } else {
+      // English fallback
+      fallbackApproach = {
+        mainThesis: `Effective management of ${topic} requires concrete steps that directly impact a company's financial health and operational stability.`,
+        keyPoints: [
+          "Regulatory requirements and compliance framework",
+          "Financial impact assessment and measurable outcomes",
+          "Step-by-step implementation process",
+          "Risk identification and mitigation strategies",
+          "Documentation and record-keeping requirements",
+          "Integration with existing business processes"
+        ],
+        uniquePerspective: `A practical approach focusing on measurable outcomes rather than theoretical frameworks, with emphasis on implementation efficiency and cost-effectiveness.`
+      };
+    }
+    
+    return fallbackApproach;
   }
 }
 
@@ -1025,7 +1167,7 @@ async function getAuthorProfileImage(author, language) {
     if (author.position) {
       // Extract profession-related keywords
       const positionKeywords = author.position.toLowerCase();
-      if (positionKeywords.includes('finanční') || positionKeywords.includes('finančný') || positionKeywords.includes('finanz')) {
+      if (positionKeywords.includes('finanční') || positionKeywords.includes('finančny') || positionKeywords.includes('finanz')) {
         imageQuery += ' finance';
       } else if (positionKeywords.includes('právní') || positionKeywords.includes('právny') || positionKeywords.includes('rechts')) {
         imageQuery += ' legal';

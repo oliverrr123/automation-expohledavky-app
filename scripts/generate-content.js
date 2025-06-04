@@ -14,7 +14,9 @@ const {
   getArticleImage, 
   generateMetadata,
   generateUniqueApproach,
-  generateRandomTopic
+  generateRandomTopic,
+  generateArticle,
+  getRandomDate
 } = require('./article-generation-utils');
 
 // Konfigurace pro OpenAI API
@@ -126,7 +128,10 @@ const config = {
       'Právní rámec pohledávek',
       'Smluvní jistoty a zajištění pohledávek',
       'Exekuce a výkon rozhodnutí',
-      'Firemní strategie řízení pohledávek'
+      'Firemní strategie řízení pohledávek',
+      'Mezinárodní vymáhání pohledávek - Švýcarsko',
+      'Mezinárodní vymáhání pohledávek - Německo',
+      'Mezinárodní vymáhání pohledávek - Anglie'
     ],
     authors: [
       {
@@ -143,8 +148,14 @@ const config = {
         name: "Ing. Petra Svobodová",
         position: "Finanční analytik",
         bio: "Finanční analytička zaměřující se na řízení cash flow a prevenci platební neschopnosti."
+      },
+      {
+        name: "JUDr. Tomáš Havel",
+        position: "Specialista na mezinárodní právo",
+        bio: "Odborník na mezinárodní obchodní právo a vymáhání přeshraničních pohledávek s 15 lety zkušeností."
       }
-    ]
+    ],
+    outputPath: "content/posts-cs"
   },
   
   // Slovenština
@@ -184,7 +195,10 @@ const config = {
       'Právny rámec pohľadávok',
       'Zmluvné istoty a zabezpečenie pohľadávok',
       'Exekúcia a výkon rozhodnutí',
-      'Firemná stratégia riadenia pohľadávok'
+      'Firemné stratégie riadenia pohľadávok',
+      'Medzinárodné vymáhanie pohľadávok - Švajčiarsko',
+      'Medzinárodné vymáhanie pohľadávok - Nemecko',
+      'Medzinárodné vymáhanie pohľadávok - Anglicko'
     ],
     authors: [
       {
@@ -201,8 +215,14 @@ const config = {
         name: "Ing. Peter Novotný",
         position: "Finančný analytik",
         bio: "Finančný analytik zameraný na riadenie cash flow a prevenciu platobnej neschopnosti."
+      },
+      {
+        name: "JUDr. Lucia Králová",
+        position: "Špecialistka na medzinárodné právo",
+        bio: "Odborníčka na medzinárodné obchodné právo a vymáhanie cezhraničných pohľadávok s 12 rokmi skúseností."
       }
-    ]
+    ],
+    outputPath: "content/posts-sk"
   },
   
   // Němčina
@@ -242,7 +262,10 @@ const config = {
       'Rechtlicher Rahmen der Forderungen',
       'Vertragliche Sicherheiten und Forderungsabsicherung',
       'Vollstreckung und Durchsetzung von Entscheidungen',
-      'Unternehmensstrategie im Forderungsmanagement'
+      'Unternehmensstrategie im Forderungsmanagement',
+      'Internationale Forderungseintreibung - Schweiz',
+      'Internationale Forderungseintreibung - Tschechien',
+      'Internationale Forderungseintreibung - England'
     ],
     authors: [
       {
@@ -259,8 +282,14 @@ const config = {
         name: "Dipl.-Fin. Michael Weber",
         position: "Finanzanalyst",
         bio: "Finanzanalyst mit Fokus auf Cashflow-Management und Prävention von Zahlungsunfähigkeit."
+      },
+      {
+        name: "Dr. Klaus Becker",
+        position: "Internationaler Rechtsexperte",
+        bio: "Spezialist für internationales Handelsrecht und grenzüberschreitende Forderungseintreibung mit 14 Jahren Erfahrung."
       }
-    ]
+    ],
+    outputPath: "content/posts-de"
   },
   
   // Angličtina
@@ -295,12 +324,15 @@ const config = {
       'Ethics and Communication in Collection',
       'Insolvency and Debt Relief',
       'Restructuring of Corporate Liabilities',
-      'Background Checks of Business Partners',
+      'Screening and Verification of Business Partners',
       'Prevention of Unpaid Receivables',
-      'Legal Framework of Claims',
-      'Contractual Securities and Claims Collateral',
-      'Enforcement and Execution of Judgments',
-      'Corporate Strategy in Receivables Management'
+      'Legal Framework for Receivables',
+      'Contractual Securities',
+      'Execution and Enforcement of Decisions',
+      'Corporate Strategies for Receivables Management',
+      'International Debt Collection - Switzerland',
+      'International Debt Collection - Germany',
+      'International Debt Collection - Czech Republic'
     ],
     authors: [
       {
@@ -317,8 +349,14 @@ const config = {
         name: "Michael Brown, CFA",
         position: "Financial Analyst",
         bio: "Financial analyst focusing on cash flow management and prevention of payment defaults."
+      },
+      {
+        name: "Dr. Elizabeth Parker",
+        position: "International Legal Expert",
+        bio: "Expert in international commercial law and cross-border receivables collection with 16 years of experience in multinational cases."
       }
-    ]
+    ],
+    outputPath: "content/posts-en"
   }
 };
 
@@ -403,7 +441,7 @@ async function generateContent(lang) {
     // Vytvoření názvu souboru s datem a slugem
     const date = tomorrow.toISOString().split('T')[0]; // Formát: YYYY-MM-DD
     const fileName = `${date}-${slug}.mdx`;
-    const filePath = path.join(process.cwd(), 'content', langConfig.folder, fileName);
+    const filePath = path.join(langConfig.outputPath, fileName);
     
     // Vytvoření adresáře, pokud neexistuje
     const dir = path.dirname(filePath);
